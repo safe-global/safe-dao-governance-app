@@ -1,0 +1,5 @@
+.info {
+  background-color: var(--mui-palette-secondary-background);
+  border-radius: var(--mui-shape-borderRadius);
+  padding: 24px;
+}
