@@ -1,0 +1,22 @@
+name: 'Build'
+
+description: 'Build the app'
+
+inputs:
+  secrets:
+    required: true
+
+  is-production:
+    description: 'Production build flag'
+    required: false
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Build
+      shell: bash
+      run: yarn build && yarn export
+      env:
+        NEXT_PUBLIC_INFURA_TOKEN: ${{ fromJSON(inputs.secrets).NEXT_PUBLIC_INFURA_TOKEN }}
+        NEXT_PUBLIC_IS_PRODUCTION: ${{ inputs.is-production }}
+        NEXT_PUBLIC_WC_BRIDGE: ${{ fromJSON(inputs.secrets).NEXT_PUBLIC_WC_BRIDGE }}
