@@ -30,9 +30,6 @@ import { useSafeSnapshot } from '@/hooks/useSafeSnapshot'
 
 import '@/styles/globals.css'
 
-// Temp
-import React from 'react'
-
 const InitApp = (): null => {
   setGatewayBaseUrl(GATEWAY_URL)
 
@@ -53,30 +50,6 @@ const InitApp = (): null => {
 const clientSideEmotionCache = createEmotionCache()
 
 const queryClient = getQueryClient()
-
-class ErrorBoundary extends React.Component {
-  //@ts-expect-error
-  constructor(props) {
-    super(props)
-    this.state = { hasError: false }
-  }
-  //@ts-expect-error
-  static getDerivedStateFromError(error) {
-    return { hasError: true }
-  }
-  //@ts-expect-error
-  componentDidCatch(error, errorInfo) {
-    console.log(error, errorInfo)
-  }
-  render() {
-    //@ts-expect-error
-    if (this.state.hasError) {
-      return <h1>Something went wrong.</h1>
-    }
-    //@ts-expect-error
-    return this.props.children
-  }
-}
 
 const App = ({
   Component,
@@ -101,21 +74,19 @@ const App = ({
       <CssVarsProvider theme={theme}>
         <CssBaseline />
 
-        <ErrorBoundary>
-          <SafeProvider>
-            <QueryClientProvider client={queryClient}>
-              <InitApp />
+        <SafeProvider>
+          <QueryClientProvider client={queryClient}>
+            <InitApp />
 
-              {pathname === AppRoutes.widgets ? (
-                page
-              ) : (
-                <PageLayout>
-                  <EnsureWalletConnection>{page}</EnsureWalletConnection>
-                </PageLayout>
-              )}
-            </QueryClientProvider>
-          </SafeProvider>
-        </ErrorBoundary>
+            {pathname === AppRoutes.widgets ? (
+              page
+            ) : (
+              <PageLayout>
+                <EnsureWalletConnection>{page}</EnsureWalletConnection>
+              </PageLayout>
+            )}
+          </QueryClientProvider>
+        </SafeProvider>
       </CssVarsProvider>
     </CacheProvider>
   )
