@@ -4,7 +4,7 @@
   "license": "GPL-3.0",
   "version": "0.1.0",
   "scripts": {
-    "build": "next build && next export -o build/",
+    "build": "next build && next export",
     "lint": "tsc && next lint",
     "lint:fix": "next lint --fix",
     "generate-types:safe-token": "typechain --target ethers-v5 --out-dir ./src/types/contracts/safe-token './artifacts/safe-token/contracts/**/*[!.dbg].json'",
