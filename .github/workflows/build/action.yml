@@ -15,7 +15,7 @@ runs:
   steps:
     - name: Build
       shell: bash
-      run: yarn build && yarn export
+      run: yarn build
       env:
         NEXT_PUBLIC_INFURA_TOKEN: ${{ fromJSON(inputs.secrets).NEXT_PUBLIC_INFURA_TOKEN }}
         NEXT_PUBLIC_IS_PRODUCTION: ${{ inputs.is-production }}
