@@ -1,7 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  swcMinify: true,
+  // Minifying breaks `@web3-onboard`
+  // @see https://github.com/blocknative/web3-onboard/issues/1352#issuecomment-1351890360
+  swcMinify: false,
   // `Image` not supported in static export
   images: {
     unoptimized: true,
