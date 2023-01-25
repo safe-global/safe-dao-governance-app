@@ -5,7 +5,7 @@ import palette from '@/styles/colors'
 
 import css from './styles.module.css'
 
-export const Circle = ({ color, className }: { color: string; className: string }) => {
+const Circle = ({ color, className }: { color: string; className: string }) => {
   return (
     <Box
       className={clsx(css.circle, className)}
