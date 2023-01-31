@@ -58,27 +58,9 @@ input[type='number'] {
   -moz-appearance: textfield;
 }
 
-.illustration-main-fill {
-  fill: var(--mui-palette-primary-main);
-}
-
-.illustration-light-fill {
-  fill: var(--mui-palette-border-main);
-}
-
-.illustration-background-fill {
-  fill: var(--mui-palette-logo-background);
-}
-
-/* Note: a fallback `stroke` property must be on the svg to work */
-.illustration-main-stroke {
-  stroke: var(--mui-palette-primary-main);
-}
-
-.illustration-light-stroke {
-  stroke: var(--mui-palette-border-main);
-}
-
-.illustration-background-stroke {
-  stroke: var(--mui-palette-logo-background);
+/* Prevent content shift */
+@supports (scrollbar-gutter: stable) {
+  html {
+    scrollbar-gutter: stable;
+  }
 }
