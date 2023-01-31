@@ -1,5 +1,5 @@
 import { ShieldOutlined } from '@mui/icons-material'
-import { Grid, Paper, Typography, Tooltip } from '@mui/material'
+import { Grid, Paper, Typography, Tooltip, Badge } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { formatEther } from 'ethers/lib/utils'
 import InfoOutlined from '@mui/icons-material/InfoOutlined'
@@ -90,12 +90,19 @@ export const ClaimCard = ({
             arrow
             placement="top"
           >
-            <ShieldOutlined
-              sx={{
-                height: '16px',
-                width: '16px',
-              }}
-            />
+            <Badge
+              variant="dot"
+              color="secondary"
+              anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+              className={css.badge}
+            >
+              <ShieldOutlined
+                sx={{
+                  height: '16px',
+                  width: '16px',
+                }}
+              />
+            </Badge>
           </Tooltip>
         </Grid>
         <Grid item display="flex" alignItems="center">

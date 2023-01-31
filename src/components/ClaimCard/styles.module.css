@@ -26,3 +26,9 @@
   gap: 4px;
   align-items: center;
 }
+
+.badge :global .MuiBadge-badge {
+  bottom: 4px;
+  right: 4px;
+  background-color: var(--mui-palette-secondary-main);
+}
