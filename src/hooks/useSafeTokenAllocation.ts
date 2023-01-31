@@ -10,6 +10,7 @@ import { CHAIN_SAFE_TOKEN_ADDRESS, VESTING_URL, ZERO_ADDRESS } from '@/config/co
 import { useWeb3 } from '@/hooks/useWeb3'
 import { sameAddress } from '@/utils/addresses'
 import { useWallet } from '@/hooks/useWallet'
+import { useIsSafeApp } from './useIsSafeApp'
 
 type VestingData = {
   tag: 'user' | 'ecosystem' | 'investor'
@@ -129,7 +130,7 @@ const computeVotingPower = (validVestingData: Vesting[], balance: string) => {
   return tokensInVesting.add(balance || '0')
 }
 
-export const _getSafeTokenAllocation = async (web3?: JsonRpcProvider) => {
+export const _getSafeTokenAllocation = async (isSafeApp: boolean, web3?: JsonRpcProvider) => {
   if (!web3) {
     return null
   }
@@ -139,9 +140,11 @@ export const _getSafeTokenAllocation = async (web3?: JsonRpcProvider) => {
 
   const chainId = await signer.getChainId()
 
-  const vestingData = await fetchAllocation(chainId, address).then((allocations) => {
-    return Promise.all(allocations.map((allocation) => completeAllocation(allocation, web3)))
-  })
+  const vestingData = isSafeApp
+    ? await fetchAllocation(chainId, address).then((allocations) => {
+        return Promise.all(allocations.map((allocation) => completeAllocation(allocation, web3)))
+      })
+    : []
 
   const validVestingData = getValidVestingAllocation(vestingData)
 
@@ -163,10 +166,11 @@ export const useSafeTokenAllocation = () => {
 
   const web3 = useWeb3()
   const wallet = useWallet()
+  const isSafeApp = useIsSafeApp()
 
   return useQuery({
     queryKey: [QUERY_KEY, wallet?.address, wallet?.chainId],
-    queryFn: () => _getSafeTokenAllocation(web3),
+    queryFn: () => _getSafeTokenAllocation(isSafeApp, web3),
     enabled: !!web3,
   })
 }
