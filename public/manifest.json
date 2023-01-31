@@ -4,7 +4,7 @@
   "description": "The portal to Safe {DAO} governance, voting power delegation and allocation claiming.",
   "icons": [
     {
-      "src": "app-logo.svg",
+      "src": "/images/app-logo.svg",
       "sizes": "any",
       "type": "image/svg+xml"
     }
