@@ -1,10 +1,11 @@
-import { Button, Card, CardHeader, Typography } from '@mui/material'
+import { Button, Card, CardHeader, CircularProgress, Typography } from '@mui/material'
 import type { ReactElement } from 'react'
 
 import { DelegateAvatar } from '@/components/DelegateAvatar'
 import Avatar from '@/public/images/avatar.svg'
 import { InfoAlert } from '@/components/InfoAlert'
 import { shortenAddress } from '@/utils/addresses'
+import { useIsDelegationPending } from '@/hooks/usePendingDelegations'
 import type { Delegate } from '@/hooks/useDelegate'
 
 export const SelectedDelegate = ({
@@ -19,9 +20,17 @@ export const SelectedDelegate = ({
   hint?: boolean
 }): ReactElement => {
   const shortAddress = delegate ? shortenAddress(delegate.address) : undefined
+  const isDelegating = useIsDelegationPending()
 
-  const title = delegate ? ('name' in delegate ? delegate.name : shortAddress) : 'No delegate chosen'
-  const subheader = delegate ? ('ens' in delegate ? delegate.ens || shortAddress : shortAddress) : undefined
+  const title = isDelegating
+    ? 'Delegating...'
+    : delegate
+    ? 'name' in delegate
+      ? delegate.name
+      : shortAddress
+    : 'No delegate chosen'
+  const subheader =
+    delegate && !isDelegating ? ('ens' in delegate ? delegate.ens || shortAddress : shortAddress) : undefined
 
   return (
     <>
@@ -30,7 +39,7 @@ export const SelectedDelegate = ({
       </Typography>
       <Card variant="outlined" elevation={0}>
         <CardHeader
-          avatar={delegate ? <DelegateAvatar delegate={delegate} /> : <Avatar />}
+          avatar={isDelegating ? <CircularProgress /> : delegate ? <DelegateAvatar delegate={delegate} /> : <Avatar />}
           title={title}
           titleTypographyProps={{
             color: !delegate ? 'text.secondary' : undefined,
@@ -38,7 +47,7 @@ export const SelectedDelegate = ({
           subheader={subheader}
           action={
             onClick && (
-              <Button variant="contained" size="stretched" onClick={onClick} disabled={disabled}>
+              <Button variant="contained" size="stretched" onClick={onClick} disabled={isDelegating || disabled}>
                 {delegate ? 'Redelegate' : 'Delegate'}
               </Button>
             )
