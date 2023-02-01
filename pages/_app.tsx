@@ -27,6 +27,8 @@ import { createEmotionCache } from '@/styles/emotion'
 import { GATEWAY_URL } from '@/config/constants'
 import { AppRoutes } from '@/config/routes'
 import { useSafeSnapshot } from '@/hooks/useSafeSnapshot'
+import { useContractDelegateInvalidator } from '@/hooks/useContractDelegate'
+import { usePendingDelegations } from '@/hooks/usePendingDelegations'
 
 import '@/styles/globals.css'
 
@@ -37,11 +39,16 @@ const InitApp = (): null => {
   useInitWeb3()
   useInitWallet()
 
+  usePendingDelegations()
+
   // Populate caches
   useChains()
   useDelegatesFile()
   useIsTokenPaused()
   useSafeSnapshot()
+
+  // Invalidate caches
+  useContractDelegateInvalidator()
 
   return null
 }

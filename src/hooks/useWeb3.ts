@@ -22,11 +22,9 @@ export const useInitWeb3 = (): void => {
       return
     }
 
-    if (wallet) {
+    if (wallet?.provider) {
       web3Store.setStore(createWeb3Provider(wallet.provider))
       return
     }
-
-    web3Store.setStore(undefined)
-  }, [isSafeApp, sdk, wallet])
+  }, [isSafeApp, sdk, wallet?.provider])
 }

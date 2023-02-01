@@ -9,14 +9,15 @@ import { NavButtons } from '@/components/NavButtons'
 import { StepHeader } from '@/components/StepHeader'
 import { useWeb3 } from '@/hooks/useWeb3'
 import { setDelegate } from '@/services/delegate-registry'
-import { invalidateCacheAfterTx } from '@/services/QueryClient'
+import { setPendingDelegation } from '@/hooks/usePendingDelegations'
 import { useIsWrongChain } from '@/hooks/useIsWrongChain'
-import { CONTRACT_DELEGATE_QUERY_KEY } from '@/hooks/useContractDelegate'
+import { useIsSafeApp } from '@/hooks/useIsSafeApp'
 
 const ReviewDelegate = (): ReactElement => {
   const web3 = useWeb3()
   const isWrongChain = useIsWrongChain()
   const { stepperState, onBack, onNext } = useDelegationStepper()
+  const isSafeApp = useIsSafeApp()
 
   const [processing, setProcessing] = useState(false)
 
@@ -35,7 +36,14 @@ const ReviewDelegate = (): ReactElement => {
       return
     }
 
-    invalidateCacheAfterTx(CONTRACT_DELEGATE_QUERY_KEY, tx)
+    const txHash = isSafeApp
+      ? undefined // `tx.hash` is `safeTxHash`
+      : tx.hash
+
+    if (txHash) {
+      const address = await web3.getSigner().getAddress()
+      setPendingDelegation(address, txHash)
+    }
 
     onNext()
   }

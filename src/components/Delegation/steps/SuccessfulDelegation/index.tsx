@@ -2,10 +2,12 @@ import { Grid, Typography, Button } from '@mui/material'
 import type { ReactElement } from 'react'
 
 import { useDelegationStepper } from '@/components/Delegation'
+import { useIsSafeApp } from '@/hooks/useIsSafeApp'
 import SafeLogo from '@/public/images/safe-logo.svg'
 
 const SuccessfulDelegation = (): ReactElement => {
   const { onNext } = useDelegationStepper()
+  const isSafeApp = useIsSafeApp()
 
   return (
     <Grid container flexDirection="column" alignItems="center" pt={16} px={1} pb={22}>
@@ -15,7 +17,11 @@ const SuccessfulDelegation = (): ReactElement => {
         Transaction has been created
       </Typography>
 
-      <Typography mb={4}>You successfully delegated your voting power</Typography>
+      <Typography mb={4} textAlign="center">
+        {isSafeApp
+          ? 'You successfully started delegating! Once the transaction is signed and executed, your voting power will be delegated.'
+          : 'You successfully delegated your voting power!'}
+      </Typography>
 
       <Button variant="contained" color="primary" onClick={onNext}>
         Back to main
