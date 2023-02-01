@@ -10,8 +10,10 @@ import { InfoAlert } from '@/components/InfoAlert'
 import { NavButtons } from '@/components/NavButtons'
 import { useDelegationStepper } from '@/components/Delegation'
 import { useDelegate } from '@/hooks/useDelegate'
+import { useIsSafeApp } from '@/hooks/useIsSafeApp'
 
 export const CustomDelegate = (): ReactElement => {
+  const isSafeApp = useIsSafeApp()
   const { onNext, setStepperState, stepperState } = useDelegationStepper()
 
   const delegate = useDelegate()
@@ -38,7 +40,9 @@ export const CustomDelegate = (): ReactElement => {
 
   return (
     <>
-      <Typography>The wallet address can belong to any person but you cannot delegate to your own Safe.</Typography>
+      <Typography>
+        The wallet address can belong to any person but you cannot delegate to your own{isSafeApp ? ' Safe' : ''}.
+      </Typography>
 
       <TextField
         fullWidth
