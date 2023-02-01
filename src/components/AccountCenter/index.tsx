@@ -40,7 +40,7 @@ const Popper = ({ wallet }: { wallet: ConnectedWallet }): ReactElement => {
     <>
       <ButtonBase onClick={handleClick} disableRipple className={css.dropdown}>
         <Box className={css.buttonContainer}>
-          {chain && <WalletInfo wallet={wallet} chain={chain} />}
+          <WalletInfo wallet={wallet} chain={chain} />
 
           <Box display="flex" alignItems="center" justifyContent="flex-end" marginLeft="auto">
             <ExpandIcon color="border" />
