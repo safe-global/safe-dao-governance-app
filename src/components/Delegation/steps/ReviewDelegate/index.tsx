@@ -36,10 +36,13 @@ const ReviewDelegate = (): ReactElement => {
       return
     }
 
-    // Only EOA transactions can be pending
-    if (!isSafeApp) {
+    const txHash = isSafeApp
+      ? undefined // `tx.hash` is `safeTxHash`
+      : tx.hash
+
+    if (txHash) {
       const address = await web3.getSigner().getAddress()
-      setPendingDelegation(address, tx)
+      setPendingDelegation(address, txHash)
     }
 
     onNext()
