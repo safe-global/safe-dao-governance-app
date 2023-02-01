@@ -17,7 +17,7 @@ const SuccessfulDelegation = (): ReactElement => {
         Transaction has been created
       </Typography>
 
-      <Typography mb={4}>
+      <Typography mb={4} textAlign="center">
         {isSafeApp
           ? 'You successfully started delegating! Once the transaction is signed and executed, your voting power will be delegated.'
           : 'You successfully delegated your voting power!'}
