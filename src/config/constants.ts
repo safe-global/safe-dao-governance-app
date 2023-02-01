@@ -11,8 +11,9 @@ export const TREZOR_APP_URL = 'app.safe.global'
 export const TREZOR_EMAIL = 'support@safe.global'
 
 // Deployments
-// TODO: Update this to the correct deployment URLs
-export const DEPLOYMENT_URL = IS_PRODUCTION ? 'https://governance.safe.global' : ''
+export const DEPLOYMENT_URL = IS_PRODUCTION
+  ? 'https://governance.safe.global'
+  : 'https://safe-dao-governance.dev.5afe.dev/'
 
 export const GATEWAY_URL = IS_PRODUCTION ? 'https://safe-client.safe.global' : 'https://safe-client.staging.5afe.dev'
 

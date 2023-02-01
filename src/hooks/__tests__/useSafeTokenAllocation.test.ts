@@ -52,19 +52,9 @@ describe('_getSafeTokenAllocation', () => {
   })
 
   it('returns null if no provider is defined', async () => {
-    const result = await _getSafeTokenAllocation(true, undefined)
+    const result = await _getSafeTokenAllocation(undefined)
 
     expect(result).toBe(null)
-  })
-
-  it('does not fetch and return 0 if connected to an EOA exist', async () => {
-    global.fetch = jest.fn().mockImplementation(setupFetchStub('', 404))
-    const mockFetch = jest.spyOn(global, 'fetch')
-
-    const result = await _getSafeTokenAllocation(false, web3Provider)
-
-    expect(mockFetch).not.toHaveBeenCalled()
-    expect(result?.votingPower.toNumber()).toEqual(0)
   })
 
   it('return 0 if no allocations / balances exist', async () => {
@@ -79,7 +69,7 @@ describe('_getSafeTokenAllocation', () => {
       return Promise.resolve('0x')
     })
 
-    const result = await _getSafeTokenAllocation(true, web3Provider)
+    const result = await _getSafeTokenAllocation(web3Provider)
 
     expect(mockFetch).toHaveBeenCalled()
     expect(result?.votingPower.toNumber()).toEqual(0)
@@ -97,7 +87,7 @@ describe('_getSafeTokenAllocation', () => {
       return Promise.resolve('0x')
     })
 
-    const result = await _getSafeTokenAllocation(true, web3Provider)
+    const result = await _getSafeTokenAllocation(web3Provider)
 
     expect(mockFetch).toHaveBeenCalled()
     expect(result?.votingPower.eq(parseEther('100'))).toBeTruthy()
@@ -140,7 +130,7 @@ describe('_getSafeTokenAllocation', () => {
       return Promise.resolve('0x')
     })
 
-    const result = await _getSafeTokenAllocation(true, web3Provider)
+    const result = await _getSafeTokenAllocation(web3Provider)
 
     expect(mockFetch).toHaveBeenCalled()
     expect(result?.votingPower.toNumber()).toEqual(2000)
@@ -188,7 +178,7 @@ describe('_getSafeTokenAllocation', () => {
       return Promise.resolve('0x')
     })
 
-    const result = await _getSafeTokenAllocation(true, web3Provider)
+    const result = await _getSafeTokenAllocation(web3Provider)
 
     expect(mockFetch).toHaveBeenCalled()
     expect(result?.votingPower.toNumber()).toEqual(0)
@@ -236,7 +226,7 @@ describe('_getSafeTokenAllocation', () => {
       return Promise.resolve('0x')
     })
 
-    const result = await _getSafeTokenAllocation(true, web3Provider)
+    const result = await _getSafeTokenAllocation(web3Provider)
 
     expect(mockFetch).toHaveBeenCalled()
     expect(result?.votingPower.toNumber()).toEqual(2000)
@@ -285,7 +275,7 @@ describe('_getSafeTokenAllocation', () => {
       return Promise.resolve('0x')
     })
 
-    const result = await _getSafeTokenAllocation(true, web3Provider)
+    const result = await _getSafeTokenAllocation(web3Provider)
 
     expect(mockFetch).toHaveBeenCalled()
     expect(result?.votingPower.toNumber()).toEqual(2000 - 1000 + 400)
@@ -334,7 +324,7 @@ describe('_getSafeTokenAllocation', () => {
       return Promise.resolve('0x')
     })
 
-    const result = await _getSafeTokenAllocation(true, web3Provider)
+    const result = await _getSafeTokenAllocation(web3Provider)
 
     expect(mockFetch).toHaveBeenCalled()
     expect(result?.votingPower.toNumber()).toEqual(0)
