@@ -11,7 +11,7 @@ import { getQueryClient } from '@/services/QueryClient'
 import type { FileDelegate } from '@/hooks/useDelegatesFile'
 import type { EventFilter } from '@ethersproject/abstract-provider'
 
-export type ContractDelegate = Pick<FileDelegate, 'address'>
+export type ContractDelegate = Pick<FileDelegate, 'address' | 'ens'>
 
 export const _getContractDelegate = async (web3?: JsonRpcProvider): Promise<ContractDelegate | null> => {
   if (!web3) {
@@ -38,7 +38,10 @@ export const _getContractDelegate = async (web3?: JsonRpcProvider): Promise<Cont
     return null
   }
 
+  const ens = await web3.lookupAddress(delegate)
+
   return {
+    ens,
     address: delegate,
   }
 }

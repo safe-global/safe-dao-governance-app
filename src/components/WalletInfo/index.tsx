@@ -9,7 +9,9 @@ import type { ConnectedWallet } from '@/hooks/useWallet'
 
 import css from './styles.module.css'
 
-export const WalletInfo = ({ wallet, chain }: { wallet: ConnectedWallet; chain: ChainInfo }): ReactElement => {
+const UNKNOWN_CHAIN_NAME = 'Unknown'
+
+export const WalletInfo = ({ wallet, chain }: { wallet: ConnectedWallet; chain?: ChainInfo }): ReactElement => {
   return (
     <Box className={css.container}>
       <Box className={css.imageContainer}>
@@ -19,13 +21,13 @@ export const WalletInfo = ({ wallet, chain }: { wallet: ConnectedWallet; chain: 
       </Box>
       <Box>
         <Typography variant="caption" component="div" className={css.walletDetails}>
-          {wallet.label} @ {chain.chainName}
+          {wallet.label} @ {chain?.chainName ?? UNKNOWN_CHAIN_NAME}
         </Typography>
         <Typography variant="caption" fontWeight="bold">
           {wallet.ens ? (
             <div>{wallet.ens}</div>
           ) : (
-            <EthHashInfo prefix={chain.shortName} address={wallet.address} showAvatar avatarSize={12} />
+            <EthHashInfo prefix={chain?.shortName ?? ''} address={wallet.address} showAvatar avatarSize={12} />
           )}
         </Typography>
       </Box>

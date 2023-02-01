@@ -9,9 +9,12 @@ import { useEnsResolution } from '@/hooks/useEnsResolution'
 import { InfoAlert } from '@/components/InfoAlert'
 import { NavButtons } from '@/components/NavButtons'
 import { useDelegationStepper } from '@/components/Delegation'
+import { useIsSafeApp } from '@/hooks/useIsSafeApp'
 import { useDelegate } from '@/hooks/useDelegate'
+import type { Delegate } from '@/hooks/useDelegate'
 
 export const CustomDelegate = (): ReactElement => {
+  const isSafeApp = useIsSafeApp()
   const { onNext, setStepperState, stepperState } = useDelegationStepper()
 
   const delegate = useDelegate()
@@ -28,17 +31,25 @@ export const CustomDelegate = (): ReactElement => {
   const isAlreadySet = stepperState?.selectedDelegate?.address === delegate?.address
 
   useEffect(() => {
-    const delegate = isValidEnsAddress ? { address: ensAddress } : undefined
+    const delegate: Delegate | undefined = isValidEnsAddress
+      ? {
+          ens: isAddress(search) ? null : search || null,
+          address: ensAddress,
+        }
+      : undefined
+
     setStepperState((prev) => ({
       ...prev,
       customDelegate: delegate,
       selectedDelegate: delegate,
     }))
-  }, [isValidEnsAddress, ensAddress, setStepperState])
+  }, [isValidEnsAddress, ensAddress, setStepperState, search])
 
   return (
     <>
-      <Typography>The wallet address can belong to any person but you cannot delegate to your own Safe.</Typography>
+      <Typography>
+        The wallet address can belong to any person but you cannot delegate to your own{isSafeApp ? ' Safe' : ''}.
+      </Typography>
 
       <TextField
         fullWidth

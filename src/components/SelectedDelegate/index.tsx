@@ -8,6 +8,43 @@ import { shortenAddress } from '@/utils/addresses'
 import { useIsDelegationPending } from '@/hooks/usePendingDelegations'
 import type { Delegate } from '@/hooks/useDelegate'
 
+const getTitles = (isDelegating: boolean, delegate?: Delegate, shouldShorten?: boolean) => {
+  if (isDelegating) {
+    return {
+      title: 'Delegating...',
+      subheader: undefined,
+    }
+  }
+
+  if (!delegate) {
+    return {
+      title: 'No delegate chosen',
+      subheader: undefined,
+    }
+  }
+
+  const address = shouldShorten ? shortenAddress(delegate.address) : delegate.address
+
+  if ('name' in delegate) {
+    return {
+      title: delegate.name,
+      subheader: address,
+    }
+  }
+
+  if (delegate.ens) {
+    return {
+      title: delegate.ens,
+      subheader: address,
+    }
+  }
+
+  return {
+    title: delegate.address,
+    subheader: undefined,
+  }
+}
+
 export const SelectedDelegate = ({
   onClick,
   delegate,
@@ -17,20 +54,10 @@ export const SelectedDelegate = ({
   delegate?: Delegate
   onClick?: () => void
   disabled?: boolean
-  hint?: boolean
+  hint?: Boolean
 }): ReactElement => {
-  const shortAddress = delegate ? shortenAddress(delegate.address) : undefined
   const isDelegating = useIsDelegationPending()
-
-  const title = isDelegating
-    ? 'Delegating...'
-    : delegate
-    ? 'name' in delegate
-      ? delegate.name
-      : shortAddress
-    : 'No delegate chosen'
-  const subheader =
-    delegate && !isDelegating ? ('ens' in delegate ? delegate.ens || shortAddress : shortAddress) : undefined
+  const { title, subheader } = getTitles(isDelegating, delegate, !!onClick)
 
   return (
     <>
