@@ -7,6 +7,37 @@ import { InfoAlert } from '@/components/InfoAlert'
 import { shortenAddress } from '@/utils/addresses'
 import type { Delegate } from '@/hooks/useDelegate'
 
+const getTitles = (delegate?: Delegate, shouldShorten?: boolean) => {
+  console.log(delegate)
+  if (!delegate) {
+    return {
+      title: 'No delegate chosen',
+      subheader: undefined,
+    }
+  }
+
+  const address = shouldShorten ? shortenAddress(delegate.address) : delegate.address
+
+  if ('name' in delegate) {
+    return {
+      title: delegate.name,
+      subheader: address,
+    }
+  }
+
+  if (delegate.ens) {
+    return {
+      title: delegate.ens,
+      subheader: address,
+    }
+  }
+
+  return {
+    title: delegate.address,
+    subheader: undefined,
+  }
+}
+
 export const SelectedDelegate = ({
   onClick,
   delegate,
@@ -16,12 +47,9 @@ export const SelectedDelegate = ({
   delegate?: Delegate
   onClick?: () => void
   disabled?: boolean
-  hint?: boolean
+  hint?: Boolean
 }): ReactElement => {
-  const shortAddress = delegate ? shortenAddress(delegate.address) : undefined
-
-  const title = delegate ? ('name' in delegate ? delegate.name : shortAddress) : 'No delegate chosen'
-  const subheader = delegate ? ('ens' in delegate ? delegate.ens || shortAddress : shortAddress) : undefined
+  const { title, subheader } = getTitles(delegate, !!onClick)
 
   return (
     <>

@@ -9,8 +9,9 @@ import { useEnsResolution } from '@/hooks/useEnsResolution'
 import { InfoAlert } from '@/components/InfoAlert'
 import { NavButtons } from '@/components/NavButtons'
 import { useDelegationStepper } from '@/components/Delegation'
-import { useDelegate } from '@/hooks/useDelegate'
 import { useIsSafeApp } from '@/hooks/useIsSafeApp'
+import { useDelegate } from '@/hooks/useDelegate'
+import type { Delegate } from '@/hooks/useDelegate'
 
 export const CustomDelegate = (): ReactElement => {
   const isSafeApp = useIsSafeApp()
@@ -30,13 +31,19 @@ export const CustomDelegate = (): ReactElement => {
   const isAlreadySet = stepperState?.selectedDelegate?.address === delegate?.address
 
   useEffect(() => {
-    const delegate = isValidEnsAddress ? { address: ensAddress } : undefined
+    const delegate: Delegate | undefined = isValidEnsAddress
+      ? {
+          ens: isAddress(search) ? null : search || null,
+          address: ensAddress,
+        }
+      : undefined
+
     setStepperState((prev) => ({
       ...prev,
       customDelegate: delegate,
       selectedDelegate: delegate,
     }))
-  }, [isValidEnsAddress, ensAddress, setStepperState])
+  }, [isValidEnsAddress, ensAddress, setStepperState, search])
 
   return (
     <>

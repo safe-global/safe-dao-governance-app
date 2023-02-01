@@ -8,7 +8,7 @@ import { getDelegateRegistryContract } from '@/services/contracts/DelegateRegist
 import { useWallet } from '@/hooks/useWallet'
 import type { FileDelegate } from '@/hooks/useDelegatesFile'
 
-export type ContractDelegate = Pick<FileDelegate, 'address'>
+export type ContractDelegate = Pick<FileDelegate, 'address' | 'ens'>
 
 export const _getContractDelegate = async (web3?: JsonRpcProvider): Promise<ContractDelegate | null> => {
   if (!web3) {
@@ -35,7 +35,10 @@ export const _getContractDelegate = async (web3?: JsonRpcProvider): Promise<Cont
     return null
   }
 
+  const ens = await web3.lookupAddress(delegate)
+
   return {
+    ens,
     address: delegate,
   }
 }
