@@ -25,8 +25,6 @@ export const usePendingDelegations = () => {
   const wallet = useWallet()
 
   useEffect(() => {
-    let isMounted = true
-
     if (!wallet?.address) {
       return
     }
@@ -42,14 +40,8 @@ export const usePendingDelegations = () => {
         console.error('Delegation failed', err)
       })
       .finally(() => {
-        if (isMounted) {
-          removePendingDelegation(wallet.address)
-        }
+        removePendingDelegation(wallet.address)
       })
-
-    return () => {
-      isMounted = false
-    }
   }, [wallet?.address, delegations])
 }
 
