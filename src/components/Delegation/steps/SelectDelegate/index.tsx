@@ -6,25 +6,38 @@ import { DelegateList } from '@/components/DelegateList'
 import { DelegateSwitch } from '@/components/DelegateSwitch'
 import { CustomDelegate } from '@/components/CustomDelegate'
 import { StepHeader } from '@/components/StepHeader'
+import { useDelegationStepper } from '@/components/Delegation'
 import { useDelegate } from '@/hooks/useDelegate'
 import { useDelegatesFile } from '@/hooks/useDelegatesFile'
-import { useDelegationStepper } from '@/components/Delegation'
+import type { FileDelegate } from '@/hooks/useDelegatesFile'
 
 export const enum DelegateType {
   CUSTOM = 'CUSTOM',
   SAFE_GUARDIAN = 'SAFE_GUARDIAN',
 }
 
-const SelectDelegate = (): ReactElement => {
-  const [delegateType, setDelegateType] = useState<DelegateType>()
+const getDelegateType = (delegateFiles?: FileDelegate[], address?: string) => {
+  if (!delegateFiles || !address) {
+    return undefined
+  }
 
-  // Initialize stepper state with contract delegate if it exists
-  const { setStepperState } = useDelegationStepper()
+  return delegateFiles.some((delegate) => delegate.address === address)
+    ? DelegateType.SAFE_GUARDIAN
+    : DelegateType.CUSTOM
+}
+
+const SelectDelegate = (): ReactElement => {
+  const { stepperState, setStepperState } = useDelegationStepper()
   const delegate = useDelegate()
   const { data: delegateFiles } = useDelegatesFile()
 
+  const [delegateType, setDelegateType] = useState<DelegateType | undefined>(
+    getDelegateType(delegateFiles, stepperState?.selectedDelegate?.address),
+  )
+
+  // Initialize stepper state with contract delegate if it exists
   useEffect(() => {
-    if (!delegate) {
+    if (!delegate || stepperState?.customDelegate || stepperState?.safeGuardian) {
       return
     }
 
@@ -34,11 +47,11 @@ const SelectDelegate = (): ReactElement => {
       ...prev,
       selectedDelegate: delegate,
       customDelegate: safeGuardian ? undefined : delegate,
-      safeGuardian: safeGuardian ? safeGuardian : undefined,
+      safeGuardian,
     }))
 
-    setDelegateType(safeGuardian ? DelegateType.SAFE_GUARDIAN : DelegateType.CUSTOM)
-  }, [delegate, delegateFiles, setStepperState])
+    setDelegateType(getDelegateType(delegateFiles, delegate?.address))
+  }, [delegate, delegateFiles, setStepperState, stepperState])
 
   return (
     <Grid container p={6} gap={3}>

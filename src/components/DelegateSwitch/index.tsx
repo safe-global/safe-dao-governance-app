@@ -1,12 +1,10 @@
 import { Card, CardActionArea, CardContent, Grid, SvgIcon, Typography } from '@mui/material'
-import { useEffect } from 'react'
 import type { ReactElement, Dispatch, SetStateAction } from 'react'
 
 import DelegatesIcon from '@/public/images/delegates.svg'
 import CustomAddress from '@/public/images/custom-address.svg'
 import { SelectedBadge } from '@/components/SelectedBadge'
 import { DelegateType } from '@/components/Delegation/steps/SelectDelegate'
-import { useDelegationStepper } from '@/components/Delegation'
 
 import css from './styles.module.css'
 
@@ -44,19 +42,6 @@ export const DelegateSwitch = ({
 }) => {
   const isSafeGuardianDelegation = delegateType === DelegateType.SAFE_GUARDIAN
   const isCustomDelegation = delegateType === DelegateType.CUSTOM
-
-  const { setStepperState } = useDelegationStepper()
-
-  useEffect(() => {
-    setStepperState((prev) => ({
-      ...prev,
-      selectedDelegate: isSafeGuardianDelegation
-        ? prev?.safeGuardian
-        : isCustomDelegation
-        ? prev?.customDelegate
-        : undefined,
-    }))
-  }, [delegateType, isCustomDelegation, isSafeGuardianDelegation, setStepperState])
 
   return (
     <Grid container justifyContent="space-between" flexWrap="nowrap" gap={2}>

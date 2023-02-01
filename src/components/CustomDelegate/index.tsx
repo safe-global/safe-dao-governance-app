@@ -19,7 +19,7 @@ export const CustomDelegate = (): ReactElement => {
 
   const delegate = useDelegate()
 
-  const [search, setSearch] = useState('')
+  const [search, setSearch] = useState(stepperState?.customDelegate?.ens || '')
 
   const onSearch = (event: ChangeEvent<HTMLInputElement>) => {
     setSearch(event.currentTarget.value)
