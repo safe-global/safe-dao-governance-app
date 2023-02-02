@@ -14,6 +14,8 @@ describe('_getContractDelegate()', () => {
   beforeEach(() => {
     jest.clearAllMocks()
 
+    jest.spyOn(web3Provider, 'lookupAddress').mockImplementation(jest.fn(() => Promise.resolve('test.eth')))
+
     jest.spyOn(web3Provider, 'getSigner').mockImplementation(
       jest.fn(
         () =>
@@ -70,6 +72,6 @@ describe('_getContractDelegate()', () => {
     const result = await _getContractDelegate(web3Provider)
 
     expect(mockCall).toBeCalledTimes(1)
-    expect(result).toEqual({ address: delegateAddress })
+    expect(result).toEqual({ address: delegateAddress, ens: 'test.eth' })
   })
 })
