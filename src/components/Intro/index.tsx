@@ -1,13 +1,14 @@
-import { Grid, Typography, Box, Button } from '@mui/material'
+import { Grid, Typography, Box, Button, CircularProgress } from '@mui/material'
 import { useRouter } from 'next/router'
 import { formatEther } from 'ethers/lib/utils'
+import { BigNumber } from 'ethers'
 import type { ReactElement } from 'react'
 
 import { OverviewLinks } from '@/components/OverviewLinks'
 import { useDelegate } from '@/hooks/useDelegate'
 import { SelectedDelegate } from '@/components/SelectedDelegate'
 import { AppRoutes } from '@/config/routes'
-import { useTotalVotingPower } from '@/hooks/useTotalVotingPower'
+import { useSafeTokenAllocation } from '@/hooks/useSafeTokenAllocation'
 import { TotalVotingPower } from '@/components/TotalVotingPower'
 import { formatAmount } from '@/utils/formatters'
 import { useTaggedAllocations } from '@/hooks/useTaggedAllocations'
@@ -40,13 +41,13 @@ export const Intro = (): ReactElement => {
 
   const delegate = useDelegate()
 
-  const votingPower = useTotalVotingPower()
-  const { total } = useTaggedAllocations()
+  const { isInitialLoading, data } = useSafeTokenAllocation()
+  const { total } = useTaggedAllocations(data)
 
   const hasAllocation = Number(total.allocation) > 0
   const isClaimable = Number(total.claimable) > 0
 
-  const canDelegate = votingPower > 0 && !isWrongChain
+  const canDelegate = !!data?.votingPower && BigNumber.from(data.votingPower).gt(0) && !isWrongChain
 
   const onClaim = async () => {
     if (isSafeApp) {
@@ -60,6 +61,13 @@ export const Intro = (): ReactElement => {
     router.push(AppRoutes.delegate)
   }
 
+  if (isInitialLoading) {
+    return (
+      <Grid container display="flex" justifyContent="center" py={42}>
+        <CircularProgress />
+      </Grid>
+    )
+  }
   return (
     <Grid container flexDirection="column" alignItems="center" px={1} py={6}>
       <SafeToken alt="Safe token logo" width={84} height={84} />

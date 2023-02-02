@@ -45,7 +45,7 @@ const ClaimOverview = (): ReactElement => {
 
   const { ecosystemVesting, investorVesting } = getVestingTypes(allocation?.vestingData || [])
 
-  const { user, ecosystem, investor, total } = useTaggedAllocations()
+  const { user, ecosystem, investor, total } = useTaggedAllocations(allocation)
   const totalClaimableAmountInEth = formatEther(total.claimable)
 
   // Flags
