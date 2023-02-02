@@ -1,6 +1,8 @@
 import { ProviderLabel } from '@web3-onboard/injected-wallets'
+import { getSafeInfo } from '@safe-global/safe-gateway-typescript-sdk'
 
 import { local } from '@/services/storage/local'
+import type { ConnectedWallet } from '@/hooks/useWallet'
 
 export const WalletNames = {
   METAMASK: ProviderLabel.MetaMask,
@@ -24,4 +26,16 @@ export const isWalletUnlocked = async (walletName: string): Promise<boolean> => 
   }
 
   return false
+}
+
+export const isSafe = async (wallet: ConnectedWallet | null): Promise<boolean | null> => {
+  if (!wallet) {
+    return false
+  }
+
+  try {
+    return !!(await getSafeInfo(wallet.chainId, wallet.address))
+  } catch {
+    return false
+  }
 }

@@ -14,21 +14,19 @@ import { formatAmount } from '@/utils/formatters'
 import { useTaggedAllocations } from '@/hooks/useTaggedAllocations'
 import { useIsWrongChain } from '@/hooks/useIsWrongChain'
 import SafeToken from '@/public/images/token.svg'
-import { useIsSafeApp } from '@/hooks/useIsSafeApp'
-import { CHAIN_SHORT_NAME, SAFE_URL, DEPLOYMENT_URL } from '@/config/constants'
+import { CHAIN_SHORT_NAME, SAFE_URL, DEPLOYMENT_URL, DEFAULT_CHAIN_ID } from '@/config/constants'
 import { useWallet } from '@/hooks/useWallet'
-import type { ConnectedWallet } from '@/hooks/useWallet'
+import { isSafe } from '@/utils/wallet'
 
 import css from './styles.module.css'
 
-const getSafeAppUrl = (wallet: ConnectedWallet): string => {
-  // `wallet` will exist as we are not in a Safe app
-  const shortName = CHAIN_SHORT_NAME[Number(wallet?.chainId)]
+const getSafeAppUrl = (address: string): string => {
+  const shortName = CHAIN_SHORT_NAME[DEFAULT_CHAIN_ID]
 
   const url = new URL(`${SAFE_URL}/apps`)
 
-  url.searchParams.append('safe', `${shortName}:${wallet?.address}`)
-  url.searchParams.append('appUrl', `${DEPLOYMENT_URL}/${AppRoutes.claim}`)
+  url.searchParams.append('safe', `${shortName}:${address}`)
+  url.searchParams.append('appUrl', DEPLOYMENT_URL)
 
   return url.toString()
 }
@@ -36,7 +34,6 @@ const getSafeAppUrl = (wallet: ConnectedWallet): string => {
 export const Intro = (): ReactElement => {
   const router = useRouter()
   const isWrongChain = useIsWrongChain()
-  const isSafeApp = useIsSafeApp()
   const wallet = useWallet()
 
   const delegate = useDelegate()
@@ -49,17 +46,18 @@ export const Intro = (): ReactElement => {
 
   const canDelegate = !!data?.votingPower && BigNumber.from(data.votingPower).gt(0) && !isWrongChain
 
-  const onClaim = async () => {
-    if (isSafeApp) {
-      router.push(AppRoutes.claim)
-    } else if (wallet) {
-      window.open(getSafeAppUrl(wallet), '_blank')?.focus()
+  const onClick = (route: (typeof AppRoutes)[keyof typeof AppRoutes]) => async () => {
+    // Safe is connected via WC
+    if (await isSafe(wallet)) {
+      window.open(getSafeAppUrl(wallet!.address), '_blank')?.focus()
+    } else {
+      router.push(route)
     }
   }
 
-  const onDelegate = () => {
-    router.push(AppRoutes.delegate)
-  }
+  const onClaim = onClick(AppRoutes.claim)
+
+  const onDelegate = onClick(AppRoutes.delegate)
 
   if (isInitialLoading) {
     return (
