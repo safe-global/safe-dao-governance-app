@@ -1,7 +1,14 @@
-import { useSafeAppsSDK } from '@gnosis.pm/safe-apps-react-sdk'
+import { useState } from 'react'
+
+import { useIsomorphicLayoutEffect } from '@/hooks/useIsomorphicLayoutEffect'
 
 export const useIsSafeApp = (): boolean => {
-  const sdk = useSafeAppsSDK()
+  const [isSafeApp, setIsSafeApp] = useState(false)
 
-  return sdk.connected
+  useIsomorphicLayoutEffect(() => {
+    const isIframe = typeof window !== 'undefined' && window.self !== window.top
+    setIsSafeApp(isIframe)
+  }, [setIsSafeApp])
+
+  return isSafeApp
 }

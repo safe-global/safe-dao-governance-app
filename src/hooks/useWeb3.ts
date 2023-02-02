@@ -17,7 +17,7 @@ export const useInitWeb3 = (): void => {
   const wallet = useWallet()
 
   useEffect(() => {
-    if (isSafeApp) {
+    if (isSafeApp && sdk.connected) {
       web3Store.setStore(createSafeProvider(sdk))
       return
     }

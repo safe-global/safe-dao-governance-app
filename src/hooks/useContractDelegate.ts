@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 import { formatBytes32String, hexZeroPad } from 'ethers/lib/utils'
 import type { JsonRpcProvider } from '@ethersproject/providers'
 
-import { CHAIN_DELEGATE_ID, DEFAULT_CHAIN_ID, DELEGATE_REGISTRY_ADDRESS, ZERO_ADDRESS } from '@/config/constants'
+import { CHAIN_DELEGATE_ID, DELEGATE_REGISTRY_ADDRESS, ZERO_ADDRESS } from '@/config/constants'
 import { useWeb3 } from '@/hooks/useWeb3'
 import { getDelegateRegistryContract, getDelegateRegistryInterface } from '@/services/contracts/DelegateRegistry'
 import { useWallet } from '@/hooks/useWallet'

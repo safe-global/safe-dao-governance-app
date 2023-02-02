@@ -1,8 +1,7 @@
 import { useRouter } from 'next/router'
-import { useEffect, useLayoutEffect } from 'react'
 import type { UrlObject } from 'url'
 
-const useIsomorphicLayoutEffect = typeof window === 'undefined' ? useEffect : useLayoutEffect
+import { useIsomorphicLayoutEffect } from '@/hooks/useIsomorphicLayoutEffect'
 
 export const Redirect = ({ url, replace }: { url: string | UrlObject; replace?: boolean }): null => {
   const router = useRouter()
