@@ -4,7 +4,7 @@ import type { ReactElement } from 'react'
 
 import { useChains } from '@/hooks/useChains'
 import { useOnboard } from '@/hooks/useOnboard'
-import { DEFAULT_CHAIN_ID } from '@/config/constants'
+import { useDefaultChainId } from '@/hooks/useDefaultChainId'
 import { useWallet } from '@/hooks/useWallet'
 
 import css from './styles.module.css'
@@ -13,14 +13,15 @@ export const ChainSwitcher = (): ReactElement | null => {
   const onboard = useOnboard()
   const wallet = useWallet()
   const { data: chains } = useChains()
-  const defaultChain = chains?.results.find((chain) => chain.chainId === DEFAULT_CHAIN_ID.toString())
+  const defaultChainId = useDefaultChainId()
+  const defaultChain = chains?.results.find((chain) => chain.chainId === defaultChainId.toString())
 
-  if (!wallet || wallet.chainId === DEFAULT_CHAIN_ID.toString()) {
+  if (!wallet || wallet.chainId === defaultChainId.toString()) {
     return null
   }
 
   const handleChainSwitch = () => {
-    const chainId = hexValue(DEFAULT_CHAIN_ID)
+    const chainId = hexValue(defaultChainId)
     onboard?.setChain({ chainId })
   }
 

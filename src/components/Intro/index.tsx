@@ -14,14 +14,15 @@ import { formatAmount } from '@/utils/formatters'
 import { useTaggedAllocations } from '@/hooks/useTaggedAllocations'
 import { useIsWrongChain } from '@/hooks/useIsWrongChain'
 import SafeToken from '@/public/images/token.svg'
-import { CHAIN_SHORT_NAME, SAFE_URL, DEPLOYMENT_URL, DEFAULT_CHAIN_ID } from '@/config/constants'
+import { CHAIN_SHORT_NAME, SAFE_URL, DEPLOYMENT_URL } from '@/config/constants'
+import { useDefaultChainId } from '@/hooks/useDefaultChainId'
 import { useWallet } from '@/hooks/useWallet'
 import { isSafe } from '@/utils/wallet'
 
 import css from './styles.module.css'
 
-const getSafeAppUrl = (address: string): string => {
-  const shortName = CHAIN_SHORT_NAME[DEFAULT_CHAIN_ID]
+const getSafeAppUrl = (chainId: number, address: string): string => {
+  const shortName = CHAIN_SHORT_NAME[chainId]
 
   const url = new URL(`${SAFE_URL}/apps`)
 
@@ -35,10 +36,11 @@ export const Intro = (): ReactElement => {
   const router = useRouter()
   const isWrongChain = useIsWrongChain()
   const wallet = useWallet()
+  const defaultChainId = useDefaultChainId()
 
   const delegate = useDelegate()
 
-  const { isInitialLoading, data } = useSafeTokenAllocation()
+  const { isLoading, data } = useSafeTokenAllocation()
   const { total } = useTaggedAllocations(data)
 
   const hasAllocation = Number(total.allocation) > 0
@@ -49,7 +51,7 @@ export const Intro = (): ReactElement => {
   const onClick = (route: (typeof AppRoutes)[keyof typeof AppRoutes]) => async () => {
     // Safe is connected via WC
     if (await isSafe(wallet)) {
-      window.open(getSafeAppUrl(wallet!.address), '_blank')?.focus()
+      window.open(getSafeAppUrl(defaultChainId, wallet!.address), '_blank')?.focus()
     } else {
       router.push(route)
     }
@@ -59,7 +61,7 @@ export const Intro = (): ReactElement => {
 
   const onDelegate = onClick(AppRoutes.delegate)
 
-  if (isInitialLoading) {
+  if (isLoading) {
     return (
       <Grid container display="flex" justifyContent="center" py={42}>
         <CircularProgress />

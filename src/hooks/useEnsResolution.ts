@@ -1,4 +1,3 @@
-import { DEFAULT_CHAIN_ID } from '@/config/constants'
 import { useSafeAppsSDK } from '@gnosis.pm/safe-apps-react-sdk'
 import { getAddress, isAddress } from 'ethers/lib/utils'
 import { useEffect, useState } from 'react'
@@ -6,7 +5,8 @@ import { useEffect, useState } from 'react'
 import { parsePrefixedAddress, sameAddress } from '@/utils/addresses'
 import { useChains } from '@/hooks/useChains'
 import { useWeb3 } from '@/hooks/useWeb3'
-import { useWallet } from './useWallet'
+import { useWallet } from '@/hooks/useWallet'
+import { useDefaultChainId } from '@/hooks/useDefaultChainId'
 
 export const useEnsResolution = (str: string, debounce = true): [string | undefined, string | undefined, boolean] => {
   const [result, setResult] = useState<string>()
@@ -17,8 +17,9 @@ export const useEnsResolution = (str: string, debounce = true): [string | undefi
   const wallet = useWallet()
   const { safe } = useSafeAppsSDK()
   const { data: chains } = useChains()
+  const defaultChainId = useDefaultChainId()
 
-  const chain = chains?.results.find((chain) => chain.chainId === DEFAULT_CHAIN_ID.toString())
+  const chain = chains?.results.find((chain) => chain.chainId === defaultChainId.toString())
   const shortName = chain?.shortName
 
   useEffect(() => {

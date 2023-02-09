@@ -5,6 +5,7 @@ import SafeLogo from '@/public/images/header-logo.svg'
 import { AccountCenter } from '@/components/AccountCenter'
 import { ChainSwitcher } from '@/components/ChainSwitcher'
 import { useIsSafeApp } from '@/hooks/useIsSafeApp'
+import { TestChainSwitch } from '@/components/TestChainSwitch'
 
 import css from './styles.module.css'
 
@@ -18,6 +19,8 @@ export const Header = (): ReactElement | null => {
   return (
     <Paper className={css.container} sx={{ px: 2, gap: 2 }} component="header">
       <SafeLogo alt="Safe logo" />
+
+      <TestChainSwitch />
 
       <div className={css.wallet}>
         <ChainSwitcher />

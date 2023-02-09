@@ -1,22 +1,15 @@
 import { useIsSafeApp } from '@/hooks/useIsSafeApp'
 import { useWallet } from '@/hooks/useWallet'
-import { DEFAULT_CHAIN_ID } from '@/config/constants'
-
-export const isWrongChain = (wallet: ReturnType<typeof useWallet>): boolean => {
-  if (!wallet) {
-    return false
-  }
-
-  return wallet.chainId !== DEFAULT_CHAIN_ID.toString()
-}
+import { useDefaultChainId } from './useDefaultChainId'
 
 export const useIsWrongChain = (): boolean => {
   const isSafeApp = useIsSafeApp()
   const wallet = useWallet()
+  const defaultChainId = useDefaultChainId()
 
-  if (isSafeApp) {
+  if (isSafeApp || !wallet) {
     return false
   }
 
-  return isWrongChain(wallet)
+  return wallet.chainId !== defaultChainId.toString()
 }

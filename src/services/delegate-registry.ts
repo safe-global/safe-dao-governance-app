@@ -2,7 +2,8 @@ import { formatBytes32String } from 'ethers/lib/utils'
 import type { ContractTransaction } from '@ethersproject/contracts'
 import type { JsonRpcProvider } from '@ethersproject/providers'
 
-import { DEFAULT_CHAIN_ID, CHAIN_DELEGATE_ID } from '@/config/constants'
+import { CHAIN_DELEGATE_ID } from '@/config/constants'
+import { defaultChainIdStore } from '@/hooks/useDefaultChainId'
 import { getDelegateRegistryContract } from '@/services/contracts/DelegateRegistry'
 
 export const setDelegate = async (
@@ -19,7 +20,9 @@ export const setDelegate = async (
     console.error('Error getting chainId', err)
   }
 
-  if (!chainId || chainId !== DEFAULT_CHAIN_ID) {
+  const defaultChainId = defaultChainIdStore.getStore()
+
+  if (!chainId || !defaultChainId || chainId !== defaultChainId) {
     console.error('Invalid chainId', chainId)
     return
   }

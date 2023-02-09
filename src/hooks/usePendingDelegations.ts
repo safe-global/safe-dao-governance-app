@@ -4,29 +4,22 @@ import { ExternalStore } from '@/services/ExternalStore'
 import { useWallet } from '@/hooks/useWallet'
 import { didRevert } from '@/utils/transactions'
 import { useWeb3 } from '@/hooks/useWeb3'
-import { DEFAULT_CHAIN_ID } from '@/config/constants'
 
 // Note: only EOA transactions can be pending
 
 type TransactionHash = string
-const delegateTxsStore = new ExternalStore<{
-  [chainId: string]: { [providerAddress: string]: TransactionHash | undefined }
-}>({
-  [DEFAULT_CHAIN_ID]: {},
-})
+const delegateTxsStore = new ExternalStore<{ [providerAddress: string]: TransactionHash | undefined }>({})
 
 export const setPendingDelegation = (providerAddress: string, txHash: TransactionHash) => {
   delegateTxsStore.setStore((delegations) => ({
-    [DEFAULT_CHAIN_ID]: {
-      ...delegations?.[DEFAULT_CHAIN_ID],
-      [providerAddress]: txHash,
-    },
+    ...delegations,
+    [providerAddress]: txHash,
   }))
 }
 
 const removePendingDelegation = (providerAddress: string) => {
   delegateTxsStore.setStore((prev = {}) => {
-    prev[DEFAULT_CHAIN_ID][providerAddress] = undefined
+    prev[providerAddress] = undefined
     return prev
   })
 }
@@ -41,7 +34,7 @@ export const usePendingDelegations = () => {
       return
     }
 
-    const txHash = delegations?.[wallet.chainId]?.[wallet.address]
+    const txHash = delegations?.[wallet.address]
 
     if (!txHash) {
       return
@@ -75,5 +68,5 @@ export const useIsDelegationPending = (): boolean => {
   const delegations = delegateTxsStore.useStore()
   const wallet = useWallet()
 
-  return wallet ? !!delegations?.[wallet.chainId]?.[wallet.address] : false
+  return wallet ? !!delegations?.[wallet.address] : false
 }

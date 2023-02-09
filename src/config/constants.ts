@@ -1,5 +1,5 @@
 // General
-const IS_PRODUCTION = process.env.NEXT_PUBLIC_IS_PRODUCTION === 'true'
+export const IS_PRODUCTION = process.env.NEXT_PUBLIC_IS_PRODUCTION === 'true'
 export const INFURA_TOKEN = process.env.NEXT_PUBLIC_INFURA_TOKEN || ''
 
 export const LS_NAMESPACE = 'SAFE__'
@@ -28,7 +28,9 @@ export const Chains = {
 // Strictly type configuration for each chain above
 type ChainConfig<T> = Record<(typeof Chains)[keyof typeof Chains], T>
 
-export const DEFAULT_CHAIN_ID = IS_PRODUCTION ? Chains.MAINNET : Chains.GOERLI
+// Note: UI uses value from defaultChainIdStore/useDefaultChainId to allow
+// for network switching when testing
+export const _DEFAULT_CHAIN_ID = IS_PRODUCTION ? Chains.MAINNET : Chains.GOERLI
 
 export const CHAIN_SHORT_NAME: ChainConfig<string> = {
   [Chains.MAINNET]: 'eth',
@@ -61,5 +63,6 @@ export const DELEGATE_REGISTRY_ADDRESS = '0x469788fe6e9e9681c6ebf3bf78e7fd26fc01
 // Links
 export const FORUM_URL = 'https://forum.safe.global'
 export const GOVERNANCE_URL = 'https://forum.gnosis-safe.io/t/how-to-safedao-governance-process/846'
-export const SNAPSHOT_URL = `https://snapshot.org/#/${CHAIN_DELEGATE_ID[DEFAULT_CHAIN_ID]}`
+// Not dynamic
+export const SNAPSHOT_URL = `https://snapshot.org/#/${CHAIN_DELEGATE_ID[_DEFAULT_CHAIN_ID]}`
 export const DISCORD_URL = 'https://chat.safe.global'
