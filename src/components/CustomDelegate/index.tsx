@@ -77,11 +77,13 @@ export const CustomDelegate = (): ReactElement => {
         helperText={isValidEnsAddress && ensAddress !== search ? ensAddress : ensError}
       />
 
-      <InfoAlert>
-        <Typography variant="subtitle1">
-          For gasless voting, we suggest selecting an EOA wallet e.g. your connected wallet.
-        </Typography>
-      </InfoAlert>
+      {isSafeApp && (
+        <InfoAlert>
+          <Typography variant="subtitle1">
+            For gasless voting, we suggest selecting an EOA wallet e.g. your connected wallet.
+          </Typography>
+        </InfoAlert>
+      )}
 
       <NavButtons onNext={onNext} isNextDisabled={!ensAddress || !!ensError || ensLoading || isAlreadySet} />
     </>
