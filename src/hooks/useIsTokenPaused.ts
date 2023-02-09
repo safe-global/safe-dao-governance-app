@@ -43,5 +43,5 @@ export const useIsTokenPaused = () => {
   const web3 = useWeb3()
   const wallet = useWallet()
 
-  return useSWR([QUERY_KEY, wallet?.chainId], () => _getIsTokenPaused(web3))
+  return useSWR(web3 ? [QUERY_KEY, wallet?.chainId] : null, () => _getIsTokenPaused(web3))
 }

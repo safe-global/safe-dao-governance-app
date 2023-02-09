@@ -51,7 +51,7 @@ export const useContractDelegate = () => {
   const web3 = useWeb3()
   const wallet = useWallet()
 
-  return useSWR([QUERY_KEY, wallet?.address, wallet?.chainId], () => _getContractDelegate(web3))
+  return useSWR(web3 ? [QUERY_KEY, wallet?.address, wallet?.chainId] : null, () => _getContractDelegate(web3))
 }
 
 const delegateRegistryInterface = getDelegateRegistryInterface()
