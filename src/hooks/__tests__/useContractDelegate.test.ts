@@ -29,10 +29,10 @@ describe('_getContractDelegate()', () => {
     )
   })
 
-  it('returns null if no provider is defined', async () => {
+  it('returns undefined if no provider is defined', async () => {
     const result = await _getContractDelegate(undefined)
 
-    expect(result).toBe(null)
+    expect(result).toBeUndefined()
   })
 
   it('ignore the ZERO_ADDRESS as delegate', async () => {
@@ -51,7 +51,7 @@ describe('_getContractDelegate()', () => {
     const result = await _getContractDelegate(web3Provider)
 
     expect(mockCall).toBeCalledTimes(1)
-    expect(result).toBe(null)
+    expect(result).toBeUndefined()
   })
 
   it('should encode the correct data and fetch the delegate on-chain once', async () => {

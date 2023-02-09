@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query'
+import useSWR from 'swr'
 
 import { CHAIN_DELEGATE_ID, DEFAULT_CHAIN_ID, SNAPSHOT_URL } from '@/config/constants'
 
@@ -78,8 +78,5 @@ const getSafeSnapshot = (space: string): Promise<SnapshotProposal[]> => {
 export const useSafeSnapshot = () => {
   const QUERY_KEY = 'snapshot'
 
-  return useQuery({
-    queryKey: [QUERY_KEY],
-    queryFn: () => getSafeSnapshot(CHAIN_DELEGATE_ID[DEFAULT_CHAIN_ID]),
-  })
+  return useSWR([QUERY_KEY], () => getSafeSnapshot(CHAIN_DELEGATE_ID[DEFAULT_CHAIN_ID]))
 }

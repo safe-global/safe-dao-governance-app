@@ -1,7 +1,7 @@
 import { isPast } from 'date-fns'
 import { BigNumber } from 'ethers'
 import { defaultAbiCoder } from 'ethers/lib/utils'
-import { useQuery } from '@tanstack/react-query'
+import useSWR from 'swr'
 import type { JsonRpcProvider } from '@ethersproject/providers'
 
 import { getAirdropInterface } from '@/services/contracts/Airdrop'
@@ -10,7 +10,6 @@ import { CHAIN_SAFE_TOKEN_ADDRESS, VESTING_URL, ZERO_ADDRESS } from '@/config/co
 import { useWeb3 } from '@/hooks/useWeb3'
 import { sameAddress } from '@/utils/addresses'
 import { useWallet } from '@/hooks/useWallet'
-import { useIsSafeApp } from './useIsSafeApp'
 
 type VestingData = {
   tag: 'user' | 'ecosystem' | 'investor'
@@ -130,9 +129,17 @@ const computeVotingPower = (validVestingData: Vesting[], balance: string) => {
   return tokensInVesting.add(balance || '0')
 }
 
-export const _getSafeTokenAllocation = async (web3?: JsonRpcProvider) => {
+export const _getSafeTokenAllocation = async (
+  web3?: JsonRpcProvider,
+): Promise<
+  | {
+      votingPower: BigNumber
+      vestingData: Vesting[]
+    }
+  | undefined
+> => {
   if (!web3) {
-    return null
+    return
   }
 
   const signer = web3.getSigner()
@@ -165,9 +172,5 @@ export const useSafeTokenAllocation = () => {
   const web3 = useWeb3()
   const wallet = useWallet()
 
-  return useQuery({
-    queryKey: [QUERY_KEY, wallet?.address, wallet?.chainId],
-    queryFn: () => _getSafeTokenAllocation(web3),
-    enabled: !!web3,
-  })
+  return useSWR(web3 ? [QUERY_KEY, wallet?.address, wallet?.chainId] : undefined, () => _getSafeTokenAllocation(web3))
 }

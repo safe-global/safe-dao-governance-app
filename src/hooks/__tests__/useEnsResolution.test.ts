@@ -9,7 +9,7 @@ import * as useChains from '@/hooks/useChains'
 import * as useWallet from '@/hooks/useWallet'
 import { useEnsResolution } from '@/hooks/useEnsResolution'
 import type { ChainListResponse } from '@safe-global/safe-gateway-typescript-sdk'
-import type { UseQueryResult } from '@tanstack/react-query'
+import type { SWRResponse } from 'swr/_internal'
 
 jest.mock('@gnosis.pm/safe-apps-react-sdk', () => {
   return {
@@ -83,7 +83,7 @@ describe('useEnsResolution()', () => {
               { chainId: '5', shortName: 'gor' },
             ],
           },
-        } as UseQueryResult<ChainListResponse, unknown>),
+        } as SWRResponse<ChainListResponse, any, any>),
     )
 
     jest.useFakeTimers()
@@ -115,7 +115,7 @@ describe('useEnsResolution()', () => {
               { chainId: '5', shortName: 'gor' },
             ],
           },
-        } as UseQueryResult<ChainListResponse, unknown>),
+        } as SWRResponse<ChainListResponse, any, any>),
     )
 
     jest.useFakeTimers()

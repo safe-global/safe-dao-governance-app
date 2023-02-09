@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query'
+import useSWR from 'swr'
 import { SafeToken__factory } from '@/types/contracts/safe-token'
 import type { JsonRpcProvider } from '@ethersproject/providers'
 
@@ -10,9 +10,9 @@ import { useWallet } from '@/hooks/useWallet'
  * Fetches if the token is currently paused from on-chain.
  * If the fetching fails and initially we assume that the token is paused as the claimingViaModule should always work.
  */
-export const _getIsTokenPaused = async (web3?: JsonRpcProvider): Promise<boolean | null> => {
+export const _getIsTokenPaused = async (web3?: JsonRpcProvider): Promise<boolean | undefined> => {
   if (!web3) {
-    return null
+    return
   }
 
   const signer = web3.getSigner()
@@ -21,7 +21,7 @@ export const _getIsTokenPaused = async (web3?: JsonRpcProvider): Promise<boolean
   const safeTokenAddress = CHAIN_SAFE_TOKEN_ADDRESS[chainId]
 
   if (!safeTokenAddress) {
-    return null
+    return
   }
 
   const safeTokenContract = SafeToken__factory.connect(safeTokenAddress, web3)
@@ -43,8 +43,5 @@ export const useIsTokenPaused = () => {
   const web3 = useWeb3()
   const wallet = useWallet()
 
-  return useQuery({
-    queryKey: [QUERY_KEY, wallet?.chainId],
-    queryFn: () => _getIsTokenPaused(web3),
-  })
+  return useSWR(web3 ? [QUERY_KEY, wallet?.chainId] : undefined, () => _getIsTokenPaused(web3))
 }

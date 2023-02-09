@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { useQuery } from '@tanstack/react-query'
+import useSWR from 'swr'
 import { formatBytes32String, hexZeroPad } from 'ethers/lib/utils'
 import type { JsonRpcProvider } from '@ethersproject/providers'
 
@@ -7,15 +7,14 @@ import { CHAIN_DELEGATE_ID, DELEGATE_REGISTRY_ADDRESS, ZERO_ADDRESS } from '@/co
 import { useWeb3 } from '@/hooks/useWeb3'
 import { getDelegateRegistryContract, getDelegateRegistryInterface } from '@/services/contracts/DelegateRegistry'
 import { useWallet } from '@/hooks/useWallet'
-import { getQueryClient } from '@/services/QueryClient'
 import type { FileDelegate } from '@/hooks/useDelegatesFile'
 import type { EventFilter } from '@ethersproject/abstract-provider'
 
 export type ContractDelegate = Pick<FileDelegate, 'address' | 'ens'>
 
-export const _getContractDelegate = async (web3?: JsonRpcProvider): Promise<ContractDelegate | null> => {
+export const _getContractDelegate = async (web3?: JsonRpcProvider): Promise<ContractDelegate | undefined> => {
   if (!web3) {
-    return null
+    return
   }
 
   const signer = web3.getSigner()
@@ -25,7 +24,7 @@ export const _getContractDelegate = async (web3?: JsonRpcProvider): Promise<Cont
   const delegateId = CHAIN_DELEGATE_ID[chainId]
 
   if (!delegateId) {
-    return null
+    return
   }
 
   const address = await signer.getAddress()
@@ -35,7 +34,7 @@ export const _getContractDelegate = async (web3?: JsonRpcProvider): Promise<Cont
   const delegate = await delegateRegistryContract.delegation(address, formatBytes32String(delegateId))
 
   if (delegate === ZERO_ADDRESS) {
-    return null
+    return
   }
 
   const ens = await web3.lookupAddress(delegate)
@@ -46,17 +45,13 @@ export const _getContractDelegate = async (web3?: JsonRpcProvider): Promise<Cont
   }
 }
 
-const CONTRACT_DELEGATE_QUERY_KEY = 'contractDelegate'
-
 export const useContractDelegate = () => {
+  const QUERY_KEY = 'contract-delegate'
+
   const web3 = useWeb3()
   const wallet = useWallet()
 
-  return useQuery({
-    queryKey: [CONTRACT_DELEGATE_QUERY_KEY, wallet?.address, wallet?.chainId],
-    queryFn: () => _getContractDelegate(web3),
-    enabled: !!web3,
-  })
+  return useSWR(web3 ? [QUERY_KEY, wallet?.address, wallet?.chainId] : undefined, () => _getContractDelegate(web3))
 }
 
 const delegateRegistryInterface = getDelegateRegistryInterface()
@@ -64,10 +59,9 @@ const setDelegateEvent = delegateRegistryInterface.getEventTopic(
   delegateRegistryInterface.events['SetDelegate(address,bytes32,address)'],
 )
 
-const queryClient = getQueryClient()
-
 export const useContractDelegateInvalidator = () => {
   const web3 = useWeb3()
+  const { mutate } = useContractDelegate()
 
   useEffect(() => {
     if (!web3) {
@@ -93,11 +87,12 @@ export const useContractDelegateInvalidator = () => {
         topics: [setDelegateEvent, hexZeroPad(address, 32), formatBytes32String(delegateId)],
       }
 
-      web3.on(filter, () => queryClient.invalidateQueries({ queryKey: [CONTRACT_DELEGATE_QUERY_KEY] }))
+      // Invalidate cache
+      web3.on(filter, mutate)
     })()
 
     return () => {
       web3.off(filter)
     }
-  }, [web3])
+  }, [web3, mutate])
 }

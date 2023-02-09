@@ -1,5 +1,4 @@
 import SafeProvider from '@gnosis.pm/safe-apps-react-sdk'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 import { render, renderHook } from '@testing-library/react'
 import type { RenderHookOptions } from '@testing-library/react'
@@ -8,13 +7,7 @@ import type { ReactNode } from 'react'
 // Add in any providers here if necessary
 const getProviders: () => React.FC<{ children?: ReactNode }> = () =>
   function ProviderComponent({ children }) {
-    const queryClient = new QueryClient()
-
-    return (
-      <QueryClientProvider client={queryClient}>
-        <SafeProvider>{children}</SafeProvider>
-      </QueryClientProvider>
-    )
+    return <SafeProvider>{children}</SafeProvider>
   }
 
 const customRender = (ui: React.ReactElement) => {

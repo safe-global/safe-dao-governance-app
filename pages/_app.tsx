@@ -6,7 +6,6 @@ import {
   experimental_extendTheme as extendMuiTheme,
 } from '@mui/material/styles'
 import { useMediaQuery, CssBaseline } from '@mui/material'
-import { QueryClientProvider } from '@tanstack/react-query'
 import { setBaseUrl as setGatewayBaseUrl } from '@safe-global/safe-gateway-typescript-sdk'
 import { useRouter } from 'next/router'
 import type { EmotionCache } from '@emotion/react'
@@ -56,8 +55,6 @@ const InitApp = (): null => {
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache()
 
-const queryClient = getQueryClient()
-
 const App = ({
   Component,
   pageProps,
@@ -85,17 +82,15 @@ const App = ({
         <CssBaseline />
 
         <SafeProvider>
-          <QueryClientProvider client={queryClient}>
-            <InitApp />
+          <InitApp />
 
-            {pathname === AppRoutes.widgets ? (
-              page
-            ) : (
-              <PageLayout>
-                <EnsureWalletConnection>{page}</EnsureWalletConnection>
-              </PageLayout>
-            )}
-          </QueryClientProvider>
+          {pathname === AppRoutes.widgets ? (
+            page
+          ) : (
+            <PageLayout>
+              <EnsureWalletConnection>{page}</EnsureWalletConnection>
+            </PageLayout>
+          )}
         </SafeProvider>
       </CssVarsProvider>
     </CacheProvider>

@@ -51,10 +51,10 @@ describe('_getSafeTokenAllocation', () => {
     )
   })
 
-  it('returns null if no provider is defined', async () => {
+  it('returns undefined if no provider is defined', async () => {
     const result = await _getSafeTokenAllocation(undefined)
 
-    expect(result).toBe(null)
+    expect(result).toBeUndefined()
   })
 
   it('return 0 if no allocations / balances exist', async () => {

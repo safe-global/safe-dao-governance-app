@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query'
+import useSWR from 'swr'
 
 import { GUARDIANS_URL } from '@/config/constants'
 
@@ -15,10 +15,8 @@ const shuffleArray = <T extends unknown[]>(array: T): T => {
   return array.sort(() => Math.random() - 0.5)
 }
 
-const parseFile = async (signal?: AbortSignal): Promise<FileDelegate[]> => {
-  return await fetch(GUARDIANS_URL, {
-    signal,
-  })
+const parseFile = async (): Promise<FileDelegate[]> => {
+  return await fetch(GUARDIANS_URL)
     .then((response) => {
       if (!response.ok) {
         throw Error(response.statusText)
@@ -31,11 +29,11 @@ const parseFile = async (signal?: AbortSignal): Promise<FileDelegate[]> => {
 export const useDelegatesFile = () => {
   const QUERY_KEY = 'delegatesFile'
 
-  return useQuery({
-    queryKey: [QUERY_KEY],
-    queryFn: ({ signal }) => parseFile(signal),
-    // Cache is populated in _app and we don't want to refetch on mount
+  return useSWR([QUERY_KEY], parseFile, {
+    // Cache is populated in _app and we don't want to refetch
     // because it otherwise shuffles the data again
-    refetchOnMount: false,
+    revalidateIfStale: false,
+    revalidateOnFocus: false,
+    revalidateOnReconnect: false,
   })
 }
