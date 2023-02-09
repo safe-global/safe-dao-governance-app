@@ -52,13 +52,13 @@ describe('_getIsTokenPaused', () => {
     expect(mockCall).toBeCalledTimes(1)
   })
 
-  it('returns undefined if no provider is defined', async () => {
+  it('returns null if no provider is defined', async () => {
     const result = await _getIsTokenPaused(undefined)
 
-    expect(result).toBeUndefined()
+    expect(result).toBe(null)
   })
 
-  it('returns undefined if no Safe Token address is found for the current chain', async () => {
+  it('returns null if no Safe Token address is found for the current chain', async () => {
     jest.spyOn(web3Provider, 'getSigner').mockImplementationOnce(
       jest.fn(
         () =>
@@ -70,6 +70,6 @@ describe('_getIsTokenPaused', () => {
 
     const result = await _getIsTokenPaused(undefined)
 
-    expect(result).toBeUndefined()
+    expect(result).toBe(null)
   })
 })

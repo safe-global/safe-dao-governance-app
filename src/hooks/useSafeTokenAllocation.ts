@@ -131,15 +131,12 @@ const computeVotingPower = (validVestingData: Vesting[], balance: string) => {
 
 export const _getSafeTokenAllocation = async (
   web3?: JsonRpcProvider,
-): Promise<
-  | {
-      votingPower: BigNumber
-      vestingData: Vesting[]
-    }
-  | undefined
-> => {
+): Promise<{
+  votingPower: BigNumber
+  vestingData: Vesting[]
+} | null> => {
   if (!web3) {
-    return
+    return null
   }
 
   const signer = web3.getSigner()
@@ -172,5 +169,5 @@ export const useSafeTokenAllocation = () => {
   const web3 = useWeb3()
   const wallet = useWallet()
 
-  return useSWR(web3 ? [QUERY_KEY, wallet?.address, wallet?.chainId] : undefined, () => _getSafeTokenAllocation(web3))
+  return useSWR([QUERY_KEY, wallet?.address, wallet?.chainId], () => _getSafeTokenAllocation(web3))
 }

@@ -10,9 +10,9 @@ import { useWallet } from '@/hooks/useWallet'
  * Fetches if the token is currently paused from on-chain.
  * If the fetching fails and initially we assume that the token is paused as the claimingViaModule should always work.
  */
-export const _getIsTokenPaused = async (web3?: JsonRpcProvider): Promise<boolean | undefined> => {
+export const _getIsTokenPaused = async (web3?: JsonRpcProvider): Promise<boolean | null> => {
   if (!web3) {
-    return
+    return null
   }
 
   const signer = web3.getSigner()
@@ -21,7 +21,7 @@ export const _getIsTokenPaused = async (web3?: JsonRpcProvider): Promise<boolean
   const safeTokenAddress = CHAIN_SAFE_TOKEN_ADDRESS[chainId]
 
   if (!safeTokenAddress) {
-    return
+    return null
   }
 
   const safeTokenContract = SafeToken__factory.connect(safeTokenAddress, web3)
@@ -43,5 +43,5 @@ export const useIsTokenPaused = () => {
   const web3 = useWeb3()
   const wallet = useWallet()
 
-  return useSWR(web3 ? [QUERY_KEY, wallet?.chainId] : undefined, () => _getIsTokenPaused(web3))
+  return useSWR([QUERY_KEY, wallet?.chainId], () => _getIsTokenPaused(web3))
 }

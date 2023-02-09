@@ -12,9 +12,9 @@ import type { EventFilter } from '@ethersproject/abstract-provider'
 
 export type ContractDelegate = Pick<FileDelegate, 'address' | 'ens'>
 
-export const _getContractDelegate = async (web3?: JsonRpcProvider): Promise<ContractDelegate | undefined> => {
+export const _getContractDelegate = async (web3?: JsonRpcProvider): Promise<ContractDelegate | null> => {
   if (!web3) {
-    return
+    return null
   }
 
   const signer = web3.getSigner()
@@ -24,7 +24,7 @@ export const _getContractDelegate = async (web3?: JsonRpcProvider): Promise<Cont
   const delegateId = CHAIN_DELEGATE_ID[chainId]
 
   if (!delegateId) {
-    return
+    return null
   }
 
   const address = await signer.getAddress()
@@ -34,7 +34,7 @@ export const _getContractDelegate = async (web3?: JsonRpcProvider): Promise<Cont
   const delegate = await delegateRegistryContract.delegation(address, formatBytes32String(delegateId))
 
   if (delegate === ZERO_ADDRESS) {
-    return
+    return null
   }
 
   const ens = await web3.lookupAddress(delegate)
@@ -51,7 +51,7 @@ export const useContractDelegate = () => {
   const web3 = useWeb3()
   const wallet = useWallet()
 
-  return useSWR(web3 ? [QUERY_KEY, wallet?.address, wallet?.chainId] : undefined, () => _getContractDelegate(web3))
+  return useSWR([QUERY_KEY, wallet?.address, wallet?.chainId], () => _getContractDelegate(web3))
 }
 
 const delegateRegistryInterface = getDelegateRegistryInterface()
