@@ -1,6 +1,6 @@
 import { CircularProgress, InputAdornment, TextField, Typography } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded'
 import { isAddress } from 'ethers/lib/utils'
 import type { ReactElement, ChangeEvent } from 'react'
@@ -15,35 +15,44 @@ import type { Delegate } from '@/hooks/useDelegate'
 
 export const CustomDelegate = (): ReactElement => {
   const isSafeApp = useIsSafeApp()
+  const delegate = useDelegate()
   const { onNext, setStepperState, stepperState } = useDelegationStepper()
 
-  const delegate = useDelegate()
-
   const [search, setSearch] = useState(stepperState?.customDelegate?.ens || '')
+
+  const [ensAddress, ensError, ensLoading] = useEnsResolution(search)
+  const isValidEnsAddress = ensAddress && isAddress(ensAddress)
+
+  const customDelegate = useMemo<Delegate | undefined>(() => {
+    if (isValidEnsAddress) {
+      return {
+        ens: isAddress(search) ? null : search || null,
+        address: ensAddress,
+      }
+    }
+  }, [ensAddress, isValidEnsAddress, search])
+
+  useEffect(() => {
+    setStepperState((prev) => ({
+      ...prev,
+      customDelegate,
+    }))
+  }, [setStepperState, customDelegate])
 
   const onSearch = (event: ChangeEvent<HTMLInputElement>) => {
     setSearch(event.currentTarget.value)
   }
 
-  const [ensAddress, ensError, ensLoading] = useEnsResolution(search)
-  const isValidEnsAddress = ensAddress && isAddress(ensAddress)
-
-  const isAlreadySet = stepperState?.selectedDelegate?.address === delegate?.address
-
-  useEffect(() => {
-    const delegate: Delegate | undefined = isValidEnsAddress
-      ? {
-          ens: isAddress(search) ? null : search || null,
-          address: ensAddress,
-        }
-      : undefined
-
+  const onSubmit = () => {
     setStepperState((prev) => ({
       ...prev,
-      customDelegate: delegate,
-      selectedDelegate: delegate,
+      selectedDelegate: customDelegate,
     }))
-  }, [isValidEnsAddress, ensAddress, setStepperState, search])
+
+    onNext()
+  }
+
+  const isCurrentDelegate = customDelegate && customDelegate?.address === delegate?.address
 
   return (
     <>
@@ -73,8 +82,14 @@ export const CustomDelegate = (): ReactElement => {
             </InputAdornment>
           ) : undefined,
         }}
-        error={!!ensError}
-        helperText={isValidEnsAddress && ensAddress !== search ? ensAddress : ensError}
+        error={!!ensError || isCurrentDelegate}
+        helperText={
+          isCurrentDelegate
+            ? 'Given delegate is already delegated'
+            : isValidEnsAddress && ensAddress !== search
+            ? ensAddress
+            : ensError
+        }
       />
 
       {isSafeApp && (
@@ -85,7 +100,7 @@ export const CustomDelegate = (): ReactElement => {
         </InfoAlert>
       )}
 
-      <NavButtons onNext={onNext} isNextDisabled={!ensAddress || !!ensError || ensLoading || isAlreadySet} />
+      <NavButtons onNext={onSubmit} isNextDisabled={!ensAddress || !!ensError || ensLoading || isCurrentDelegate} />
     </>
   )
 }
