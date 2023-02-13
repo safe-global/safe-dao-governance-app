@@ -4,6 +4,11 @@
   margin: auto;
 }
 
+.tiles {
+  position: relative;
+  top: calc(-1 * var(--header-height));
+}
+
 @media (max-width: 600px) {
   .container {
     width: 100%;

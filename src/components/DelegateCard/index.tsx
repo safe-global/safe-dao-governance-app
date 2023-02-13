@@ -21,9 +21,9 @@ export const DelegateCard = ({
     <SelectedBadge invisible={!selected}>
       <Card
         variant="outlined"
+        className={css.card}
         sx={{
           borderColor: ({ palette }) => (selected ? palette.primary.main : undefined),
-          width: '100%',
         }}
       >
         <CardActionArea onClick={() => onClick(delegate)}>

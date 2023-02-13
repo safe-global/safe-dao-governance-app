@@ -12,5 +12,9 @@
   border-radius: 20%;
   width: 100%;
   height: 100%;
+  background-color: var(--mui-palette-secondary-main);
+}
+
+[data-theme='dark'] .spacer {
   background-color: var(--mui-palette-primary-main);
 }

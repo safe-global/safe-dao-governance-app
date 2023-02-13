@@ -2,6 +2,7 @@
   height: 6px;
   border-top-left-radius: var(--mui-shape-borderRadius);
   border-top-right-radius: var(--mui-shape-borderRadius);
+  background-color: transparent;
 }
 
 .progressBar :global .MuiLinearProgress-bar {
