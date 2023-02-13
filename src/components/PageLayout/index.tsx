@@ -5,6 +5,7 @@ import type { ReactElement, ReactNode } from 'react'
 import manifestJson from '@/public/manifest.json'
 import { BottomCircle, TopCircle } from '@/components/BackgroundCircles'
 import { Header } from '@/components/Header'
+import { FloatingTiles } from '@/components/FloatingTiles'
 
 import css from './styles.module.css'
 
@@ -16,6 +17,10 @@ export const PageLayout = ({ children }: { children: ReactNode }): ReactElement 
       </Head>
 
       <Header />
+
+      <div className={css.tiles}>
+        <FloatingTiles tiles={50} />
+      </div>
 
       <Box pt={{ sm: 6, xs: undefined }} component="main">
         <Paper className={css.container}>

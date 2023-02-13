@@ -1,0 +1,10 @@
+.container {
+  background-color: var(--mui-palette-secondary-background);
+  border-radius: var(--mui-shape-borderRadius);
+  padding: 24px;
+}
+
+[data-theme='dark'] .container {
+  background-color: transparent;
+  border: 1px solid var(--mui-palette-primary-main);
+}

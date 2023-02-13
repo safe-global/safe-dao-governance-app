@@ -18,6 +18,7 @@ import { CHAIN_SHORT_NAME, SAFE_URL, DEPLOYMENT_URL } from '@/config/constants'
 import { useDefaultChainId } from '@/hooks/useDefaultChainId'
 import { useWallet } from '@/hooks/useWallet'
 import { isSafe } from '@/utils/wallet'
+import { InfoBox } from '@/components/InfoBox'
 
 import css from './styles.module.css'
 
@@ -78,18 +79,18 @@ export const Intro = (): ReactElement => {
 
       {hasAllocation && (
         <Grid item xs={12} display="inline-flex" gap={6} my={3}>
-          <Box className={css.overview}>
+          <InfoBox className={css.overview}>
             <Typography variant="body2" color="text.secondary">
               Claimable now
             </Typography>
             <Typography fontWeight={700}>{formatAmount(formatEther(total.claimable), 2)} SAFE</Typography>
-          </Box>
-          <Box className={css.overview}>
+          </InfoBox>
+          <InfoBox className={css.overview}>
             <Typography variant="body2" color="text.secondary">
               Claimable in the future
             </Typography>
             <Typography fontWeight={700}>{formatAmount(formatEther(total.inVesting), 2)} SAFE</Typography>
-          </Box>
+          </InfoBox>
         </Grid>
       )}
 

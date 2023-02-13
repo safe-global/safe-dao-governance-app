@@ -227,13 +227,6 @@ const initTheme = (darkMode: boolean) => {
           }),
         },
       },
-      MuiLinearProgress: {
-        styleOverrides: {
-          root: ({ theme }) => ({
-            backgroundColor: theme.palette.border.light,
-          }),
-        },
-      },
     },
   })
 }

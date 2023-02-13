@@ -1,5 +1,5 @@
 import SafeProvider from '@gnosis.pm/safe-apps-react-sdk'
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { CacheProvider } from '@emotion/react'
 import {
   Experimental_CssVarsProvider as CssVarsProvider,
@@ -64,14 +64,20 @@ const App = ({
   const { pathname, query } = useRouter()
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
 
+  // Workaround for dark mode widgets
+  const isDarkMode = query.theme ? query.theme === 'dark' : prefersDarkMode
+
+  useEffect(() => {
+    if (typeof document !== 'undefined') {
+      document.documentElement.setAttribute('data-theme', isDarkMode ? 'dark' : 'light')
+    }
+  }, [isDarkMode])
+
   const theme = useMemo(() => {
-    // Workaround for dark mode widgets
-    const isDarkMode = query.theme ? query.theme === 'dark' : prefersDarkMode
-    const colorSchemedTheme = initTheme(isDarkMode)
     // Extend the theme with the CssVarsProvider
-    return extendMuiTheme(colorSchemedTheme)
+    return extendMuiTheme(initTheme(isDarkMode))
     // Widgets don't navigate, so we need not worry about the query changing
-  }, [prefersDarkMode, query.theme])
+  }, [isDarkMode])
 
   const page = <Component {...pageProps} />
 

@@ -4,6 +4,10 @@
   border-top-right-radius: var(--mui-shape-borderRadius);
 }
 
+.progressBar :global .MuiLinearProgress-bar {
+  background: linear-gradient(84.56deg, #11ff80 -0.82%, #5eddff 75.55%);
+}
+
 @media (max-width: 600px) {
   .progressBar {
     border-radius: 0;

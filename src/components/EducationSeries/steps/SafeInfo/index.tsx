@@ -6,8 +6,7 @@ import AssetsIcon from '@/public/images/assets.svg'
 import { StepHeader } from '@/components/StepHeader'
 import { NavButtons } from '@/components/NavButtons'
 import { useEducationSeriesStepper } from '@/components/EducationSeries'
-
-import css from './styles.module.css'
+import { InfoBox } from '@/components/InfoBox'
 
 const SafeInfo = (): ReactElement => {
   const { onNext } = useEducationSeriesStepper()
@@ -25,7 +24,7 @@ const SafeInfo = (): ReactElement => {
 
       <Grid container mb={6} spacing={5}>
         <Grid item xs={12} sm={6}>
-          <Box className={css.info}>
+          <InfoBox>
             <Typography color="text.secondary" mb={1}>
               Total Safes created
             </Typography>
@@ -35,11 +34,11 @@ const SafeInfo = (): ReactElement => {
                 &gt;1,000,000
               </Typography>
             </Box>
-          </Box>
+          </InfoBox>
         </Grid>
 
         <Grid item xs={12} sm={6}>
-          <Box className={css.info}>
+          <InfoBox>
             <Typography color="text.secondary" mb={1}>
               Total value protected
             </Typography>
@@ -49,7 +48,7 @@ const SafeInfo = (): ReactElement => {
                 $41B
               </Typography>
             </Box>
-          </Box>
+          </InfoBox>
         </Grid>
       </Grid>
 

@@ -40,7 +40,7 @@ const getTitles = (isDelegating: boolean, delegate?: Delegate, shouldShorten?: b
   }
 
   return {
-    title: delegate.address,
+    title: address,
     subheader: undefined,
   }
 }
