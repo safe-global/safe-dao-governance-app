@@ -50,14 +50,16 @@ export const SelectedDelegate = ({
   delegate,
   disabled,
   hint = false,
+  shortenAddress = false,
 }: {
   delegate?: Delegate
   onClick?: () => void
   disabled?: boolean
-  hint?: Boolean
+  hint?: boolean
+  shortenAddress?: boolean
 }): ReactElement => {
   const isDelegating = useIsDelegationPending()
-  const { title, subheader } = getTitles(isDelegating, delegate, !!onClick)
+  const { title, subheader } = getTitles(isDelegating, delegate, shortenAddress)
 
   return (
     <>

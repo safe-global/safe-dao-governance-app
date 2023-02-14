@@ -101,7 +101,13 @@ export const Intro = (): ReactElement => {
       )}
 
       <Grid item px={5} mt={6} mb={4}>
-        <SelectedDelegate delegate={delegate || undefined} onClick={onDelegate} disabled={!canDelegate} hint />
+        <SelectedDelegate
+          delegate={delegate || undefined}
+          onClick={onDelegate}
+          disabled={!canDelegate}
+          shortenAddress
+          hint
+        />
       </Grid>
 
       <Grid item xs={12}>

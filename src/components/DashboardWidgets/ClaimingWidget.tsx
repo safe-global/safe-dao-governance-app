@@ -92,7 +92,7 @@ const VotingPowerWidget = (): ReactElement => {
           {delegate && (
             <Box width={1}>
               <Link href={claimingSafeAppUrl} rel="noopener noreferrer" target="_blank" underline="none">
-                <SelectedDelegate delegate={delegate} />
+                <SelectedDelegate delegate={delegate} shortenAddress />
               </Link>
             </Box>
           )}
