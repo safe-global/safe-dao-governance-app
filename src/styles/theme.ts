@@ -122,6 +122,9 @@ const initTheme = (darkMode: boolean) => {
             props: { size: 'stretched' },
             style: {
               padding: '12px 48px',
+              '@media (max-width:600px)': {
+                padding: '10px 24px',
+              },
             },
           },
           {

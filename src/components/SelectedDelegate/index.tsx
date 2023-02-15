@@ -1,4 +1,4 @@
-import { Card, CardHeader, CardHeaderProps, CircularProgress, Typography } from '@mui/material'
+import { Card, CardHeader, CardHeaderProps, CircularProgress, Theme, Typography, useMediaQuery } from '@mui/material'
 import type { ReactElement } from 'react'
 
 import { DelegateAvatar } from '@/components/DelegateAvatar'
@@ -59,7 +59,8 @@ export const SelectedDelegate = ({
   action?: CardHeaderProps['action']
 }): ReactElement => {
   const isDelegating = useIsDelegationPending()
-  const { title, subheader } = getTitles(isDelegating, delegate, shortenAddress)
+  const isSmallScreen = useMediaQuery(({ breakpoints }: Theme) => breakpoints.only('xs'))
+  const { title, subheader } = getTitles(isDelegating, delegate, shortenAddress || isSmallScreen)
 
   return (
     <>
@@ -68,6 +69,11 @@ export const SelectedDelegate = ({
       </Typography>
       <Card variant="outlined" elevation={0}>
         <CardHeader
+          sx={({ breakpoints }) => ({
+            '& .MuiCardHeader-avatar': {
+              [breakpoints.only('xs')]: { display: 'none' },
+            },
+          })}
           avatar={isDelegating ? <CircularProgress /> : delegate ? <DelegateAvatar delegate={delegate} /> : <Avatar />}
           title={title}
           titleTypographyProps={{

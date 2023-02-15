@@ -44,8 +44,14 @@ export const DelegateSwitch = ({
   const isCustomDelegation = delegateType === DelegateType.CUSTOM
 
   return (
-    <Grid container justifyContent="space-between" flexWrap="nowrap" gap={2}>
-      <Grid item xs={6}>
+    <Grid
+      container
+      justifyContent="space-between"
+      flexWrap="nowrap"
+      gap={2}
+      flexDirection={{ xs: 'column', sm: 'row' }}
+    >
+      <Grid item xs={12} sm={6}>
         <SelectedBadge invisible={!delegateType || isCustomDelegation}>
           <DelegateSwitchCard
             selected={isSafeGuardianDelegation}
@@ -57,7 +63,7 @@ export const DelegateSwitch = ({
         </SelectedBadge>
       </Grid>
 
-      <Grid item xs={6}>
+      <Grid item xs={12} sm={6}>
         <SelectedBadge invisible={!delegateType || isSafeGuardianDelegation}>
           <DelegateSwitchCard selected={isCustomDelegation} onClick={() => setDelegateType(DelegateType.CUSTOM)}>
             <SvgIcon component={CustomAddress} inheritViewBox fontSize="small" />

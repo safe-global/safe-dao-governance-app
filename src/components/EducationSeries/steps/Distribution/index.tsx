@@ -58,7 +58,7 @@ const Distribution = (): ReactElement => {
           </Typography>
         </Grid>
 
-        <Grid item direction="column" xs={6} mb={4}>
+        <Grid item direction="column" xs={12} sm={6} mb={4}>
           <Box display="flex" alignItems="center" gap={1} mb={1}>
             <Typography
               className={css.percentage}
@@ -76,7 +76,7 @@ const Distribution = (): ReactElement => {
           <Typography>Current and future core contributor teams</Typography>
         </Grid>
 
-        <Grid item direction="column" xs={6} mb={4}>
+        <Grid item direction="column" xs={12} sm={6} mb={4}>
           <Box display="flex" alignItems="center" gap={1} mb={1}>
             <Typography
               className={css.percentage}
@@ -98,7 +98,7 @@ const Distribution = (): ReactElement => {
           </Typography>
         </Grid>
 
-        <Grid item direction="column" xs={6}>
+        <Grid item direction="column" xs={12} sm={6}>
           <Box display="flex" alignItems="center" gap={1} mb={1}>
             <Typography
               className={css.percentage}
@@ -122,7 +122,7 @@ const Distribution = (): ReactElement => {
           </Typography>
         </Grid>
 
-        <Grid item direction="column" xs={6} mb={5}>
+        <Grid item direction="column" xs={12} sm={6} mb={5}>
           <Box display="flex" alignItems="center" gap={1} mb={1}>
             <Typography
               className={css.percentage}

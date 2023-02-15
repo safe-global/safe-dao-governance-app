@@ -101,7 +101,7 @@ const ScrollProvidedList = () => {
 
   return (
     <>
-      <Grid item xs={8}>
+      <Grid item xs={12} sm={8}>
         <TextField
           fullWidth
           onChange={onSearch}
@@ -134,7 +134,7 @@ const ScrollProvidedList = () => {
         <>
           <Grid container item xs={12} spacing={2}>
             {filteredDelegates.map((delegate) => (
-              <Grid item xs={6} key={delegate.address}>
+              <Grid item xs={12} sm={6} key={delegate.address}>
                 <DelegateCard
                   selected={delegate.address === selectedSafeGuardian?.address}
                   delegate={delegate}

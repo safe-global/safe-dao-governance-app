@@ -86,7 +86,7 @@ export const Intro = (): ReactElement => {
       </Box>
 
       {hasAllocation && (
-        <Grid item xs={12} display="inline-flex" gap={6} my={3}>
+        <Grid item xs={12} display="flex" gap={6} my={3} flexDirection={{ xs: 'column', sm: 'row' }}>
           <InfoBox className={css.overview}>
             <Typography variant="body2" color="text.secondary">
               Claimable now
