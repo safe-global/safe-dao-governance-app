@@ -1,4 +1,4 @@
-import { Button, Card, CardHeader, CircularProgress, Typography } from '@mui/material'
+import { Button, Card, CardHeader, CardHeaderProps, CircularProgress, Typography } from '@mui/material'
 import type { ReactElement } from 'react'
 
 import { DelegateAvatar } from '@/components/DelegateAvatar'
@@ -46,17 +46,15 @@ const getTitles = (isDelegating: boolean, delegate?: Delegate, shouldShorten?: b
 }
 
 export const SelectedDelegate = ({
-  onClick,
   delegate,
-  disabled,
   hint = false,
   shortenAddress = false,
+  action,
 }: {
   delegate?: Delegate
-  onClick?: () => void
-  disabled?: boolean
   hint?: boolean
   shortenAddress?: boolean
+  action?: CardHeaderProps['action']
 }): ReactElement => {
   const isDelegating = useIsDelegationPending()
   const { title, subheader } = getTitles(isDelegating, delegate, shortenAddress)
@@ -74,13 +72,7 @@ export const SelectedDelegate = ({
             color: !delegate ? 'text.secondary' : undefined,
           }}
           subheader={subheader}
-          action={
-            onClick && (
-              <Button variant="contained" size="stretched" onClick={onClick} disabled={isDelegating || disabled}>
-                {delegate ? 'Redelegate' : 'Delegate'}
-              </Button>
-            )
-          }
+          action={action}
         />
       </Card>
       {hint && (

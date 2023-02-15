@@ -90,3 +90,22 @@
   flex-direction: column;
   padding: 16px 0;
 }
+
+/* Claiming widget */
+
+.action {
+  color: var(--mui-palette-text-primary);
+  transition: 'border ease-in-out 0.3s, background ease-in-out 0.3s';
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.button:hover {
+  background-color: var(--mui-palette-secondary-light);
+}

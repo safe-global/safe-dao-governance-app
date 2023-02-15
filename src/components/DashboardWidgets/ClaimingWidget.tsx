@@ -1,7 +1,10 @@
 import { BigNumber } from 'ethers'
 import { formatEther } from 'ethers/lib/utils'
 import { useSafeAppsSDK } from '@gnosis.pm/safe-apps-react-sdk'
-import { Box, Button, Typography, Link, Skeleton, Card } from '@mui/material'
+import { Box, Button, Typography, Link, Skeleton, Card, IconButton } from '@mui/material'
+import ModeEditOutlinedIcon from '@mui/icons-material/ModeEditOutlined'
+import CheckSharpIcon from '@mui/icons-material/CheckSharp'
+import { useState } from 'react'
 import type { TypographyProps } from '@mui/material'
 import type { ReactElement } from 'react'
 
@@ -12,6 +15,7 @@ import { useDelegate } from '@/hooks/useDelegate'
 import { useSafeTokenAllocation } from '@/hooks/useSafeTokenAllocation'
 import { SelectedDelegate } from '@/components/SelectedDelegate'
 import { formatAmount } from '@/utils/formatters'
+import { useChainId } from '@/hooks/useChainId'
 
 import css from './styles.module.css'
 
@@ -50,10 +54,29 @@ const CtaWidget = (): ReactElement => {
   )
 }
 
+const DelegateAction = (): ReactElement => {
+  const [isHover, setIsHover] = useState(false)
+
+  return (
+    <IconButton
+      className={css.action}
+      sx={{
+        backgroundColor: ({ palette }) => `${isHover ? palette.secondary.light : palette.border.light} !important`,
+        border: ({ palette }) => `1px solid ${isHover ? palette.secondary.main : palette.text.secondary}`,
+      }}
+      onMouseEnter={() => setIsHover(true)}
+      onMouseLeave={() => setIsHover(false)}
+    >
+      {isHover ? <ModeEditOutlinedIcon /> : <CheckSharpIcon />}
+    </IconButton>
+  )
+}
+
 const VotingPowerWidget = (): ReactElement => {
   const { safe } = useSafeAppsSDK()
   const delegate = useDelegate()
   const { data } = useSafeTokenAllocation()
+  const chainId = useChainId()
 
   const totalClaimed = data?.vestingData.reduce((acc, { amountClaimed }) => {
     return acc.add(amountClaimed)
@@ -61,24 +84,13 @@ const VotingPowerWidget = (): ReactElement => {
 
   const hasUnredeemedAllocation = data?.vestingData.some(({ isExpired, isRedeemed }) => !isExpired && !isRedeemed)
 
-  const claimingSafeAppUrl = `${SAFE_URL}/apps?safe=${CHAIN_SHORT_NAME}:${safe.safeAddress}&appUrl=${DEPLOYMENT_URL}`
+  const claimingSafeAppUrl = `${SAFE_URL}/apps?safe=${CHAIN_SHORT_NAME[chainId]}:${safe.safeAddress}&appUrl=${DEPLOYMENT_URL}`
 
   return (
     <>
       <div>
         <Title>Your voting power</Title>
-        <Button
-          href={claimingSafeAppUrl}
-          target="_blank"
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '8px',
-            marginBottom: '8px',
-            '&:hover': { backgroundColor: 'secondary.light' },
-          }}
-        >
+        <Button href={claimingSafeAppUrl} target="_blank" rel="noopener noreferrer" className={css.button}>
           <SafeToken height={24} width={24} />
           <Title color="text.primary">
             {data?.votingPower ? formatAmount(Number(formatEther(data.votingPower)), 2) : <Skeleton />}{' '}
@@ -92,7 +104,7 @@ const VotingPowerWidget = (): ReactElement => {
           {delegate && (
             <Box width={1}>
               <Link href={claimingSafeAppUrl} rel="noopener noreferrer" target="_blank" underline="none">
-                <SelectedDelegate delegate={delegate} shortenAddress />
+                <SelectedDelegate delegate={delegate} shortenAddress action={<DelegateAction />} />
               </Link>
             </Box>
           )}

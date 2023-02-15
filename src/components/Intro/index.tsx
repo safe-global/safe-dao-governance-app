@@ -19,6 +19,7 @@ import { useChainId } from '@/hooks/useChainId'
 import { useWallet } from '@/hooks/useWallet'
 import { isSafe } from '@/utils/wallet'
 import { InfoBox } from '@/components/InfoBox'
+import { useIsDelegationPending } from '@/hooks/usePendingDelegations'
 
 import css from './styles.module.css'
 
@@ -47,7 +48,8 @@ export const Intro = (): ReactElement => {
   const hasAllocation = Number(total.allocation) > 0
   const isClaimable = Number(total.claimable) > 0
 
-  const canDelegate = !!data?.votingPower && BigNumber.from(data.votingPower).gt(0) && !isWrongChain
+  const isDelegating = useIsDelegationPending()
+  const canDelegate = !isDelegating && !!data?.votingPower && BigNumber.from(data.votingPower).gt(0) && !isWrongChain
 
   const onClick = (route: (typeof AppRoutes)[keyof typeof AppRoutes]) => async () => {
     // Safe is connected via WC
@@ -61,6 +63,12 @@ export const Intro = (): ReactElement => {
   const onClaim = onClick(AppRoutes.claim)
 
   const onDelegate = onClick(AppRoutes.delegate)
+
+  const action = (
+    <Button variant="contained" size="stretched" onClick={onDelegate} disabled={!canDelegate}>
+      {delegate ? 'Redelegate' : 'Delegate'}
+    </Button>
+  )
 
   if (isLoading) {
     return (
@@ -101,13 +109,7 @@ export const Intro = (): ReactElement => {
       )}
 
       <Grid item px={5} mt={6} mb={4}>
-        <SelectedDelegate
-          delegate={delegate || undefined}
-          onClick={onDelegate}
-          disabled={!canDelegate}
-          shortenAddress
-          hint
-        />
+        <SelectedDelegate delegate={delegate || undefined} action={action} shortenAddress hint />
       </Grid>
 
       <Grid item xs={12}>
