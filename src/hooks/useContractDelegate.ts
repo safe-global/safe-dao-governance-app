@@ -78,7 +78,7 @@ export const useContractDelegateInvalidator = () => {
       const delegateId = CHAIN_DELEGATE_ID[signerChainId]
 
       if (!delegateId) {
-        return null
+        return
       }
 
       filter = {

@@ -26,6 +26,7 @@ import { GATEWAY_URL } from '@/config/constants'
 import { AppRoutes } from '@/config/routes'
 import { useSafeSnapshot } from '@/hooks/useSafeSnapshot'
 import { useContractDelegateInvalidator } from '@/hooks/useContractDelegate'
+import { useSafeTokenTransferInvalidator } from '@/hooks/useSafeTokenAllocation'
 import { usePendingDelegations } from '@/hooks/usePendingDelegations'
 
 import '@/styles/globals.css'
@@ -47,6 +48,7 @@ const InitApp = (): null => {
 
   // Invalidate caches
   useContractDelegateInvalidator()
+  useSafeTokenTransferInvalidator()
 
   return null
 }
