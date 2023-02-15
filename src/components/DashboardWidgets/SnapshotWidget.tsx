@@ -2,10 +2,11 @@ import { OpenInNewRounded } from '@mui/icons-material'
 import { Box, Chip, Typography, Skeleton, Card } from '@mui/material'
 import type { ReactElement } from 'react'
 
-import { FORUM_URL, SNAPSHOT_URL } from '@/config/constants'
+import { FORUM_URL, CHAIN_SNAPSHOT_URL } from '@/config/constants'
 import { ExternalLink } from '@/components/ExternalLink'
 import { useSafeSnapshot } from '@/hooks/useSafeSnapshot'
 import palette from '@/styles/colors'
+import { useChainId } from '@/hooks/useChainId'
 import type { SnapshotProposal } from '@/hooks/useSafeSnapshot'
 
 import css from './styles.module.css'
@@ -68,6 +69,9 @@ const SnapshotProposals = ({
 
 export const SnapshotWidget = (): ReactElement => {
   const { data: proposals, isLoading } = useSafeSnapshot()
+  const chainId = useChainId()
+
+  const snapshotUrl = CHAIN_SNAPSHOT_URL[chainId]
 
   return (
     <Card elevation={0} sx={{ flexGrow: 1 }}>
@@ -82,12 +86,12 @@ export const SnapshotWidget = (): ReactElement => {
                 <Skeleton key={key} variant="rounded" height="47px" width="100%" />
               ))
             ) : (
-              <SnapshotProposals proposals={proposals} snapshotLink={SNAPSHOT_URL} />
+              <SnapshotProposals proposals={proposals} snapshotLink={snapshotUrl} />
             )}
           </Box>
         </div>
         <Box display="flex" gap={4}>
-          <ExternalLink href={SNAPSHOT_URL} variant="subtitle1" textAlign="center">
+          <ExternalLink href={snapshotUrl} variant="subtitle1" textAlign="center">
             View all
           </ExternalLink>
           <ExternalLink href={FORUM_URL} variant="subtitle1" textAlign="center">

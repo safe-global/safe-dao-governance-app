@@ -5,8 +5,9 @@ import type { ReactElement, SyntheticEvent } from 'react'
 
 import Hat from '@/public/images/hat.svg'
 import { AppRoutes } from '@/config/routes'
-import { FORUM_URL, SNAPSHOT_URL } from '@/config/constants'
+import { FORUM_URL, CHAIN_SNAPSHOT_URL } from '@/config/constants'
 import { ExternalLink } from '@/components/ExternalLink'
+import { useChainId } from '@/hooks/useChainId'
 
 import css from './styles.module.css'
 
@@ -59,6 +60,10 @@ const ExternalLinkCard = ({ header, title, href }: { header: string; title: stri
 }
 
 export const OverviewLinks = (): ReactElement => {
+  const chainId = useChainId()
+
+  const snapshotUrl = CHAIN_SNAPSHOT_URL[chainId]
+
   return (
     <Grid container spacing={2} px={6}>
       <Grid item xs={12} sm={6}>
@@ -69,7 +74,7 @@ export const OverviewLinks = (): ReactElement => {
           <ExternalLinkCard href={FORUM_URL} header="Discuss" title="Safe {DAO} forum" />
         </Grid>
         <Grid item xs={12}>
-          <ExternalLinkCard href={SNAPSHOT_URL} header="Vote" title="Snapshot" />
+          <ExternalLinkCard href={snapshotUrl} header="Vote" title="Snapshot" />
         </Grid>
       </Grid>
     </Grid>

@@ -107,5 +107,5 @@
 }
 
 .button:hover {
-  background-color: var(--mui-palette-secondary-light);
+  background-color: transparent;
 }

@@ -1,4 +1,4 @@
-import { Button, Card, CardHeader, CardHeaderProps, CircularProgress, Typography } from '@mui/material'
+import { Card, CardHeader, CardHeaderProps, CircularProgress, Typography } from '@mui/material'
 import type { ReactElement } from 'react'
 
 import { DelegateAvatar } from '@/components/DelegateAvatar'
@@ -7,6 +7,8 @@ import { InfoAlert } from '@/components/InfoAlert'
 import { shortenAddress } from '@/utils/addresses'
 import { useIsDelegationPending } from '@/hooks/usePendingDelegations'
 import type { Delegate } from '@/hooks/useDelegate'
+
+import css from './styles.module.css'
 
 const getTitles = (isDelegating: boolean, delegate?: Delegate, shouldShorten?: boolean) => {
   if (isDelegating) {
@@ -61,7 +63,7 @@ export const SelectedDelegate = ({
 
   return (
     <>
-      <Typography color="text.secondary" alignSelf="flex-start" mb={1}>
+      <Typography className={css.title} mb={1}>
         Delegating to
       </Typography>
       <Card variant="outlined" elevation={0}>
@@ -73,6 +75,7 @@ export const SelectedDelegate = ({
           }}
           subheader={subheader}
           action={action}
+          className={css.header}
         />
       </Card>
       {hint && (

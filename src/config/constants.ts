@@ -61,6 +61,10 @@ export const DELEGATE_REGISTRY_ADDRESS = '0x469788fe6e9e9681c6ebf3bf78e7fd26fc01
 // Links
 export const FORUM_URL = 'https://forum.safe.global'
 export const GOVERNANCE_URL = 'https://forum.gnosis-safe.io/t/how-to-safedao-governance-process/846'
-// Not dynamic
-export const SNAPSHOT_URL = `https://snapshot.org/#/${CHAIN_DELEGATE_ID[_DEFAULT_CHAIN_ID]}`
+
+export const CHAIN_SNAPSHOT_URL: ChainConfig<string> = {
+  [Chains.MAINNET]: `https://snapshot.org/#/${CHAIN_DELEGATE_ID[Chains.MAINNET]}`,
+  [Chains.GOERLI]: `https://snapshot.org/#/${CHAIN_DELEGATE_ID[Chains.GOERLI]}`,
+}
+
 export const DISCORD_URL = 'https://chat.safe.global'

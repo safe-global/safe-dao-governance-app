@@ -20,6 +20,7 @@ import { useChainId } from '@/hooks/useChainId'
 import css from './styles.module.css'
 
 const WIDGET_WIDTH = '300px'
+const CHECKMARK_COLOR = '#B2BBC0'
 
 const Title = ({ children, ...props }: TypographyProps): ReactElement => (
   <Typography variant="h4" style={{ fontWeight: 'bold', textAlign: 'center' }} {...props}>
@@ -61,13 +62,13 @@ const DelegateAction = (): ReactElement => {
     <IconButton
       className={css.action}
       sx={{
-        backgroundColor: ({ palette }) => `${isHover ? palette.secondary.light : palette.border.light} !important`,
-        border: ({ palette }) => `1px solid ${isHover ? palette.secondary.main : palette.text.secondary}`,
+        backgroundColor: ({ palette }) =>
+          `${isHover ? palette.secondary.background : palette.background.default} !important`,
       }}
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
     >
-      {isHover ? <ModeEditOutlinedIcon /> : <CheckSharpIcon />}
+      {isHover ? <ModeEditOutlinedIcon /> : <CheckSharpIcon sx={{ '& path': { fill: CHECKMARK_COLOR } }} />}
     </IconButton>
   )
 }
@@ -100,7 +101,12 @@ const VotingPowerWidget = (): ReactElement => {
 
       {totalClaimed?.gt(0) ? (
         <>
-          <Subtitle>You&apos;ve already claimed {formatAmount(Number(formatEther(totalClaimed)), 2)} SAFE</Subtitle>
+          <Subtitle>
+            You&apos;ve already claimed{' '}
+            <Typography variant="inherit" component="span" color="text.primary">
+              {formatAmount(Number(formatEther(totalClaimed)), 2)} SAFE
+            </Typography>
+          </Subtitle>
           {delegate && (
             <Box width={1}>
               <Link href={claimingSafeAppUrl} rel="noopener noreferrer" target="_blank" underline="none">
@@ -111,12 +117,7 @@ const VotingPowerWidget = (): ReactElement => {
         </>
       ) : (
         <>
-          {hasUnredeemedAllocation && (
-            <Subtitle>
-              You have unredeemed tokens. Claim any amount before the 27th of December or the tokens will be transferred
-              back into the SafeDAO treasury.
-            </Subtitle>
-          )}
+          {hasUnredeemedAllocation && <Subtitle>You have unredeemed tokens.</Subtitle>}
           <Link
             href={claimingSafeAppUrl}
             rel="noopener noreferrer"
@@ -126,7 +127,7 @@ const VotingPowerWidget = (): ReactElement => {
             underline="none"
           >
             <Button size="large" variant="contained" disableElevation fullWidth>
-              Claim and delegate
+              {hasUnredeemedAllocation ? 'Claim and delegate' : 'Delegate'}
             </Button>
           </Link>
         </>

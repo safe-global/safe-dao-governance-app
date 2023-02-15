@@ -1,0 +1,8 @@
+.title {
+  color: var(--mui-palette-text-secondary);
+  align-self: flex-start;
+}
+
+.header :global .MuiCardHeader-action {
+  align-self: unset;
+}

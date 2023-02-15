@@ -6,7 +6,8 @@ import { StepHeader } from '@/components/StepHeader'
 import { ExternalLink } from '@/components/ExternalLink'
 import { NavButtons } from '@/components/NavButtons'
 import { useEducationSeriesStepper } from '@/components/EducationSeries'
-import { DISCORD_URL, FORUM_URL, GOVERNANCE_URL, SNAPSHOT_URL } from '@/config/constants'
+import { DISCORD_URL, FORUM_URL, GOVERNANCE_URL, CHAIN_SNAPSHOT_URL } from '@/config/constants'
+import { useChainId } from '@/hooks/useChainId'
 
 import css from './styles.module.css'
 
@@ -21,6 +22,9 @@ const Point = ({ children }: { children: ReactNode }): ReactElement => {
 
 const SafeDao = (): ReactElement => {
   const { onBack, onNext } = useEducationSeriesStepper()
+  const chainId = useChainId()
+
+  const snapshotUrl = CHAIN_SNAPSHOT_URL[chainId]
 
   return (
     <Grid container px={6} pt={5} pb={4}>
@@ -50,7 +54,7 @@ const SafeDao = (): ReactElement => {
         </Point>
 
         <Point>
-          Govern improvements - vote on our <ExternalLink href={SNAPSHOT_URL}>Snapshot</ExternalLink>.
+          Govern improvements - vote on our <ExternalLink href={snapshotUrl}>Snapshot</ExternalLink>.
         </Point>
 
         <Point>
