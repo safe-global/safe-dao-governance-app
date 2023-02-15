@@ -1,7 +1,7 @@
 import useSWR from 'swr'
 
 import { CHAIN_DELEGATE_ID } from '@/config/constants'
-import { useDefaultChainId } from '@/hooks/useDefaultChainId'
+import { useChainId } from './useChainId'
 
 type ShapshotProposalVars = {
   space: string
@@ -79,7 +79,7 @@ const getSafeSnapshot = (space: string): Promise<SnapshotProposal[]> => {
 export const useSafeSnapshot = () => {
   const QUERY_KEY = 'snapshot'
 
-  const defaultChainId = useDefaultChainId()
+  const chainId = useChainId()
 
-  return useSWR([QUERY_KEY], () => getSafeSnapshot(CHAIN_DELEGATE_ID[defaultChainId]))
+  return useSWR([QUERY_KEY, chainId], () => getSafeSnapshot(CHAIN_DELEGATE_ID[chainId]))
 }

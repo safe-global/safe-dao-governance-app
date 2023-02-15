@@ -6,7 +6,7 @@ import { parsePrefixedAddress, sameAddress } from '@/utils/addresses'
 import { useChains } from '@/hooks/useChains'
 import { useWeb3 } from '@/hooks/useWeb3'
 import { useWallet } from '@/hooks/useWallet'
-import { useDefaultChainId } from '@/hooks/useDefaultChainId'
+import { useChainId } from '@/hooks/useChainId'
 
 export const useEnsResolution = (str: string, debounce = true): [string | undefined, string | undefined, boolean] => {
   const [result, setResult] = useState<string>()
@@ -17,9 +17,9 @@ export const useEnsResolution = (str: string, debounce = true): [string | undefi
   const wallet = useWallet()
   const { safe } = useSafeAppsSDK()
   const { data: chains } = useChains()
-  const defaultChainId = useDefaultChainId()
+  const chainId = useChainId()
 
-  const chain = chains?.results.find((chain) => chain.chainId === defaultChainId.toString())
+  const chain = chains?.results.find((chain) => chain.chainId === chainId.toString())
   const shortName = chain?.shortName
 
   useEffect(() => {

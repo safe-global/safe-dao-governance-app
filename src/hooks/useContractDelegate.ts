@@ -19,9 +19,9 @@ export const _getContractDelegate = async (web3?: JsonRpcProvider): Promise<Cont
 
   const signer = web3.getSigner()
 
-  const chainId = await signer.getChainId()
+  const signerChainId = await signer.getChainId()
 
-  const delegateId = CHAIN_DELEGATE_ID[chainId]
+  const delegateId = CHAIN_DELEGATE_ID[signerChainId]
 
   if (!delegateId) {
     return null
@@ -73,9 +73,9 @@ export const useContractDelegateInvalidator = () => {
       const signer = web3.getSigner()
 
       const address = await signer.getAddress()
-      const chainId = await signer.getChainId()
+      const signerChainId = await signer.getChainId()
 
-      const delegateId = CHAIN_DELEGATE_ID[chainId]
+      const delegateId = CHAIN_DELEGATE_ID[signerChainId]
 
       if (!delegateId) {
         return null

@@ -28,8 +28,6 @@ export const Chains = {
 // Strictly type configuration for each chain above
 type ChainConfig<T> = Record<(typeof Chains)[keyof typeof Chains], T>
 
-// Note: UI uses value from defaultChainIdStore/useDefaultChainId to allow
-// for network switching when testing
 export const _DEFAULT_CHAIN_ID = IS_PRODUCTION ? Chains.MAINNET : Chains.GOERLI
 
 export const CHAIN_SHORT_NAME: ChainConfig<string> = {

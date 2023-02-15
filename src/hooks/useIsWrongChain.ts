@@ -1,15 +1,15 @@
 import { useIsSafeApp } from '@/hooks/useIsSafeApp'
 import { useWallet } from '@/hooks/useWallet'
-import { useDefaultChainId } from './useDefaultChainId'
+import { useChainId } from './useChainId'
 
 export const useIsWrongChain = (): boolean => {
   const isSafeApp = useIsSafeApp()
   const wallet = useWallet()
-  const defaultChainId = useDefaultChainId()
+  const chainId = useChainId()
 
   if (isSafeApp || !wallet) {
     return false
   }
 
-  return wallet.chainId !== defaultChainId.toString()
+  return wallet.chainId !== chainId.toString()
 }

@@ -5,7 +5,7 @@ import type { ReactElement } from 'react'
 import { useOnboard } from '@/hooks/useOnboard'
 import { KeyholeIcon } from '@/components/KeyholeIcon'
 import { OverviewLinks } from '@/components/OverviewLinks'
-import { useDefaultChainId } from '@/hooks/useDefaultChainId'
+import { useChainId } from '@/hooks/useChainId'
 import { getConnectedWallet } from '@/hooks/useWallet'
 import { useIsWrongChain } from '@/hooks/useIsWrongChain'
 import type { ConnectedWallet } from '@/hooks/useWallet'
@@ -14,7 +14,7 @@ import SafeLogo from '@/public/images/safe-logo.svg'
 export const ConnectWallet = (): ReactElement => {
   const onboard = useOnboard()
   const isWrongChain = useIsWrongChain()
-  const defaultChainId = useDefaultChainId()
+  const chainId = useChainId()
 
   const onClick = async () => {
     let wallet: ConnectedWallet | null = null
@@ -29,7 +29,7 @@ export const ConnectWallet = (): ReactElement => {
     }
 
     if (isWrongChain) {
-      onboard?.setChain({ chainId: hexValue(defaultChainId) })
+      onboard?.setChain({ chainId: hexValue(chainId) })
     }
   }
 

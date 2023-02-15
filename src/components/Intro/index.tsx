@@ -15,7 +15,7 @@ import { useTaggedAllocations } from '@/hooks/useTaggedAllocations'
 import { useIsWrongChain } from '@/hooks/useIsWrongChain'
 import SafeToken from '@/public/images/token.svg'
 import { CHAIN_SHORT_NAME, SAFE_URL, DEPLOYMENT_URL } from '@/config/constants'
-import { useDefaultChainId } from '@/hooks/useDefaultChainId'
+import { useChainId } from '@/hooks/useChainId'
 import { useWallet } from '@/hooks/useWallet'
 import { isSafe } from '@/utils/wallet'
 import { InfoBox } from '@/components/InfoBox'
@@ -37,7 +37,7 @@ export const Intro = (): ReactElement => {
   const router = useRouter()
   const isWrongChain = useIsWrongChain()
   const wallet = useWallet()
-  const defaultChainId = useDefaultChainId()
+  const chainId = useChainId()
 
   const delegate = useDelegate()
 
@@ -52,7 +52,7 @@ export const Intro = (): ReactElement => {
   const onClick = (route: (typeof AppRoutes)[keyof typeof AppRoutes]) => async () => {
     // Safe is connected via WC
     if (await isSafe(wallet)) {
-      window.open(getSafeAppUrl(defaultChainId, wallet!.address), '_blank')?.focus()
+      window.open(getSafeAppUrl(chainId, wallet!.address), '_blank')?.focus()
     } else {
       router.push(route)
     }

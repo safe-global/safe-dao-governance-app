@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import type { OnboardAPI } from '@web3-onboard/core'
 
 import { ExternalStore } from '@/services/ExternalStore'
-import { useDefaultChainId } from './useDefaultChainId'
+import { useChainId } from './useChainId'
 import { useChains } from '@/hooks/useChains'
 import { createOnboard } from '@/utils/onboard'
 import { useIsSafeApp } from '@/hooks/useIsSafeApp'
@@ -13,9 +13,9 @@ export const useOnboard = onboardStore.useStore
 
 export const useInitOnboard = () => {
   const { data: chains } = useChains()
-  const defaultChainId = useDefaultChainId()
+  const chainId = useChainId()
 
-  const chain = chains?.results.find(({ chainId }) => chainId === defaultChainId.toString())
+  const chain = chains?.results.find(({ chainId }) => chainId === chainId.toString())
   const onboard = onboardStore.useStore()
   const isSafeApp = useIsSafeApp()
 

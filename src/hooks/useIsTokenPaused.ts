@@ -16,9 +16,9 @@ export const _getIsTokenPaused = async (web3?: JsonRpcProvider): Promise<boolean
   }
 
   const signer = web3.getSigner()
-  const chainId = await signer.getChainId()
+  const signerChainId = await signer.getChainId()
 
-  const safeTokenAddress = CHAIN_SAFE_TOKEN_ADDRESS[chainId]
+  const safeTokenAddress = CHAIN_SAFE_TOKEN_ADDRESS[signerChainId]
 
   if (!safeTokenAddress) {
     return null

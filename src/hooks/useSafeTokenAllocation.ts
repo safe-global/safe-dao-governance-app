@@ -142,15 +142,15 @@ export const _getSafeTokenAllocation = async (
   const signer = web3.getSigner()
   const address = await signer.getAddress()
 
-  const chainId = await signer.getChainId()
+  const signerChainId = await signer.getChainId()
 
-  const vestingData = await fetchAllocation(chainId, address).then((allocations) => {
+  const vestingData = await fetchAllocation(signerChainId, address).then((allocations) => {
     return Promise.all(allocations.map((allocation) => completeAllocation(allocation, web3)))
   })
 
   const validVestingData = getValidVestingAllocation(vestingData)
 
-  const balance = await fetchTokenBalance(chainId, address, web3)
+  const balance = await fetchTokenBalance(signerChainId, address, web3)
 
   const votingPower = computeVotingPower(validVestingData, balance)
 

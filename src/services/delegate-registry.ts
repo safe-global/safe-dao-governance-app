@@ -3,7 +3,7 @@ import type { ContractTransaction } from '@ethersproject/contracts'
 import type { JsonRpcProvider } from '@ethersproject/providers'
 
 import { CHAIN_DELEGATE_ID } from '@/config/constants'
-import { defaultChainIdStore } from '@/hooks/useDefaultChainId'
+import { chainIdStore } from '@/hooks/useChainId'
 import { getDelegateRegistryContract } from '@/services/contracts/DelegateRegistry'
 
 export const setDelegate = async (
@@ -12,25 +12,25 @@ export const setDelegate = async (
 ): Promise<ContractTransaction | undefined> => {
   const signer = provider.getSigner()
 
-  let chainId: number | undefined
+  let signerChainId: number | undefined
 
   try {
-    chainId = await signer.getChainId()
+    signerChainId = await signer.getChainId()
   } catch (err) {
     console.error('Error getting chainId', err)
   }
 
-  const defaultChainId = defaultChainIdStore.getStore()
+  const chainId = chainIdStore.getStore()
 
-  if (!chainId || !defaultChainId || chainId !== defaultChainId) {
-    console.error('Invalid chainId', chainId)
+  if (!signerChainId || !chainId || signerChainId !== chainId) {
+    console.error('Invalid chainId', signerChainId)
     return
   }
 
-  const delegateId = CHAIN_DELEGATE_ID[chainId]
+  const delegateId = CHAIN_DELEGATE_ID[signerChainId]
 
   if (!delegateId) {
-    console.error('No delegateId found for chainId', chainId)
+    console.error('No delegateId found for chainId', signerChainId)
     return
   }
 

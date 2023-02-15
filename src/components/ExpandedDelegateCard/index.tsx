@@ -7,7 +7,7 @@ import { ExternalLink } from '@/components/ExternalLink'
 import { useChains } from '@/hooks/useChains'
 import { getHashedExplorerUrl } from '@/utils/gateway'
 import { shortenAddress } from '@/utils/addresses'
-import { useDefaultChainId } from '@/hooks/useDefaultChainId'
+import { useChainId } from '@/hooks/useChainId'
 import type { FileDelegate } from '@/hooks/useDelegatesFile'
 
 export const ExpandedDelegateCard = ({
@@ -20,17 +20,17 @@ export const ExpandedDelegateCard = ({
   onClose: () => void
 }) => {
   const { data: chains } = useChains()
-  const defaultChainId = useDefaultChainId()
+  const chainId = useChainId()
 
   const explorerUrl = useMemo(() => {
-    const chain = chains?.results.find((chain) => chain.chainId === defaultChainId.toString())
+    const chain = chains?.results.find((chain) => chain.chainId === chainId.toString())
 
     if (!chain) {
       return ''
     }
 
     return getHashedExplorerUrl(delegate.address, chain.blockExplorerUriTemplate)
-  }, [chains, delegate, defaultChainId])
+  }, [chains, delegate, chainId])
 
   return (
     <Card variant="outlined">
