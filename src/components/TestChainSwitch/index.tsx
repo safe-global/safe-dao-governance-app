@@ -2,13 +2,13 @@ import { FormControlLabel, Switch } from '@mui/material'
 import type { ReactElement } from 'react'
 
 import { Chains, IS_PRODUCTION, _DEFAULT_CHAIN_ID } from '@/config/constants'
-import { useChainId, chainIdStore } from '@/hooks/useChainId'
+import { useChainId, defaultChainIdStore } from '@/hooks/useChainId'
 
 export const TestChainSwitch = (): ReactElement | null => {
   const chainId = useChainId()
 
   const onToggle = () => {
-    chainIdStore.setStore((prev) => {
+    defaultChainIdStore.setStore((prev) => {
       return prev === Chains.GOERLI ? Chains.MAINNET : Chains.GOERLI
     })
   }

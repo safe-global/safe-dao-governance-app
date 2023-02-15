@@ -3,7 +3,6 @@ import type { ContractTransaction } from '@ethersproject/contracts'
 import type { JsonRpcProvider } from '@ethersproject/providers'
 
 import { CHAIN_DELEGATE_ID } from '@/config/constants'
-import { chainIdStore } from '@/hooks/useChainId'
 import { getDelegateRegistryContract } from '@/services/contracts/DelegateRegistry'
 
 export const setDelegate = async (
@@ -20,10 +19,8 @@ export const setDelegate = async (
     console.error('Error getting chainId', err)
   }
 
-  const chainId = chainIdStore.getStore()
-
-  if (!signerChainId || !chainId || signerChainId !== chainId) {
-    console.error('Invalid chainId', signerChainId)
+  if (!signerChainId) {
+    console.error('Error getting chainId', signerChainId)
     return
   }
 
