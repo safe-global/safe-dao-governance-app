@@ -7,9 +7,10 @@ export const chainIdStore = new ExternalStore(_DEFAULT_CHAIN_ID)
 
 const supportedChains = Object.values(Chains)
 
-export const useChainId = () => {
+export const useChainId = (): number => {
   const isSafeApp = useIsSafeApp()
   const { safe } = useSafeAppsSDK()
+  const chainId = chainIdStore.useStore()!
 
   if (IS_PRODUCTION) {
     return _DEFAULT_CHAIN_ID
@@ -19,5 +20,5 @@ export const useChainId = () => {
     return safe.chainId
   }
 
-  return chainIdStore.useStore()!
+  return chainId
 }
