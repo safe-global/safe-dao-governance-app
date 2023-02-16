@@ -17,16 +17,19 @@ export const ClaimCard = ({
   ecosystemAmount,
   totalAmount,
   variant,
+  decimals,
 }: {
   isGuardian: boolean
   ecosystemAmount: string
   totalAmount: string
   variant: 'claimable' | 'vesting'
+  decimals: number
 }): ReactElement => {
   const { palette } = useTheme()
 
   const ecosystemAmountInEth = formatEther(ecosystemAmount)
   const totalAmountInEth = formatEther(totalAmount)
+  const numericalTotalAmountInEth = Number(totalAmountInEth)
 
   const isClaimable = variant === 'claimable'
 
@@ -113,7 +116,7 @@ export const ClaimCard = ({
             }}
             className={css.amountDisplay}
           >
-            <Odometer value={Number(totalAmountInEth)} decimals={2} /> SAFE
+            <Odometer value={Number(totalAmountInEth)} decimals={decimals} /> SAFE
           </Typography>
         </Grid>
       </Grid>

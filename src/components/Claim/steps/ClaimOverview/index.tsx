@@ -26,6 +26,20 @@ const validateAmount = (amount: string, maxAmount: string) => {
   return mustBeFloat(amount) || minMaxValue(0, maxAmount, amount) || maxDecimals(amount, 18)
 }
 
+const getDecimalLength = (amount: string) => {
+  const length = Number(amount).toFixed(2).length
+
+  if (length > 10) {
+    return 0
+  }
+
+  if (length > 9) {
+    return 1
+  }
+
+  return 2
+}
+
 const ClaimOverview = (): ReactElement => {
   const { sdk, safe } = useSafeAppsSDK()
   const isWrongChain = useIsWrongChain()
@@ -47,6 +61,8 @@ const ClaimOverview = (): ReactElement => {
 
   const { user, ecosystem, investor, total } = useTaggedAllocations(allocation)
   const totalClaimableAmountInEth = formatEther(total.claimable)
+
+  const decimals = getDecimalLength(total.inVesting)
 
   // Flags
   const isInvestorClaimingDisabled = !!investorVesting && isTokenPaused
@@ -115,6 +131,7 @@ const ClaimOverview = (): ReactElement => {
             isGuardian={!!ecosystemVesting}
             totalAmount={total.claimable}
             ecosystemAmount={ecosystem.claimable}
+            decimals={decimals}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -123,6 +140,7 @@ const ClaimOverview = (): ReactElement => {
             isGuardian={!!ecosystemVesting}
             totalAmount={total.inVesting}
             ecosystemAmount={ecosystem.inVesting}
+            decimals={decimals}
           />
         </Grid>
       </Grid>

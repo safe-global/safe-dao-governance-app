@@ -25,6 +25,7 @@
   display: inline-flex;
   gap: 4px;
   align-items: center;
+  z-index: 1;
 }
 
 .badge :global .MuiBadge-badge {

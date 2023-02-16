@@ -75,7 +75,7 @@ const ScrollProvidedList = () => {
 
     setShowAll(false)
 
-    onClose()
+    setExpandedDelegate(undefined)
   }
 
   const onSearch = (event: ChangeEvent<HTMLInputElement>) => {
