@@ -4,11 +4,13 @@ import { createContext, useContext, useRef } from 'react'
 
 type ScrollContextType = {
   storeScrollPosition: () => void
+  setScrollPosition: (top: number) => void
   restoreScrollPosition: () => void
 }
 
 const ScrollContext = createContext<ScrollContextType>({
   storeScrollPosition: () => {},
+  setScrollPosition: () => {},
   restoreScrollPosition: () => {},
 })
 
@@ -19,12 +21,18 @@ export const ScrollContextProvider = ({ children }: { children: JSX.Element }) =
     scrollPosition.current = document.documentElement.scrollTop
   }
 
-  const restoreScrollPosition = () => {
+  const setScrollPosition = (top?: number) => {
+    // Scroll in next frame to avoid scroll position being reset
+    setTimeout(() => {
+      document.documentElement.scrollTo({ top })
+    })
+  }
+
+  const restoreScrollPosition = (top?: number) => {
     if (scrollPosition.current) {
-      // Scroll in next frame to avoid scroll position being reset
-      setTimeout(() => {
-        document.documentElement.scrollTo({ top: scrollPosition.current })
-      })
+      setScrollPosition(scrollPosition.current)
+
+      scrollPosition.current = undefined
     }
   }
 
@@ -32,6 +40,7 @@ export const ScrollContextProvider = ({ children }: { children: JSX.Element }) =
     <ScrollContext.Provider
       value={{
         storeScrollPosition,
+        setScrollPosition,
         restoreScrollPosition,
       }}
     >

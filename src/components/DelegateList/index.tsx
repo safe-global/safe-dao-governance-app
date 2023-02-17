@@ -43,7 +43,7 @@ const ScrollProvidedList = () => {
   const { data: delegates = [] } = useDelegatesFile()
   const delegate = useDelegate()
 
-  const { storeScrollPosition, restoreScrollPosition } = useScrollContext()
+  const { storeScrollPosition, setScrollPosition, restoreScrollPosition } = useScrollContext()
 
   const { stepperState, setStepperState, onNext } = useDelegationStepper()
   const selectedSafeGuardian = stepperState?.safeGuardian
@@ -58,6 +58,8 @@ const ScrollProvidedList = () => {
     storeScrollPosition()
 
     setExpandedDelegate(delegate)
+
+    setScrollPosition(0)
   }
 
   const onClose = () => {
@@ -76,6 +78,8 @@ const ScrollProvidedList = () => {
     setShowAll(false)
 
     setExpandedDelegate(undefined)
+
+    setScrollPosition(0)
   }
 
   const onSearch = (event: ChangeEvent<HTMLInputElement>) => {

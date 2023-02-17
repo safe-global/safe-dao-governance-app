@@ -6,7 +6,7 @@
 
 .tiles {
   position: relative;
-  top: calc(-1 * var(--header-height));
+  top: -200px;
 }
 
 @media (max-width: 600px) {

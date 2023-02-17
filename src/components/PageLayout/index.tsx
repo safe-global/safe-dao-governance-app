@@ -22,7 +22,7 @@ export const PageLayout = ({ children }: { children: ReactNode }): ReactElement 
         <FloatingTiles tiles={50} />
       </div>
 
-      <Box pt={{ sm: 6, xs: undefined }} component="main">
+      <Box py={{ sm: 6, xs: undefined }} component="main">
         <Paper className={css.container}>
           <BottomCircle />
 
