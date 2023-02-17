@@ -14,7 +14,7 @@ import { formatAmount } from '@/utils/formatters'
 import { useTaggedAllocations } from '@/hooks/useTaggedAllocations'
 import { useIsWrongChain } from '@/hooks/useIsWrongChain'
 import SafeToken from '@/public/images/token.svg'
-import { CHAIN_SHORT_NAME, SAFE_URL, DEPLOYMENT_URL } from '@/config/constants'
+import { getGovernanceAppSafeAppUrl } from '@/utils/safe-apps'
 import { useChainId } from '@/hooks/useChainId'
 import { useWallet } from '@/hooks/useWallet'
 import { isSafe } from '@/utils/wallet'
@@ -22,17 +22,6 @@ import { InfoBox } from '@/components/InfoBox'
 import { useIsDelegationPending } from '@/hooks/usePendingDelegations'
 
 import css from './styles.module.css'
-
-const getSafeAppUrl = (chainId: number, address: string): string => {
-  const shortName = CHAIN_SHORT_NAME[chainId]
-
-  const url = new URL(`${SAFE_URL}/apps`)
-
-  url.searchParams.append('safe', `${shortName}:${address}`)
-  url.searchParams.append('appUrl', DEPLOYMENT_URL)
-
-  return url.toString()
-}
 
 export const Intro = (): ReactElement => {
   const router = useRouter()
@@ -52,9 +41,12 @@ export const Intro = (): ReactElement => {
   const canDelegate = !isDelegating && !!data?.votingPower && BigNumber.from(data.votingPower).gt(0) && !isWrongChain
 
   const onClick = (route: (typeof AppRoutes)[keyof typeof AppRoutes]) => async () => {
+    if (!wallet) {
+      return
+    }
     // Safe is connected via WC
     if (await isSafe(wallet)) {
-      window.open(getSafeAppUrl(chainId, wallet!.address), '_blank')?.focus()
+      window.open(getGovernanceAppSafeAppUrl(chainId, wallet.address), '_blank')?.focus()
     } else {
       router.push(route)
     }

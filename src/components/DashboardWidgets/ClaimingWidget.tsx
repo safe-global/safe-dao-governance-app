@@ -10,7 +10,8 @@ import type { ReactElement } from 'react'
 
 import { ExternalLink } from '@/components/ExternalLink'
 import SafeToken from '@/public/images/token.svg'
-import { CHAIN_SHORT_NAME, DEPLOYMENT_URL, DISCORD_URL, FORUM_URL, SAFE_URL } from '@/config/constants'
+import { DISCORD_URL, FORUM_URL, SAFE_URL } from '@/config/constants'
+import { getGovernanceAppSafeAppUrl } from '@/utils/safe-apps'
 import { useDelegate } from '@/hooks/useDelegate'
 import { useSafeTokenAllocation } from '@/hooks/useSafeTokenAllocation'
 import { SelectedDelegate } from '@/components/SelectedDelegate'
@@ -85,7 +86,7 @@ const VotingPowerWidget = (): ReactElement => {
 
   const hasUnredeemedAllocation = data?.vestingData?.some(({ isExpired, isRedeemed }) => !isExpired && !isRedeemed)
 
-  const claimingSafeAppUrl = `${SAFE_URL}/apps?safe=${CHAIN_SHORT_NAME[chainId]}:${safe.safeAddress}&appUrl=${DEPLOYMENT_URL}`
+  const claimingSafeAppUrl = getGovernanceAppSafeAppUrl(chainId, safe.safeAddress)
 
   return (
     <>

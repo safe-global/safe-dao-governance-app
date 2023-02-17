@@ -28,11 +28,7 @@ export const isWalletUnlocked = async (walletName: string): Promise<boolean> => 
   return false
 }
 
-export const isSafe = async (wallet: ConnectedWallet | null): Promise<boolean | null> => {
-  if (!wallet) {
-    return false
-  }
-
+export const isSafe = async (wallet: ConnectedWallet): Promise<boolean | null> => {
   try {
     return !!(await getSafeInfo(wallet.chainId, wallet.address))
   } catch {
