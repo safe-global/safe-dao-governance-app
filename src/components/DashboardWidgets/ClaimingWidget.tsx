@@ -79,11 +79,11 @@ const VotingPowerWidget = (): ReactElement => {
   const { data } = useSafeTokenAllocation()
   const chainId = useChainId()
 
-  const totalClaimed = data?.vestingData.reduce((acc, { amountClaimed }) => {
+  const totalClaimed = data?.vestingData?.reduce((acc, { amountClaimed }) => {
     return acc.add(amountClaimed)
   }, BigNumber.from(0))
 
-  const hasUnredeemedAllocation = data?.vestingData.some(({ isExpired, isRedeemed }) => !isExpired && !isRedeemed)
+  const hasUnredeemedAllocation = data?.vestingData?.some(({ isExpired, isRedeemed }) => !isExpired && !isRedeemed)
 
   const claimingSafeAppUrl = `${SAFE_URL}/apps?safe=${CHAIN_SHORT_NAME[chainId]}:${safe.safeAddress}&appUrl=${DEPLOYMENT_URL}`
 
