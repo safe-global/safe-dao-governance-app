@@ -25,10 +25,10 @@ export const ChainSwitcher = (): ReactElement | null => {
   }
 
   return (
-    <Button onClick={handleChainSwitch} variant="outlined" size="small" color="primary">
+    <Button onClick={handleChainSwitch} variant="outlined" size="small" color="primary" className={css.button}>
       Switch to&nbsp;
       <Box className={css.circle} bgcolor={defaultChain?.theme?.backgroundColor || ''} />
-      &nbsp;{defaultChain?.chainName}
+      {defaultChain?.chainName}
     </Button>
   )
 }
