@@ -156,7 +156,7 @@ export const ClaimingWidget = (): ReactElement => {
   return (
     <Card elevation={0} sx={{ minWidth: WIDGET_WIDTH, maxWidth: WIDGET_WIDTH }}>
       <Box className={css.spacer} sx={{ alignItems: 'center' }}>
-        {data?.votingPower.eq(0) ? <CtaWidget /> : <VotingPowerWidget />}
+        {data?.votingPower?.eq(0) ? <CtaWidget /> : <VotingPowerWidget />}
       </Box>
     </Card>
   )
