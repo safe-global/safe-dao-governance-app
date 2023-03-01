@@ -170,7 +170,9 @@ export const useSafeTokenAllocation = () => {
   const web3 = useWeb3()
   const wallet = useWallet()
 
-  return useSWR(web3 ? [QUERY_KEY, wallet?.address, wallet?.chainId] : null, () => _getSafeTokenAllocation(web3))
+  return useSWR(web3 ? [QUERY_KEY, ...(wallet ? [wallet.address, wallet.chainId] : [])] : null, () =>
+    _getSafeTokenAllocation(web3),
+  )
 }
 
 const safeTokenInterface = getSafeTokenInterface()
