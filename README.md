@@ -9,7 +9,7 @@ The app deploys to the following environments:
 - When a PR is opened: https://<<PR_NAME>>--governance.review-react-br.5afe.dev
 - When code is merged into `dev`: https://safe-dao-governance.dev.5afe.dev/
 - When code is merged into `main`: https://safe-dao-governance.staging.5afe.dev
-- When code is released: tbc
+- When code is released: https://governance.safe.global
 
 ## Getting started with local development
 
