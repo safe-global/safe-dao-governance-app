@@ -41,11 +41,8 @@ export const Intro = (): ReactElement => {
   const canDelegate = !isDelegating && !!data?.votingPower && BigNumber.from(data.votingPower).gt(0) && !isWrongChain
 
   const onClick = (route: (typeof AppRoutes)[keyof typeof AppRoutes]) => async () => {
-    if (!wallet) {
-      return
-    }
     // Safe is connected via WC
-    if (await isSafe(wallet)) {
+    if (wallet && (await isSafe(wallet))) {
       window.open(getGovernanceAppSafeAppUrl(chainId, wallet.address), '_blank')?.focus()
     } else {
       router.push(route)
