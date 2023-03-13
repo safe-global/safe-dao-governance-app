@@ -95,7 +95,7 @@ export const SnapshotWidget = (): ReactElement => {
             View all
           </ExternalLink>
           <ExternalLink href={FORUM_URL} variant="subtitle1" textAlign="center">
-            SafeDAO Forum
+            Safe{`{DAO}`} Forum
           </ExternalLink>
         </Box>
       </Box>

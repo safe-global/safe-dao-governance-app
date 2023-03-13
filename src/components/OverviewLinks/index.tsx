@@ -30,7 +30,7 @@ const SafeDaoCard = () => {
         <Typography variant="h3" fontWeight={700}>
           What is
           <br />
-          Safe {`{DAO}`}?
+          Safe{`{DAO}`}?
         </Typography>
         <Link href={AppRoutes.safedao} component={NextLink} ref={linkRef}>
           Learn more
@@ -71,7 +71,7 @@ export const OverviewLinks = (): ReactElement => {
       </Grid>
       <Grid item xs container>
         <Grid item xs={12} pb={{ sm: 1, xs: 2 }}>
-          <ExternalLinkCard href={FORUM_URL} header="Discuss" title="Safe {DAO} forum" />
+          <ExternalLinkCard href={FORUM_URL} header="Discuss" title="Safe{DAO} forum" />
         </Grid>
         <Grid item xs={12}>
           <ExternalLinkCard href={snapshotUrl} header="Vote" title="Snapshot" />

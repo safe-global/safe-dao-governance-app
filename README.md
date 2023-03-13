@@ -1,6 +1,6 @@
-# Safe {DAO} Governance
+# Safe{DAO} Governance
 
-The portal to Safe {DAO} governance, voting power delegation and allocation claiming.
+The portal to Safe{DAO} governance, voting power delegation and allocation claiming.
 
 ## Environments
 
