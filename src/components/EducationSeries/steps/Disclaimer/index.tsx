@@ -15,7 +15,7 @@ const Disclaimer = (): ReactElement => {
       </Grid>
 
       <Typography mb={3}>
-        This App is for our community to encourage Safe ecosystem contributors and users to unlock Safe {`{DAO}`}{' '}
+        This App is for our community to encourage Safe ecosystem contributors and users to unlock Safe{`{DAO}`}{' '}
         governance.
         <br />
         <br />
@@ -27,7 +27,7 @@ const Disclaimer = (): ReactElement => {
         By accessing this app, you represent and warrant
         <br />- that you are of legal age and that you will comply with any laws applicable to you and not engage in any
         illegal activities;
-        <br />- that you are claiming Safe tokens to participate in the Safe {`{DAO}`} governance process and that they
+        <br />- that you are claiming Safe tokens to participate in the Safe{`{DAO}`} governance process and that they
         do not represent consideration for past or future services;
         <br />- that you, the country you are a resident of and your wallet address is not on any sanctions lists
         maintained by the United Nations, Switzerland, the EU, UK or the US;

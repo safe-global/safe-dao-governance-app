@@ -17,7 +17,7 @@ const SuccessfulClaim = (): ReactElement => {
 
   return (
     <Grid container flexDirection="column" alignItems="center" pt={16} px={12} pb={22} sx={{ backgroundColor }}>
-      <SafeLogo alt="Safe {DAO} logo" width={125} height={110} />
+      <SafeLogo alt="Safe{DAO} logo" width={125} height={110} />
 
       <Typography variant="h1" mt={6} mb={2} color={textColor}>
         Congrats!

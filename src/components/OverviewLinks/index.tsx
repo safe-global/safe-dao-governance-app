@@ -30,7 +30,7 @@ const SafeDaoCard = () => {
         <Typography variant="h3" fontWeight={700}>
           What is
           <br />
-          Safe {`{DAO}`}?
+          Safe{`{DAO}`}?
         </Typography>
         <Link href={AppRoutes.safedao} component={NextLink} ref={linkRef}>
           Learn more

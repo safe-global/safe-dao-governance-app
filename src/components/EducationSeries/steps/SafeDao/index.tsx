@@ -33,7 +33,7 @@ const SafeDao = (): ReactElement => {
       </Grid>
 
       <Typography mb={3}>
-        Safe {`{DAO}`} aims to foster a vibrant ecosystem of applications and wallets leveraging Safe smart contract
+        Safe{`{DAO}`} aims to foster a vibrant ecosystem of applications and wallets leveraging Safe smart contract
         accounts. This will be achieved through data-backed discussions, grants, ecosystem investments, as well as
         providing developer tools and infrastructure.
       </Typography>
@@ -44,7 +44,7 @@ const SafeDao = (): ReactElement => {
 
       <Box display="flex" flexDirection="column" gap={3} mb={3.5}>
         <Point>
-          Discuss Safe {`{DAO}`} improvements - post topics and discuss in our{' '}
+          Discuss Safe{`{DAO}`} improvements - post topics and discuss in our{' '}
           <ExternalLink href={FORUM_URL}>Forum</ExternalLink>
         </Point>
 
