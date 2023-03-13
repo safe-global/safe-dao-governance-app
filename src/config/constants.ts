@@ -17,6 +17,8 @@ export const DEPLOYMENT_URL = IS_PRODUCTION
 
 export const GATEWAY_URL = IS_PRODUCTION ? 'https://safe-client.safe.global' : 'https://safe-client.staging.5afe.dev'
 
+export const SAFE_URL = IS_PRODUCTION ? 'https://app.safe.global' : 'https://safe-web-core.staging.5afe.dev'
+
 // Chains
 export const Chains = {
   MAINNET: 1,
