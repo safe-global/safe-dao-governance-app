@@ -2,7 +2,7 @@
   "name": "safe-dao-governance-app",
   "homepage": "https://github.com/safe-global/safe-dao-governance-app",
   "license": "GPL-3.0",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "scripts": {
     "build": "next build && next export",
     "lint": "tsc && next lint",
