@@ -49,7 +49,7 @@ const CtaWidget = (): ReactElement => {
       <br />
       <Subtitle>
         Help us unlock ownership for everyone by joining the discussions on the{' '}
-        <ExternalLink href={FORUM_URL}>SafeDAO Forum</ExternalLink> and our{' '}
+        <ExternalLink href={FORUM_URL}>Safe{`{DAO}`} Forum</ExternalLink> and our{' '}
         <ExternalLink href={DISCORD_URL}>Discord</ExternalLink>.
       </Subtitle>
     </div>

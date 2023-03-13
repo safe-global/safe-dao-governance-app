@@ -29,7 +29,7 @@ const SafeDao = (): ReactElement => {
   return (
     <Grid container px={6} pt={5} pb={4}>
       <Grid item xs={12} mb={3}>
-        <StepHeader title="Navigating Safe {DAO}" />
+        <StepHeader title="Navigating Safe{DAO}" />
       </Grid>
 
       <Typography mb={3}>

@@ -71,7 +71,7 @@ export const OverviewLinks = (): ReactElement => {
       </Grid>
       <Grid item xs container>
         <Grid item xs={12} pb={{ sm: 1, xs: 2 }}>
-          <ExternalLinkCard href={FORUM_URL} header="Discuss" title="Safe {DAO} forum" />
+          <ExternalLinkCard href={FORUM_URL} header="Discuss" title="Safe{DAO} forum" />
         </Grid>
         <Grid item xs={12}>
           <ExternalLinkCard href={snapshotUrl} header="Vote" title="Snapshot" />
