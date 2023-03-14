@@ -16,7 +16,6 @@ import { useDelegate } from '@/hooks/useDelegate'
 import { useSafeTokenAllocation } from '@/hooks/useSafeTokenAllocation'
 import { SelectedDelegate } from '@/components/SelectedDelegate'
 import { formatAmount } from '@/utils/formatters'
-import { useChainId } from '@/hooks/useChainId'
 
 import css from './styles.module.css'
 
@@ -78,7 +77,6 @@ const VotingPowerWidget = (): ReactElement => {
   const { safe } = useSafeAppsSDK()
   const delegate = useDelegate()
   const { data } = useSafeTokenAllocation()
-  const chainId = useChainId()
 
   const totalClaimed = data?.vestingData?.reduce((acc, { amountClaimed }) => {
     return acc.add(amountClaimed)
@@ -86,7 +84,7 @@ const VotingPowerWidget = (): ReactElement => {
 
   const hasUnredeemedAllocation = data?.vestingData?.some(({ isExpired, isRedeemed }) => !isExpired && !isRedeemed)
 
-  const claimingSafeAppUrl = getGovernanceAppSafeAppUrl(chainId, safe.safeAddress)
+  const claimingSafeAppUrl = getGovernanceAppSafeAppUrl(safe.chainId, safe.safeAddress)
 
   return (
     <>
