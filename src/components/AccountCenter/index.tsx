@@ -7,7 +7,7 @@ import type { ReactElement, MouseEvent } from 'react'
 import { useWallet } from '@/hooks/useWallet'
 import { useOnboard } from '@/hooks/useOnboard'
 import { Identicon } from '@/components/Identicon'
-import { useChains } from '@/hooks/useChains'
+import { useChain } from '@/hooks/useChain'
 import { WalletInfo } from '@/components/WalletInfo'
 import { EthHashInfo } from '@/components/EthHashInfo'
 import type { ConnectedWallet } from '@/hooks/useWallet'
@@ -18,8 +18,7 @@ const Popper = ({ wallet }: { wallet: ConnectedWallet }): ReactElement => {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null)
   const onboard = useOnboard()
 
-  const { data: chains } = useChains()
-  const chain = chains?.results.find((chain) => chain.chainId === wallet.chainId)
+  const chain = useChain()
 
   const handleDisconnect = () => {
     onboard?.disconnectWallet({ label: wallet.label })

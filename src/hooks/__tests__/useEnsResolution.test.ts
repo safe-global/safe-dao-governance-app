@@ -5,7 +5,7 @@ import * as SafeAppsSdk from '@gnosis.pm/safe-apps-react-sdk'
 
 import { renderHook } from '@/tests/test-utils'
 import * as useWeb3 from '@/hooks/useWeb3'
-import * as useChains from '@/hooks/useChains'
+import * as useChains from '@/hooks/useChain'
 import * as useWallet from '@/hooks/useWallet'
 import { useEnsResolution } from '@/hooks/useEnsResolution'
 import type { ChainListResponse } from '@safe-global/safe-gateway-typescript-sdk'

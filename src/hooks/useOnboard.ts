@@ -2,8 +2,7 @@ import { useEffect } from 'react'
 import type { OnboardAPI } from '@web3-onboard/core'
 
 import { ExternalStore } from '@/services/ExternalStore'
-import { useChainId } from './useChainId'
-import { useChains } from '@/hooks/useChains'
+import { useChain } from '@/hooks/useChain'
 import { createOnboard } from '@/utils/onboard'
 import { useIsSafeApp } from '@/hooks/useIsSafeApp'
 
@@ -12,19 +11,17 @@ const onboardStore = new ExternalStore<OnboardAPI>()
 export const useOnboard = onboardStore.useStore
 
 export const useInitOnboard = () => {
-  const { data: chains } = useChains()
-  const chainId = useChainId()
+  const chain = useChain()
 
-  const chain = chains?.results.find((chain) => chain.chainId === chainId.toString())
   const onboard = onboardStore.useStore()
   const isSafeApp = useIsSafeApp()
 
   // Create onboard instance when chains are loaded/running as dapp
   useEffect(() => {
-    if (chains?.results && !isSafeApp) {
-      onboardStore.setStore(createOnboard(chains.results))
+    if (chain && !isSafeApp) {
+      onboardStore.setStore(createOnboard([chain]))
     }
-  }, [chains?.results, isSafeApp])
+  }, [chain, isSafeApp])
 
   // Disable unsupported wallets on the current chain
   useEffect(() => {

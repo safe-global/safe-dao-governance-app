@@ -1,4 +1,5 @@
 import { Grid, Typography, Button } from '@mui/material'
+import { hexValue } from 'ethers/lib/utils'
 import type { ReactElement } from 'react'
 
 import { useOnboard } from '@/hooks/useOnboard'
@@ -6,7 +7,7 @@ import { KeyholeIcon } from '@/components/KeyholeIcon'
 import { OverviewLinks } from '@/components/OverviewLinks'
 import { useChainId } from '@/hooks/useChainId'
 import SafeLogo from '@/public/images/safe-logo.svg'
-import { getConnectedWallet, switchWalletChain } from '@/utils/wallet'
+import { getConnectedWallet } from '@/hooks/useWallet'
 
 export const ConnectWallet = (): ReactElement => {
   const onboard = useOnboard()
@@ -17,12 +18,22 @@ export const ConnectWallet = (): ReactElement => {
       return
     }
 
-    onboard.connectWallet().then(async (wallets) => {
-      const wallet = getConnectedWallet(wallets)
+    await onboard.connectWallet()
 
-      if (wallet && wallet.chainId !== chainId.toString()) {
-        await switchWalletChain(onboard, wallet, chainId)
-      }
+    // Wait for onboard's state to update
+    new Promise<void>((resolve) => {
+      setTimeout(async () => {
+        const wallet = getConnectedWallet(onboard.state.get().wallets)
+
+        // Here we check non-hardware wallets. Hardware wallets will always be on the
+        // correct chain as `useChain` only returns  one chain config for selection
+        const isWrongChain = wallet && wallet.chainId !== chainId.toString()
+        if (isWrongChain) {
+          await onboard.setChain({ wallet: wallet.label, chainId: hexValue(chainId) })
+        }
+
+        resolve()
+      }, 500)
     })
   }
 
