@@ -18,23 +18,15 @@ export const ConnectWallet = (): ReactElement => {
       return
     }
 
-    await onboard.connectWallet()
+    const wallets = await onboard.connectWallet()
+    const wallet = getConnectedWallet(wallets)
 
-    // Wait for onboard's state to update
-    new Promise<void>((resolve) => {
-      setTimeout(async () => {
-        const wallet = getConnectedWallet(onboard.state.get().wallets)
-
-        // Here we check non-hardware wallets. Hardware wallets will always be on the
-        // correct chain as `useChain` only returns  one chain config for selection
-        const isWrongChain = wallet && wallet.chainId !== chainId.toString()
-        if (isWrongChain) {
-          await onboard.setChain({ wallet: wallet.label, chainId: hexValue(chainId) })
-        }
-
-        resolve()
-      }, 500)
-    })
+    // Here we check non-hardware wallets. Hardware wallets will always be on the correct
+    // chain as onboard is only every initialised with the current chain config
+    const isWrongChain = wallet && wallet.chainId !== chainId.toString()
+    if (isWrongChain) {
+      await onboard.setChain({ wallet: wallet.label, chainId: hexValue(chainId) })
+    }
   }
 
   return (
