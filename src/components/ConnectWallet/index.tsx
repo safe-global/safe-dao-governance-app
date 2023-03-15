@@ -6,8 +6,7 @@ import { KeyholeIcon } from '@/components/KeyholeIcon'
 import { OverviewLinks } from '@/components/OverviewLinks'
 import { useChainId } from '@/hooks/useChainId'
 import SafeLogo from '@/public/images/safe-logo.svg'
-import { getConnectedWallet } from '@/hooks/useWallet'
-import { switchWalletChain } from '@/utils/wallet'
+import { getConnectedWallet, switchWalletChain } from '@/utils/wallet'
 
 export const ConnectWallet = (): ReactElement => {
   const onboard = useOnboard()
