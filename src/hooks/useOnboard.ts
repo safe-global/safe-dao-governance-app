@@ -15,7 +15,7 @@ export const useInitOnboard = () => {
   const { data: chains } = useChains()
   const chainId = useChainId()
 
-  const chain = chains?.results.find(({ chainId }) => chainId === chainId.toString())
+  const chain = chains?.results.find((chain) => chain.chainId === chainId.toString())
   const onboard = onboardStore.useStore()
   const isSafeApp = useIsSafeApp()
 

@@ -1,36 +1,30 @@
 import { Grid, Typography, Button } from '@mui/material'
-import { hexValue } from 'ethers/lib/utils'
 import type { ReactElement } from 'react'
 
 import { useOnboard } from '@/hooks/useOnboard'
 import { KeyholeIcon } from '@/components/KeyholeIcon'
 import { OverviewLinks } from '@/components/OverviewLinks'
 import { useChainId } from '@/hooks/useChainId'
-import { getConnectedWallet } from '@/hooks/useWallet'
-import { useIsWrongChain } from '@/hooks/useIsWrongChain'
-import type { ConnectedWallet } from '@/hooks/useWallet'
 import SafeLogo from '@/public/images/safe-logo.svg'
+import { getConnectedWallet } from '@/hooks/useWallet'
+import { switchWalletChain } from '@/utils/wallet'
 
 export const ConnectWallet = (): ReactElement => {
   const onboard = useOnboard()
-  const isWrongChain = useIsWrongChain()
   const chainId = useChainId()
 
   const onClick = async () => {
-    let wallet: ConnectedWallet | null = null
-
-    try {
-      const wallets = await onboard?.connectWallet()
-      if (wallets) {
-        wallet = getConnectedWallet(wallets)
-      }
-    } catch {
+    if (!onboard) {
       return
     }
 
-    if (isWrongChain) {
-      onboard?.setChain({ chainId: hexValue(chainId) })
-    }
+    onboard.connectWallet().then(async (wallets) => {
+      const wallet = getConnectedWallet(wallets)
+
+      if (wallet && wallet.chainId !== chainId.toString()) {
+        await switchWalletChain(onboard, wallet, chainId)
+      }
+    })
   }
 
   return (
