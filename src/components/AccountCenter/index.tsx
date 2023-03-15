@@ -19,6 +19,7 @@ const Popper = ({ wallet }: { wallet: ConnectedWallet }): ReactElement => {
   const onboard = useOnboard()
 
   const chain = useChain()
+  const connectedChain = chain?.chainId === wallet.chainId ? chain : undefined
 
   const handleDisconnect = () => {
     onboard?.disconnectWallet({ label: wallet.label })
@@ -39,7 +40,7 @@ const Popper = ({ wallet }: { wallet: ConnectedWallet }): ReactElement => {
     <>
       <ButtonBase onClick={handleClick} disableRipple className={css.dropdown}>
         <Box className={css.buttonContainer}>
-          <WalletInfo wallet={wallet} chain={chain} />
+          <WalletInfo wallet={wallet} chain={connectedChain} />
 
           <Box display="flex" alignItems="center" justifyContent="flex-end" marginLeft="auto">
             <ExpandIcon color="border" />
