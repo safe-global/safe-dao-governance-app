@@ -19,7 +19,7 @@ export const ChainSwitcher = (): ReactElement | null => {
     return null
   }
 
-  const handleChainSwitch = async () => {
+  const handleChainSwitch = () => {
     onboard?.setChain({ chainId: hexValue(chainId) })
   }
 

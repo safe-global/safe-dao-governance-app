@@ -5,11 +5,10 @@ import * as SafeAppsSdk from '@gnosis.pm/safe-apps-react-sdk'
 
 import { renderHook } from '@/tests/test-utils'
 import * as useWeb3 from '@/hooks/useWeb3'
-import * as useChains from '@/hooks/useChain'
+import * as useChain from '@/hooks/useChain'
 import * as useWallet from '@/hooks/useWallet'
 import { useEnsResolution } from '@/hooks/useEnsResolution'
-import type { ChainListResponse } from '@safe-global/safe-gateway-typescript-sdk'
-import type { SWRResponse } from 'swr/_internal'
+import type { ChainInfo } from '@safe-global/safe-gateway-typescript-sdk'
 
 jest.mock('@gnosis.pm/safe-apps-react-sdk', () => {
   return {
@@ -25,10 +24,10 @@ jest.mock('@/hooks/useWeb3', () => {
   }
 })
 
-jest.mock('@/hooks/useChains', () => {
+jest.mock('@/hooks/useChain', () => {
   return {
     __esModule: true,
-    ...jest.requireActual('@/hooks/useChains'),
+    ...jest.requireActual('@/hooks/useChain'),
   }
 })
 
@@ -74,17 +73,7 @@ describe('useEnsResolution()', () => {
     web3Provider.resolveName = jest.fn()
     jest.spyOn(useWeb3, 'useWeb3').mockImplementation(() => web3Provider)
 
-    jest.spyOn(useChains, 'useChains').mockImplementation(
-      () =>
-        ({
-          data: {
-            results: [
-              { chainId: '1', shortName: 'eth' },
-              { chainId: '5', shortName: 'gor' },
-            ],
-          },
-        } as SWRResponse<ChainListResponse, any, any>),
-    )
+    jest.spyOn(useChain, 'useChain').mockImplementation(() => ({ chainId: '5', shortName: 'gor' } as ChainInfo))
 
     jest.useFakeTimers()
 
@@ -106,17 +95,7 @@ describe('useEnsResolution()', () => {
     web3Provider.resolveName = jest.fn()
     jest.spyOn(useWeb3, 'useWeb3').mockImplementation(() => web3Provider)
 
-    jest.spyOn(useChains, 'useChains').mockImplementation(
-      () =>
-        ({
-          data: {
-            results: [
-              { chainId: '1', shortName: 'eth' },
-              { chainId: '5', shortName: 'gor' },
-            ],
-          },
-        } as SWRResponse<ChainListResponse, any, any>),
-    )
+    jest.spyOn(useChain, 'useChain').mockImplementation(() => ({ chainId: '5', shortName: 'gor' } as ChainInfo))
 
     jest.useFakeTimers()
 

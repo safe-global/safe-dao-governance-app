@@ -4,9 +4,9 @@ import { Button, Card, CardContent, CardHeader, IconButton, Typography } from '@
 
 import { DelegateAvatar } from '@/components/DelegateAvatar'
 import { ExternalLink } from '@/components/ExternalLink'
+import { useChain } from '@/hooks/useChain'
 import { getHashedExplorerUrl } from '@/utils/gateway'
 import { shortenAddress } from '@/utils/addresses'
-import { useChain } from '@/hooks/useChain'
 import type { FileDelegate } from '@/hooks/useDelegatesFile'
 
 export const ExpandedDelegateCard = ({
