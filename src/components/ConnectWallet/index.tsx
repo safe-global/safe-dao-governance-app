@@ -18,14 +18,18 @@ export const ConnectWallet = (): ReactElement => {
       return
     }
 
-    const wallets = await onboard.connectWallet()
-    const wallet = getConnectedWallet(wallets)
+    try {
+      const wallets = await onboard.connectWallet()
+      const wallet = getConnectedWallet(wallets)
 
-    // Here we check non-hardware wallets. Hardware wallets will always be on the correct
-    // chain as onboard is only every initialised with the current chain config
-    const isWrongChain = wallet && wallet.chainId !== chainId.toString()
-    if (isWrongChain) {
-      await onboard.setChain({ wallet: wallet.label, chainId: hexValue(chainId) })
+      // Here we check non-hardware wallets. Hardware wallets will always be on the correct
+      // chain as onboard is only ever initialised with the current chain config
+      const isWrongChain = wallet && wallet.chainId !== chainId.toString()
+      if (isWrongChain) {
+        await onboard.setChain({ wallet: wallet.label, chainId: hexValue(chainId) })
+      }
+    } catch {
+      return
     }
   }
 
