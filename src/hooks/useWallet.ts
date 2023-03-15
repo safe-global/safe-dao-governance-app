@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react'
-import { getAddress } from 'ethers/lib/utils'
-import type { EIP1193Provider, WalletState } from '@web3-onboard/core'
+import type { EIP1193Provider } from '@web3-onboard/core'
 
 import { useOnboard } from '@/hooks/useOnboard'
 import { localItem } from '@/services/storage/local'
-import { isWalletUnlocked } from '@/utils/wallet'
+import { getConnectedWallet, isWalletUnlocked } from '@/utils/wallet'
 
 export type ConnectedWallet = {
   label: string
@@ -12,31 +11,6 @@ export type ConnectedWallet = {
   address: string
   ens?: string
   provider: EIP1193Provider
-}
-
-// Get the most recently connected wallet address
-export const getConnectedWallet = (wallets: WalletState[]): ConnectedWallet | null => {
-  if (!wallets) {
-    return null
-  }
-
-  const primaryWallet = wallets[0]
-  if (!primaryWallet) {
-    return null
-  }
-
-  const account = primaryWallet?.accounts[0]
-  if (!account) {
-    return null
-  }
-
-  return {
-    label: primaryWallet.label,
-    address: getAddress(account.address),
-    ens: account.ens?.name,
-    chainId: Number(primaryWallet.chains[0].id).toString(10),
-    provider: primaryWallet.provider,
-  }
 }
 
 export const useWallet = (): ConnectedWallet | null => {

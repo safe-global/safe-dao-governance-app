@@ -1,11 +1,36 @@
 import { ProviderLabel } from '@web3-onboard/injected-wallets'
 import { getSafeInfo } from '@safe-global/safe-gateway-typescript-sdk'
-import { hexValue } from 'ethers/lib/utils'
-import type { OnboardAPI } from '@web3-onboard/core'
+import { getAddress, hexValue } from 'ethers/lib/utils'
+import type { OnboardAPI, WalletState } from '@web3-onboard/core'
 
 import { local } from '@/services/storage/local'
-import { ConnectedWallet, getConnectedWallet } from '@/hooks/useWallet'
 import { WALLET_KEYS } from '@/utils/onboard'
+import type { ConnectedWallet } from '@/hooks/useWallet'
+
+// Get the most recently connected wallet address
+export const getConnectedWallet = (wallets: WalletState[]): ConnectedWallet | null => {
+  if (!wallets) {
+    return null
+  }
+
+  const primaryWallet = wallets[0]
+  if (!primaryWallet) {
+    return null
+  }
+
+  const account = primaryWallet?.accounts[0]
+  if (!account) {
+    return null
+  }
+
+  return {
+    label: primaryWallet.label,
+    address: getAddress(account.address),
+    ens: account.ens?.name,
+    chainId: Number(primaryWallet.chains[0].id).toString(10),
+    provider: primaryWallet.provider,
+  }
+}
 
 export const WalletNames = {
   METAMASK: ProviderLabel.MetaMask,
