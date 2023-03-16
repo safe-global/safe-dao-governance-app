@@ -16,7 +16,7 @@ import { useInitOnboard } from '@/hooks/useOnboard'
 import { useInitWeb3 } from '@/hooks/useWeb3'
 import initTheme from '@/styles/theme'
 import { useDelegatesFile } from '@/hooks/useDelegatesFile'
-import { useChains } from '@/hooks/useChains'
+import { useChain } from '@/hooks/useChain'
 import { PageLayout } from '@/components/PageLayout'
 import { useIsTokenPaused } from '@/hooks/useIsTokenPaused'
 import { useInitWallet } from '@/hooks/useWallet'
@@ -41,7 +41,7 @@ const InitApp = (): null => {
   usePendingDelegations()
 
   // Populate caches
-  useChains()
+  useChain()
   useDelegatesFile()
   useIsTokenPaused()
   useSafeSnapshot()

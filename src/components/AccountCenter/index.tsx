@@ -7,8 +7,8 @@ import type { ReactElement, MouseEvent } from 'react'
 import { useWallet } from '@/hooks/useWallet'
 import { useOnboard } from '@/hooks/useOnboard'
 import { Identicon } from '@/components/Identicon'
-import { useChains } from '@/hooks/useChains'
-import { WalletInfo } from '@/components/WalletInfo'
+import { useChain } from '@/hooks/useChain'
+import { WalletInfo, UNKNOWN_CHAIN_NAME } from '@/components/WalletInfo'
 import { EthHashInfo } from '@/components/EthHashInfo'
 import type { ConnectedWallet } from '@/hooks/useWallet'
 
@@ -18,8 +18,8 @@ const Popper = ({ wallet }: { wallet: ConnectedWallet }): ReactElement => {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null)
   const onboard = useOnboard()
 
-  const { data: chains } = useChains()
-  const chain = chains?.results.find((chain) => chain.chainId === wallet.chainId)
+  const chain = useChain()
+  const connectedChain = chain?.chainId === wallet.chainId ? chain : undefined
 
   const handleDisconnect = () => {
     onboard?.disconnectWallet({ label: wallet.label })
@@ -40,7 +40,7 @@ const Popper = ({ wallet }: { wallet: ConnectedWallet }): ReactElement => {
     <>
       <ButtonBase onClick={handleClick} disableRipple className={css.dropdown}>
         <Box className={css.buttonContainer}>
-          <WalletInfo wallet={wallet} chain={chain} />
+          <WalletInfo wallet={wallet} chain={connectedChain} />
 
           <Box display="flex" alignItems="center" justifyContent="flex-end" marginLeft="auto">
             <ExpandIcon color="border" />
@@ -72,7 +72,12 @@ const Popper = ({ wallet }: { wallet: ConnectedWallet }): ReactElement => {
           )}
 
           <Box bgcolor="border.background" px={2} py={1} fontSize={14}>
-            <EthHashInfo prefix={chain?.shortName} address={wallet.address} showAvatar={false} showCopyButton />
+            <EthHashInfo
+              prefix={connectedChain?.shortName}
+              address={wallet.address}
+              showAvatar={false}
+              showCopyButton
+            />
           </Box>
 
           <Box className={css.rowContainer}>
@@ -82,7 +87,7 @@ const Popper = ({ wallet }: { wallet: ConnectedWallet }): ReactElement => {
             </Box>
             <Box className={css.row}>
               <Typography variant="caption">Connected network</Typography>
-              <Typography variant="body2">{chain?.chainName}</Typography>
+              <Typography variant="body2">{connectedChain?.chainName ?? UNKNOWN_CHAIN_NAME}</Typography>
             </Box>
           </Box>
 

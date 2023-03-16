@@ -4,10 +4,9 @@ import { Button, Card, CardContent, CardHeader, IconButton, Typography } from '@
 
 import { DelegateAvatar } from '@/components/DelegateAvatar'
 import { ExternalLink } from '@/components/ExternalLink'
-import { useChains } from '@/hooks/useChains'
+import { useChain } from '@/hooks/useChain'
 import { getHashedExplorerUrl } from '@/utils/gateway'
 import { shortenAddress } from '@/utils/addresses'
-import { useChainId } from '@/hooks/useChainId'
 import type { FileDelegate } from '@/hooks/useDelegatesFile'
 
 export const ExpandedDelegateCard = ({
@@ -19,18 +18,15 @@ export const ExpandedDelegateCard = ({
   delegate: FileDelegate
   onClose: () => void
 }) => {
-  const { data: chains } = useChains()
-  const chainId = useChainId()
+  const chain = useChain()
 
   const explorerUrl = useMemo(() => {
-    const chain = chains?.results.find((chain) => chain.chainId === chainId.toString())
-
     if (!chain) {
       return ''
     }
 
     return getHashedExplorerUrl(delegate.address, chain.blockExplorerUriTemplate)
-  }, [chains, delegate, chainId])
+  }, [chain, delegate])
 
   return (
     <Card variant="outlined">

@@ -7,29 +7,29 @@ import { KeyholeIcon } from '@/components/KeyholeIcon'
 import { OverviewLinks } from '@/components/OverviewLinks'
 import { useChainId } from '@/hooks/useChainId'
 import { getConnectedWallet } from '@/hooks/useWallet'
-import { useIsWrongChain } from '@/hooks/useIsWrongChain'
-import type { ConnectedWallet } from '@/hooks/useWallet'
 import SafeLogo from '@/public/images/safe-logo.svg'
 
 export const ConnectWallet = (): ReactElement => {
   const onboard = useOnboard()
-  const isWrongChain = useIsWrongChain()
   const chainId = useChainId()
 
   const onClick = async () => {
-    let wallet: ConnectedWallet | null = null
-
-    try {
-      const wallets = await onboard?.connectWallet()
-      if (wallets) {
-        wallet = getConnectedWallet(wallets)
-      }
-    } catch {
+    if (!onboard) {
       return
     }
 
-    if (isWrongChain) {
-      onboard?.setChain({ chainId: hexValue(chainId) })
+    try {
+      const wallets = await onboard.connectWallet()
+      const wallet = getConnectedWallet(wallets)
+
+      // Here we check non-hardware wallets. Hardware wallets will always be on the correct
+      // chain as onboard is only ever initialised with the current chain config
+      const isWrongChain = wallet && wallet.chainId !== chainId.toString()
+      if (isWrongChain) {
+        await onboard.setChain({ wallet: wallet.label, chainId: hexValue(chainId) })
+      }
+    } catch {
+      return
     }
   }
 

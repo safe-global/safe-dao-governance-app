@@ -9,7 +9,7 @@ import type { ConnectedWallet } from '@/hooks/useWallet'
 
 import css from './styles.module.css'
 
-const UNKNOWN_CHAIN_NAME = 'Unknown'
+export const UNKNOWN_CHAIN_NAME = 'Unknown'
 
 export const WalletInfo = ({ wallet, chain }: { wallet: ConnectedWallet; chain?: ChainInfo }): ReactElement => {
   return (
