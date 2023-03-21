@@ -31,7 +31,30 @@ import { usePendingDelegations } from '@/hooks/usePendingDelegations'
 
 import '@/styles/globals.css'
 
-const InitApp = (): null => {
+const isDashboard = (pathname: string): boolean => {
+  return pathname === AppRoutes.widgets
+}
+
+/**
+ * TODO: Migrate invalidators to use custom timeouts instead of
+ * ethers' `on` function as they do not allow custom timeouts
+ * and otherwise increase RPC calls substantially.
+ *
+ * {@link} useContractDelegateInvalidator
+ * {@link} useSafeTokenTransferInvalidator
+ *
+ * @see https://docs.ethers.org/v5/concepts/events/
+ */
+const Invalidators = (): null => {
+  useContractDelegateInvalidator()
+  useSafeTokenTransferInvalidator()
+
+  return null
+}
+
+const InitApp = (): ReactElement | null => {
+  const { pathname } = useRouter()
+
   setGatewayBaseUrl(GATEWAY_URL)
 
   useInitOnboard()
@@ -46,11 +69,12 @@ const InitApp = (): null => {
   useIsTokenPaused()
   useSafeSnapshot()
 
-  // Invalidate caches
-  useContractDelegateInvalidator()
-  useSafeTokenTransferInvalidator()
+  // Only run invalidators when app is open to decrease RPC calls
+  if (isDashboard(pathname)) {
+    return null
+  }
 
-  return null
+  return <Invalidators />
 }
 
 // Client-side cache, shared for the whole session of the user in the browser.
@@ -91,7 +115,7 @@ const App = ({
         <SafeProvider>
           <InitApp />
 
-          {pathname === AppRoutes.widgets ? (
+          {isDashboard(pathname) ? (
             page
           ) : (
             <PageLayout>
