@@ -25,8 +25,8 @@ import { createEmotionCache } from '@/styles/emotion'
 import { GATEWAY_URL } from '@/config/constants'
 import { AppRoutes } from '@/config/routes'
 import { useSafeSnapshot } from '@/hooks/useSafeSnapshot'
-import { useContractDelegateInvalidator } from '@/hooks/useContractDelegate'
-import { useSafeTokenTransferInvalidator } from '@/hooks/useSafeTokenAllocation'
+import { useContractDelegateInvalidator } from '@/hooks/useContractDelegateInvalidator'
+import { useSafeTokenAllocationInvalidator } from '@/hooks/useSafeTokenAllocationInvalidator'
 import { usePendingDelegations } from '@/hooks/usePendingDelegations'
 
 import '@/styles/globals.css'
@@ -35,19 +35,9 @@ const isDashboard = (pathname: string): boolean => {
   return pathname === AppRoutes.widgets
 }
 
-/**
- * TODO: Migrate invalidators to use custom timeouts instead of
- * ethers' `on` function as they do not allow custom timeouts
- * and otherwise increase RPC calls substantially.
- *
- * {@link} useContractDelegateInvalidator
- * {@link} useSafeTokenTransferInvalidator
- *
- * @see https://docs.ethers.org/v5/concepts/events/
- */
 const Invalidators = (): null => {
   useContractDelegateInvalidator()
-  useSafeTokenTransferInvalidator()
+  useSafeTokenAllocationInvalidator()
 
   return null
 }
