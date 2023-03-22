@@ -1,4 +1,4 @@
-import useSWR from 'swr'
+import useSWRImmutable from 'swr/immutable'
 
 import { CHAIN_DELEGATE_ID } from '@/config/constants'
 import { useChainId } from './useChainId'
@@ -81,5 +81,5 @@ export const useSafeSnapshot = () => {
 
   const chainId = useChainId()
 
-  return useSWR([QUERY_KEY, chainId], () => getSafeSnapshot(CHAIN_DELEGATE_ID[chainId]))
+  return useSWRImmutable([QUERY_KEY, chainId], () => getSafeSnapshot(CHAIN_DELEGATE_ID[chainId]))
 }

@@ -1,4 +1,4 @@
-import useSWR from 'swr'
+import useSWRImmutable from 'swr/immutable'
 import { SafeToken__factory } from '@/types/contracts/safe-token'
 import type { JsonRpcProvider } from '@ethersproject/providers'
 
@@ -38,10 +38,10 @@ export const _getIsTokenPaused = async (web3?: JsonRpcProvider): Promise<boolean
 }
 
 export const useIsTokenPaused = () => {
-  const QUERY_KEY = 'isTokenPaused'
+  const QUERY_KEY = 'token-paused'
 
   const web3 = useWeb3()
   const wallet = useWallet()
 
-  return useSWR(web3 ? [QUERY_KEY, wallet?.chainId] : null, () => _getIsTokenPaused(web3))
+  return useSWRImmutable(web3 ? [QUERY_KEY, wallet?.chainId] : null, () => _getIsTokenPaused(web3))
 }

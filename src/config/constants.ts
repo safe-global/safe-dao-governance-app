@@ -5,6 +5,8 @@ export const INFURA_TOKEN = process.env.NEXT_PUBLIC_INFURA_TOKEN || ''
 export const LS_NAMESPACE = 'SAFE__'
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
 
+export const POLLING_INTERVAL = 15_000
+
 // Wallets
 export const WC_BRIDGE = process.env.NEXT_PUBLIC_WC_BRIDGE || ''
 export const TREZOR_APP_URL = 'app.safe.global'

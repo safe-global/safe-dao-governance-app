@@ -1,4 +1,4 @@
-import useSWR from 'swr'
+import useSWRImmutable from 'swr/immutable'
 
 import { GUARDIANS_URL } from '@/config/constants'
 
@@ -27,13 +27,7 @@ const parseFile = async (): Promise<FileDelegate[]> => {
 }
 
 export const useDelegatesFile = () => {
-  const QUERY_KEY = 'delegatesFile'
+  const QUERY_KEY = 'delegates-file'
 
-  return useSWR([QUERY_KEY], parseFile, {
-    // Cache is populated in _app and we don't want to refetch
-    // because it otherwise shuffles the data again
-    revalidateIfStale: false,
-    revalidateOnFocus: false,
-    revalidateOnReconnect: false,
-  })
+  return useSWRImmutable([QUERY_KEY], parseFile)
 }

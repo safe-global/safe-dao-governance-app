@@ -1,17 +1,17 @@
 import { isPast } from 'date-fns'
 import { BigNumber } from 'ethers'
-import { defaultAbiCoder, hexZeroPad } from 'ethers/lib/utils'
+import { defaultAbiCoder } from 'ethers/lib/utils'
 import useSWR from 'swr'
-import { useEffect } from 'react'
-import type { EventFilter } from '@ethersproject/abstract-provider'
+import { useRouter } from 'next/router'
 import type { JsonRpcProvider } from '@ethersproject/providers'
 
 import { getAirdropInterface } from '@/services/contracts/Airdrop'
 import { getSafeTokenInterface } from '@/services/contracts/SafeToken'
-import { CHAIN_SAFE_TOKEN_ADDRESS, VESTING_URL, ZERO_ADDRESS } from '@/config/constants'
+import { CHAIN_SAFE_TOKEN_ADDRESS, POLLING_INTERVAL, VESTING_URL, ZERO_ADDRESS } from '@/config/constants'
 import { useWeb3 } from '@/hooks/useWeb3'
 import { sameAddress } from '@/utils/addresses'
 import { useWallet } from '@/hooks/useWallet'
+import { isDashboard } from '@/utils/routes'
 
 type VestingData = {
   tag: 'user' | 'ecosystem' | 'investor'
@@ -146,6 +146,7 @@ export const _getSafeTokenAllocation = async (
 
   const signerChainId = await signer.getChainId()
 
+  // TODO: Split this into own cache so that it does not poll
   const vestingData = await fetchAllocation(signerChainId, address).then((allocations) => {
     return Promise.all(allocations.map((allocation) => completeAllocation(allocation, web3)))
   })
@@ -165,63 +166,13 @@ export const _getSafeTokenAllocation = async (
  * Fetches allocated tokens and combines it with the on-chain status of the vesting.
  */
 export const useSafeTokenAllocation = () => {
-  const QUERY_KEY = 'safeTokenAllocation'
+  const QUERY_KEY = 'token-allocation'
 
+  const { pathname } = useRouter()
   const web3 = useWeb3()
   const wallet = useWallet()
 
-  return useSWR(web3 ? [QUERY_KEY, wallet?.address, wallet?.chainId] : null, () => _getSafeTokenAllocation(web3))
-}
-
-const safeTokenInterface = getSafeTokenInterface()
-const transferEvent = safeTokenInterface.getEventTopic(safeTokenInterface.events['Transfer(address,address,uint256)'])
-
-export const useSafeTokenTransferInvalidator = () => {
-  const web3 = useWeb3()
-  const { mutate } = useSafeTokenAllocation()
-
-  useEffect(() => {
-    if (!web3) {
-      return
-    }
-
-    const filters: EventFilter[] = []
-
-    ;(async () => {
-      const signer = web3.getSigner()
-
-      const address = await signer.getAddress()
-      const signerChainId = await signer.getChainId()
-
-      const safeTokenAddress = CHAIN_SAFE_TOKEN_ADDRESS[signerChainId]
-
-      if (!safeTokenAddress) {
-        return
-      }
-
-      // Transfers _from_ signer
-      const fromFilter = {
-        address: safeTokenAddress,
-        // Each topic has to be 32 bytes
-        topics: [transferEvent, hexZeroPad(address, 32)],
-      }
-
-      // Transfers _to_ signer
-      const toFilter = {
-        address: safeTokenAddress,
-        // Each topic has to be 32 bytes
-        topics: [transferEvent, null, hexZeroPad(address, 32)],
-      }
-
-      filters.push(fromFilter, toFilter)
-
-      filters.forEach((filter) => {
-        web3.on(filter, mutate)
-      })
-    })()
-
-    return () => {
-      filters.forEach((filter) => web3.off(filter))
-    }
-  }, [web3, mutate])
+  return useSWR(web3 ? [QUERY_KEY, wallet?.address, wallet?.chainId] : null, () => _getSafeTokenAllocation(web3), {
+    refreshInterval: !isDashboard(pathname) ? POLLING_INTERVAL : undefined,
+  })
 }
