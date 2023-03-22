@@ -72,7 +72,6 @@ export const useVotingPower = () => {
 
   return useSWR(
     web3 ? [QUERY_KEY, address, chainId] : null,
-    // TODO: Check if null vestingData is ok
     () => _getVotingPower({ chainId, address, web3, vestingData: vestingData || [] }),
     {
       refreshInterval: !isDashboard(pathname) ? POLLING_INTERVAL : undefined,
