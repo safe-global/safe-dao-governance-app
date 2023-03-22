@@ -6,30 +6,29 @@ import type { JsonRpcProvider } from '@ethersproject/providers'
 import { CHAIN_DELEGATE_ID, POLLING_INTERVAL, ZERO_ADDRESS } from '@/config/constants'
 import { useWeb3 } from '@/hooks/useWeb3'
 import { getDelegateRegistryContract } from '@/services/contracts/DelegateRegistry'
-import { useWallet } from '@/hooks/useWallet'
+import { useAddress } from '@/hooks/useAddress'
+import { useChainId } from '@/hooks/useChainId'
 import { isDashboard } from '@/utils/routes'
 import type { FileDelegate } from '@/hooks/useDelegatesFile'
 
 export type ContractDelegate = Pick<FileDelegate, 'address' | 'ens'>
 
-export const _getContractDelegate = async (web3?: JsonRpcProvider): Promise<ContractDelegate | null> => {
-  if (!web3) {
+export const _getContractDelegate = async (
+  chainId: number,
+  address?: string,
+  web3?: JsonRpcProvider,
+): Promise<ContractDelegate | null> => {
+  if (!address || !web3) {
     return null
   }
 
-  const signer = web3.getSigner()
-
-  const signerChainId = await signer.getChainId()
-
-  const delegateId = CHAIN_DELEGATE_ID[signerChainId]
+  const delegateId = CHAIN_DELEGATE_ID[chainId]
 
   if (!delegateId) {
     return null
   }
 
-  const address = await signer.getAddress()
-
-  const delegateRegistryContract = getDelegateRegistryContract(signer)
+  const delegateRegistryContract = getDelegateRegistryContract(web3)
 
   const delegate = await delegateRegistryContract.delegation(address, formatBytes32String(delegateId))
 
@@ -50,9 +49,10 @@ export const useContractDelegate = () => {
 
   const { pathname } = useRouter()
   const web3 = useWeb3()
-  const wallet = useWallet()
+  const chainId = useChainId()
+  const address = useAddress()
 
-  return useSWR(web3 ? [QUERY_KEY, wallet?.address, wallet?.chainId] : null, () => _getContractDelegate(web3), {
+  return useSWR(web3 ? [QUERY_KEY, chainId, address] : null, () => _getContractDelegate(chainId, address, web3), {
     refreshInterval: !isDashboard(pathname) ? POLLING_INTERVAL : undefined,
   })
 }

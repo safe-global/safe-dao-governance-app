@@ -12,9 +12,11 @@ import { setDelegate } from '@/services/delegate-registry'
 import { setPendingDelegation } from '@/hooks/usePendingDelegations'
 import { useIsWrongChain } from '@/hooks/useIsWrongChain'
 import { useIsSafeApp } from '@/hooks/useIsSafeApp'
+import { useChainId } from '@/hooks/useChainId'
 
 const ReviewDelegate = (): ReactElement => {
   const web3 = useWeb3()
+  const chainId = useChainId()
   const isWrongChain = useIsWrongChain()
   const { stepperState, onBack, onNext } = useDelegationStepper()
   const isSafeApp = useIsSafeApp()
@@ -28,7 +30,7 @@ const ReviewDelegate = (): ReactElement => {
 
     setProcessing(true)
 
-    const tx = await setDelegate(web3, stepperState.selectedDelegate.address)
+    const tx = await setDelegate(chainId, web3, stepperState.selectedDelegate.address)
 
     setProcessing(false)
 
