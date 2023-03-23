@@ -173,6 +173,6 @@ export const useSafeTokenAllocation = () => {
   const wallet = useWallet()
 
   return useSWR(web3 ? [QUERY_KEY, wallet?.address, wallet?.chainId] : null, () => _getSafeTokenAllocation(web3), {
-    refreshInterval: !isDashboard(pathname) ? POLLING_INTERVAL : undefined,
+    refreshInterval: isDashboard(pathname) ? undefined : POLLING_INTERVAL,
   })
 }

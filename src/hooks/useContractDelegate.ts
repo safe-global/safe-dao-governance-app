@@ -53,6 +53,6 @@ export const useContractDelegate = () => {
   const wallet = useWallet()
 
   return useSWR(web3 ? [QUERY_KEY, wallet?.address, wallet?.chainId] : null, () => _getContractDelegate(web3), {
-    refreshInterval: !isDashboard(pathname) ? POLLING_INTERVAL : undefined,
+    refreshInterval: isDashboard(pathname) ? undefined : POLLING_INTERVAL,
   })
 }
