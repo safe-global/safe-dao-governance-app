@@ -70,6 +70,11 @@ export const useVotingPower = () => {
 
   const { data: vestingData } = useVestingData()
 
+  /**
+   * TODO: Get balance via `safe-apps-sdk` when method is no longer
+   * experimental to avoid `eth_getBalance`when using as Safe App:
+   * @see https://github.com/safe-global/safe-apps-sdk/tree/main/packages/safe-apps-sdk#getting-safe-balances
+   */
   return useSWR(
     web3 ? [QUERY_KEY, address, chainId] : null,
     () => _getVotingPower({ chainId, address, web3, vestingData: vestingData || [] }),
