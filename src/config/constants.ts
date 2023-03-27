@@ -23,8 +23,8 @@ export const SAFE_URL = IS_PRODUCTION ? 'https://app.safe.global' : 'https://saf
 
 // Chains
 export const Chains = {
-  MAINNET: 1,
-  GOERLI: 5,
+  MAINNET: '1',
+  GOERLI: '5',
 }
 
 // Strictly type configuration for each chain above
@@ -39,8 +39,8 @@ export const CHAIN_SHORT_NAME: ChainConfig<string> = {
 
 // Token
 export const CHAIN_SAFE_TOKEN_ADDRESS: ChainConfig<string> = {
-  1: '0x5afe3855358e112b5647b952709e6165e1c1eeee',
-  5: '0x61fD3b6d656F39395e32f46E2050953376c3f5Ff',
+  [Chains.MAINNET]: '0x5afe3855358e112b5647b952709e6165e1c1eeee',
+  [Chains.GOERLI]: '0x61fD3b6d656F39395e32f46E2050953376c3f5Ff',
 }
 
 // Claiming

@@ -24,9 +24,9 @@ export const ConnectWallet = (): ReactElement => {
 
       // Here we check non-hardware wallets. Hardware wallets will always be on the correct
       // chain as onboard is only ever initialised with the current chain config
-      const isWrongChain = wallet && wallet.chainId !== chainId.toString()
+      const isWrongChain = wallet && wallet.chainId !== chainId
       if (isWrongChain) {
-        await onboard.setChain({ wallet: wallet.label, chainId: hexValue(chainId) })
+        await onboard.setChain({ wallet: wallet.label, chainId: hexValue(parseInt(chainId)) })
       }
     } catch {
       return

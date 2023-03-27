@@ -10,7 +10,7 @@ import { useChainId } from '@/hooks/useChainId'
  * Fetches if the token is currently paused from on-chain.
  * If the fetching fails and initially we assume that the token is paused as the claimingViaModule should always work.
  */
-export const _getIsTokenPaused = async (chainId: number, web3?: JsonRpcProvider): Promise<boolean | null> => {
+export const _getIsTokenPaused = async (chainId: string, web3?: JsonRpcProvider): Promise<boolean | null> => {
   if (!web3) {
     return null
   }
