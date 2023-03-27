@@ -52,7 +52,7 @@ export const useContractDelegate = () => {
   const chainId = useChainId()
   const address = useAddress()
 
-  return useSWR(web3 ? [QUERY_KEY, wallet?.address, wallet?.chainId] : null, () => _getContractDelegate(web3), {
+  return useSWR(web3 ? [QUERY_KEY, chainId, address] : null, () => _getContractDelegate(chainId, address, web3), {
     refreshInterval: isDashboard(pathname) ? undefined : POLLING_INTERVAL,
   })
 }
