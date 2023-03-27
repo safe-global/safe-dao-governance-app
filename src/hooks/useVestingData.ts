@@ -124,5 +124,7 @@ export const useVestingData = () => {
   const chainId = useChainId()
   const address = useAddress()
 
-  return useSWRImmutable(web3 ? [QUERY_KEY, chainId, address] : null, () => _getVestingData(chainId, address, web3))
+  return useSWR(web3 ? [QUERY_KEY, wallet?.address, wallet?.chainId] : null, () => _getSafeTokenAllocation(web3), {
+    refreshInterval: isDashboard(pathname) ? undefined : POLLING_INTERVAL,
+  })
 }
