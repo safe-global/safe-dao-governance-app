@@ -29,8 +29,14 @@ describe('_getContractDelegate()', () => {
     )
   })
 
+  it('returns null if no address is defined', async () => {
+    const result = await _getContractDelegate(5, undefined, web3Provider)
+
+    expect(result).toBe(null)
+  })
+
   it('returns null if no provider is defined', async () => {
-    const result = await _getContractDelegate(undefined)
+    const result = await _getContractDelegate(5, SAFE_ADDRESS, undefined)
 
     expect(result).toBe(null)
   })
@@ -48,7 +54,7 @@ describe('_getContractDelegate()', () => {
       return Promise.resolve(hexZeroPad(ZERO_ADDRESS, 32))
     })
 
-    const result = await _getContractDelegate(web3Provider)
+    const result = await _getContractDelegate(5, SAFE_ADDRESS, web3Provider)
 
     expect(mockCall).toBeCalledTimes(1)
     expect(result).toBe(null)
@@ -69,7 +75,7 @@ describe('_getContractDelegate()', () => {
       return Promise.resolve(hexZeroPad(delegateAddress, 32))
     })
 
-    const result = await _getContractDelegate(web3Provider)
+    const result = await _getContractDelegate(5, SAFE_ADDRESS, web3Provider)
 
     expect(mockCall).toBeCalledTimes(1)
     expect(result).toEqual({ address: delegateAddress, ens: 'test.eth' })

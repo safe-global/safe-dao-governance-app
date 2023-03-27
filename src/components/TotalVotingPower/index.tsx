@@ -1,13 +1,13 @@
-import { Typography, Skeleton } from '@mui/material'
+import { Typography } from '@mui/material'
 import { formatEther } from 'ethers/lib/utils'
 import type { ReactElement } from 'react'
 
-import { useSafeTokenAllocation } from '@/hooks/useSafeTokenAllocation'
+import { useVotingPower } from '@/hooks/useVotingPower'
 import { formatAmount } from '@/utils/formatters'
 
 export const TotalVotingPower = (): ReactElement => {
-  const { data } = useSafeTokenAllocation()
-  const votingPower = data?.votingPower ? Number(formatEther(data.votingPower)) : 0
+  const { data } = useVotingPower()
+  const votingPower = data ? Number(formatEther(data)) : 0
   const formattedAmount = formatAmount(votingPower, 2)
 
   return (

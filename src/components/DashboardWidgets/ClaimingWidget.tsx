@@ -10,12 +10,13 @@ import type { ReactElement } from 'react'
 
 import { ExternalLink } from '@/components/ExternalLink'
 import SafeToken from '@/public/images/token.svg'
-import { DISCORD_URL, FORUM_URL, SAFE_URL } from '@/config/constants'
+import { DISCORD_URL, FORUM_URL } from '@/config/constants'
 import { getGovernanceAppSafeAppUrl } from '@/utils/safe-apps'
 import { useDelegate } from '@/hooks/useDelegate'
-import { useSafeTokenAllocation } from '@/hooks/useSafeTokenAllocation'
+import { useVestingData } from '@/hooks/useVestingData'
 import { SelectedDelegate } from '@/components/SelectedDelegate'
 import { formatAmount } from '@/utils/formatters'
+import { useVotingPower } from '@/hooks/useVotingPower'
 
 import css from './styles.module.css'
 
@@ -76,13 +77,14 @@ const DelegateAction = (): ReactElement => {
 const VotingPowerWidget = (): ReactElement => {
   const { safe } = useSafeAppsSDK()
   const delegate = useDelegate()
-  const { data } = useSafeTokenAllocation()
+  const { data: vestingData } = useVestingData()
+  const { data: votingPower } = useVotingPower()
 
-  const totalClaimed = data?.vestingData?.reduce((acc, { amountClaimed }) => {
+  const totalClaimed = vestingData?.reduce((acc, { amountClaimed }) => {
     return acc.add(amountClaimed)
   }, BigNumber.from(0))
 
-  const hasUnredeemedAllocation = data?.vestingData?.some(({ isExpired, isRedeemed }) => !isExpired && !isRedeemed)
+  const hasUnredeemedAllocation = vestingData?.some(({ isExpired, isRedeemed }) => !isExpired && !isRedeemed)
 
   const claimingSafeAppUrl = getGovernanceAppSafeAppUrl(safe.chainId, safe.safeAddress)
 
@@ -93,7 +95,7 @@ const VotingPowerWidget = (): ReactElement => {
         <Button href={claimingSafeAppUrl} target="_blank" rel="noopener noreferrer" className={css.button}>
           <SafeToken height={24} width={24} />
           <Title color="text.primary">
-            {data?.votingPower ? formatAmount(Number(formatEther(data.votingPower)), 2) : <Skeleton />}{' '}
+            {votingPower ? formatAmount(Number(formatEther(votingPower)), 2) : <Skeleton />}{' '}
           </Title>
         </Button>
       </div>
@@ -136,7 +138,7 @@ const VotingPowerWidget = (): ReactElement => {
 }
 
 export const ClaimingWidget = (): ReactElement => {
-  const { data, isLoading } = useSafeTokenAllocation()
+  const { data: votingPower, isLoading } = useVotingPower()
 
   if (isLoading) {
     return (
@@ -155,7 +157,7 @@ export const ClaimingWidget = (): ReactElement => {
   return (
     <Card elevation={0} sx={{ minWidth: WIDGET_WIDTH, maxWidth: WIDGET_WIDTH }}>
       <Box className={css.spacer} sx={{ alignItems: 'center' }}>
-        {data?.votingPower?.eq(0) ? <CtaWidget /> : <VotingPowerWidget />}
+        {votingPower?.eq(0) ? <CtaWidget /> : <VotingPowerWidget />}
       </Box>
     </Card>
   )
