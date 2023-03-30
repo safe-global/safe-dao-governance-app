@@ -2,7 +2,7 @@ import { hexZeroPad, parseEther } from 'ethers/lib/utils'
 
 import { getAirdropInterface } from '@/services/contracts/Airdrop'
 import { createClaimTxs } from '@/utils/claim'
-import type { Vesting } from '@/hooks/useVestingData'
+import type { Vesting } from '@/hooks/useSafeTokenAllocation'
 
 const airdropInterface = getAirdropInterface()
 

@@ -4,7 +4,7 @@ import type { BaseTransaction } from '@gnosis.pm/safe-apps-sdk/dist/src/types/sd
 import { getVestingTypes } from '@/utils/vesting'
 import { getAirdropInterface } from '@/services/contracts/Airdrop'
 import { splitAirdropAmounts } from '@/utils/airdrop'
-import type { Vesting } from '@/hooks/useVestingData'
+import type { Vesting } from '@/hooks/useSafeTokenAllocation'
 
 const airdropInterface = getAirdropInterface()
 

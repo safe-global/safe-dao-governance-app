@@ -2,7 +2,7 @@ import { BigNumber } from 'ethers'
 
 import { useAmounts } from '@/hooks/useAmounts'
 import { getVestingTypes } from '@/utils/vesting'
-import { useVestingData } from '@/hooks/useVestingData'
+import { useSafeTokenAllocation } from '@/hooks/useSafeTokenAllocation'
 
 const getTotal = (...amounts: string[]) => {
   const [amount, ...rest] = amounts
@@ -32,10 +32,10 @@ export const useTaggedAllocations = (): {
     allocation: string
   }
 } => {
-  const { data: vestingData } = useVestingData()
+  const { data: allocation } = useSafeTokenAllocation()
 
   // Get vesting types
-  const { userVesting, ecosystemVesting, investorVesting } = getVestingTypes(vestingData || [])
+  const { userVesting, ecosystemVesting, investorVesting } = getVestingTypes(allocation?.vestingData || [])
 
   // Calculate claimable vs. vested amounts for each vesting type
   const [userClaimable, userInVesting] = useAmounts(userVesting)

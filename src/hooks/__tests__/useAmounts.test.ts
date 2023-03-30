@@ -3,7 +3,7 @@ import { parseEther, hexZeroPad } from 'ethers/lib/utils'
 
 import { DESYNC_BUFFER } from '@/utils/vesting'
 import { useAmounts } from '@/hooks/useAmounts'
-import type { Vesting } from '@/hooks/useVestingData'
+import type { Vesting } from '@/hooks/useSafeTokenAllocation'
 
 const fakeNow = new Date()
 

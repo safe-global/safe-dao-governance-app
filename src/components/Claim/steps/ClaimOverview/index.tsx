@@ -8,7 +8,7 @@ import type { ChangeEvent, ReactElement } from 'react'
 import { SelectedDelegate } from '@/components/SelectedDelegate'
 import { maxDecimals, minMaxValue, mustBeFloat } from '@/utils/validation'
 import { ClaimCard } from '@/components/ClaimCard'
-import { useVestingData } from '@/hooks/useVestingData'
+import { useSafeTokenAllocation } from '@/hooks/useSafeTokenAllocation'
 import { useDelegate } from '@/hooks/useDelegate'
 import { InfoAlert } from '@/components/InfoAlert'
 import { getVestingTypes } from '@/utils/vesting'
@@ -54,10 +54,10 @@ const ClaimOverview = (): ReactElement => {
 
   const { data: isTokenPaused } = useIsTokenPaused()
 
-  // Vesting data
-  const { data: vestingData } = useVestingData()
+  // Allocation, vesting and voting power
+  const { data: allocation } = useSafeTokenAllocation()
 
-  const { ecosystemVesting, investorVesting } = getVestingTypes(vestingData || [])
+  const { ecosystemVesting, investorVesting } = getVestingTypes(allocation?.vestingData ?? [])
 
   const { user, ecosystem, investor, total } = useTaggedAllocations()
   const totalClaimableAmountInEth = formatEther(total.claimable)
@@ -93,7 +93,7 @@ const ClaimOverview = (): ReactElement => {
     setCreatingTxs(true)
 
     const txs = createClaimTxs({
-      vestingData: vestingData ?? [],
+      vestingData: allocation?.vestingData ?? [],
       safeAddress: safe.safeAddress,
       isMax: isMaxAmountSelected,
       amount: amount || '0',

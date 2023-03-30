@@ -8,7 +8,7 @@ import { OverviewLinks } from '@/components/OverviewLinks'
 import { useDelegate } from '@/hooks/useDelegate'
 import { SelectedDelegate } from '@/components/SelectedDelegate'
 import { AppRoutes } from '@/config/routes'
-import { useVotingPower } from '@/hooks/useVotingPower'
+import { useSafeTokenAllocation } from '@/hooks/useSafeTokenAllocation'
 import { TotalVotingPower } from '@/components/TotalVotingPower'
 import { formatAmount } from '@/utils/formatters'
 import { useTaggedAllocations } from '@/hooks/useTaggedAllocations'
@@ -31,14 +31,15 @@ export const Intro = (): ReactElement => {
 
   const delegate = useDelegate()
 
-  const { isLoading, data: votingPower } = useVotingPower()
+  const { isLoading, data: allocation } = useSafeTokenAllocation()
   const { total } = useTaggedAllocations()
 
   const hasAllocation = Number(total.allocation) > 0
   const isClaimable = Number(total.claimable) > 0
 
   const isDelegating = useIsDelegationPending()
-  const canDelegate = !isDelegating && !!votingPower && BigNumber.from(votingPower).gt(0) && !isWrongChain
+  const canDelegate =
+    !isDelegating && !!allocation?.votingPower && BigNumber.from(allocation.votingPower).gt(0) && !isWrongChain
 
   const onClick = (route: (typeof AppRoutes)[keyof typeof AppRoutes]) => async () => {
     // Safe is connected via WC

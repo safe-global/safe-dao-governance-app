@@ -1,6 +1,6 @@
 import { BigNumber } from 'ethers'
 
-import type { Vesting } from '@/hooks/useVestingData'
+import type { Vesting } from '@/hooks/useSafeTokenAllocation'
 
 const LINEAR_CURVE = 0
 const EXPONENTIAL_CURVE = 1
