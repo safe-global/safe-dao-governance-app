@@ -86,7 +86,7 @@ const VotingPowerWidget = (): ReactElement => {
 
   const hasUnredeemedAllocation = vestingData?.some(({ isExpired, isRedeemed }) => !isExpired && !isRedeemed)
 
-  const claimingSafeAppUrl = getGovernanceAppSafeAppUrl(safe.chainId, safe.safeAddress)
+  const claimingSafeAppUrl = getGovernanceAppSafeAppUrl(safe.chainId.toString(), safe.safeAddress)
 
   return (
     <>

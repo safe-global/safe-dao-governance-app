@@ -13,7 +13,7 @@ import { useWeb3 } from '@/hooks/useWeb3'
 
 const tokenInterface = getSafeTokenInterface()
 
-const fetchTokenBalance = async (chainId: number, safeAddress: string, provider: JsonRpcProvider): Promise<string> => {
+const fetchTokenBalance = async (chainId: string, safeAddress: string, provider: JsonRpcProvider): Promise<string> => {
   const safeTokenAddress = CHAIN_SAFE_TOKEN_ADDRESS[chainId]
 
   if (!safeTokenAddress) {
@@ -46,7 +46,7 @@ export const _getVotingPower = async ({
   web3,
   vestingData,
 }: {
-  chainId: number
+  chainId: string
   address?: string
   web3?: JsonRpcProvider
   vestingData: Vesting[]

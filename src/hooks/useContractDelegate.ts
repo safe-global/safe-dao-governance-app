@@ -14,7 +14,7 @@ import type { FileDelegate } from '@/hooks/useDelegatesFile'
 export type ContractDelegate = Pick<FileDelegate, 'address' | 'ens'>
 
 export const _getContractDelegate = async (
-  chainId: number,
+  chainId: string,
   address?: string,
   web3?: JsonRpcProvider,
 ): Promise<ContractDelegate | null> => {

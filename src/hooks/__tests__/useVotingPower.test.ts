@@ -17,17 +17,17 @@ describe('getVotingPower', () => {
   web3Provider.call = mockCall
 
   it('should return null if address is undefined', async () => {
-    const result = await _getVotingPower({ chainId: 5, web3: web3Provider, vestingData: [] })
+    const result = await _getVotingPower({ chainId: '5', web3: web3Provider, vestingData: [] })
     expect(result).toBe(null)
   })
 
   it('should return null if provider is undefined', async () => {
-    const result = await _getVotingPower({ chainId: 5, address: SAFE_ADDRESS, vestingData: [] })
+    const result = await _getVotingPower({ chainId: '5', address: SAFE_ADDRESS, vestingData: [] })
     expect(result).toBe(null)
   })
 
   it('should return 0 if no contract exists on the given chain', async () => {
-    const result = await _getVotingPower({ chainId: 0, address: SAFE_ADDRESS, web3: web3Provider, vestingData: [] })
+    const result = await _getVotingPower({ chainId: '0', address: SAFE_ADDRESS, web3: web3Provider, vestingData: [] })
     expect(result?.toNumber()).toEqual(0)
   })
 
@@ -40,7 +40,7 @@ describe('getVotingPower', () => {
       return Promise.resolve('0x')
     })
 
-    const result = await _getVotingPower({ chainId: 5, address: SAFE_ADDRESS, web3: web3Provider, vestingData: [] })
+    const result = await _getVotingPower({ chainId: '5', address: SAFE_ADDRESS, web3: web3Provider, vestingData: [] })
     expect(result?.toNumber()).toEqual(0)
   })
 
@@ -53,7 +53,7 @@ describe('getVotingPower', () => {
       return Promise.resolve('0x')
     })
 
-    const result = await _getVotingPower({ chainId: 5, address: SAFE_ADDRESS, web3: web3Provider, vestingData: [] })
+    const result = await _getVotingPower({ chainId: '5', address: SAFE_ADDRESS, web3: web3Provider, vestingData: [] })
     expect(result?.eq(parseEther('100'))).toBeTruthy()
   })
 
@@ -87,7 +87,7 @@ describe('getVotingPower', () => {
     })
 
     const result = await _getVotingPower({
-      chainId: 5,
+      chainId: '5',
       address: SAFE_ADDRESS,
       web3: web3Provider,
       vestingData: mockVestings,
@@ -125,7 +125,7 @@ describe('getVotingPower', () => {
     })
 
     const result = await _getVotingPower({
-      chainId: 5,
+      chainId: '5',
       address: SAFE_ADDRESS,
       web3: web3Provider,
       vestingData: mockAllocation,
@@ -163,7 +163,7 @@ describe('getVotingPower', () => {
     })
 
     const result = await _getVotingPower({
-      chainId: 5,
+      chainId: '5',
       address: SAFE_ADDRESS,
       web3: web3Provider,
       vestingData: mockAllocation,

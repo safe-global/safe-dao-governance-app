@@ -30,7 +30,7 @@ export type Vesting = VestingData & {
   amountClaimed: string
 }
 
-const fetchAllocation = async (chainId: number, address: string): Promise<VestingData[]> => {
+const fetchAllocation = async (chainId: string, address: string): Promise<VestingData[]> => {
   try {
     const response = await fetch(`${VESTING_URL}/${chainId}/${address}.json`)
 
@@ -102,7 +102,7 @@ const getValidVestingAllocation = (allocationData: Vesting[]): Vesting[] => {
 }
 
 export const _getVestingData = async (
-  chainId: number,
+  chainId: string,
   address?: string,
   web3?: JsonRpcProvider,
 ): Promise<Vesting[] | null> => {

@@ -7,7 +7,7 @@ export const defaultChainIdStore = new ExternalStore(_DEFAULT_CHAIN_ID)
 
 const supportedChains = Object.values(Chains)
 
-export const useChainId = (): number => {
+export const useChainId = (): string => {
   const isSafeApp = useIsSafeApp()
   const { safe } = useSafeAppsSDK()
   const chainId = defaultChainIdStore.useStore()!
@@ -16,8 +16,12 @@ export const useChainId = (): number => {
     return _DEFAULT_CHAIN_ID
   }
 
-  if (isSafeApp && supportedChains.includes(safe.chainId)) {
-    return safe.chainId
+  if (isSafeApp) {
+    const safeChainId = safe.chainId.toString()
+
+    if (supportedChains.includes(safeChainId)) {
+      return safeChainId
+    }
   }
 
   return chainId

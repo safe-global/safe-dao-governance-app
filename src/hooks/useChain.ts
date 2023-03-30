@@ -9,5 +9,5 @@ export const useChain = () => {
 
   const { data: chains } = useSWRImmutable([QUERY_KEY], getChainsConfig)
 
-  return chains?.results?.find((chain) => chain.chainId === chainId.toString())
+  return chains?.results?.find((chain) => chain.chainId === chainId)
 }

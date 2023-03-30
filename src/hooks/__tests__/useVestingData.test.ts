@@ -42,7 +42,7 @@ describe('useVestingData', () => {
   it('return an empty array if no allocations exist', async () => {
     global.fetch = jest.fn().mockImplementation(setupFetchStub('', 404))
 
-    const result = await _getVestingData(5, SAFE_ADDRESS, web3Provider)
+    const result = await _getVestingData('5', SAFE_ADDRESS, web3Provider)
     expect(result).toStrictEqual([])
   })
 
@@ -85,7 +85,7 @@ describe('useVestingData', () => {
       return Promise.resolve('0x')
     })
 
-    const result = await _getVestingData(5, SAFE_ADDRESS, web3Provider)
+    const result = await _getVestingData('5', SAFE_ADDRESS, web3Provider)
     expect(result).toStrictEqual([
       {
         tag: 'user',
@@ -138,7 +138,7 @@ describe('useVestingData', () => {
       return Promise.resolve('0x')
     })
 
-    const result = await _getVestingData(5, SAFE_ADDRESS, web3Provider)
+    const result = await _getVestingData('5', SAFE_ADDRESS, web3Provider)
     expect(result).toStrictEqual([
       {
         tag: 'user',
@@ -197,7 +197,7 @@ describe('useVestingData', () => {
       return Promise.resolve('0x')
     })
 
-    const result = await _getVestingData(5, SAFE_ADDRESS, web3Provider)
+    const result = await _getVestingData('5', SAFE_ADDRESS, web3Provider)
     expect(result).toStrictEqual([])
   })
 })

@@ -6,7 +6,7 @@ import { CHAIN_DELEGATE_ID } from '@/config/constants'
 import { getDelegateRegistryContract } from '@/services/contracts/DelegateRegistry'
 
 export const setDelegate = async (
-  chainId: number,
+  chainId: string,
   web3: JsonRpcProvider,
   delegateAddress: string,
 ): Promise<ContractTransaction | undefined> => {
