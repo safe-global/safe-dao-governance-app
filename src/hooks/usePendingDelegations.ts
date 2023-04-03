@@ -4,6 +4,7 @@ import { ExternalStore } from '@/services/ExternalStore'
 import { useWallet } from '@/hooks/useWallet'
 import { didRevert } from '@/utils/transactions'
 import { useWeb3 } from '@/hooks/useWeb3'
+import { useContractDelegate } from './useContractDelegate'
 
 // Note: only EOA transactions can be pending
 
@@ -28,6 +29,7 @@ export const usePendingDelegations = () => {
   const web3 = useWeb3()
   const delegations = delegateTxsStore.useStore()
   const wallet = useWallet()
+  const { mutate } = useContractDelegate()
 
   useEffect(() => {
     if (!wallet?.chainId || !wallet?.address || !web3) {
@@ -49,6 +51,9 @@ export const usePendingDelegations = () => {
       .then((receipt) => {
         if (didRevert(receipt)) {
           console.error('Delegation reverted', receipt)
+        } else {
+          // Invalidate cache
+          mutate()
         }
       })
       .catch((err) => {
@@ -61,7 +66,7 @@ export const usePendingDelegations = () => {
     return () => {
       web3.off(txHash)
     }
-  }, [delegations, wallet?.address, wallet?.chainId, web3])
+  }, [delegations, mutate, wallet?.address, wallet?.chainId, web3])
 }
 
 export const useIsDelegationPending = (): boolean => {

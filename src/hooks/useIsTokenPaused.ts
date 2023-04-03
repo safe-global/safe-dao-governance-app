@@ -1,24 +1,21 @@
-import useSWR from 'swr'
+import useSWRImmutable from 'swr/immutable'
 import { SafeToken__factory } from '@/types/contracts/safe-token'
 import type { JsonRpcProvider } from '@ethersproject/providers'
 
 import { CHAIN_SAFE_TOKEN_ADDRESS } from '@/config/constants'
 import { useWeb3 } from '@/hooks/useWeb3'
-import { useWallet } from '@/hooks/useWallet'
+import { useChainId } from '@/hooks/useChainId'
 
 /**
  * Fetches if the token is currently paused from on-chain.
  * If the fetching fails and initially we assume that the token is paused as the claimingViaModule should always work.
  */
-export const _getIsTokenPaused = async (web3?: JsonRpcProvider): Promise<boolean | null> => {
+export const _getIsTokenPaused = async (chainId: string, web3?: JsonRpcProvider): Promise<boolean | null> => {
   if (!web3) {
     return null
   }
 
-  const signer = web3.getSigner()
-  const signerChainId = await signer.getChainId()
-
-  const safeTokenAddress = CHAIN_SAFE_TOKEN_ADDRESS[signerChainId]
+  const safeTokenAddress = CHAIN_SAFE_TOKEN_ADDRESS[chainId]
 
   if (!safeTokenAddress) {
     return null
@@ -38,10 +35,10 @@ export const _getIsTokenPaused = async (web3?: JsonRpcProvider): Promise<boolean
 }
 
 export const useIsTokenPaused = () => {
-  const QUERY_KEY = 'isTokenPaused'
+  const QUERY_KEY = 'token-paused'
 
   const web3 = useWeb3()
-  const wallet = useWallet()
+  const chainId = useChainId()
 
-  return useSWR(web3 ? [QUERY_KEY, wallet?.chainId] : null, () => _getIsTokenPaused(web3))
+  return useSWRImmutable(web3 ? [QUERY_KEY, chainId] : null, () => _getIsTokenPaused(chainId, web3))
 }

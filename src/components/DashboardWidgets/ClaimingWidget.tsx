@@ -10,7 +10,7 @@ import type { ReactElement } from 'react'
 
 import { ExternalLink } from '@/components/ExternalLink'
 import SafeToken from '@/public/images/token.svg'
-import { DISCORD_URL, FORUM_URL, SAFE_URL } from '@/config/constants'
+import { DISCORD_URL, FORUM_URL } from '@/config/constants'
 import { getGovernanceAppSafeAppUrl } from '@/utils/safe-apps'
 import { useDelegate } from '@/hooks/useDelegate'
 import { useSafeTokenAllocation } from '@/hooks/useSafeTokenAllocation'
@@ -76,15 +76,15 @@ const DelegateAction = (): ReactElement => {
 const VotingPowerWidget = (): ReactElement => {
   const { safe } = useSafeAppsSDK()
   const delegate = useDelegate()
-  const { data } = useSafeTokenAllocation()
+  const { data: allocation } = useSafeTokenAllocation()
 
-  const totalClaimed = data?.vestingData?.reduce((acc, { amountClaimed }) => {
+  const totalClaimed = allocation?.vestingData.reduce((acc, { amountClaimed }) => {
     return acc.add(amountClaimed)
   }, BigNumber.from(0))
 
-  const hasUnredeemedAllocation = data?.vestingData?.some(({ isExpired, isRedeemed }) => !isExpired && !isRedeemed)
+  const hasUnredeemedAllocation = allocation?.vestingData.some(({ isExpired, isRedeemed }) => !isExpired && !isRedeemed)
 
-  const claimingSafeAppUrl = getGovernanceAppSafeAppUrl(safe.chainId, safe.safeAddress)
+  const claimingSafeAppUrl = getGovernanceAppSafeAppUrl(safe.chainId.toString(), safe.safeAddress)
 
   return (
     <>
@@ -93,7 +93,7 @@ const VotingPowerWidget = (): ReactElement => {
         <Button href={claimingSafeAppUrl} target="_blank" rel="noopener noreferrer" className={css.button}>
           <SafeToken height={24} width={24} />
           <Title color="text.primary">
-            {data?.votingPower ? formatAmount(Number(formatEther(data.votingPower)), 2) : <Skeleton />}{' '}
+            {allocation?.votingPower ? formatAmount(Number(formatEther(allocation.votingPower)), 2) : <Skeleton />}{' '}
           </Title>
         </Button>
       </div>
@@ -136,7 +136,7 @@ const VotingPowerWidget = (): ReactElement => {
 }
 
 export const ClaimingWidget = (): ReactElement => {
-  const { data, isLoading } = useSafeTokenAllocation()
+  const { data: allocation, isLoading } = useSafeTokenAllocation()
 
   if (isLoading) {
     return (
@@ -155,7 +155,7 @@ export const ClaimingWidget = (): ReactElement => {
   return (
     <Card elevation={0} sx={{ minWidth: WIDGET_WIDTH, maxWidth: WIDGET_WIDTH }}>
       <Box className={css.spacer} sx={{ alignItems: 'center' }}>
-        {data?.votingPower?.eq(0) ? <CtaWidget /> : <VotingPowerWidget />}
+        {allocation?.votingPower.eq(0) ? <CtaWidget /> : <VotingPowerWidget />}
       </Box>
     </Card>
   )

@@ -15,12 +15,12 @@ export const ChainSwitcher = (): ReactElement | null => {
   const defaultChain = useChain()
   const chainId = useChainId()
 
-  if (!wallet || wallet.chainId === chainId.toString()) {
+  if (!wallet || wallet.chainId === chainId) {
     return null
   }
 
   const handleChainSwitch = () => {
-    onboard?.setChain({ chainId: hexValue(chainId) })
+    onboard?.setChain({ chainId: hexValue(parseInt(chainId)) })
   }
 
   return (

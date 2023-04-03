@@ -11,5 +11,5 @@ export const useIsWrongChain = (): boolean => {
     return false
   }
 
-  return wallet.chainId !== chainId.toString()
+  return wallet.chainId !== chainId
 }

@@ -54,12 +54,12 @@ const ClaimOverview = (): ReactElement => {
 
   const { data: isTokenPaused } = useIsTokenPaused()
 
-  // Allocation, vesting and claimable amounts
+  // Allocation, vesting and voting power
   const { data: allocation } = useSafeTokenAllocation()
 
-  const { ecosystemVesting, investorVesting } = getVestingTypes(allocation?.vestingData || [])
+  const { ecosystemVesting, investorVesting } = getVestingTypes(allocation?.vestingData ?? [])
 
-  const { user, ecosystem, investor, total } = useTaggedAllocations(allocation)
+  const { user, ecosystem, investor, total } = useTaggedAllocations()
   const totalClaimableAmountInEth = formatEther(total.claimable)
 
   const decimals = getDecimalLength(total.inVesting)

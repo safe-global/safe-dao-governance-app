@@ -6,32 +6,18 @@ import { CHAIN_DELEGATE_ID } from '@/config/constants'
 import { getDelegateRegistryContract } from '@/services/contracts/DelegateRegistry'
 
 export const setDelegate = async (
-  provider: JsonRpcProvider,
+  chainId: string,
+  web3: JsonRpcProvider,
   delegateAddress: string,
 ): Promise<ContractTransaction | undefined> => {
-  const signer = provider.getSigner()
-
-  let signerChainId: number | undefined
-
-  try {
-    signerChainId = await signer.getChainId()
-  } catch (err) {
-    console.error('Error getting chainId', err)
-  }
-
-  if (!signerChainId) {
-    console.error('Error getting chainId', signerChainId)
-    return
-  }
-
-  const delegateId = CHAIN_DELEGATE_ID[signerChainId]
+  const delegateId = CHAIN_DELEGATE_ID[chainId]
 
   if (!delegateId) {
-    console.error('No delegateId found for chainId', signerChainId)
+    console.error('No delegateId found for chainId', chainId)
     return
   }
 
-  const delegateRegistryContract = getDelegateRegistryContract(signer)
+  const delegateRegistryContract = getDelegateRegistryContract(web3)
 
   let tx: ContractTransaction | undefined
 

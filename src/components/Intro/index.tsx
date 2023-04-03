@@ -31,14 +31,15 @@ export const Intro = (): ReactElement => {
 
   const delegate = useDelegate()
 
-  const { isLoading, data } = useSafeTokenAllocation()
-  const { total } = useTaggedAllocations(data)
+  const { isLoading, data: allocation } = useSafeTokenAllocation()
+  const { total } = useTaggedAllocations()
 
   const hasAllocation = Number(total.allocation) > 0
   const isClaimable = Number(total.claimable) > 0
 
   const isDelegating = useIsDelegationPending()
-  const canDelegate = !isDelegating && !!data?.votingPower && BigNumber.from(data.votingPower).gt(0) && !isWrongChain
+  const canDelegate =
+    !isDelegating && !!allocation?.votingPower && BigNumber.from(allocation.votingPower).gt(0) && !isWrongChain
 
   const onClick = (route: (typeof AppRoutes)[keyof typeof AppRoutes]) => async () => {
     // Safe is connected via WC
