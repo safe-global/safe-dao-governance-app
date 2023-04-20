@@ -94,7 +94,7 @@ export const Intro = (): ReactElement => {
 
       {isClaimable && (
         <Button variant="contained" size="stretched" onClick={onClaim} disabled={isWrongChain}>
-          Claim Tokens
+          Claim Safe Tokens
         </Button>
       )}
 

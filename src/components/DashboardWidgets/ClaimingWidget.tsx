@@ -118,7 +118,7 @@ const VotingPowerWidget = (): ReactElement => {
         </>
       ) : (
         <>
-          {hasUnredeemedAllocation && <Subtitle>You have unredeemed Tokens.</Subtitle>}
+          {hasUnredeemedAllocation && <Subtitle>You have unredeemed Safe Tokens.</Subtitle>}
           <Link
             href={claimingSafeAppUrl}
             rel="noopener noreferrer"

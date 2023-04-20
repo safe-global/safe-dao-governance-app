@@ -59,12 +59,12 @@ const SafeInfo = (): ReactElement => {
       </Grid>
 
       <Typography variant="h3" fontWeight={700} mb={2}>
-        Why do we have a token?
+        Why do we have a Token?
       </Typography>
 
       <Typography mb={5}>
         As critical web3 infrastructure, <i>Safe</i> needs to be a community-owned, censorship resistant project, with a
-        committed ecosystem stewarding its decisions. A governance token is needed to help coordinate this effort.
+        committed ecosystem stewarding its decisions. A governance Token is needed to help coordinate this effort.
       </Typography>
 
       <NavButtons onNext={onNext} />

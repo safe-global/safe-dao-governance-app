@@ -162,7 +162,7 @@ const ClaimOverview = (): ReactElement => {
         How much do you want to claim?
       </Typography>
       <Typography variant="subtitle1" mb={2}>
-        Select all Tokens or define a custom amount.
+        Select all Safe Tokens or define a custom amount.
       </Typography>
 
       <Grid item container gap={2} flexWrap="nowrap" xs={12} mb={3}>
@@ -202,7 +202,7 @@ const ClaimOverview = (): ReactElement => {
       {isInvestorClaimingDisabled && (
         <InfoAlert>
           <Typography variant="subtitle2" mb={3}>
-            Claiming will be available once the token is transferable
+            Claiming will be available once the Safe Token is transferable
           </Typography>
         </InfoAlert>
       )}
