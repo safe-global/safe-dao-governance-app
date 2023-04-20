@@ -8,7 +8,7 @@ import { useEducationSeriesStepper } from '@/components/EducationSeries'
 
 import css from './styles.module.css'
 
-const InfoAccordion = ({ summaryText, details }: { summaryText: string; details: string[] }) => {
+const InfoAccordion = ({ summaryText, details }: { summaryText: ReactElement | string; details: string[] }) => {
   return (
     <Accordion className={css.accordion} variant="outlined">
       <AccordionSummary expandIcon={<ExpandMoreIcon />} className={css.summary}>
@@ -17,8 +17,8 @@ const InfoAccordion = ({ summaryText, details }: { summaryText: string; details:
 
       <AccordionDetails className={css.details}>
         <List className={css.list}>
-          {details.map((detail) => (
-            <ListItem key={detail}>{detail}</ListItem>
+          {details.map((detail, i) => (
+            <ListItem key={i}>{detail}</ListItem>
           ))}
         </List>
       </AccordionDetails>
@@ -32,17 +32,18 @@ const SafeToken = (): ReactElement => {
   return (
     <Grid container px={6} pt={5} pb={4}>
       <Grid item xs={12} mb={3}>
-        <StepHeader title="What exactly is the Safe token and what does it govern?" />
+        <StepHeader title="What exactly is the Safe Token and what does it govern?" />
       </Grid>
 
       <Typography mb={3}>
-        $SAFE is an ERC-20 governance token that stewards infrastructure components of the Safe ecosystem, including:
+        SAFE is an ERC-20 governance token that stewards infrastructure components of the <i>Safe</i> ecosystem,
+        including:
       </Typography>
 
       <InfoAccordion
-        summaryText="Safe Protocol"
+        summaryText="Safe{Core} Protocol"
         details={[
-          'Safe Deployments (core smart contract deployments across multiple networks)',
+          'Safe{Core} Deployments (smart contract deployments across multiple networks)',
           'Curation of “trusted lists” (token lists, dApp lists, module lists)',
         ]}
       />
@@ -50,14 +51,14 @@ const SafeToken = (): ReactElement => {
       <InfoAccordion
         summaryText="Interfaces"
         details={[
-          'Decentralized hosting of a Safe frontend using the safe.eth domain',
+          'Decentralized hosting of a Safe{Wallet} frontend using the safe.eth domain',
           'Decentralized hosting of governance frontends',
         ]}
       />
 
       <InfoAccordion
         summaryText="On-chain assets"
-        details={['ENS names', 'Outstanding Safe token supply', 'Other Safe Treasury assets (NFTs, tokens, etc.)']}
+        details={['ENS names', 'Outstanding Safe Token supply', 'Other Safe{DAO} Treasury assets (NFTs, tokens, etc.)']}
       />
 
       <InfoAccordion

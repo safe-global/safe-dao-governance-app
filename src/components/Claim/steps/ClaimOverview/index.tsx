@@ -162,7 +162,7 @@ const ClaimOverview = (): ReactElement => {
         How much do you want to claim?
       </Typography>
       <Typography variant="subtitle1" mb={2}>
-        Select all tokens or define a custom amount.
+        Select all Tokens or define a custom amount.
       </Typography>
 
       <Grid item container gap={2} flexWrap="nowrap" xs={12} mb={3}>

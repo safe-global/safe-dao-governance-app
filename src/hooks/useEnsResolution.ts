@@ -43,7 +43,7 @@ export const useEnsResolution = (str: string, debounce = true): [string | undefi
       const checksummedAddress = getAddress(address)
 
       const error = sameAddress(address, safe.safeAddress)
-        ? 'You cannot delegate to your own Safe'
+        ? 'You cannot delegate to your own Safe Account'
         : sameAddress(address, wallet?.address || '')
         ? 'You cannot delegate to your own wallet'
         : undefined
@@ -86,7 +86,7 @@ export const useEnsResolution = (str: string, debounce = true): [string | undefi
 
       // Attempted to delegate to own Safe
       if (sameAddress(resolvedAddress, safe.safeAddress)) {
-        isMounted && setError('You cannot delegate to your own Safe')
+        isMounted && setError('You cannot delegate to your own Safe Account')
         isMounted && setLoading(false)
         return
       }

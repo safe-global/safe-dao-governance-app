@@ -44,7 +44,9 @@ const WIDGET_HEIGHT = 300
 const CtaWidget = (): ReactElement => {
   return (
     <div>
-      <Title>Become part of Safe&apos;s future</Title>
+      <Title>
+        Become part of <i>Safe</i>&apos;s future
+      </Title>
       <br />
       <Subtitle>
         Help us unlock ownership for everyone by joining the discussions on the{' '}
@@ -116,7 +118,7 @@ const VotingPowerWidget = (): ReactElement => {
         </>
       ) : (
         <>
-          {hasUnredeemedAllocation && <Subtitle>You have unredeemed tokens.</Subtitle>}
+          {hasUnredeemedAllocation && <Subtitle>You have unredeemed Tokens.</Subtitle>}
           <Link
             href={claimingSafeAppUrl}
             rel="noopener noreferrer"

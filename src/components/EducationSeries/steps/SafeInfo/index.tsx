@@ -14,19 +14,25 @@ const SafeInfo = (): ReactElement => {
   return (
     <Grid container px={6} pt={5} pb={4}>
       <Grid item xs={12} mb={3}>
-        <StepHeader title="What is Safe?" />
+        <StepHeader
+          title={
+            <>
+              What is <i>Safe</i>?
+            </>
+          }
+        />
       </Grid>
 
       <Typography mb={3}>
-        Safe is critical infrastructure for Web3. It is a programmable wallet that enables secure management of digital
-        assets, data and identity.
+        <i>Safe</i> is critical infrastructure for Web3. It is a programmable wallet that enables secure management of
+        digital assets, data and identity.
       </Typography>
 
       <Grid container mb={6} spacing={5}>
         <Grid item xs={12} sm={6}>
           <InfoBox>
             <Typography color="text.secondary" mb={1}>
-              Total Safes created
+              Total Safe Accounts created
             </Typography>
             <Box display="inline-flex" gap={1} alignItems="center">
               <LockIcon />
@@ -57,7 +63,7 @@ const SafeInfo = (): ReactElement => {
       </Typography>
 
       <Typography mb={5}>
-        As critical web3 infrastructure, Safe needs to be a community-owned, censorship resistant project, with a
+        As critical web3 infrastructure, <i>Safe</i> needs to be a community-owned, censorship resistant project, with a
         committed ecosystem stewarding its decisions. A governance token is needed to help coordinate this effort.
       </Typography>
 

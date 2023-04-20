@@ -26,7 +26,7 @@ const SuccessfulClaim = (): ReactElement => {
       <Typography mb={4} color={textColor} textAlign="center">
         You successfully started claiming {stepperState?.claimedAmount || '0'} Tokens!
         <br />
-        Once the transaction is signed and executed, the tokens will be available in your Safe.
+        Once the transaction is signed and executed, the Tokens will be available in your Safe Account.
       </Typography>
 
       <Button variant="contained" color={buttonColor} onClick={onNext}>
