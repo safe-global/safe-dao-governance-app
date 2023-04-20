@@ -18,7 +18,7 @@ export const CustomDelegate = (): ReactElement => {
   const delegate = useDelegate()
   const { onNext, setStepperState, stepperState } = useDelegationStepper()
 
-  const [search, setSearch] = useState(stepperState?.customDelegate?.ens || '')
+  const [search, setSearch] = useState(stepperState?.customDelegate?.ens || stepperState?.customDelegate?.address || '')
 
   const [ensAddress, ensError, ensLoading] = useEnsResolution(search)
   const isValidEnsAddress = ensAddress && isAddress(ensAddress)
