@@ -69,7 +69,7 @@ export const Intro = (): ReactElement => {
   }
   return (
     <Grid container flexDirection="column" alignItems="center" px={1} py={6}>
-      <SafeToken alt="Safe token logo" width={84} height={84} />
+      <SafeToken alt="Safe Token logo" width={84} height={84} />
 
       <Box mt={4} display="flex" flexDirection="column" alignItems="center">
         <TotalVotingPower />
@@ -94,7 +94,7 @@ export const Intro = (): ReactElement => {
 
       {isClaimable && (
         <Button variant="contained" size="stretched" onClick={onClaim} disabled={isWrongChain}>
-          Claim tokens
+          Claim Safe Tokens
         </Button>
       )}
 

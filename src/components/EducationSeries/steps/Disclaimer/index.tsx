@@ -4,9 +4,11 @@ import type { ReactElement } from 'react'
 import { StepHeader } from '@/components/StepHeader'
 import { NavButtons } from '@/components/NavButtons'
 import { useEducationSeriesStepper } from '@/components/EducationSeries'
+import { useIsSafeApp } from '@/hooks/useIsSafeApp'
 
 const Disclaimer = (): ReactElement => {
   const { onBack, onNext } = useEducationSeriesStepper()
+  const isSafeApp = useIsSafeApp()
 
   return (
     <Grid container px={6} pt={5} pb={4}>
@@ -15,8 +17,8 @@ const Disclaimer = (): ReactElement => {
       </Grid>
 
       <Typography mb={3}>
-        This App is for our community to encourage Safe ecosystem contributors and users to unlock Safe{`{DAO}`}{' '}
-        governance.
+        This {isSafeApp ? 'Safe{App}' : 'App'} is for our community to encourage <i>Safe</i> ecosystem contributors and
+        users to unlock Safe{`{DAO}`} governance.
         <br />
         <br />
         THIS APP IS PROVIDED “AS IS” AND “AS AVAILABLE,” AT YOUR OWN RISK, AND WITHOUT WARRANTIES OF ANY KIND. We will
@@ -27,7 +29,7 @@ const Disclaimer = (): ReactElement => {
         By accessing this app, you represent and warrant
         <br />- that you are of legal age and that you will comply with any laws applicable to you and not engage in any
         illegal activities;
-        <br />- that you are claiming Safe tokens to participate in the Safe{`{DAO}`} governance process and that they
+        <br />- that you are claiming Safe Tokens to participate in the Safe{`{DAO}`} governance process and that they
         do not represent consideration for past or future services;
         <br />- that you, the country you are a resident of and your wallet address is not on any sanctions lists
         maintained by the United Nations, Switzerland, the EU, UK or the US;

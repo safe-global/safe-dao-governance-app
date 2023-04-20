@@ -62,8 +62,8 @@ const SelectDelegate = (): ReactElement => {
       <Grid item xs={12} container alignItems="flex-end" justifyContent="space-between" gap={2}>
         <Typography>
           A delegate is someone you select to make governance decisions on your behalf. You still retain full ownership
-          of your tokens, but your delegate will wield the voting power associated with those tokens, including your
-          unvested allocation.
+          of your Safe Tokens, but your delegate will wield the voting power associated with those Tokens, including
+          your unvested allocation.
         </Typography>
 
         <DelegateSwitch delegateType={delegateType} setDelegateType={setDelegateType} />

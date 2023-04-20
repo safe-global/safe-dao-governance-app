@@ -22,8 +22,8 @@ const Distribution = (): ReactElement => {
       </Grid>
 
       <Typography mb={3}>
-        Safe Tokens are distributed to stakeholders of the ecosystem interested in shaping the future of Safe and
-        smart-contract accounts.
+        Safe Tokens are distributed to stakeholders of the ecosystem interested in shaping the future of <i>Safe</i> and
+        Safe Accounts.
       </Typography>
       <Grid item xs={12}>
         <ExternalLink href={DISTRIBUTION_PROPOSAL_URL}>Read full proposal</ExternalLink>

@@ -389,7 +389,7 @@ describe('useEnsResolution()', () => {
 
     expect(web3Provider.resolveName).toHaveBeenCalled()
     expect(result.current[0]).toBeUndefined()
-    expect(result.current[1]).toEqual('You cannot delegate to your own Safe')
+    expect(result.current[1]).toEqual('You cannot delegate to your own Safe Account')
     expect(result.current[2]).toBeFalsy()
   })
 
@@ -450,7 +450,7 @@ describe('useEnsResolution()', () => {
 
     expect(web3Provider.resolveName).not.toHaveBeenCalled()
     expect(result.current[0]).toEqual(resolvedAddress)
-    expect(result.current[1]).toEqual('You cannot delegate to your own Safe')
+    expect(result.current[1]).toEqual('You cannot delegate to your own Safe Account')
     expect(result.current[2]).toBeFalsy()
   })
 

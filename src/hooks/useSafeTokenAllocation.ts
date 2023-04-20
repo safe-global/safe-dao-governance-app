@@ -93,7 +93,7 @@ const fetchTokenBalance = async (chainId: string, safeAddress: string, provider:
       data: tokenInterface.encodeFunctionData('balanceOf', [safeAddress]),
     })
   } catch (err) {
-    throw Error(`Error fetching Safe token balance:  ${err}`)
+    throw Error(`Error fetching Safe Token balance:  ${err}`)
   }
 }
 

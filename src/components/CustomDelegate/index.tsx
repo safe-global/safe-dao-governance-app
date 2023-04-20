@@ -57,7 +57,8 @@ export const CustomDelegate = (): ReactElement => {
   return (
     <>
       <Typography>
-        The wallet address can belong to any person but you cannot delegate to your own{isSafeApp ? ' Safe' : ''}.
+        The wallet address can belong to any person but you cannot delegate to{' '}
+        {isSafeApp ? 'your own Safe Account' : 'yourself'}.
       </Typography>
 
       <TextField

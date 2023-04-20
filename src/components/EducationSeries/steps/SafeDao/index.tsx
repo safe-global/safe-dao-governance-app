@@ -33,9 +33,9 @@ const SafeDao = (): ReactElement => {
       </Grid>
 
       <Typography mb={3}>
-        Safe{`{DAO}`} aims to foster a vibrant ecosystem of applications and wallets leveraging Safe smart contract
-        accounts. This will be achieved through data-backed discussions, grants, ecosystem investments, as well as
-        providing developer tools and infrastructure.
+        Safe{`{DAO}`} aims to foster a vibrant ecosystem of applications and wallets leveraging Safe Accounts. This will
+        be achieved through data-backed discussions, grants, ecosystem investments, as well as providing developer tools
+        and infrastructure.
       </Typography>
 
       <Typography fontWeight={700} variant="h3" mb={3}>
@@ -58,14 +58,14 @@ const SafeDao = (): ReactElement => {
         </Point>
 
         <Point>
-          Chat with the community - join our Safe <ExternalLink href={DISCORD_URL}>Discord</ExternalLink>.
+          Chat with the community - join our <i>Safe</i> <ExternalLink href={DISCORD_URL}>Discord</ExternalLink>.
         </Point>
 
         <Paper className={css.info}>
           <Typography variant="h4" fontWeight={700}>
             Now&hellip;
             <br />
-            Help decide on the future of ownership with $SAFE.
+            Help decide on the future of ownership with SAFE.
           </Typography>
         </Paper>
       </Box>
