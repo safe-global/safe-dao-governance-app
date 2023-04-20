@@ -1,5 +1,5 @@
 import { Grid, Typography } from '@mui/material'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import type { ReactElement } from 'react'
 
 import { DelegateList } from '@/components/DelegateList'
@@ -7,7 +7,6 @@ import { DelegateSwitch } from '@/components/DelegateSwitch'
 import { CustomDelegate } from '@/components/CustomDelegate'
 import { StepHeader } from '@/components/StepHeader'
 import { useDelegationStepper } from '@/components/Delegation'
-import { useDelegate } from '@/hooks/useDelegate'
 import { useDelegatesFile } from '@/hooks/useDelegatesFile'
 import type { FileDelegate } from '@/hooks/useDelegatesFile'
 
@@ -27,31 +26,12 @@ const getDelegateType = (delegateFiles?: FileDelegate[], address?: string) => {
 }
 
 const SelectDelegate = (): ReactElement => {
-  const { stepperState, setStepperState } = useDelegationStepper()
-  const delegate = useDelegate()
+  const { stepperState } = useDelegationStepper()
   const { data: delegateFiles } = useDelegatesFile()
 
   const [delegateType, setDelegateType] = useState<DelegateType | undefined>(
     getDelegateType(delegateFiles, stepperState?.selectedDelegate?.address),
   )
-
-  // Initialize stepper state with contract delegate if it exists
-  useEffect(() => {
-    if (!delegate || stepperState?.customDelegate || stepperState?.safeGuardian) {
-      return
-    }
-
-    const safeGuardian = delegateFiles?.find(({ address }) => address === delegate?.address)
-
-    setStepperState((prev) => ({
-      ...prev,
-      selectedDelegate: delegate,
-      customDelegate: safeGuardian ? undefined : delegate,
-      safeGuardian,
-    }))
-
-    setDelegateType(getDelegateType(delegateFiles, delegate?.address))
-  }, [delegate, delegateFiles, setStepperState, stepperState])
 
   return (
     <Grid container p={6} gap={3}>

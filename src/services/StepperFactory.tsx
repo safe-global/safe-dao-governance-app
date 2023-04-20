@@ -7,38 +7,35 @@ import type { JSXElementConstructor, LazyExoticComponent, ReactElement, Dispatch
 import { AppRoutes } from '@/config/routes'
 import { ProgressBar } from '@/components/ProgressBar'
 
-export const createStepper = <StepperState extends Record<string, unknown>>({
-  steps,
-  state,
-}: {
-  steps: LazyExoticComponent<() => ReactElement<any, string | JSXElementConstructor<any>>>[]
-  state?: StepperState
-}) => {
+export const createStepper = <T extends Record<string, unknown>>() => {
+  type StepperState = T | undefined
+
   // Typed context
   const Context = createContext<{
-    stepperState: StepperState | undefined
-    setStepperState: Dispatch<SetStateAction<StepperState | undefined>>
-    activeStep: number
-    setActiveStep: Dispatch<SetStateAction<number>>
+    stepperState: StepperState
+    setStepperState: Dispatch<SetStateAction<StepperState>>
     onBack: () => void
     onNext: () => void
-    progress: number
   }>({
     stepperState: undefined,
     setStepperState: () => {},
-    activeStep: 0,
-    setActiveStep: () => {},
     onBack: () => {},
     onNext: () => {},
-    progress: 0,
   })
 
   // Typed Provider
-  const Stepper = () => {
+  const Provider = ({
+    initialState,
+    steps,
+    children,
+  }: {
+    initialState?: T
+    steps: LazyExoticComponent<() => ReactElement<any, string | JSXElementConstructor<any>>>[]
+    children?: (Step: LazyExoticComponent<() => ReactElement<any, string | JSXElementConstructor<any>>>) => ReactElement
+  }): ReactElement => {
     const router = useRouter()
 
-    const [stepperState, setStepperState] = useState(state)
-
+    const [stepperState, setStepperState] = useState<StepperState>(initialState)
     const [activeStep, setActiveStep] = useState(0)
 
     const onBack = () => {
@@ -64,17 +61,12 @@ export const createStepper = <StepperState extends Record<string, unknown>>({
         value={{
           stepperState,
           setStepperState,
-          activeStep,
-          setActiveStep,
           onBack,
           onNext,
-          progress,
         }}
       >
-        <Suspense>
-          <ProgressBar value={progress} />
-          <Step />
-        </Suspense>
+        <ProgressBar value={progress} />
+        <Suspense>{children ? children(Step) : <Step />}</Suspense>
       </Context.Provider>
     )
   }
@@ -83,14 +75,14 @@ export const createStepper = <StepperState extends Record<string, unknown>>({
     const stepperContext = useContext(Context)
 
     if (!stepperContext) {
-      throw new Error('useStepper must be used within a Stepper')
+      throw new Error('useStepper must be used within a Stepper Provider')
     }
 
     return stepperContext
   }
 
   return {
-    Stepper,
+    Provider,
     useStepper,
   }
 }

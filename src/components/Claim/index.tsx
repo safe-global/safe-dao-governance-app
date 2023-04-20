@@ -1,4 +1,5 @@
 import { lazy } from 'react'
+import type { ReactElement } from 'react'
 
 import { createStepper } from '@/services/StepperFactory'
 
@@ -7,11 +8,18 @@ const steps = [
   lazy(() => import('@/components/Claim/steps/SuccessfulClaim')),
 ]
 
-const ClaimContext = createStepper({
-  steps,
-  state: { claimedAmount: '' },
-})
+type ClaimStepperState = {
+  claimedAmount: string
+}
+
+const ClaimContext = createStepper<ClaimStepperState>()
 
 export const useClaimStepper = ClaimContext.useStepper
 
-export const Claim = ClaimContext.Stepper
+export const Claim = (): ReactElement => {
+  const initialState: ClaimStepperState = {
+    claimedAmount: '',
+  }
+
+  return <ClaimContext.Provider steps={steps} initialState={initialState} />
+}

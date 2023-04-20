@@ -1,6 +1,9 @@
 import { lazy } from 'react'
+import type { ReactElement } from 'react'
 
 import { createStepper } from '@/services/StepperFactory'
+import { useDelegatesFile } from '@/hooks/useDelegatesFile'
+import { useDelegate } from '@/hooks/useDelegate'
 import type { FileDelegate } from '@/hooks/useDelegatesFile'
 import type { Delegate } from '@/hooks/useDelegate'
 import type { ContractDelegate } from '@/hooks/useContractDelegate'
@@ -17,15 +20,21 @@ type DelegationStepperState = {
   selectedDelegate?: Delegate
 }
 
-const DelegationContext = createStepper<DelegationStepperState>({
-  steps,
-  state: {
-    safeGuardian: undefined,
-    customDelegate: undefined,
-    selectedDelegate: undefined,
-  },
-})
+const DelegationContext = createStepper<DelegationStepperState>()
 
 export const useDelegationStepper = DelegationContext.useStepper
 
-export const Delegation = DelegationContext.Stepper
+export const Delegation = (): ReactElement => {
+  const delegate = useDelegate() ?? undefined
+  const { data: delegateFiles } = useDelegatesFile()
+
+  const safeGuardian = delegateFiles?.find(({ address }) => address === delegate?.address)
+
+  const initialState: DelegationStepperState = {
+    selectedDelegate: delegate,
+    customDelegate: safeGuardian ? undefined : delegate,
+    safeGuardian,
+  }
+
+  return <DelegationContext.Provider steps={steps} initialState={initialState} />
+}

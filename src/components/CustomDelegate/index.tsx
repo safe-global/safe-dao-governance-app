@@ -1,6 +1,6 @@
 import { CircularProgress, InputAdornment, TextField, Typography } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search'
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useMemo } from 'react'
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded'
 import { isAddress } from 'ethers/lib/utils'
 import type { ReactElement, ChangeEvent } from 'react'
@@ -24,20 +24,22 @@ export const CustomDelegate = (): ReactElement => {
   const isValidEnsAddress = ensAddress && isAddress(ensAddress)
 
   const customDelegate = useMemo<Delegate | undefined>(() => {
-    if (isValidEnsAddress) {
-      return {
-        ens: isAddress(search) ? null : search || null,
-        address: ensAddress,
-      }
+    if (!isValidEnsAddress) {
+      return
     }
-  }, [ensAddress, isValidEnsAddress, search])
 
-  useEffect(() => {
+    const newCustomDelegate = {
+      ens: isAddress(search) ? null : search || null,
+      address: ensAddress,
+    }
+
     setStepperState((prev) => ({
       ...prev,
-      customDelegate,
+      customDelegate: newCustomDelegate,
     }))
-  }, [setStepperState, customDelegate])
+
+    return newCustomDelegate
+  }, [ensAddress, isValidEnsAddress, search, setStepperState])
 
   const onSearch = (event: ChangeEvent<HTMLInputElement>) => {
     setSearch(event.currentTarget.value)

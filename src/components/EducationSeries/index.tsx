@@ -1,4 +1,5 @@
 import { lazy } from 'react'
+import type { ReactElement } from 'react'
 
 import { createStepper } from '@/services/StepperFactory'
 
@@ -10,8 +11,10 @@ const steps = [
   lazy(() => import('@/components/EducationSeries/steps/Disclaimer')),
 ]
 
-const EducationSeriesContext = createStepper({ steps })
+const EducationSeriesContext = createStepper()
 
 export const useEducationSeriesStepper = EducationSeriesContext.useStepper
 
-export const EducationSeries = EducationSeriesContext.Stepper
+export const EducationSeries = (): ReactElement => {
+  return <EducationSeriesContext.Provider steps={steps} />
+}
