@@ -45,7 +45,7 @@ export const CHAIN_SAFE_TOKEN_ADDRESS: ChainConfig<string> = {
 
 // Claiming
 const CLAIMING_DATA_URL = IS_PRODUCTION
-  ? 'https://safe-claiming-app-data.gnosis-safe.io'
+  ? 'https://safe-claiming-app-data.safe.global'
   : 'https://safe-claiming-app-data.staging.5afe.dev'
 
 export const GUARDIANS_URL = `${CLAIMING_DATA_URL}/guardians/guardians.json`
