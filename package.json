@@ -9,7 +9,7 @@
     "lint:fix": "next lint --fix",
     "generate-types:safe-token": "typechain --target ethers-v5 --out-dir ./src/types/contracts/safe-token './artifacts/safe-token/contracts/**/*[!.dbg].json'",
     "generate-types:delegate-registry": "typechain --target ethers-v5 --out-dir ./src/types/contracts/delegate-registry './artifacts/delegate-registry/contracts/**/*[!.dbg].json'",
-    "generate-types": "hardhat compile && yarn generate-types:safe-token && yarn generate-types:delegate-registry",
+    "generate-types": "hardhat compile --force && yarn generate-types:safe-token && yarn generate-types:delegate-registry",
     "prettier": "prettier -w \"{src,pages,scripts}/**/*.{ts,tsx,css,js}\"",
     "postinstall": "yarn run generate-types",
     "routes": "node scripts/generate-routes.js > src/config/routes.ts && prettier -w src/config/routes.ts",
