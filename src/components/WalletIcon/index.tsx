@@ -5,7 +5,7 @@ import keystoneIcon from '@web3-onboard/keystone/dist/icon'
 import walletConnectIcon from '@web3-onboard/walletconnect/dist/icon'
 import trezorIcon from '@web3-onboard/trezor/dist/icon'
 import ledgerIcon from '@web3-onboard/ledger/dist/icon'
-import tallyhoIcon from '@web3-onboard/tallyho/dist/icon'
+import tahoIcon from '@web3-onboard/taho/dist/icon'
 
 import { INJECTED_WALLET_KEYS, WALLET_KEYS } from '@/utils/onboard'
 
@@ -19,9 +19,10 @@ const WALLET_ICONS: Props = {
   [WALLET_KEYS.INJECTED]: metamaskIcon,
   [WALLET_KEYS.KEYSTONE]: keystoneIcon,
   [WALLET_KEYS.WALLETCONNECT]: walletConnectIcon,
+  [WALLET_KEYS.WALLETCONNECT_V2]: walletConnectIcon,
   [WALLET_KEYS.TREZOR]: trezorIcon,
   [WALLET_KEYS.LEDGER]: ledgerIcon,
-  [WALLET_KEYS.TALLYHO]: tallyhoIcon,
+  [WALLET_KEYS.TAHO]: tahoIcon,
 }
 
 export const WalletIcon = ({ provider }: { provider: string }) => {
