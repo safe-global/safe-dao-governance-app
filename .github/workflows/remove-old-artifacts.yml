@@ -1,4 +1,5 @@
 name: Remove old artifacts
+on: [pull_request]
 
 jobs:
   remove-old-artifacts:
