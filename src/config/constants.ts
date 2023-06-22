@@ -43,7 +43,7 @@ export const CHAIN_SAFE_TOKEN_ADDRESS: ChainConfig<string> = {
   [Chains.GOERLI]: '0x61fD3b6d656F39395e32f46E2050953376c3f5Ff',
 }
 
-// Claiming data
+// Claiming
 const CLAIMING_DATA_URL = IS_PRODUCTION
   ? 'https://safe-claiming-app-data.gnosis-safe.io'
   : 'https://safe-claiming-app-data.staging.5afe.dev'
