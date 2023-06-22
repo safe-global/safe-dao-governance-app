@@ -9,3 +9,5 @@ jobs:
     steps:
       - name: Remove old artifacts
         uses: c-hive/gha-remove-artifacts@v1
+        with:
+          age: '90 seconds'
