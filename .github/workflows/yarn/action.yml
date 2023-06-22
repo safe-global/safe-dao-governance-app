@@ -5,6 +5,12 @@ description: 'Install the dependencies'
 runs:
   using: 'composite'
   steps:
+    # `hardhat compile` has issues with the latest version of Node
+    # https://github.com/NomicFoundation/hardhat/issues/3877
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18.15.0
+
     - name: Yarn cache
       uses: actions/cache@v3
       with:
