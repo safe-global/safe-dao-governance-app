@@ -19,7 +19,7 @@ export const useInitOnboard = () => {
   // Create onboard instance when chains are loaded/running as dapp
   useEffect(() => {
     if (chain && !isSafeApp) {
-      onboardStore.setStore(createOnboard([chain]))
+      onboardStore.setStore(createOnboard([chain], chain))
     }
   }, [chain, isSafeApp])
 

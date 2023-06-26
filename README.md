@@ -19,11 +19,12 @@ Create a `.env` file with environment variables. You can use the `.env.example` 
 
 Here's the list of all the required and optional variables:
 
-| Env variable                |              | Description                                                                                                      |
-| --------------------------- | ------------ | ---------------------------------------------------------------------------------------------------------------- |
-| `NEXT_PUBLIC_INFURA_TOKEN`  | **required** | [Infura](https://docs.infura.io/infura/networks/ethereum/how-to/secure-a-project/project-id) RPC API token       |
-| `NEXT_PUBLIC_IS_PRODUCTION` | optional     | Set to `true` to build a minified production app                                                                 |
-| `NEXT_PUBLIC_WC_BRIDGE`     | optional     | [WalletConnect](https://docs.walletconnect.com/1.0/bridge-server) bridge URL, falls back to the public WC bridge |
+| Env variable                |              | Description                                                                                                         |
+| --------------------------- | ------------ | ------------------------------------------------------------------------------------------------------------------- |
+| `NEXT_PUBLIC_INFURA_TOKEN`  | **required** | [Infura](https://docs.infura.io/infura/networks/ethereum/how-to/secure-a-project/project-id) RPC API token          |
+| `NEXT_PUBLIC_IS_PRODUCTION` | optional     | Set to `true` to build a minified production app                                                                    |
+| `NEXT_PUBLIC_WC_BRIDGE`     | optional     | [WalletConnect v1](https://docs.walletconnect.com/1.0/bridge-server) bridge URL, falls back to the public WC bridge |
+| `NEXT_PUBLIC_WC_PROJECT_ID` | optional     | [WalletConnect v2](https://docs.walletconnect.com/2.0/cloud/relay) project ID                                       |
 
 If you don't provide some of the optional vars, the corresponding features may not work as intended.
 

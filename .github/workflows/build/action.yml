@@ -20,3 +20,4 @@ runs:
         NEXT_PUBLIC_INFURA_TOKEN: ${{ fromJSON(inputs.secrets).NEXT_PUBLIC_INFURA_TOKEN }}
         NEXT_PUBLIC_IS_PRODUCTION: ${{ inputs.is-production }}
         NEXT_PUBLIC_WC_BRIDGE: ${{ fromJSON(inputs.secrets).NEXT_PUBLIC_WC_BRIDGE }}
+        NEXT_PUBLIC_WC_PROJECT_ID: ${{ fromJSON(inputs.secrets).NEXT_PUBLIC_WC_PROJECT_ID }}
