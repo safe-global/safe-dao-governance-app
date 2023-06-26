@@ -19,7 +19,19 @@ export const ConnectWallet = (): ReactElement => {
     }
 
     try {
-      const wallets = await onboard.connectWallet()
+      const promise = onboard.connectWallet()
+
+      // Remove "Where's my wallet?" element
+      setTimeout(() => {
+        const onboardModal = document.querySelector('onboard-v2')?.shadowRoot
+        const wheresMyWallet = onboardModal?.querySelector('.wallets-container .notice-container')
+
+        if (wheresMyWallet) {
+          wheresMyWallet.remove()
+        }
+      }, 100)
+
+      const wallets = await promise
       const wallet = getConnectedWallet(wallets)
 
       // Here we check non-hardware wallets. Hardware wallets will always be on the correct
