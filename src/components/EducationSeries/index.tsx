@@ -1,17 +1,30 @@
-import { lazy } from 'react'
+import type { ReactElement } from 'react'
 
-import { createStepper } from '@/services/StepperFactory'
+import { useRouter } from 'next/router'
+import { useStepper } from '@/hooks/useStepper'
+import SafeInfo from '@/components/EducationSeries/steps/SafeInfo'
+import Distribution from '@/components/EducationSeries/steps/Distribution'
+import SafeToken from '@/components/EducationSeries/steps/SafeToken'
+import SafeDao from '@/components/EducationSeries/steps/SafeDao'
+import Disclaimer from '@/components/EducationSeries/steps/Disclaimer'
+import { AppRoutes } from '@/config/routes'
 
-const steps = [
-  lazy(() => import('@/components/EducationSeries/steps/SafeInfo')),
-  lazy(() => import('@/components/EducationSeries/steps/Distribution')),
-  lazy(() => import('@/components/EducationSeries/steps/SafeToken')),
-  lazy(() => import('@/components/EducationSeries/steps/SafeDao')),
-  lazy(() => import('@/components/EducationSeries/steps/Disclaimer')),
-]
+export const EducationSeries = (): ReactElement => {
+  const router = useRouter()
 
-const EducationSeriesContext = createStepper({ steps })
+  const { step, prevStep, nextStep } = useStepper(undefined)
 
-export const useEducationSeriesStepper = EducationSeriesContext.useStepper
+  const onNext = () => {
+    nextStep(undefined)
+  }
 
-export const EducationSeries = EducationSeriesContext.Stepper
+  const steps = [
+    <SafeInfo key={0} onNext={onNext} />,
+    <Distribution key={1} onBack={prevStep} onNext={onNext} />,
+    <SafeToken key={2} onBack={prevStep} onNext={onNext} />,
+    <SafeDao key={3} onBack={prevStep} onNext={onNext} />,
+    <Disclaimer key={4} onBack={prevStep} onNext={() => router.push(AppRoutes.index)} />,
+  ]
+
+  return steps[step]
+}

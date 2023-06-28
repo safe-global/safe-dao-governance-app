@@ -1,17 +1,26 @@
-import { lazy } from 'react'
+import { useRouter } from 'next/router'
+import type { ReactElement } from 'react'
 
-import { createStepper } from '@/services/StepperFactory'
+import { useStepper } from '@/hooks/useStepper'
+import ClaimOverview from '@/components/Claim/steps/ClaimOverview'
+import SuccessfulClaim from '@/components/Claim/steps/SuccessfulClaim'
+import { AppRoutes } from '@/config/routes'
 
-const steps = [
-  lazy(() => import('@/components/Claim/steps/ClaimOverview')),
-  lazy(() => import('@/components/Claim/steps/SuccessfulClaim')),
-]
+export type ClaimFlow = {
+  claimedAmount: string
+}
 
-const ClaimContext = createStepper({
-  steps,
-  state: { claimedAmount: '' },
-})
+export const Claim = (): ReactElement => {
+  const router = useRouter()
 
-export const useClaimStepper = ClaimContext.useStepper
+  const { step, data, nextStep } = useStepper<ClaimFlow>({
+    claimedAmount: '',
+  })
 
-export const Claim = ClaimContext.Stepper
+  const steps = [
+    <ClaimOverview key={0} onNext={(data: ClaimFlow) => nextStep(data)} />,
+    <SuccessfulClaim key={1} data={data} onNext={() => router.push(AppRoutes.index)} />,
+  ]
+
+  return steps[step]
+}

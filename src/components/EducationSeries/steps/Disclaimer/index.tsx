@@ -3,11 +3,9 @@ import type { ReactElement } from 'react'
 
 import { StepHeader } from '@/components/StepHeader'
 import { NavButtons } from '@/components/NavButtons'
-import { useEducationSeriesStepper } from '@/components/EducationSeries'
 import { useIsSafeApp } from '@/hooks/useIsSafeApp'
 
-const Disclaimer = (): ReactElement => {
-  const { onBack, onNext } = useEducationSeriesStepper()
+const Disclaimer = ({ onBack, onNext }: { onBack: () => void; onNext: () => void }): ReactElement => {
   const isSafeApp = useIsSafeApp()
 
   return (
