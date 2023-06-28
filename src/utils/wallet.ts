@@ -2,11 +2,12 @@ import { ProviderLabel } from '@web3-onboard/injected-wallets'
 import { getSafeInfo } from '@safe-global/safe-gateway-typescript-sdk'
 
 import { local } from '@/services/storage/local'
+import { WALLET_CONNECT_V1_MODULE_NAME } from '@/utils/onboard'
 import type { ConnectedWallet } from '@/hooks/useWallet'
 
 export const WalletNames = {
   METAMASK: ProviderLabel.MetaMask,
-  WALLET_CONNECT: 'WalletConnect',
+  WALLET_CONNECT: WALLET_CONNECT_V1_MODULE_NAME,
 }
 
 export const isWalletUnlocked = async (walletName: string): Promise<boolean> => {
