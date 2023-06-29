@@ -1,7 +1,7 @@
 import { BigNumber } from 'ethers'
 import { formatEther } from 'ethers/lib/utils'
 import { useSafeAppsSDK } from '@gnosis.pm/safe-apps-react-sdk'
-import { Box, Button, Typography, Link, Skeleton, Card, IconButton, Grid } from '@mui/material'
+import { Box, Button, Typography, Link, Skeleton, Card, IconButton, Grid, Tooltip } from '@mui/material'
 import ModeEditOutlinedIcon from '@mui/icons-material/ModeEditOutlined'
 import CheckSharpIcon from '@mui/icons-material/CheckSharp'
 import { useState } from 'react'
@@ -84,6 +84,7 @@ const VotingPowerWidget = (): ReactElement => {
   const { data: allocation } = useSafeTokenAllocation()
 
   // TODO: Use real SEP #5 data
+  const fakeSep5ClaimDate = '01.01.1970'
   const sep5 = useMockSep5()
   const isSep5Claimable = Number(sep5.claimable) > 0
 
@@ -105,7 +106,11 @@ const VotingPowerWidget = (): ReactElement => {
           New allocation
         </TypographyChip>
 
-        <Sep5DeadlineChip px={1} />
+        <Tooltip
+          title={`You qualify for a new SAFE allocation! Ensure you execute at least one claim before ${fakeSep5ClaimDate}`}
+        >
+          <Sep5DeadlineChip px={1} />
+        </Tooltip>
       </Grid>
       <Grid item xs={12} display="flex" flexDirection="column" alignItems="center" mt={4}>
         <Typography variant="subtitle2" color="primary.light" textAlign="center">
