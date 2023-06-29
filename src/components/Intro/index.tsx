@@ -1,4 +1,4 @@
-import { Grid, Typography, Box, Button, CircularProgress } from '@mui/material'
+import { Grid, Typography, Box, Button, CircularProgress, SvgIcon } from '@mui/material'
 import { useRouter } from 'next/router'
 import { formatEther } from 'ethers/lib/utils'
 import { BigNumber } from 'ethers'
@@ -20,11 +20,19 @@ import { useWallet } from '@/hooks/useWallet'
 import { isSafe } from '@/utils/wallet'
 import { InfoBox } from '@/components/InfoBox'
 import { useIsDelegationPending } from '@/hooks/usePendingDelegations'
+import { useIsDarkMode } from '@/hooks/useIsDarkMode'
+import { useMockSep5 } from '@/hooks/useMockSep5'
+import ClockIcon from '@/public/images/clock.svg'
+import { ExternalLink } from '@/components/ExternalLink'
 
 import css from './styles.module.css'
 
+const SEP5_URL =
+  'https://snapshot.org/#/safe.eth/proposal/0xb4765551b4814b592d02ce67de05527ac1d2b88a8c814c4346ecc0c947c9b941'
+
 export const Intro = (): ReactElement => {
   const router = useRouter()
+  const isDarkMode = useIsDarkMode()
   const isWrongChain = useIsWrongChain()
   const wallet = useWallet()
   const chainId = useChainId()
@@ -34,8 +42,14 @@ export const Intro = (): ReactElement => {
   const { isLoading, data: allocation } = useSafeTokenAllocation()
   const { total } = useTaggedAllocations()
 
-  const hasAllocation = Number(total.allocation) > 0
-  const isClaimable = Number(total.claimable) > 0
+  // TODO: Use real SEP #5 data
+  const fakeSep5ClaimDate = '01.01.1970'
+  const sep5 = useMockSep5()
+  const hasSep5Allocation = Number(sep5.allocation) > 0
+  const isSep5Claimable = Number(sep5.claimable) > 0
+
+  const hasAllocation = Number(total.allocation) > 0 || hasSep5Allocation
+  const isClaimable = Number(total.claimable) > 0 || isSep5Claimable
 
   const isDelegating = useIsDelegationPending()
   const canDelegate =
@@ -68,37 +82,77 @@ export const Intro = (): ReactElement => {
     )
   }
   return (
-    <Grid container flexDirection="column" alignItems="center" px={1} py={6}>
-      <SafeToken alt="Safe Token logo" width={84} height={84} />
+    <Grid container p={7} alignItems="center" justifyContent="center" gap={4}>
+      <Grid item xs={12} px={3}>
+        <Grid container alignItems="center" justifyContent="center" spacing={2}>
+          <Grid item xs={6} display="flex" flexDirection="column" alignItems="center">
+            <SafeToken alt="Safe Token logo" width={84} height={84} />
 
-      <Box mt={4} display="flex" flexDirection="column" alignItems="center">
-        <TotalVotingPower />
-      </Box>
+            <Box mt={4} display="flex" flexDirection="column" alignItems="center" textAlign="center">
+              <TotalVotingPower />
+            </Box>
+          </Grid>
 
-      {hasAllocation && (
-        <Grid item xs={12} display="flex" gap={6} my={3} flexDirection={{ xs: 'column', sm: 'row' }}>
-          <InfoBox className={css.overview}>
-            <Typography variant="body2" color="text.secondary">
-              Claimable now
-            </Typography>
-            <Typography fontWeight={700}>{formatAmount(formatEther(total.claimable), 2)} SAFE</Typography>
-          </InfoBox>
-          <InfoBox className={css.overview}>
-            <Typography variant="body2" color="text.secondary">
-              Claimable in the future
-            </Typography>
-            <Typography fontWeight={700}>{formatAmount(formatEther(total.inVesting), 2)} SAFE</Typography>
-          </InfoBox>
+          {hasAllocation && (
+            <Grid item xs={6} display="flex" gap={2} flexDirection="column">
+              <InfoBox className={css.overview}>
+                <Typography variant="body2" color="text.secondary">
+                  Claimable now
+                </Typography>
+                <Typography fontWeight={700}>{formatAmount(formatEther(total.claimable), 2)} SAFE</Typography>
+              </InfoBox>
+              <InfoBox className={css.overview}>
+                <Typography variant="body2" color="text.secondary">
+                  Claimable in the future
+                </Typography>
+                <Typography fontWeight={700}>{formatAmount(formatEther(total.inVesting), 2)} SAFE</Typography>
+              </InfoBox>
+            </Grid>
+          )}
+
+          {hasSep5Allocation && (
+            <Grid item xs={12}>
+              <InfoBox display="flex" alignItems="center" justifyContent="space-between">
+                <div>
+                  <Typography variant="body2" color="text.secondary">
+                    As a result of{' '}
+                    <ExternalLink href={SEP5_URL} icon={false}>
+                      SEP #5
+                    </ExternalLink>
+                    , you qualify for
+                  </Typography>
+                  <Typography fontWeight={700}>{formatAmount(sep5.allocation, 2)} SAFE</Typography>
+                </div>
+                <Typography
+                  variant="body2"
+                  sx={(theme) => ({
+                    py: 1,
+                    px: 2,
+                    bgcolor: isDarkMode ? theme.palette.primary.main : theme.palette.secondary.main,
+                    color: isDarkMode ? theme.palette.primary.contrastText : undefined,
+                    borderRadius: `${theme.shape.borderRadius}px`,
+                    display: 'flex',
+                    alignItems: 'center',
+                  })}
+                >
+                  <SvgIcon component={ClockIcon} inheritViewBox fontSize="inherit" sx={{ mr: '6px' }} />
+                  Until {fakeSep5ClaimDate}
+                </Typography>
+              </InfoBox>
+            </Grid>
+          )}
+
+          {isClaimable && (
+            <Grid item xs={12} display="flex" justifyContent="center">
+              <Button variant="contained" size="stretched" onClick={onClaim} disabled={isWrongChain}>
+                Claim Safe Tokens
+              </Button>
+            </Grid>
+          )}
         </Grid>
-      )}
+      </Grid>
 
-      {isClaimable && (
-        <Button variant="contained" size="stretched" onClick={onClaim} disabled={isWrongChain}>
-          Claim Safe Tokens
-        </Button>
-      )}
-
-      <Grid item px={5} mt={6} mb={4}>
+      <Grid item xs={12}>
         <SelectedDelegate delegate={delegate || undefined} action={action} shortenAddress hint />
       </Grid>
 
