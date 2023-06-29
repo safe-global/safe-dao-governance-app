@@ -19,6 +19,8 @@ import { createClaimTxs } from '@/utils/claim'
 import { useIsTokenPaused } from '@/hooks/useIsTokenPaused'
 import { useTaggedAllocations } from '@/hooks/useTaggedAllocations'
 import { useIsWrongChain } from '@/hooks/useIsWrongChain'
+import { Sep5InfoBox } from '@/components/Sep5InfoBox'
+import { useMockSep5 } from '@/hooks/useMockSep5'
 
 import css from './styles.module.css'
 
@@ -53,6 +55,11 @@ const ClaimOverview = (): ReactElement => {
   const delegate = useDelegate()
 
   const { data: isTokenPaused } = useIsTokenPaused()
+
+  // TODO: Use real SEP #5 data
+  const fakeSep5ClaimExpiration = '01.01.1970 10:00 CET'
+  const sep5 = useMockSep5()
+  const hasSep5Allocation = Number(sep5.allocation) > 0
 
   // Allocation, vesting and voting power
   const { data: allocation } = useSafeTokenAllocation()
@@ -146,13 +153,30 @@ const ClaimOverview = (): ReactElement => {
       </Grid>
 
       <InfoAlert>
-        <Typography variant="subtitle2">
+        <Typography variant="body2">
           Total allocation is{' '}
           <Typography component="span" variant="inherit" color="text.primary">
             {formatAmount(formatEther(total.allocation), 2)} SAFE
           </Typography>
         </Typography>
       </InfoAlert>
+
+      {hasSep5Allocation && (
+        <>
+          <Grid item xs={12} mt={2}>
+            <Sep5InfoBox />
+          </Grid>
+
+          <Grid item xs={12} mt={1}>
+            <InfoAlert>
+              <Typography variant="body2">
+                Execute at least one claim of any amount of your allocation before {fakeSep5ClaimExpiration} otherwise
+                it will be transferred back to the Safe{`{DAO}`} treasurary.
+              </Typography>
+            </InfoAlert>
+          </Grid>
+        </>
+      )}
 
       <Grid item xs={12} my={4}>
         <Divider />
@@ -165,7 +189,7 @@ const ClaimOverview = (): ReactElement => {
         Select all Safe Tokens or define a custom amount.
       </Typography>
 
-      <Grid item container gap={2} flexWrap="nowrap" xs={12} mb={3}>
+      <Grid item container gap={2} flexWrap="nowrap" xs={12} mb={1}>
         <Grid item xs={9}>
           <TextField
             variant="outlined"
@@ -201,7 +225,7 @@ const ClaimOverview = (): ReactElement => {
 
       {isInvestorClaimingDisabled && (
         <InfoAlert>
-          <Typography variant="subtitle2" mb={3}>
+          <Typography variant="body2" mb={3}>
             Claiming will be available once the Safe Token is transferable
           </Typography>
         </InfoAlert>

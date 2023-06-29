@@ -95,7 +95,7 @@ export const CustomDelegate = (): ReactElement => {
 
       {isSafeApp && (
         <InfoAlert>
-          <Typography variant="subtitle1">
+          <Typography variant="body2">
             For gasless voting, we suggest selecting an EOA wallet e.g. your connected wallet.
           </Typography>
         </InfoAlert>
