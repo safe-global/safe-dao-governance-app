@@ -65,7 +65,7 @@ export const OverviewLinks = (): ReactElement => {
   const snapshotUrl = CHAIN_SNAPSHOT_URL[chainId]
 
   return (
-    <Grid container spacing={2} px={6}>
+    <Grid container spacing={2}>
       <Grid item xs={12} sm={6}>
         <SafeDaoCard />
       </Grid>

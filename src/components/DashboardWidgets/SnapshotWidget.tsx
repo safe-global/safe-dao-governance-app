@@ -75,7 +75,7 @@ export const SnapshotWidget = (): ReactElement => {
 
   return (
     <Card elevation={0} sx={{ flexGrow: 1 }}>
-      <Box className={css.spacer}>
+      <Box className={css.snapshot}>
         <div>
           <Typography component="h2" variant="subtitle1" color="text.primary" className={css.header}>
             Latest proposals
