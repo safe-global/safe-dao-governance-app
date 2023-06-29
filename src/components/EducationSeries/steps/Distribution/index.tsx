@@ -6,15 +6,12 @@ import DistributionChart from '@/public/images/distribution-chart.svg'
 import lightPalette from '@/styles/colors'
 import { ExternalLink } from '@/components/ExternalLink'
 import { NavButtons } from '@/components/NavButtons'
-import { useEducationSeriesStepper } from '@/components/EducationSeries'
 
 import css from './styles.module.css'
 
 const DISTRIBUTION_PROPOSAL_URL = 'https://forum.gnosis-safe.io/t/safe-voting-power-and-circulating-supply/558'
 
-const Distribution = (): ReactElement => {
-  const { onBack, onNext } = useEducationSeriesStepper()
-
+const Distribution = ({ onBack, onNext }: { onBack: () => void; onNext: () => void }): ReactElement => {
   return (
     <Grid container px={6} pt={5} pb={4}>
       <Grid item xs={12} mb={3}>

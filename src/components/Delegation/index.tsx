@@ -1,31 +1,50 @@
-import { lazy } from 'react'
+import { useRouter } from 'next/router'
+import type { ReactElement } from 'react'
 
-import { createStepper } from '@/services/StepperFactory'
-import type { FileDelegate } from '@/hooks/useDelegatesFile'
+import { useDelegatesFile } from '@/hooks/useDelegatesFile'
+import { useDelegate } from '@/hooks/useDelegate'
+import SelectDelegate from '@/components/Delegation/steps/SelectDelegate'
+import ReviewDelegate from '@/components/Delegation/steps/ReviewDelegate'
+import SuccessfulDelegation from '@/components/Delegation/steps/SuccessfulDelegation'
+import { useStepper } from '@/hooks/useStepper'
+import { FileDelegate } from '@/hooks/useDelegatesFile'
+import { ProgressBar } from '@/components/ProgressBar'
+import { AppRoutes } from '@/config/routes'
 import type { Delegate } from '@/hooks/useDelegate'
 import type { ContractDelegate } from '@/hooks/useContractDelegate'
 
-const steps = [
-  lazy(() => import('@/components/Delegation/steps/SelectDelegate')),
-  lazy(() => import('@/components/Delegation/steps/ReviewDelegate')),
-  lazy(() => import('@/components/Delegation/steps/SuccessfulDelegation')),
-]
-
-type DelegationStepperState = {
+export type DelegateFlow = {
   safeGuardian?: FileDelegate
   customDelegate?: ContractDelegate
   selectedDelegate?: Delegate
 }
 
-const DelegationContext = createStepper<DelegationStepperState>({
-  steps,
-  state: {
-    safeGuardian: undefined,
-    customDelegate: undefined,
-    selectedDelegate: undefined,
-  },
-})
+export const Delegation = (): ReactElement => {
+  const router = useRouter()
 
-export const useDelegationStepper = DelegationContext.useStepper
+  const delegate = useDelegate() ?? undefined
+  const { data: delegateFiles } = useDelegatesFile()
 
-export const Delegation = DelegationContext.Stepper
+  const safeGuardian = delegateFiles?.find(({ address }) => address === delegate?.address)
+
+  const { step, data, setData, prevStep, nextStep } = useStepper<DelegateFlow>({
+    safeGuardian,
+    customDelegate: safeGuardian ? undefined : delegate,
+    selectedDelegate: delegate,
+  })
+
+  const steps = [
+    <SelectDelegate key={0} data={data} setData={setData} onNext={(data: DelegateFlow) => nextStep(data)} />,
+    <ReviewDelegate key={1} data={data} onBack={prevStep} onNext={() => nextStep(data)} />,
+    <SuccessfulDelegation key={4} onNext={() => router.push(AppRoutes.index)} />,
+  ]
+
+  const progress = ((step + 1) / steps.length) * 100
+
+  return (
+    <>
+      <ProgressBar value={progress} />
+      {steps[step]}
+    </>
+  )
+}

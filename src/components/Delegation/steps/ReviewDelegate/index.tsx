@@ -4,7 +4,7 @@ import type { ReactElement } from 'react'
 
 import { SelectedDelegate } from '@/components/SelectedDelegate'
 import { TotalVotingPower } from '@/components/TotalVotingPower'
-import { useDelegationStepper } from '@/components/Delegation'
+import { DelegateFlow } from '@/components/Delegation'
 import { NavButtons } from '@/components/NavButtons'
 import { StepHeader } from '@/components/StepHeader'
 import { useWeb3 } from '@/hooks/useWeb3'
@@ -14,23 +14,30 @@ import { useIsWrongChain } from '@/hooks/useIsWrongChain'
 import { useIsSafeApp } from '@/hooks/useIsSafeApp'
 import { useChainId } from '@/hooks/useChainId'
 
-const ReviewDelegate = (): ReactElement => {
+const ReviewDelegate = ({
+  data,
+  onBack,
+  onNext,
+}: {
+  data: DelegateFlow
+  onBack: () => void
+  onNext: () => void
+}): ReactElement => {
   const web3 = useWeb3()
   const chainId = useChainId()
   const isWrongChain = useIsWrongChain()
-  const { stepperState, onBack, onNext } = useDelegationStepper()
   const isSafeApp = useIsSafeApp()
 
   const [processing, setProcessing] = useState(false)
 
   const onConfirm = async () => {
-    if (!web3 || !stepperState?.selectedDelegate?.address) {
+    if (!web3 || !data.selectedDelegate?.address) {
       return
     }
 
     setProcessing(true)
 
-    const tx = await setDelegate(chainId, web3, stepperState.selectedDelegate.address)
+    const tx = await setDelegate(chainId, web3, data.selectedDelegate.address)
 
     setProcessing(false)
 
@@ -61,7 +68,7 @@ const ReviewDelegate = (): ReactElement => {
       </Grid>
 
       <Grid item xs={12}>
-        <SelectedDelegate delegate={stepperState?.selectedDelegate} />
+        <SelectedDelegate delegate={data.selectedDelegate} />
       </Grid>
 
       <NavButtons

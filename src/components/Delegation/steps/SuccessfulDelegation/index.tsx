@@ -1,12 +1,10 @@
 import { Grid, Typography, Button } from '@mui/material'
 import type { ReactElement } from 'react'
 
-import { useDelegationStepper } from '@/components/Delegation'
 import { useIsSafeApp } from '@/hooks/useIsSafeApp'
 import SafeLogo from '@/public/images/safe-logo.svg'
 
-const SuccessfulDelegation = (): ReactElement => {
-  const { onNext } = useDelegationStepper()
+const SuccessfulDelegation = ({ onNext }: { onNext: () => void }): ReactElement => {
   const isSafeApp = useIsSafeApp()
 
   return (

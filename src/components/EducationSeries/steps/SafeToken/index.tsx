@@ -4,7 +4,6 @@ import type { ReactElement } from 'react'
 
 import { StepHeader } from '@/components/StepHeader'
 import { NavButtons } from '@/components/NavButtons'
-import { useEducationSeriesStepper } from '@/components/EducationSeries'
 
 import css from './styles.module.css'
 
@@ -26,9 +25,7 @@ const InfoAccordion = ({ summaryText, details }: { summaryText: ReactElement | s
   )
 }
 
-const SafeToken = (): ReactElement => {
-  const { onBack, onNext } = useEducationSeriesStepper()
-
+const SafeToken = ({ onBack, onNext }: { onBack: () => void; onNext: () => void }): ReactElement => {
   return (
     <Grid container px={6} pt={5} pb={4}>
       <Grid item xs={12} mb={3}>

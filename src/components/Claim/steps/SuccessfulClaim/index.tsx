@@ -2,13 +2,11 @@ import { Grid, Typography, Button } from '@mui/material'
 import type { Theme } from '@mui/material/styles'
 import type { ReactElement } from 'react'
 
-import { useClaimStepper } from '@/components/Claim'
 import { useIsDarkMode } from '@/hooks/useIsDarkMode'
 import SafeLogo from '@/public/images/safe-logo.svg'
+import type { ClaimFlow } from '@/components/Claim'
 
-const SuccessfulClaim = (): ReactElement => {
-  const { onNext, stepperState } = useClaimStepper()
-
+const SuccessfulClaim = ({ data, onNext }: { data: ClaimFlow; onNext: () => void }): ReactElement => {
   const isDarkMode = useIsDarkMode()
 
   const backgroundColor = ({ palette }: Theme) => (isDarkMode ? undefined : palette.primary.main)
@@ -24,7 +22,7 @@ const SuccessfulClaim = (): ReactElement => {
       </Typography>
 
       <Typography mb={4} color={textColor} textAlign="center">
-        You successfully started claiming {stepperState?.claimedAmount || '0'} Safe Tokens!
+        You successfully started claiming {data.claimedAmount || '0'} Safe Tokens!
         <br />
         Once the transaction is signed and executed, the Safe Tokens will be available in your Safe Account.
       </Typography>

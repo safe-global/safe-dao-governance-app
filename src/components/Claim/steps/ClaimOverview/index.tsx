@@ -13,12 +13,12 @@ import { useDelegate } from '@/hooks/useDelegate'
 import { InfoAlert } from '@/components/InfoAlert'
 import { getVestingTypes } from '@/utils/vesting'
 import { formatAmount } from '@/utils/formatters'
-import { useClaimStepper } from '@/components/Claim'
 import { StepHeader } from '@/components/StepHeader'
 import { createClaimTxs } from '@/utils/claim'
 import { useIsTokenPaused } from '@/hooks/useIsTokenPaused'
 import { useTaggedAllocations } from '@/hooks/useTaggedAllocations'
 import { useIsWrongChain } from '@/hooks/useIsWrongChain'
+import type { ClaimFlow } from '@/components/Claim'
 
 import css from './styles.module.css'
 
@@ -40,10 +40,9 @@ const getDecimalLength = (amount: string) => {
   return 2
 }
 
-const ClaimOverview = (): ReactElement => {
+const ClaimOverview = ({ onNext }: { onNext: (data: ClaimFlow) => void }): ReactElement => {
   const { sdk, safe } = useSafeAppsSDK()
   const isWrongChain = useIsWrongChain()
-  const { onNext, setStepperState } = useClaimStepper()
 
   const [amount, setAmount] = useState('')
   const [isMaxAmountSelected, setIsMaxAmountSelected] = useState(false)
@@ -105,12 +104,7 @@ const ClaimOverview = (): ReactElement => {
     try {
       await sdk.txs.send({ txs })
 
-      setStepperState((prev) => ({
-        ...prev,
-        claimedAmount: amount,
-      }))
-
-      onNext()
+      onNext({ claimedAmount: amount })
     } catch (error) {
       console.error(error)
     }
