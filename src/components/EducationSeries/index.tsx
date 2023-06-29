@@ -8,6 +8,7 @@ import SafeToken from '@/components/EducationSeries/steps/SafeToken'
 import SafeDao from '@/components/EducationSeries/steps/SafeDao'
 import Disclaimer from '@/components/EducationSeries/steps/Disclaimer'
 import { AppRoutes } from '@/config/routes'
+import { ProgressBar } from '@/components/ProgressBar'
 
 export const EducationSeries = (): ReactElement => {
   const router = useRouter()
@@ -26,5 +27,12 @@ export const EducationSeries = (): ReactElement => {
     <Disclaimer key={4} onBack={prevStep} onNext={() => router.push(AppRoutes.index)} />,
   ]
 
-  return steps[step]
+  const progress = ((step + 1) / steps.length) * 100
+
+  return (
+    <>
+      <ProgressBar value={progress} />
+      {steps[step]}
+    </>
+  )
 }

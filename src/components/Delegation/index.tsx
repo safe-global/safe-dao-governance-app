@@ -8,8 +8,9 @@ import ReviewDelegate from '@/components/Delegation/steps/ReviewDelegate'
 import SuccessfulDelegation from '@/components/Delegation/steps/SuccessfulDelegation'
 import { useStepper } from '@/hooks/useStepper'
 import { FileDelegate } from '@/hooks/useDelegatesFile'
-import type { Delegate } from '@/hooks/useDelegate'
+import { ProgressBar } from '@/components/ProgressBar'
 import { AppRoutes } from '@/config/routes'
+import type { Delegate } from '@/hooks/useDelegate'
 import type { ContractDelegate } from '@/hooks/useContractDelegate'
 
 export type DelegateFlow = {
@@ -38,5 +39,12 @@ export const Delegation = (): ReactElement => {
     <SuccessfulDelegation key={4} onNext={() => router.push(AppRoutes.index)} />,
   ]
 
-  return steps[step]
+  const progress = ((step + 1) / steps.length) * 100
+
+  return (
+    <>
+      <ProgressBar value={progress} />
+      {steps[step]}
+    </>
+  )
 }
