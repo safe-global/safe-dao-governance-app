@@ -5,7 +5,6 @@ import type { ReactElement, ReactNode } from 'react'
 import { StepHeader } from '@/components/StepHeader'
 import { ExternalLink } from '@/components/ExternalLink'
 import { NavButtons } from '@/components/NavButtons'
-import { useEducationSeriesStepper } from '@/components/EducationSeries'
 import { DISCORD_URL, FORUM_URL, GOVERNANCE_URL, CHAIN_SNAPSHOT_URL } from '@/config/constants'
 import { useChainId } from '@/hooks/useChainId'
 
@@ -20,8 +19,7 @@ const Point = ({ children }: { children: ReactNode }): ReactElement => {
   )
 }
 
-const SafeDao = (): ReactElement => {
-  const { onBack, onNext } = useEducationSeriesStepper()
+const SafeDao = ({ onBack, onNext }: { onBack: () => void; onNext: () => void }): ReactElement => {
   const chainId = useChainId()
 
   const snapshotUrl = CHAIN_SNAPSHOT_URL[chainId]

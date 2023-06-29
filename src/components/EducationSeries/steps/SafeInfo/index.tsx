@@ -5,12 +5,9 @@ import LockIcon from '@/public/images/lock.svg'
 import AssetsIcon from '@/public/images/assets.svg'
 import { StepHeader } from '@/components/StepHeader'
 import { NavButtons } from '@/components/NavButtons'
-import { useEducationSeriesStepper } from '@/components/EducationSeries'
 import { InfoBox } from '@/components/InfoBox'
 
-const SafeInfo = (): ReactElement => {
-  const { onNext } = useEducationSeriesStepper()
-
+const SafeInfo = ({ onNext }: { onNext: () => void }): ReactElement => {
   return (
     <Grid container px={6} pt={5} pb={4}>
       <Grid item xs={12} mb={3}>

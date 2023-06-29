@@ -1,14 +1,13 @@
 import { Grid, Typography } from '@mui/material'
-import { useEffect, useState } from 'react'
-import type { ReactElement } from 'react'
+import { useState } from 'react'
+import type { Dispatch, ReactElement, SetStateAction } from 'react'
 
 import { DelegateList } from '@/components/DelegateList'
 import { DelegateSwitch } from '@/components/DelegateSwitch'
 import { CustomDelegate } from '@/components/CustomDelegate'
 import { StepHeader } from '@/components/StepHeader'
-import { useDelegationStepper } from '@/components/Delegation'
-import { useDelegate } from '@/hooks/useDelegate'
 import { useDelegatesFile } from '@/hooks/useDelegatesFile'
+import type { DelegateFlow } from '@/components/Delegation'
 import type { FileDelegate } from '@/hooks/useDelegatesFile'
 
 export const enum DelegateType {
@@ -26,32 +25,16 @@ const getDelegateType = (delegateFiles?: FileDelegate[], address?: string) => {
     : DelegateType.CUSTOM
 }
 
-const SelectDelegate = (): ReactElement => {
-  const { stepperState, setStepperState } = useDelegationStepper()
-  const delegate = useDelegate()
+const SelectDelegate = (props: {
+  data: DelegateFlow
+  setData: Dispatch<SetStateAction<DelegateFlow>>
+  onNext: (data: DelegateFlow) => void
+}): ReactElement => {
   const { data: delegateFiles } = useDelegatesFile()
 
   const [delegateType, setDelegateType] = useState<DelegateType | undefined>(
-    getDelegateType(delegateFiles, stepperState?.selectedDelegate?.address),
+    getDelegateType(delegateFiles, props.data.selectedDelegate?.address),
   )
-
-  // Initialize stepper state with contract delegate if it exists
-  useEffect(() => {
-    if (!delegate || stepperState?.customDelegate || stepperState?.safeGuardian) {
-      return
-    }
-
-    const safeGuardian = delegateFiles?.find(({ address }) => address === delegate?.address)
-
-    setStepperState((prev) => ({
-      ...prev,
-      selectedDelegate: delegate,
-      customDelegate: safeGuardian ? undefined : delegate,
-      safeGuardian,
-    }))
-
-    setDelegateType(getDelegateType(delegateFiles, delegate?.address))
-  }, [delegate, delegateFiles, setStepperState, stepperState])
 
   return (
     <Grid container p={6} gap={3}>
@@ -68,7 +51,7 @@ const SelectDelegate = (): ReactElement => {
 
         <DelegateSwitch delegateType={delegateType} setDelegateType={setDelegateType} />
 
-        {delegateType && (delegateType === DelegateType.SAFE_GUARDIAN ? <DelegateList /> : <CustomDelegate />)}
+        {delegateType === DelegateType.SAFE_GUARDIAN ? <DelegateList {...props} /> : <CustomDelegate {...props} />}
       </Grid>
     </Grid>
   )

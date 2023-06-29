@@ -1,6 +1,6 @@
 import { CircularProgress, InputAdornment, TextField, Typography } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search'
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useMemo } from 'react'
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded'
 import { isAddress } from 'ethers/lib/utils'
 import type { ReactElement, ChangeEvent } from 'react'
@@ -8,17 +8,22 @@ import type { ReactElement, ChangeEvent } from 'react'
 import { useEnsResolution } from '@/hooks/useEnsResolution'
 import { InfoAlert } from '@/components/InfoAlert'
 import { NavButtons } from '@/components/NavButtons'
-import { useDelegationStepper } from '@/components/Delegation'
 import { useIsSafeApp } from '@/hooks/useIsSafeApp'
 import { useDelegate } from '@/hooks/useDelegate'
 import type { Delegate } from '@/hooks/useDelegate'
+import type { DelegateFlow } from '@/components/Delegation'
 
-export const CustomDelegate = (): ReactElement => {
+export const CustomDelegate = ({
+  data,
+  onNext,
+}: {
+  data: DelegateFlow
+  onNext: (data: DelegateFlow) => void
+}): ReactElement => {
   const isSafeApp = useIsSafeApp()
   const delegate = useDelegate()
-  const { onNext, setStepperState, stepperState } = useDelegationStepper()
 
-  const [search, setSearch] = useState(stepperState?.customDelegate?.ens || '')
+  const [search, setSearch] = useState(data.customDelegate?.ens || data.customDelegate?.address || '')
 
   const [ensAddress, ensError, ensLoading] = useEnsResolution(search)
   const isValidEnsAddress = ensAddress && isAddress(ensAddress)
@@ -32,24 +37,12 @@ export const CustomDelegate = (): ReactElement => {
     }
   }, [ensAddress, isValidEnsAddress, search])
 
-  useEffect(() => {
-    setStepperState((prev) => ({
-      ...prev,
-      customDelegate,
-    }))
-  }, [setStepperState, customDelegate])
-
   const onSearch = (event: ChangeEvent<HTMLInputElement>) => {
     setSearch(event.currentTarget.value)
   }
 
   const onSubmit = () => {
-    setStepperState((prev) => ({
-      ...prev,
-      selectedDelegate: customDelegate,
-    }))
-
-    onNext()
+    onNext({ ...data, customDelegate, selectedDelegate: customDelegate })
   }
 
   const isCurrentDelegate = customDelegate && customDelegate?.address === delegate?.address

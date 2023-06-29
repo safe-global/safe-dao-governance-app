@@ -1,16 +1,16 @@
 import { Button, Grid, InputAdornment, TextField, Typography } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search'
 import { useMemo, useState } from 'react'
-import type { ChangeEvent } from 'react'
+import type { ChangeEvent, Dispatch, SetStateAction } from 'react'
 
 import { DelegateCard } from '@/components/DelegateCard'
 import { useDelegatesFile } from '@/hooks/useDelegatesFile'
 import { ExpandedDelegateCard } from '@/components/ExpandedDelegateCard'
 import { NavButtons } from '@/components/NavButtons'
-import { useDelegationStepper } from '@/components/Delegation'
 import { useDelegate } from '@/hooks/useDelegate'
 import { ScrollContextProvider, useScrollContext } from '@/components/ScrollContext'
 import type { FileDelegate } from '@/hooks/useDelegatesFile'
+import type { DelegateFlow } from '../Delegation'
 
 const SLICE_SIZE = 6
 
@@ -27,15 +27,21 @@ const filterDelegates = (searchTerm: string, delegates: FileDelegate[]) => {
   )
 }
 
-export const DelegateList = () => {
+type DelegateListProps = {
+  data: DelegateFlow
+  setData: Dispatch<SetStateAction<DelegateFlow>>
+  onNext: (data: DelegateFlow) => void
+}
+
+export const DelegateList = (props: DelegateListProps) => {
   return (
     <ScrollContextProvider>
-      <ScrollProvidedList />
+      <ScrollProvidedList {...props} />
     </ScrollContextProvider>
   )
 }
 
-const ScrollProvidedList = () => {
+const ScrollProvidedList = ({ data, setData, onNext }: DelegateListProps) => {
   const [search, setSearch] = useState('')
   const [showAll, setShowAll] = useState(false)
   const [expandedDelegate, setExpandedDelegate] = useState<FileDelegate>()
@@ -45,8 +51,7 @@ const ScrollProvidedList = () => {
 
   const { storeScrollPosition, setScrollPosition, restoreScrollPosition } = useScrollContext()
 
-  const { stepperState, setStepperState, onNext } = useDelegationStepper()
-  const selectedSafeGuardian = stepperState?.safeGuardian
+  const selectedSafeGuardian = data.safeGuardian
 
   const isAlreadySet = selectedSafeGuardian?.address === delegate?.address
 
@@ -69,10 +74,9 @@ const ScrollProvidedList = () => {
   }
 
   const onSelect = (delegate: FileDelegate) => {
-    setStepperState((prev) => ({
-      ...prev,
+    setData((data) => ({
+      ...data,
       safeGuardian: delegate,
-      selectedDelegate: delegate,
     }))
 
     setShowAll(false)
@@ -80,6 +84,13 @@ const ScrollProvidedList = () => {
     setExpandedDelegate(undefined)
 
     setScrollPosition(0)
+  }
+
+  const onSubmit = () => {
+    onNext({
+      ...data,
+      selectedDelegate: data.safeGuardian,
+    })
   }
 
   const onSearch = (event: ChangeEvent<HTMLInputElement>) => {
@@ -154,7 +165,7 @@ const ScrollProvidedList = () => {
         </>
       )}
 
-      {selectedSafeGuardian && !expandedDelegate && <NavButtons onNext={onNext} isNextDisabled={isAlreadySet} />}
+      {selectedSafeGuardian && !expandedDelegate && <NavButtons onNext={onSubmit} isNextDisabled={isAlreadySet} />}
     </>
   )
 }
