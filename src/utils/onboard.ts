@@ -1,7 +1,7 @@
 import coinbaseModule from '@web3-onboard/coinbase'
 import injectedWalletModule, { ProviderLabel } from '@web3-onboard/injected-wallets'
 import keystoneModule from '@web3-onboard/keystone'
-import ledgerModule from '@web3-onboard/ledger'
+import ledgerModule from '@web3-onboard/ledger/dist/index'
 import trezorModule from '@web3-onboard/trezor'
 import walletConnect from '@web3-onboard/walletconnect'
 import tahoModule from '@web3-onboard/taho'
