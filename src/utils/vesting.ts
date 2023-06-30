@@ -46,11 +46,13 @@ export const calculateVestedAmount = (vestingClaim: Vesting): string => {
 
 export const getVestingTypes = (vestingData: Vesting[]) => {
   const userVesting = vestingData?.find((vesting) => vesting.tag === 'user') ?? null
+  const sep5Vesting = vestingData?.find((vesting) => vesting.tag === 'user_v2') ?? null
   const ecosystemVesting = vestingData?.find((vesting) => vesting.tag === 'ecosystem') ?? null
   const investorVesting = vestingData?.find((vesting) => vesting.tag === 'investor') ?? null
 
   return {
     userVesting,
+    sep5Vesting,
     ecosystemVesting,
     investorVesting,
   }

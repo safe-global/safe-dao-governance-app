@@ -10,7 +10,7 @@ import type { ReactElement } from 'react'
 
 import { ExternalLink } from '@/components/ExternalLink'
 import SafeToken from '@/public/images/token.svg'
-import { DISCORD_URL, FORUM_URL } from '@/config/constants'
+import { DISCORD_URL, FORUM_URL, SEP5_EXPIRATION_DATE } from '@/config/constants'
 import { getGovernanceAppSafeAppUrl } from '@/utils/safe-apps'
 import { useDelegate } from '@/hooks/useDelegate'
 import { useSafeTokenAllocation } from '@/hooks/useSafeTokenAllocation'
@@ -18,7 +18,7 @@ import { SelectedDelegate } from '@/components/SelectedDelegate'
 import { formatAmount } from '@/utils/formatters'
 import { Sep5DeadlineChip } from '@/components/Sep5DeadlineChip'
 import { TypographyChip } from '@/components/TypographyChip'
-import { useMockSep5 } from '@/hooks/useMockSep5'
+import { getVestingTypes } from '@/utils/vesting'
 
 import css from './styles.module.css'
 
@@ -83,17 +83,11 @@ const VotingPowerWidget = (): ReactElement => {
   const delegate = useDelegate()
   const { data: allocation } = useSafeTokenAllocation()
 
-  // TODO: Use real SEP #5 data
-  const fakeSep5ClaimDate = '01.01.1970'
-  const sep5 = useMockSep5()
-  const isSep5Claimable = Number(sep5.claimable) > 0
-
   const totalClaimed = allocation?.vestingData.reduce((acc, { amountClaimed }) => {
     return acc.add(amountClaimed)
   }, BigNumber.from(0))
 
-  const hasUnredeemedAllocation =
-    allocation?.vestingData.some(({ isExpired, isRedeemed }) => !isExpired && !isRedeemed) || isSep5Claimable
+  const hasUnredeemedAllocation = allocation?.vestingData.some(({ isExpired, isRedeemed }) => !isExpired && !isRedeemed)
 
   const claimingSafeAppUrl = getGovernanceAppSafeAppUrl(safe.chainId.toString(), safe.safeAddress)
 
@@ -107,7 +101,7 @@ const VotingPowerWidget = (): ReactElement => {
         </TypographyChip>
 
         <Tooltip
-          title={`You qualify for a new SAFE allocation! Ensure you execute at least one claim before ${fakeSep5ClaimDate}`}
+          title={`You qualify for a new SAFE allocation! Ensure you execute at least one claim before ${SEP5_EXPIRATION_DATE}`}
         >
           <Sep5DeadlineChip px={1} />
         </Tooltip>
@@ -164,9 +158,7 @@ const VotingPowerWidget = (): ReactElement => {
 export const ClaimingWidget = (): ReactElement => {
   const { data: allocation, isLoading } = useSafeTokenAllocation()
 
-  // TODO: Use real SEP #5 data
-  const sep5 = useMockSep5()
-  const hasSep5Allocation = Number(sep5.allocation) > 0
+  const { sep5Vesting } = getVestingTypes(allocation?.vestingData || [])
 
   if (isLoading) {
     return (
@@ -188,7 +180,7 @@ export const ClaimingWidget = (): ReactElement => {
       sx={{
         minWidth: WIDGET_WIDTH,
         maxWidth: WIDGET_WIDTH,
-        border: hasSep5Allocation ? ({ palette }) => `1px solid ${palette.primary.main}` : undefined,
+        border: sep5Vesting ? ({ palette }) => `1px solid ${palette.primary.main}` : undefined,
       }}
     >
       <>{allocation?.votingPower.eq(0) ? <CtaWidget /> : <VotingPowerWidget />}</>

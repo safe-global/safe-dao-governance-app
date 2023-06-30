@@ -3,9 +3,10 @@ import useSWRImmutable from 'swr/immutable'
 import { VESTING_URL } from '@/config/constants'
 import { useAddress } from '@/hooks/useAddress'
 import { useChainId } from '@/hooks/useChainId'
+import { sameAddress } from '@/utils/addresses'
 
 export type Allocation = {
-  tag: 'user' | 'ecosystem' | 'investor'
+  tag: 'user' | 'user_v2' | 'ecosystem' | 'investor'
   account: string
   chainId: number
   contract: string
@@ -15,6 +16,19 @@ export type Allocation = {
   amount: string
   curve: 0 | 1
   proof: string[]
+}
+
+const MOCK_SEP5_ALLOCATION: Allocation = {
+  tag: 'user_v2',
+  account: '0x5f310dc66F4ecDE9a1769f1B7D75224dA592201e',
+  chainId: 5,
+  contract: '0xB1E81Fe4442FA5A0eE38feB7146E547937C6E737',
+  vestingId: '0x94a8c37e9cd99e54fd1fc52dac4449e7942fbfbed630ef50a93c8cc17169ad07',
+  durationWeeks: 208,
+  startDate: 1662026400,
+  amount: '0x03bd913e6c1df40000',
+  curve: 0,
+  proof: [],
 }
 
 const fetchAllocation = async (chainId: string, address: string): Promise<Allocation[]> => {
@@ -32,7 +46,17 @@ const fetchAllocation = async (chainId: string, address: string): Promise<Alloca
     }
 
     // Success
-    return response.json() as Promise<Allocation[]>
+    const allocations: Allocation[] = await response.json()
+
+    // TODO: Remove mock allocation when vesting is deployed
+    const isCurrentChain = allocations.some((allocation) => allocation.chainId.toString() === chainId)
+    const isCurrentAddress = allocations.some((allocation) => sameAddress(allocation.account, address))
+
+    if (isCurrentChain && isCurrentAddress) {
+      allocations.push(MOCK_SEP5_ALLOCATION)
+    }
+
+    return allocations
   } catch (err) {
     throw Error(`Error fetching vestings: ${err}`)
   }
