@@ -1,7 +1,7 @@
 import coinbaseModule from '@web3-onboard/coinbase'
 import injectedWalletModule, { ProviderLabel } from '@web3-onboard/injected-wallets'
 import keystoneModule from '@web3-onboard/keystone'
-import ledgerModule from '@web3-onboard/ledger'
+import ledgerModule from '@web3-onboard/ledger/dist/index'
 import trezorModule from '@web3-onboard/trezor'
 import walletConnect from '@web3-onboard/walletconnect'
 import tahoModule from '@web3-onboard/taho'
@@ -40,6 +40,10 @@ const CGW_NAMES: { [key in WALLET_KEYS]: string } = {
   [WALLET_KEYS.WALLETCONNECT_V2]: 'walletConnect_v2',
 }
 
+const prefersDarkMode = (): boolean => {
+  return window?.matchMedia('(prefers-color-scheme: dark)')?.matches
+}
+
 // We need to modify the module name as onboard dedupes modules with the same label and the WC v1 and v2 modules have the same
 // @see https://github.com/blocknative/web3-onboard/blob/d399e0b76daf7b363d6a74b100b2c96ccb14536c/packages/core/src/store/actions.ts#L419
 // TODO: When removing this, also remove the associated CSS in `onboard.css`
@@ -60,21 +64,20 @@ const walletConnectV2 = (chain: ChainInfo): WalletInit => {
     projectId: WC_PROJECT_ID,
     qrModalOptions: {
       themeVariables: {
-        '--w3m-z-index': '1302',
+        '--wcm-z-index': '1302',
       },
+      themeMode: prefersDarkMode() ? 'dark' : 'light',
     },
     requiredChains: [parseInt(chain.chainId)],
   })
 }
 
 const WALLET_MODULES: { [key in WALLET_KEYS]: (chain: ChainInfo) => WalletInit } = {
-  [WALLET_KEYS.COINBASE]: () =>
-    coinbaseModule({
-      darkMode: !!window?.matchMedia('(prefers-color-scheme: dark)')?.matches,
-    }),
+  [WALLET_KEYS.COINBASE]: () => coinbaseModule({ darkMode: prefersDarkMode() }),
   [WALLET_KEYS.INJECTED]: () => injectedWalletModule(),
   [WALLET_KEYS.KEYSTONE]: () => keystoneModule(),
-  [WALLET_KEYS.LEDGER]: () => ledgerModule(),
+  [WALLET_KEYS.LEDGER]: (chain) =>
+    ledgerModule({ walletConnectVersion: 2, projectId: WC_PROJECT_ID, requiredChains: [parseInt(chain.chainId)] }),
   [WALLET_KEYS.TAHO]: () => tahoModule(),
   [WALLET_KEYS.TREZOR]: () => trezorModule({ appUrl: TREZOR_APP_URL, email: TREZOR_EMAIL }),
   [WALLET_KEYS.WALLETCONNECT]: () => walletConnectV1(),
@@ -112,6 +115,9 @@ export const createOnboard = (chainConfigs: ChainInfo[], currentChain: ChainInfo
       icon: '/images/app-logo.svg',
       description: `Please select a wallet to connect to ${manifestJson.name}`,
       recommendedInjectedWallets: getRecommendedInjectedWallets(),
+    },
+    connect: {
+      removeWhereIsMyWalletWarning: true,
     },
   })
 }
