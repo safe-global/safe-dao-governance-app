@@ -76,8 +76,7 @@ const WALLET_MODULES: { [key in WALLET_KEYS]: (chain: ChainInfo) => WalletInit }
   [WALLET_KEYS.COINBASE]: () => coinbaseModule({ darkMode: prefersDarkMode() }),
   [WALLET_KEYS.INJECTED]: () => injectedWalletModule(),
   [WALLET_KEYS.KEYSTONE]: () => keystoneModule(),
-  [WALLET_KEYS.LEDGER]: (chain) =>
-    ledgerModule({ walletConnectVersion: 2, projectId: WC_PROJECT_ID, requiredChains: [parseInt(chain.chainId)] }),
+  [WALLET_KEYS.LEDGER]: () => ledgerModule(),
   [WALLET_KEYS.TAHO]: () => tahoModule(),
   [WALLET_KEYS.TREZOR]: () => trezorModule({ appUrl: TREZOR_APP_URL, email: TREZOR_EMAIL }),
   [WALLET_KEYS.WALLETCONNECT]: () => walletConnectV1(),
