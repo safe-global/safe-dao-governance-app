@@ -53,7 +53,7 @@ export const GUARDIANS_URL = `${CLAIMING_DATA_URL}/guardians/guardians.json`
 export const GUARDIANS_IMAGE_URL = `${CLAIMING_DATA_URL}/guardians/images`
 export const VESTING_URL = `${CLAIMING_DATA_URL}/allocations`
 
-export const SEP5_EXPIRATION_DATE = '27.07.2023'
+export const SEP5_EXPIRATION_DATE = '27.10.2023'
 export const SEP5_EXPIRATION = `${SEP5_EXPIRATION_DATE} 10:00 CET`
 
 // Delegation
