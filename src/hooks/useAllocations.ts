@@ -50,7 +50,7 @@ const fetchAllocation = async (chainId: string, address: string): Promise<Alloca
 
     // TODO: Remove mock allocation when vesting is deployed
     const isCurrentChain = MOCK_SEP5_ALLOCATION.chainId.toString() === chainId
-    const isCurrentAddress = MOCK_SEP5_ALLOCATION.account === address
+    const isCurrentAddress = sameAddress(MOCK_SEP5_ALLOCATION.account, address)
 
     if (isCurrentChain && isCurrentAddress) {
       allocations.push(MOCK_SEP5_ALLOCATION)
