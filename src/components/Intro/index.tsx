@@ -20,7 +20,6 @@ import { useWallet } from '@/hooks/useWallet'
 import { isSafe } from '@/utils/wallet'
 import { InfoBox } from '@/components/InfoBox'
 import { useIsDelegationPending } from '@/hooks/usePendingDelegations'
-import { useMockSep5 } from '@/hooks/useMockSep5'
 import { Sep5InfoBox } from '@/components/Sep5InfoBox'
 
 import css from './styles.module.css'
@@ -36,13 +35,8 @@ export const Intro = (): ReactElement => {
   const { isLoading, data: allocation } = useSafeTokenAllocation()
   const { total } = useTaggedAllocations()
 
-  // TODO: Use real SEP #5 data
-  const sep5 = useMockSep5()
-  const hasSep5Allocation = Number(sep5.allocation) > 0
-  const isSep5Claimable = Number(sep5.claimable) > 0
-
-  const hasAllocation = Number(total.allocation) > 0 || hasSep5Allocation
-  const isClaimable = Number(total.claimable) > 0 || isSep5Claimable
+  const hasAllocation = Number(total.allocation) > 0
+  const isClaimable = Number(total.claimable) > 0
 
   const isDelegating = useIsDelegationPending()
   const canDelegate =
@@ -103,11 +97,9 @@ export const Intro = (): ReactElement => {
             </Grid>
           )}
 
-          {hasSep5Allocation && (
-            <Grid item xs={12}>
-              <Sep5InfoBox />
-            </Grid>
-          )}
+          <Grid item xs={12}>
+            <Sep5InfoBox />
+          </Grid>
 
           {isClaimable && (
             <Grid item xs={12} display="flex" justifyContent="center">

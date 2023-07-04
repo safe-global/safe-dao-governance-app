@@ -19,7 +19,7 @@ import { useIsTokenPaused } from '@/hooks/useIsTokenPaused'
 import { useTaggedAllocations } from '@/hooks/useTaggedAllocations'
 import { useIsWrongChain } from '@/hooks/useIsWrongChain'
 import { Sep5InfoBox } from '@/components/Sep5InfoBox'
-import { useMockSep5 } from '@/hooks/useMockSep5'
+import { SEP5_EXPIRATION } from '@/config/constants'
 import type { ClaimFlow } from '@/components/Claim'
 
 import css from './styles.module.css'
@@ -55,22 +55,19 @@ const ClaimOverview = ({ onNext }: { onNext: (data: ClaimFlow) => void }): React
 
   const { data: isTokenPaused } = useIsTokenPaused()
 
-  // TODO: Use real SEP #5 data
-  const fakeSep5ClaimExpiration = '01.01.1970 10:00 CET'
-  const sep5 = useMockSep5()
-  const hasSep5Allocation = Number(sep5.allocation) > 0
-
   // Allocation, vesting and voting power
   const { data: allocation } = useSafeTokenAllocation()
 
-  const { ecosystemVesting, investorVesting } = getVestingTypes(allocation?.vestingData ?? [])
+  const { sep5Vesting, ecosystemVesting, investorVesting } = getVestingTypes(allocation?.vestingData ?? [])
 
-  const { user, ecosystem, investor, total } = useTaggedAllocations()
+  const { sep5, user, ecosystem, investor, total } = useTaggedAllocations()
   const totalClaimableAmountInEth = formatEther(total.claimable)
 
   const decimals = getDecimalLength(total.inVesting)
 
   // Flags
+  const hasSep5Allocation = !!sep5Vesting
+
   const isInvestorClaimingDisabled = !!investorVesting && isTokenPaused
 
   const isAmountGTZero = !!amount && !amountError && Number.parseFloat(amount) > 0
@@ -103,6 +100,7 @@ const ClaimOverview = ({ onNext }: { onNext: (data: ClaimFlow) => void }): React
       safeAddress: safe.safeAddress,
       isMax: isMaxAmountSelected,
       amount: amount || '0',
+      sep5Claimable: sep5.claimable,
       userClaimable: user.claimable,
       investorClaimable: investor.claimable,
       isTokenPaused: !!isTokenPaused,
@@ -164,8 +162,8 @@ const ClaimOverview = ({ onNext }: { onNext: (data: ClaimFlow) => void }): React
           <Grid item xs={12} mt={1}>
             <InfoAlert>
               <Typography variant="body2">
-                Execute at least one claim of any amount of your allocation before {fakeSep5ClaimExpiration} otherwise
-                it will be transferred back to the Safe{`{DAO}`} treasurary.
+                Execute at least one claim of any amount of your allocation before {SEP5_EXPIRATION} otherwise it will
+                be transferred back to the Safe{`{DAO}`} treasurary.
               </Typography>
             </InfoAlert>
           </Grid>
