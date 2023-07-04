@@ -59,7 +59,7 @@ const ClaimOverview = ({ onNext }: { onNext: (data: ClaimFlow) => void }): React
   // Allocation, vesting and voting power
   const { data: allocation } = useSafeTokenAllocation()
 
-  const { ecosystemVesting, investorVesting } = getVestingTypes(allocation?.vestingData ?? [])
+  const { sep5Vesting, ecosystemVesting, investorVesting } = getVestingTypes(allocation?.vestingData ?? [])
 
   const { sep5, user, ecosystem, investor, total } = useTaggedAllocations()
   const totalClaimableAmountInEth = formatEther(total.claimable)
