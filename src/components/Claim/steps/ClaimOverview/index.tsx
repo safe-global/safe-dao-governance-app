@@ -20,6 +20,7 @@ import { useTaggedAllocations } from '@/hooks/useTaggedAllocations'
 import { useIsWrongChain } from '@/hooks/useIsWrongChain'
 import { Sep5InfoBox } from '@/components/Sep5InfoBox'
 import { SEP5_EXPIRATION } from '@/config/constants'
+import { canRedeemSep5Airdrop } from '@/utils/airdrop'
 import type { ClaimFlow } from '@/components/Claim'
 
 import css from './styles.module.css'
@@ -58,7 +59,7 @@ const ClaimOverview = ({ onNext }: { onNext: (data: ClaimFlow) => void }): React
   // Allocation, vesting and voting power
   const { data: allocation } = useSafeTokenAllocation()
 
-  const { sep5Vesting, ecosystemVesting, investorVesting } = getVestingTypes(allocation?.vestingData ?? [])
+  const { ecosystemVesting, investorVesting } = getVestingTypes(allocation?.vestingData ?? [])
 
   const { sep5, user, ecosystem, investor, total } = useTaggedAllocations()
   const totalClaimableAmountInEth = formatEther(total.claimable)
@@ -66,7 +67,7 @@ const ClaimOverview = ({ onNext }: { onNext: (data: ClaimFlow) => void }): React
   const decimals = getDecimalLength(total.inVesting)
 
   // Flags
-  const hasSep5Allocation = !!sep5Vesting
+  const canRedeemSep5 = canRedeemSep5Airdrop(allocation)
 
   const isInvestorClaimingDisabled = !!investorVesting && isTokenPaused
 
@@ -153,7 +154,7 @@ const ClaimOverview = ({ onNext }: { onNext: (data: ClaimFlow) => void }): React
         </Typography>
       </InfoAlert>
 
-      {hasSep5Allocation && (
+      {canRedeemSep5 && (
         <>
           <Grid item xs={12} mt={2}>
             <Sep5InfoBox />

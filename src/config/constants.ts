@@ -56,6 +56,13 @@ export const VESTING_URL = `${CLAIMING_DATA_URL}/allocations`
 export const SEP5_EXPIRATION_DATE = '27.10.2023'
 export const SEP5_EXPIRATION = `${SEP5_EXPIRATION_DATE} 10:00 CET`
 
+export const AIRDROP_TAGS = {
+  USER: 'user',
+  SEP5: 'user_v2',
+  ECOSYSTEM: 'ecosystem',
+  INVESTOR: 'investor',
+} as const
+
 // Delegation
 export const CHAIN_DELEGATE_ID: ChainConfig<string> = {
   [Chains.MAINNET]: 'safe.eth',
