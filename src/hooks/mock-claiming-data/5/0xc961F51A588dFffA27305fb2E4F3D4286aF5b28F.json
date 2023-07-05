@@ -1,0 +1,20 @@
+[
+    {
+        "tag": "user",
+        "account": "0xc961F51A588dFffA27305fb2E4F3D4286aF5b28F",
+        "chainId": 5,
+        "contract": "0x07dA2049Fa8127eF6280631BCbc56881d764C8Ee",
+        "vestingId": "0x7afc0d9b7da6faa1a9ec09d00e5317fcd25ac0228dae4a563ab52bb8591c3f4d",
+        "durationWeeks": 416,
+        "startDate": 1538042400,
+        "amount": "23023120000000000000000",
+        "curve": 0,
+        "proof": [
+            "0x40791d6bfb6e9ad777e120164302674d7e52840f0e9958c9a573d88498eee0a7",
+            "0x18408c824d8aa8a8f34d2d27d21e91a0e7a805172e2f2112f65ecdc2f3229ab8",
+            "0xaa40c2d3afef67e1b6e394f15bb18dd6e14e0e1d7339109a48d4b688f0ad152c",
+            "0x19a6bce7ab593f5d050b9437102095ab4a3aa30f76ad86a2eac80d1e58907dec",
+            "0xd62258e925f90e756cad5ed784aee32b59ee5faacb8345d4e476b83abb39b536"
+        ]
+    }
+]

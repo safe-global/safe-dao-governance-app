@@ -1,0 +1,54 @@
+[
+    {
+        "tag": "user",
+        "account": "0xC642bEc0e4f69815e89723C09caA8DAa524cAc9c",
+        "chainId": 5,
+        "contract": "0x07dA2049Fa8127eF6280631BCbc56881d764C8Ee",
+        "vestingId": "0x2bb9cf494fe2749da5aa9e392a4e134213930312d22049a4c099dcc48fad3c05",
+        "durationWeeks": 416,
+        "startDate": 1538042400,
+        "amount": "23023120000000000000000",
+        "curve": 0,
+        "proof": [
+            "0x018f621916b1df10068d30aefb8f2c2c719a504297d2fe259947e1c5243857ca",
+            "0xfefbda8f87c8b6147459b40d3955efa2273add26e27bd06bfbb9765cf0a38c30",
+            "0xaa40c2d3afef67e1b6e394f15bb18dd6e14e0e1d7339109a48d4b688f0ad152c",
+            "0x19a6bce7ab593f5d050b9437102095ab4a3aa30f76ad86a2eac80d1e58907dec",
+            "0xd62258e925f90e756cad5ed784aee32b59ee5faacb8345d4e476b83abb39b536"
+        ]
+    },
+    {
+        "tag": "user_v2",
+        "account": "0xC642bEc0e4f69815e89723C09caA8DAa524cAc9c",
+        "chainId": 5,
+        "contract": "0xA19C1d8faAc5d8379e90e22CA8F21cdd938a61ee",
+        "vestingId": "0xcdd4faebcbfcfc6140a04951a018228bee1832f463c7c3a2901d60a845547e3b",
+        "durationWeeks": 208,
+        "startDate": 1662026400,
+        "amount": "420690000000000000000",
+        "curve": 0,
+        "proof": [
+            "0x4d554e9377532ba2544c10fee9be26fc4a06399ddc04d8417805da92a953d709",
+            "0x36d8e4337eccbc94c94cb06666924c3ac0a1ee420462373fda16e91b503348d7",
+            "0xf28899f1f9ddc832e4ef9eb7ddad7f29b5f0e6db3541fb332d53c776a87a10c4",
+            "0x7ca981b4803e8b9e56652c363d8c7ebf7e552a8be8537bf81a215f50a900c083"
+        ]
+    },
+    {
+        "tag": "ecosystem",
+        "account": "0xC642bEc0e4f69815e89723C09caA8DAa524cAc9c",
+        "chainId": 5,
+        "contract": "0xEc6449091Ae23A92f856702F9452011E31E66C63",
+        "vestingId": "0x6c44fcbabe1216809436b73f63fc1ab4947679e834adcfa89240ed809ac53f17",
+        "durationWeeks": 416,
+        "startDate": 1538042400,
+        "amount": "43023120000000000000000",
+        "curve": 0,
+        "proof": [
+            "0x20cb71ddd8cc8cd9aa3b82cbb06514a27ea59292090d5651ace1cf3aaad52519",
+            "0xafe49fb7ac6b4ed644b4d095b80f6a2a66b53f489155b32b14f44a5abd1270db",
+            "0x62a62c1ae544ff5f570b458f0eef573a4055b73b78857717b248fddf04d04498",
+            "0x0cf8cfdcfc906ccaf9a712f100c644734e461bbc3c84122f744a6b190355abf6"
+        ]
+    }
+]
