@@ -3,7 +3,6 @@ import useSWRImmutable from 'swr/immutable'
 import { AIRDROP_TAGS, VESTING_URL } from '@/config/constants'
 import { useAddress } from '@/hooks/useAddress'
 import { useChainId } from '@/hooks/useChainId'
-import { sameAddress } from '@/utils/addresses'
 
 type Tags = (typeof AIRDROP_TAGS)[keyof typeof AIRDROP_TAGS]
 
