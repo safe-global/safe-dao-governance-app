@@ -1,6 +1,9 @@
 import { BigNumber } from 'ethers'
 import { parseEther } from 'ethers/lib/utils'
 
+import { AIRDROP_TAGS } from '@/config/constants'
+import { useSafeTokenAllocation } from '@/hooks/useSafeTokenAllocation'
+
 const MAX_UINT128 = BigNumber.from('0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF')
 
 /**
@@ -60,4 +63,14 @@ export const splitAirdropAmounts = ({
     investorClaimable,
     amountInWei.sub(userAndSep5AndInvestor).toString(),
   ]
+}
+
+export const canRedeemSep5Airdrop = (allocation: ReturnType<typeof useSafeTokenAllocation>['data']): boolean => {
+  const sep5Allocation = allocation?.vestingData.find(({ tag }) => tag === AIRDROP_TAGS.SEP5)
+
+  if (!sep5Allocation) {
+    return false
+  }
+
+  return !sep5Allocation.isRedeemed
 }

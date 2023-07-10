@@ -18,7 +18,7 @@ import { SelectedDelegate } from '@/components/SelectedDelegate'
 import { formatAmount } from '@/utils/formatters'
 import { Sep5DeadlineChip } from '@/components/Sep5DeadlineChip'
 import { TypographyChip } from '@/components/TypographyChip'
-import { getVestingTypes } from '@/utils/vesting'
+import { canRedeemSep5Airdrop } from '@/utils/airdrop'
 
 import css from './styles.module.css'
 
@@ -82,6 +82,7 @@ const VotingPowerWidget = (): ReactElement => {
   const { safe } = useSafeAppsSDK()
   const delegate = useDelegate()
   const { data: allocation } = useSafeTokenAllocation()
+  const canRedeemSep5 = canRedeemSep5Airdrop(allocation)
 
   const totalClaimed = allocation?.vestingData.reduce((acc, { amountClaimed }) => {
     return acc.add(amountClaimed)
@@ -95,17 +96,19 @@ const VotingPowerWidget = (): ReactElement => {
 
   return (
     <Grid container p={1} height={1}>
-      <Grid item xs={12} display="flex" justifyContent="space-between" mb="auto">
-        <TypographyChip fontWeight={700} px={1}>
-          New allocation
-        </TypographyChip>
+      {canRedeemSep5 && (
+        <Grid item xs={12} display="flex" justifyContent="space-between" mb="auto">
+          <TypographyChip fontWeight={700} px={1}>
+            New allocation
+          </TypographyChip>
 
-        <Tooltip
-          title={`You qualify for a new SAFE allocation! Ensure you execute at least one claim before ${SEP5_EXPIRATION_DATE}`}
-        >
-          <Sep5DeadlineChip px={1} />
-        </Tooltip>
-      </Grid>
+          <Tooltip
+            title={`You qualify for a new SAFE allocation! Ensure you execute at least one claim before ${SEP5_EXPIRATION_DATE}`}
+          >
+            <Sep5DeadlineChip px={1} />
+          </Tooltip>
+        </Grid>
+      )}
       <Grid item xs={12} display="flex" flexDirection="column" alignItems="center" mt={4}>
         <Typography variant="subtitle2" color="primary.light" textAlign="center">
           Your voting power
@@ -157,8 +160,7 @@ const VotingPowerWidget = (): ReactElement => {
 
 export const ClaimingWidget = (): ReactElement => {
   const { data: allocation, isLoading } = useSafeTokenAllocation()
-
-  const { sep5Vesting } = getVestingTypes(allocation?.vestingData || [])
+  const canRedeemSep5 = canRedeemSep5Airdrop(allocation)
 
   if (isLoading) {
     return (
@@ -180,7 +182,7 @@ export const ClaimingWidget = (): ReactElement => {
       sx={{
         minWidth: WIDGET_WIDTH,
         maxWidth: WIDGET_WIDTH,
-        border: sep5Vesting ? ({ palette }) => `1px solid ${palette.primary.main}` : undefined,
+        border: canRedeemSep5 ? ({ palette }) => `1px solid ${palette.primary.main}` : undefined,
       }}
     >
       <>{allocation?.votingPower.eq(0) ? <CtaWidget /> : <VotingPowerWidget />}</>

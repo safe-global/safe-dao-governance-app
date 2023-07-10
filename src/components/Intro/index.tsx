@@ -21,6 +21,7 @@ import { isSafe } from '@/utils/wallet'
 import { InfoBox } from '@/components/InfoBox'
 import { useIsDelegationPending } from '@/hooks/usePendingDelegations'
 import { Sep5InfoBox } from '@/components/Sep5InfoBox'
+import { canRedeemSep5Airdrop } from '@/utils/airdrop'
 
 import css from './styles.module.css'
 
@@ -34,6 +35,8 @@ export const Intro = (): ReactElement => {
 
   const { isLoading, data: allocation } = useSafeTokenAllocation()
   const { total } = useTaggedAllocations()
+
+  const canRedeemSep5 = canRedeemSep5Airdrop(allocation)
 
   const hasAllocation = Number(total.allocation) > 0
   const isClaimable = Number(total.claimable) > 0
@@ -97,9 +100,11 @@ export const Intro = (): ReactElement => {
             </Grid>
           )}
 
-          <Grid item xs={12}>
-            <Sep5InfoBox />
-          </Grid>
+          {canRedeemSep5 && (
+            <Grid item xs={12}>
+              <Sep5InfoBox />
+            </Grid>
+          )}
 
           {isClaimable && (
             <Grid item xs={12} display="flex" justifyContent="center">
