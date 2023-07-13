@@ -14,6 +14,10 @@ const getTotal = (...amounts: string[]) => {
 }
 
 export const useTaggedAllocations = (): {
+  sep5: {
+    claimable: string
+    inVesting: string
+  }
   user: {
     claimable: string
     inVesting: string
@@ -35,25 +39,31 @@ export const useTaggedAllocations = (): {
   const { data: allocation } = useSafeTokenAllocation()
 
   // Get vesting types
-  const { userVesting, ecosystemVesting, investorVesting } = getVestingTypes(allocation?.vestingData || [])
+  const { userVesting, sep5Vesting, ecosystemVesting, investorVesting } = getVestingTypes(allocation?.vestingData || [])
 
   // Calculate claimable vs. vested amounts for each vesting type
+  const [sep5Claimable, sep5InVesting] = useAmounts(sep5Vesting)
   const [userClaimable, userInVesting] = useAmounts(userVesting)
   const [ecosystemClaimable, ecosystemInVesting] = useAmounts(ecosystemVesting)
   const [investorClaimable, investorInVesting] = useAmounts(investorVesting)
 
   // Calculate total of claimable vs. vested amounts
-  const totalAmountClaimable = getTotal(userClaimable, ecosystemClaimable, investorClaimable)
+  const totalAmountClaimable = getTotal(sep5Claimable, userClaimable, ecosystemClaimable, investorClaimable)
 
-  const totalAmountInVesting = getTotal(userInVesting, ecosystemInVesting, investorInVesting)
+  const totalAmountInVesting = getTotal(sep5InVesting, userInVesting, ecosystemInVesting, investorInVesting)
 
   const totalAllocation = getTotal(
+    sep5Vesting?.amount || '0',
     userVesting?.amount || '0',
     ecosystemVesting?.amount || '0',
     investorVesting?.amount || '0',
   )
 
   return {
+    sep5: {
+      claimable: sep5Claimable,
+      inVesting: sep5InVesting,
+    },
     user: {
       claimable: userClaimable,
       inVesting: userInVesting,

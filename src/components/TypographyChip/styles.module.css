@@ -1,0 +1,12 @@
+.chip {
+  background-color: var(--mui-palette-secondary-main);
+  color: unset;
+  border-radius: var(--mui-shape-borderRadius);
+  display: flex;
+  align-items: center;
+}
+
+[data-theme='dark'] .chip {
+  background-color: var(--mui-palette-primary-main);
+  color: var(--mui-palette-primary-contrastText);
+}

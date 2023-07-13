@@ -1,5 +1,6 @@
 import { BigNumber } from 'ethers'
 
+import { AIRDROP_TAGS } from '@/config/constants'
 import type { Vesting } from '@/hooks/useSafeTokenAllocation'
 
 const LINEAR_CURVE = 0
@@ -45,12 +46,14 @@ export const calculateVestedAmount = (vestingClaim: Vesting): string => {
 }
 
 export const getVestingTypes = (vestingData: Vesting[]) => {
-  const userVesting = vestingData?.find((vesting) => vesting.tag === 'user') ?? null
-  const ecosystemVesting = vestingData?.find((vesting) => vesting.tag === 'ecosystem') ?? null
-  const investorVesting = vestingData?.find((vesting) => vesting.tag === 'investor') ?? null
+  const userVesting = vestingData?.find((vesting) => vesting.tag === AIRDROP_TAGS.USER) ?? null
+  const sep5Vesting = vestingData?.find((vesting) => vesting.tag === AIRDROP_TAGS.SEP5) ?? null
+  const ecosystemVesting = vestingData?.find((vesting) => vesting.tag === AIRDROP_TAGS.ECOSYSTEM) ?? null
+  const investorVesting = vestingData?.find((vesting) => vesting.tag === AIRDROP_TAGS.INVESTOR) ?? null
 
   return {
     userVesting,
+    sep5Vesting,
     ecosystemVesting,
     investorVesting,
   }

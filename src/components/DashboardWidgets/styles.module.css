@@ -11,15 +11,15 @@
   }
 }
 
-.spacer {
+/* Snapshot widget */
+
+.snapshot {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   height: 300px;
   padding: 24px;
 }
-
-/* Snapshot widget */
 
 .proposal {
   height: 47px;
@@ -98,14 +98,11 @@
   transition: 'border ease-in-out 0.3s, background ease-in-out 0.3s';
 }
 
-.button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.link {
   gap: 8px;
-  margin-bottom: 8px;
+  text-decoration: unset;
 }
 
-.button:hover {
+.link:hover {
   background-color: transparent;
 }

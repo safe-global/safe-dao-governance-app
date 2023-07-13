@@ -20,6 +20,8 @@ import { useWallet } from '@/hooks/useWallet'
 import { isSafe } from '@/utils/wallet'
 import { InfoBox } from '@/components/InfoBox'
 import { useIsDelegationPending } from '@/hooks/usePendingDelegations'
+import { Sep5InfoBox } from '@/components/Sep5InfoBox'
+import { canRedeemSep5Airdrop } from '@/utils/airdrop'
 
 import css from './styles.module.css'
 
@@ -33,6 +35,8 @@ export const Intro = (): ReactElement => {
 
   const { isLoading, data: allocation } = useSafeTokenAllocation()
   const { total } = useTaggedAllocations()
+
+  const canRedeemSep5 = canRedeemSep5Airdrop(allocation)
 
   const hasAllocation = Number(total.allocation) > 0
   const isClaimable = Number(total.claimable) > 0
@@ -68,37 +72,51 @@ export const Intro = (): ReactElement => {
     )
   }
   return (
-    <Grid container flexDirection="column" alignItems="center" px={1} py={6}>
-      <SafeToken alt="Safe Token logo" width={84} height={84} />
+    <Grid container p={7} alignItems="center" justifyContent="center" gap={4}>
+      <Grid item xs={12} px={3}>
+        <Grid container alignItems="center" justifyContent="center" spacing={2}>
+          <Grid item xs={6} display="flex" flexDirection="column" alignItems="center">
+            <SafeToken alt="Safe Token logo" width={84} height={84} />
 
-      <Box mt={4} display="flex" flexDirection="column" alignItems="center">
-        <TotalVotingPower />
-      </Box>
+            <Box mt={4} display="flex" flexDirection="column" alignItems="center" textAlign="center">
+              <TotalVotingPower />
+            </Box>
+          </Grid>
 
-      {hasAllocation && (
-        <Grid item xs={12} display="flex" gap={6} my={3} flexDirection={{ xs: 'column', sm: 'row' }}>
-          <InfoBox className={css.overview}>
-            <Typography variant="body2" color="text.secondary">
-              Claimable now
-            </Typography>
-            <Typography fontWeight={700}>{formatAmount(formatEther(total.claimable), 2)} SAFE</Typography>
-          </InfoBox>
-          <InfoBox className={css.overview}>
-            <Typography variant="body2" color="text.secondary">
-              Claimable in the future
-            </Typography>
-            <Typography fontWeight={700}>{formatAmount(formatEther(total.inVesting), 2)} SAFE</Typography>
-          </InfoBox>
+          {hasAllocation && (
+            <Grid item xs={6} display="flex" gap={2} flexDirection="column">
+              <InfoBox className={css.overview}>
+                <Typography variant="body2" color="text.secondary">
+                  Claimable now
+                </Typography>
+                <Typography fontWeight={700}>{formatAmount(formatEther(total.claimable), 2)} SAFE</Typography>
+              </InfoBox>
+              <InfoBox className={css.overview}>
+                <Typography variant="body2" color="text.secondary">
+                  Claimable in the future
+                </Typography>
+                <Typography fontWeight={700}>{formatAmount(formatEther(total.inVesting), 2)} SAFE</Typography>
+              </InfoBox>
+            </Grid>
+          )}
+
+          {canRedeemSep5 && (
+            <Grid item xs={12}>
+              <Sep5InfoBox />
+            </Grid>
+          )}
+
+          {isClaimable && (
+            <Grid item xs={12} display="flex" justifyContent="center">
+              <Button variant="contained" size="stretched" onClick={onClaim} disabled={isWrongChain}>
+                Claim Safe Tokens
+              </Button>
+            </Grid>
+          )}
         </Grid>
-      )}
+      </Grid>
 
-      {isClaimable && (
-        <Button variant="contained" size="stretched" onClick={onClaim} disabled={isWrongChain}>
-          Claim Safe Tokens
-        </Button>
-      )}
-
-      <Grid item px={5} mt={6} mb={4}>
+      <Grid item xs={12}>
         <SelectedDelegate delegate={delegate || undefined} action={action} shortenAddress hint />
       </Grid>
 

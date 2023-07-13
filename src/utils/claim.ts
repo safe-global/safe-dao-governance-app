@@ -107,6 +107,7 @@ export const createClaimTxs = ({
   isMax,
   amount,
   userClaimable,
+  sep5Claimable,
   investorClaimable,
   isTokenPaused,
 }: {
@@ -115,20 +116,35 @@ export const createClaimTxs = ({
   isMax: boolean
   amount: string
   userClaimable: string
+  sep5Claimable: string
   investorClaimable: string
   isTokenPaused: boolean
 }): BaseTransaction[] => {
   const txs: BaseTransaction[] = []
 
   // Create tx for userAirdrop
-  const [userAmount, investorAmount, ecosystemAmount] = splitAirdropAmounts(
+  const [sep5Amount, userAmount, investorAmount, ecosystemAmount] = splitAirdropAmounts({
     isMax,
     amount,
-    userClaimable,
+    userAirdropClaimable: userClaimable,
+    sep5AirdropClaimable: sep5Claimable,
     investorClaimable,
-  )
+  })
 
-  const { userVesting, ecosystemVesting, investorVesting } = getVestingTypes(vestingData)
+  const { userVesting, sep5Vesting, ecosystemVesting, investorVesting } = getVestingTypes(vestingData)
+
+  // We must claim from SEP5 first in case the selected amount is below that of the pre-SEP5 allocation
+  if (sep5Vesting && BigNumber.from(sep5Amount).gt(0)) {
+    txs.push(
+      ...createAirdropTxs({
+        vestingClaim: sep5Vesting,
+        amount: sep5Amount,
+        safeAddress,
+        airdropAddress: sep5Vesting.contract,
+        isTokenPaused,
+      }),
+    )
+  }
 
   if (userVesting && BigNumber.from(userAmount).gt(0)) {
     txs.push(

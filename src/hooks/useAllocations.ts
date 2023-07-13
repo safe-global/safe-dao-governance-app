@@ -1,11 +1,13 @@
 import useSWRImmutable from 'swr/immutable'
 
-import { VESTING_URL } from '@/config/constants'
+import { AIRDROP_TAGS, VESTING_URL } from '@/config/constants'
 import { useAddress } from '@/hooks/useAddress'
 import { useChainId } from '@/hooks/useChainId'
 
+type Tags = (typeof AIRDROP_TAGS)[keyof typeof AIRDROP_TAGS]
+
 export type Allocation = {
-  tag: 'user' | 'ecosystem' | 'investor'
+  tag: Tags
   account: string
   chainId: number
   contract: string

@@ -18,6 +18,9 @@ import { createClaimTxs } from '@/utils/claim'
 import { useIsTokenPaused } from '@/hooks/useIsTokenPaused'
 import { useTaggedAllocations } from '@/hooks/useTaggedAllocations'
 import { useIsWrongChain } from '@/hooks/useIsWrongChain'
+import { Sep5InfoBox } from '@/components/Sep5InfoBox'
+import { SEP5_EXPIRATION } from '@/config/constants'
+import { canRedeemSep5Airdrop } from '@/utils/airdrop'
 import type { ClaimFlow } from '@/components/Claim'
 
 import css from './styles.module.css'
@@ -56,14 +59,16 @@ const ClaimOverview = ({ onNext }: { onNext: (data: ClaimFlow) => void }): React
   // Allocation, vesting and voting power
   const { data: allocation } = useSafeTokenAllocation()
 
-  const { ecosystemVesting, investorVesting } = getVestingTypes(allocation?.vestingData ?? [])
+  const { sep5Vesting, ecosystemVesting, investorVesting } = getVestingTypes(allocation?.vestingData ?? [])
 
-  const { user, ecosystem, investor, total } = useTaggedAllocations()
+  const { sep5, user, ecosystem, investor, total } = useTaggedAllocations()
   const totalClaimableAmountInEth = formatEther(total.claimable)
 
   const decimals = getDecimalLength(total.inVesting)
 
   // Flags
+  const canRedeemSep5 = canRedeemSep5Airdrop(allocation)
+
   const isInvestorClaimingDisabled = !!investorVesting && isTokenPaused
 
   const isAmountGTZero = !!amount && !amountError && Number.parseFloat(amount) > 0
@@ -96,6 +101,7 @@ const ClaimOverview = ({ onNext }: { onNext: (data: ClaimFlow) => void }): React
       safeAddress: safe.safeAddress,
       isMax: isMaxAmountSelected,
       amount: amount || '0',
+      sep5Claimable: sep5.claimable,
       userClaimable: user.claimable,
       investorClaimable: investor.claimable,
       isTokenPaused: !!isTokenPaused,
@@ -140,13 +146,30 @@ const ClaimOverview = ({ onNext }: { onNext: (data: ClaimFlow) => void }): React
       </Grid>
 
       <InfoAlert>
-        <Typography variant="subtitle2">
+        <Typography variant="body2">
           Total allocation is{' '}
           <Typography component="span" variant="inherit" color="text.primary">
             {formatAmount(formatEther(total.allocation), 2)} SAFE
           </Typography>
         </Typography>
       </InfoAlert>
+
+      {canRedeemSep5 && (
+        <>
+          <Grid item xs={12} mt={2}>
+            <Sep5InfoBox />
+          </Grid>
+
+          <Grid item xs={12} mt={1}>
+            <InfoAlert>
+              <Typography variant="body2">
+                Execute at least one claim of any amount of your allocation before {SEP5_EXPIRATION} otherwise it will
+                be transferred back to the Safe{`{DAO}`} treasurary.
+              </Typography>
+            </InfoAlert>
+          </Grid>
+        </>
+      )}
 
       <Grid item xs={12} my={4}>
         <Divider />
@@ -159,7 +182,7 @@ const ClaimOverview = ({ onNext }: { onNext: (data: ClaimFlow) => void }): React
         Select all Safe Tokens or define a custom amount.
       </Typography>
 
-      <Grid item container gap={2} flexWrap="nowrap" xs={12} mb={3}>
+      <Grid item container gap={2} flexWrap="nowrap" xs={12} mb={1}>
         <Grid item xs={9}>
           <TextField
             variant="outlined"
@@ -195,7 +218,7 @@ const ClaimOverview = ({ onNext }: { onNext: (data: ClaimFlow) => void }): React
 
       {isInvestorClaimingDisabled && (
         <InfoAlert>
-          <Typography variant="subtitle2" mb={3}>
+          <Typography variant="body2" mb={3}>
             Claiming will be available once the Safe Token is transferable
           </Typography>
         </InfoAlert>

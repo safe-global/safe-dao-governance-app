@@ -53,6 +53,16 @@ export const GUARDIANS_URL = `${CLAIMING_DATA_URL}/guardians/guardians.json`
 export const GUARDIANS_IMAGE_URL = `${CLAIMING_DATA_URL}/guardians/images`
 export const VESTING_URL = `${CLAIMING_DATA_URL}/allocations`
 
+export const SEP5_EXPIRATION_DATE = '27.10.2023'
+export const SEP5_EXPIRATION = `${SEP5_EXPIRATION_DATE} 10:00 CET`
+
+export const AIRDROP_TAGS = {
+  USER: 'user',
+  SEP5: 'user_v2',
+  ECOSYSTEM: 'ecosystem',
+  INVESTOR: 'investor',
+} as const
+
 // Delegation
 export const CHAIN_DELEGATE_ID: ChainConfig<string> = {
   [Chains.MAINNET]: 'safe.eth',
@@ -69,5 +79,8 @@ export const CHAIN_SNAPSHOT_URL: ChainConfig<string> = {
   [Chains.MAINNET]: `https://snapshot.org/#/${CHAIN_DELEGATE_ID[Chains.MAINNET]}`,
   [Chains.GOERLI]: `https://snapshot.org/#/${CHAIN_DELEGATE_ID[Chains.GOERLI]}`,
 }
+
+export const SEP5_PROPOSAL_URL =
+  'https://snapshot.org/#/safe.eth/proposal/0xb4765551b4814b592d02ce67de05527ac1d2b88a8c814c4346ecc0c947c9b941'
 
 export const DISCORD_URL = 'https://chat.safe.global'
