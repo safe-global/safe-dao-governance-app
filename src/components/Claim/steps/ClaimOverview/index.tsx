@@ -164,7 +164,7 @@ const ClaimOverview = ({ onNext }: { onNext: (data: ClaimFlow) => void }): React
             <InfoAlert>
               <Typography variant="body2">
                 Execute at least one claim of any amount of your allocation before {SEP5_EXPIRATION} otherwise it will
-                be transferred back to the Safe{`{DAO}`} treasurary.
+                be transferred back to the Safe{`{DAO}`} treasury.
               </Typography>
             </InfoAlert>
           </Grid>
