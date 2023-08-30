@@ -63,7 +63,7 @@ const completeAllocation = async (allocation: Allocation, provider: JsonRpcProvi
   }
 
   // Allocation is not yet redeemed => check the redeemDeadline
-  const redeemDeadline = _getRedeemDeadline(allocation, provider)
+  const redeemDeadline = await _getRedeemDeadline(allocation, provider)
 
   const redeemDeadlineDate = new Date(BigNumber.from(redeemDeadline).mul(1000).toNumber())
 
