@@ -3,7 +3,7 @@ import { BigNumber } from 'ethers'
 import { hexZeroPad, Deferrable, keccak256, toUtf8Bytes, defaultAbiCoder, parseEther } from 'ethers/lib/utils'
 
 import { ZERO_ADDRESS } from '@/config/constants'
-import { _getVestingData, _getVotingPower } from '@/hooks/useSafeTokenAllocation'
+import { _getRedeemDeadline, _getVestingData, _getVotingPower } from '@/hooks/useSafeTokenAllocation'
 import type { Vesting } from '@/hooks/useSafeTokenAllocation'
 import type { Allocation } from '@/hooks/useAllocations'
 
@@ -38,6 +38,36 @@ describe('useSafeTokenAllocation', () => {
 
   beforeEach(() => {
     jest.resetAllMocks()
+
+    // Clear memoization cache
+    _getRedeemDeadline.cache.clear?.()
+  })
+
+  describe('_getRedeemDeadline', () => {
+    it('should should only call the provider once per address on a chain', async () => {
+      for await (const _ of Array.from({ length: 10 })) {
+        await _getRedeemDeadline({ chainId: 1, contract: hexZeroPad('0x1', 20) } as Allocation, web3Provider)
+      }
+
+      expect(web3Provider.call).toHaveBeenCalledTimes(1)
+    })
+
+    it('should not memoize different addresses on the same chain', async () => {
+      const chainId = 1
+
+      await _getRedeemDeadline({ chainId, contract: hexZeroPad('0x1', 20) } as Allocation, web3Provider)
+      await _getRedeemDeadline({ chainId, contract: hexZeroPad('0x2', 20) } as Allocation, web3Provider)
+
+      expect(web3Provider.call).toHaveBeenCalledTimes(2)
+    })
+
+    it('should not memoize the same address on difference chains', async () => {
+      for await (const i of Array.from({ length: 10 }, (_, i) => i + 1)) {
+        await _getRedeemDeadline({ chainId: i, contract: hexZeroPad('0x1', 20) } as Allocation, web3Provider)
+      }
+
+      expect(web3Provider.call).toHaveBeenCalledTimes(10)
+    })
   })
 
   describe('_getVestingData', () => {
