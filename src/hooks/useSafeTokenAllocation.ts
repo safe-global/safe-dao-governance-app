@@ -112,7 +112,7 @@ const computeVotingPower = (validVestingData: Vesting[], balance: string): BigNu
   )
 
   // add balance
-  return tokensInVesting.add(balance || '0')
+  return tokensInVesting.add(BigNumber.from(balance))
 }
 
 export const _getVotingPower = async ({
