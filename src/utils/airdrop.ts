@@ -72,5 +72,5 @@ export const canRedeemSep5Airdrop = (allocation: ReturnType<typeof useSafeTokenA
     return false
   }
 
-  return !sep5Allocation.isRedeemed
+  return !sep5Allocation.isRedeemed && !sep5Allocation.isExpired
 }

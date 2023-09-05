@@ -3,6 +3,7 @@ import { BigNumber } from 'ethers'
 import { defaultAbiCoder } from 'ethers/lib/utils'
 import useSWR from 'swr'
 import { useRouter } from 'next/router'
+import memoize from 'lodash/memoize'
 import type { JsonRpcProvider } from '@ethersproject/providers'
 
 import { getAirdropInterface } from '@/services/contracts/Airdrop'
@@ -23,6 +24,16 @@ export type Vesting = Allocation & {
 }
 
 const airdropInterface = getAirdropInterface()
+
+export const _getRedeemDeadline = memoize(
+  async (allocation: Allocation, provider: JsonRpcProvider): Promise<string> => {
+    return provider.call({
+      to: allocation.contract,
+      data: airdropInterface.encodeFunctionData('redeemDeadline'),
+    })
+  },
+  ({ chainId, contract }) => chainId + contract,
+)
 
 /**
  * Add on-chain information to allocation.
@@ -52,10 +63,7 @@ const completeAllocation = async (allocation: Allocation, provider: JsonRpcProvi
   }
 
   // Allocation is not yet redeemed => check the redeemDeadline
-  const redeemDeadline = await provider.call({
-    to: allocation.contract,
-    data: airdropInterface.encodeFunctionData('redeemDeadline'),
-  })
+  const redeemDeadline = await _getRedeemDeadline(allocation, provider)
 
   const redeemDeadlineDate = new Date(BigNumber.from(redeemDeadline).mul(1000).toNumber())
 
@@ -104,7 +112,7 @@ const computeVotingPower = (validVestingData: Vesting[], balance: string): BigNu
   )
 
   // add balance
-  return tokensInVesting.add(balance || '0')
+  return tokensInVesting.add(BigNumber.from(balance))
 }
 
 export const _getVotingPower = async ({
