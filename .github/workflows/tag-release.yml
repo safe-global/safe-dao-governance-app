@@ -19,10 +19,12 @@ jobs:
       - name: Extract version
         if: github.event.pull_request.merged == true
         id: version
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
         run: |
           NEW_VERSION=$(node -p 'require("./package.json").version')
           echo "version=v$NEW_VERSION" >> $GITHUB_OUTPUT
-          echo "${{ github.event.pull_request.body }}" > CHANGELOG.md
+          echo "$PR_BODY" > CHANGELOG.md
 
       - name: Create a git tag
         if: github.event.pull_request.merged == true
