@@ -25,23 +25,23 @@ export const SAFE_URL = IS_PRODUCTION ? 'https://app.safe.global' : 'https://saf
 // Chains
 export const Chains = {
   MAINNET: '1',
-  GOERLI: '5',
+  SEPOLIA: '11155111',
 }
 
 // Strictly type configuration for each chain above
 type ChainConfig<T> = Record<(typeof Chains)[keyof typeof Chains], T>
 
-export const _DEFAULT_CHAIN_ID = IS_PRODUCTION ? Chains.MAINNET : Chains.GOERLI
+export const _DEFAULT_CHAIN_ID = IS_PRODUCTION ? Chains.MAINNET : Chains.SEPOLIA
 
 export const CHAIN_SHORT_NAME: ChainConfig<string> = {
   [Chains.MAINNET]: 'eth',
-  [Chains.GOERLI]: 'gor',
+  [Chains.SEPOLIA]: 'sep',
 }
 
 // Token
 export const CHAIN_SAFE_TOKEN_ADDRESS: ChainConfig<string> = {
   [Chains.MAINNET]: '0x5afe3855358e112b5647b952709e6165e1c1eeee',
-  [Chains.GOERLI]: '0x61fD3b6d656F39395e32f46E2050953376c3f5Ff',
+  [Chains.SEPOLIA]: '0xd16d9C09d13E9Cf77615771eADC5d51a1Ae92a26',
 }
 
 // Claiming
@@ -66,7 +66,7 @@ export const AIRDROP_TAGS = {
 // Delegation
 export const CHAIN_DELEGATE_ID: ChainConfig<string> = {
   [Chains.MAINNET]: 'safe.eth',
-  [Chains.GOERLI]: 'tutis.eth',
+  [Chains.SEPOLIA]: 'tutis.eth',
 }
 
 export const DELEGATE_REGISTRY_ADDRESS = '0x469788fe6e9e9681c6ebf3bf78e7fd26fc015446'
@@ -77,7 +77,7 @@ export const GOVERNANCE_URL = 'https://forum.gnosis-safe.io/t/how-to-safedao-gov
 
 export const CHAIN_SNAPSHOT_URL: ChainConfig<string> = {
   [Chains.MAINNET]: `https://snapshot.org/#/${CHAIN_DELEGATE_ID[Chains.MAINNET]}`,
-  [Chains.GOERLI]: `https://snapshot.org/#/${CHAIN_DELEGATE_ID[Chains.GOERLI]}`,
+  [Chains.SEPOLIA]: `https://snapshot.org/#/${CHAIN_DELEGATE_ID[Chains.SEPOLIA]}`,
 }
 
 export const SEP5_PROPOSAL_URL =

@@ -68,12 +68,12 @@ describe('useEnsResolution()', () => {
   })
 
   it('should accept EIP-3770 addresses with correct chain prefix', async () => {
-    const prefixedAddress = 'gor:0x1000000000000000000000000000000000000000'
+    const prefixedAddress = 'sep:0x1000000000000000000000000000000000000000'
 
     web3Provider.resolveName = jest.fn()
     jest.spyOn(useWeb3, 'useWeb3').mockImplementation(() => web3Provider)
 
-    jest.spyOn(useChain, 'useChain').mockImplementation(() => ({ chainId: '5', shortName: 'gor' } as ChainInfo))
+    jest.spyOn(useChain, 'useChain').mockImplementation(() => ({ chainId: '11155111', shortName: 'sep' } as ChainInfo))
 
     jest.useFakeTimers()
 
@@ -95,14 +95,14 @@ describe('useEnsResolution()', () => {
     web3Provider.resolveName = jest.fn()
     jest.spyOn(useWeb3, 'useWeb3').mockImplementation(() => web3Provider)
 
-    jest.spyOn(useChain, 'useChain').mockImplementation(() => ({ chainId: '5', shortName: 'gor' } as ChainInfo))
+    jest.spyOn(useChain, 'useChain').mockImplementation(() => ({ chainId: '11155111', shortName: 'sep' } as ChainInfo))
 
     jest.useFakeTimers()
 
     const { result } = renderHook(() => useEnsResolution(prefixedAddress))
 
     expect(result.current[0]).toBeUndefined()
-    expect(result.current[1]).toEqual('The chain prefix does not match that of the current chain (gor)')
+    expect(result.current[1]).toEqual('The chain prefix does not match that of the current chain (sep)')
     expect(result.current[2]).toBeFalsy()
     expect(web3Provider.resolveName).not.toHaveBeenCalled()
 
