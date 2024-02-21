@@ -242,7 +242,12 @@ describe('useSafeTokenAllocation', () => {
         return Promise.resolve('0x')
       })
 
-      const result = await _getVotingPower({ chainId: '5', address: SAFE_ADDRESS, web3: web3Provider, vestingData: [] })
+      const result = await _getVotingPower({
+        chainId: '11155111',
+        address: SAFE_ADDRESS,
+        web3: web3Provider,
+        vestingData: [],
+      })
       expect(result?.toNumber()).toEqual(0)
     })
 
@@ -255,7 +260,12 @@ describe('useSafeTokenAllocation', () => {
         return Promise.resolve('0x')
       })
 
-      const result = await _getVotingPower({ chainId: '5', address: SAFE_ADDRESS, web3: web3Provider, vestingData: [] })
+      const result = await _getVotingPower({
+        chainId: '11155111',
+        address: SAFE_ADDRESS,
+        web3: web3Provider,
+        vestingData: [],
+      })
       expect(result?.eq(parseEther('100'))).toBeTruthy()
     })
 
@@ -289,7 +299,7 @@ describe('useSafeTokenAllocation', () => {
       })
 
       const result = await _getVotingPower({
-        chainId: '5',
+        chainId: '11155111',
         address: SAFE_ADDRESS,
         web3: web3Provider,
         vestingData: mockVestings,
@@ -327,7 +337,7 @@ describe('useSafeTokenAllocation', () => {
       })
 
       const result = await _getVotingPower({
-        chainId: '5',
+        chainId: '11155111',
         address: SAFE_ADDRESS,
         web3: web3Provider,
         vestingData: mockAllocation,
@@ -365,7 +375,7 @@ describe('useSafeTokenAllocation', () => {
       })
 
       const result = await _getVotingPower({
-        chainId: '5',
+        chainId: '11155111',
         address: SAFE_ADDRESS,
         web3: web3Provider,
         vestingData: mockAllocation,

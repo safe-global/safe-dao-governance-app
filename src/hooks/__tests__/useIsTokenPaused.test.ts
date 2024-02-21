@@ -18,7 +18,7 @@ describe('_getIsTokenPaused', () => {
   it('should return true on error', async () => {
     mockCall.mockImplementation(() => Promise.reject())
 
-    const result = await _getIsTokenPaused('5', web3Provider)
+    const result = await _getIsTokenPaused('11155111', web3Provider)
 
     expect(result).toBeTruthy()
     expect(mockCall).toBeCalledTimes(1)
@@ -27,7 +27,7 @@ describe('_getIsTokenPaused', () => {
   it('should return true if token is paused', async () => {
     mockCall.mockImplementation(async () => Promise.resolve(safeTokenInterface.encodeFunctionResult('paused', [true])))
 
-    const result = await _getIsTokenPaused('5', web3Provider)
+    const result = await _getIsTokenPaused('11155111', web3Provider)
 
     expect(result).toBeTruthy()
     expect(mockCall).toBeCalledTimes(1)
@@ -36,14 +36,14 @@ describe('_getIsTokenPaused', () => {
   it('should return false if token is unpaused', async () => {
     mockCall.mockImplementation(async () => Promise.resolve(safeTokenInterface.encodeFunctionResult('paused', [false])))
 
-    const result = await _getIsTokenPaused('5', web3Provider)
+    const result = await _getIsTokenPaused('11155111', web3Provider)
 
     expect(result).toBeFalsy()
     expect(mockCall).toBeCalledTimes(1)
   })
 
   it('returns null if no provider is defined', async () => {
-    const result = await _getIsTokenPaused('5', undefined)
+    const result = await _getIsTokenPaused('11155111', undefined)
 
     expect(result).toBe(null)
   })
