@@ -2,18 +2,17 @@ import { Box, Typography } from '@mui/material'
 import { TypographyProps } from '@mui/material/Typography'
 import BezierEasing from 'bezier-easing'
 import { useState, useEffect, useRef } from 'react'
-
 const easeInOut = BezierEasing(0.42, 0, 0.58, 1)
 const DURATION = 1000
 
 const digitRotations: Record<number, number> = {
-  [1]: Math.random() * 10 - 5,
-  [2]: Math.random() * 20 - 10,
-  [3]: Math.random() * 20 - 10,
-  [4]: Math.random() * 30 - 15,
-  [5]: Math.random() * 30 - 15,
-  [6]: Math.random() * 40 - 20,
-  [7]: Math.random() * 40 - 20,
+  [1]: 0,
+  [2]: Math.random() * 10 - 5,
+  [3]: Math.random() * 10 - 5,
+  [4]: Math.random() * 10 - 5,
+  [5]: Math.random() * 10 - 5,
+  [6]: Math.random() * 10 - 5,
+  [7]: Math.random() * 10 - 5,
 }
 
 const roundNumber = (num: number, digits: number) => {
@@ -86,18 +85,22 @@ const BoostCounter = ({ value, ...props }: TypographyProps & { value: number }) 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value])
 
+  const digit = floorNumber(currentNumber, 0)
+
+  const decimals = floorNumber(currentNumber, 2).toString().slice(2)
+
   return (
     <Box display="inline-flex" gap="4px">
       <Typography
         sx={{
           transform: `scale(${scale}) rotateZ(${isAnimating ? rotationRef.current : 0}deg)`,
-          transition: 'transform 0.1s',
+          transition: 'transform 0.25s cubic-bezier(.1,1,1,5)',
         }}
         {...props}
       >
-        {floorNumber(currentNumber, 0)}
+        {digit}
       </Typography>
-      <Typography {...props}>.{floorNumber(currentNumber, 2).toString().slice(2)}x</Typography>
+      <Typography {...props}>{decimals !== '' ? `.${decimals}x` : 'x'}</Typography>
     </Box>
   )
 }

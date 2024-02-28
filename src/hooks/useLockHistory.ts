@@ -1,6 +1,7 @@
 import { PastLock } from '@/utils/boost'
 
 export const useLockHistory = (): PastLock[] => {
+  return []
   return [
     {
       day: 3,
@@ -12,8 +13,6 @@ export const useLockHistory = (): PastLock[] => {
       amount: 1200,
     },
   ]
-
-  return []
 }
 
-export const FAKE_NOW = 30
+export const FAKE_NOW = 0
