@@ -44,6 +44,11 @@ export const CHAIN_SAFE_TOKEN_ADDRESS: ChainConfig<string> = {
   [Chains.SEPOLIA]: '0xd16d9C09d13E9Cf77615771eADC5d51a1Ae92a26',
 }
 
+export const CHAIN_SAFE_LOCKING_ADDRESS: ChainConfig<string> = {
+  [Chains.MAINNET]: '0x0',
+  [Chains.SEPOLIA]: '0xECB34B0EbcF4B85A7c113d4fA73cd2A450B40445',
+}
+
 // Claiming
 const CLAIMING_DATA_URL = IS_PRODUCTION
   ? 'https://safe-claiming-app-data.safe.global'

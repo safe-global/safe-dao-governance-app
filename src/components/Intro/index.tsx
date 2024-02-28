@@ -58,6 +58,8 @@ export const Intro = (): ReactElement => {
 
   const onDelegate = onClick(AppRoutes.delegate)
 
+  const onLock = onClick(AppRoutes.activity)
+
   const action = (
     <Button variant="contained" size="stretched" onClick={onDelegate} disabled={!canDelegate}>
       {delegate ? 'Redelegate' : 'Delegate'}
@@ -118,6 +120,10 @@ export const Intro = (): ReactElement => {
 
       <Grid item xs={12}>
         <SelectedDelegate delegate={delegate || undefined} action={action} shortenAddress hint />
+      </Grid>
+
+      <Grid item xs={12}>
+        <Button onClick={onLock}>Lock Safe tokens</Button>
       </Grid>
 
       <Grid item xs={12}>

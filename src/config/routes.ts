@@ -5,4 +5,6 @@ export const AppRoutes = {
   index: '/',
   delegate: '/delegate',
   claim: '/claim',
+  activity: '/activity',
+  unlock: '/unlock',
 }
