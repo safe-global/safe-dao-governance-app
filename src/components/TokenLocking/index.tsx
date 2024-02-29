@@ -6,14 +6,8 @@ import { Leaderboard } from './Leaderboard'
 import { CurrentStats } from './CurrentStats'
 import { LockTokenWidget } from './LockTokenWidget'
 import { PlaceholderTopRight } from './PlaceholderTopRight'
-
-const PaperContainer = (props: PaperProps) => {
-  return (
-    <Paper className={css.paper} {...props}>
-      {props.children}
-    </Paper>
-  )
-}
+import { ActionNavigation } from './ActionNavigation'
+import PaperContainer from '../PaperContainer'
 
 const TokenLocking = () => {
   const { isLoading: safeBalanceLoading, data: safeBalance } = useSafeTokenBalance()
@@ -38,6 +32,7 @@ const TokenLocking = () => {
 
           <PaperContainer>
             <LockTokenWidget safeBalance={safeBalance} />
+            <ActionNavigation />
           </PaperContainer>
           <PaperContainer>
             <Leaderboard />

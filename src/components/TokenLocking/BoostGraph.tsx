@@ -1,65 +1,67 @@
 import { FAKE_NOW } from '@/hooks/useLockHistory'
-import { getBoostFunction, getEarlyBirdBoostAdvanced, PastLock } from '@/utils/boost'
+import { getBoostFunction, LockHistory } from '@/utils/boost'
 import { useTheme } from '@mui/material/styles'
-import { useMemo } from 'react'
-import {
-  VictoryChart,
-  VictoryAxis,
-  VictoryLabel,
-  VictoryLabelProps,
-  VictoryScatter,
-  VictoryArea,
-  VictoryLine,
-} from 'victory'
+import { useCallback, useMemo } from 'react'
+import { VictoryAxis, VictoryLabel, VictoryScatter, VictoryArea, VictoryLine } from 'victory'
 
 import { useVictoryTheme } from './theme'
 
-const scale = 270 / 7
+export const GRAPH_HEIGHT = 338
+export const GRAPH_PADDING = 24
+export const GRAPH_WIDTH = 500
+
+const height = GRAPH_HEIGHT - GRAPH_PADDING * 2
+const scaleY = height / 7
 
 const scaleValue = (y: number) => {
-  const y1 = 24 // padding-top
-  const height = 270 // height - 48 (padding) see theme.ts
+  const y1 = GRAPH_PADDING // padding-top
   const y2 = y1 + height
-  return y2 - scale * y
+  return y2 - scaleY * y
 }
 
-export const BoostGraph = ({ lockedAmount, pastLocks }: { lockedAmount: number; pastLocks: PastLock[] }) => {
+export const BoostGraph = ({ lockedAmount, pastLocks }: { lockedAmount: number; pastLocks: LockHistory[] }) => {
   const theme = useTheme()
   const victoryTheme = useVictoryTheme()
 
   const now = FAKE_NOW
 
   const newBoostFunction = useMemo(() => getBoostFunction(now, lockedAmount, pastLocks), [lockedAmount, now, pastLocks])
-  const getEarlyBirdFunction = useMemo(
-    () => getEarlyBirdBoostAdvanced(now, lockedAmount, pastLocks),
+  const earlyBirdBoostFunction = useMemo(
+    () => getBoostFunction(now, lockedAmount, pastLocks, 48),
     [lockedAmount, now, pastLocks],
+  )
+
+  const lockBoostFunction = useCallback(
+    // Boost at season end - early bird boost
+    (d: { x: number }) => newBoostFunction(d) - earlyBirdBoostFunction(d) + 1,
+    [newBoostFunction, earlyBirdBoostFunction],
   )
 
   const currentDotX = now
   const programBegin = 51
-  const scaleEnd = 60
+  const scaleEnd = 158
 
   return (
-    <svg viewBox="0 0 500 380">
+    <svg viewBox={`0 0 ${GRAPH_WIDTH} ${height + 48}`}>
       <defs>
-        <linearGradient id="gradient-earlybird" x1="0" x2="0" y1="0" y2="1">
-          <stop offset="0%" stop-color={theme.palette.success.main} />
-          <stop offset="65%" stop-color="#000" />
-        </linearGradient>
         <linearGradient id="gradient-total" x1="0" x2="0" y1="0" y2="1">
           <stop offset="0%" stop-color={theme.palette.info.main} />
-          <stop offset="100%" stop-color="#000" />
+          <stop offset="100%" stop-color={theme.palette.info.main} />
         </linearGradient>
-        <mask id="mask-earlybird" x="0" y="0" width="100%" height="100%">
+        <linearGradient id="gradient-locked" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0%" stop-color={theme.palette.primary.main} />
+          <stop offset="75%" stop-color="#000" />
+        </linearGradient>
+        <mask id="mask-locked" x="0" y="0" width="100%" height="100%">
           <VictoryArea
             standalone={false}
-            name="earlyBird"
+            name="locked"
             animate
             interpolation="step"
             samples={150}
             style={{ data: { fill: '#FFFFFF' } }}
             domain={{ x: [0, scaleEnd], y: [0, 7] }}
-            y={(d) => Math.max(getEarlyBirdFunction(d), 1)}
+            y={lockBoostFunction}
             theme={victoryTheme}
           />
         </mask>
@@ -78,7 +80,7 @@ export const BoostGraph = ({ lockedAmount, pastLocks }: { lockedAmount: number; 
         </mask>
       </defs>
 
-      <g transform={'translate(0, 40)'}>
+      <g>
         <VictoryAxis
           standalone={false}
           dependentAxis
@@ -88,39 +90,50 @@ export const BoostGraph = ({ lockedAmount, pastLocks }: { lockedAmount: number; 
           theme={victoryTheme}
         />
 
-        <VictoryArea
+        {/* Rect using the total mask */}
+        <rect
+          x="0"
+          y={scaleValue(5)}
+          width="100%"
+          height={scaleY * 5}
+          mask="url(#mask-total)"
+          fill="url(#gradient-total)"
+        />
+
+        {/* Rect using the locked mask */}
+        <rect
+          x="0"
+          y={scaleValue(3)}
+          width="100%"
+          height={scaleY * 3}
+          mask="url(#mask-locked)"
+          fill="url(#gradient-locked)"
+        />
+
+        <VictoryLine
           standalone={false}
-          name="total"
+          name="total-outline"
           animate
           interpolation="step"
           samples={150}
           style={{
-            data: { fill: theme.palette.info.background, stroke: theme.palette.info.main, strokeWidth: 2 },
+            data: { fill: 'none', stroke: theme.palette.info.main, strokeWidth: 1 },
             labels: { color: theme.palette.text.primary, fontFamily: 'DM Sans' },
           }}
           domain={{ x: [0, scaleEnd], y: [0, 7] }}
           y={newBoostFunction}
           theme={victoryTheme}
         />
-
-        {/* Rect using the total mask */}
-        <rect
-          x="0"
-          y={scaleValue(7)}
-          width="100%"
-          height={scale * 7}
-          mask="url(#mask-total)"
-          fill="url(#gradient-total)"
-        />
-
-        {/* Rect using the earlybird mask */}
-        <rect
-          x="0"
-          y={scaleValue(2)}
-          width="100%"
-          height={scale * 2}
-          mask="url(#mask-earlybird)"
-          fill="url(#gradient-earlybird)"
+        <VictoryLine
+          standalone={false}
+          name="locked-outline"
+          animate
+          interpolation="step"
+          samples={150}
+          style={{ data: { fill: 'none', stroke: theme.palette.primary.main, strokeWidth: 1 } }}
+          domain={{ x: [0, scaleEnd], y: [0, 7] }}
+          y={lockBoostFunction}
+          theme={victoryTheme}
         />
 
         <VictoryScatter

@@ -1,5 +1,6 @@
 import { useTheme } from '@mui/material/styles'
 import { VictoryThemeDefinition } from 'victory'
+import { GRAPH_HEIGHT, GRAPH_PADDING, GRAPH_WIDTH } from './BoostGraph'
 
 const colors = ['#DDDEE0', '#525252', '#737373', '#969696', '#bdbdbd', '#d9d9d9', '#f0f0f0']
 const grey = '#A1A3A7'
@@ -9,20 +10,19 @@ const sansSerif = "'DM Sans'"
 const letterSpacing = 'normal'
 const fontSize = '14px'
 
-// Layout
-const baseProps = {
-  width: 500,
-  height: 318,
-  padding: 24,
-  colorScale: colors,
-}
-
 // Strokes
 const strokeLinecap = 'round'
 const strokeLinejoin = 'round'
 
 // Put it all together...
 export const useVictoryTheme = (): VictoryThemeDefinition => {
+  // Layout
+  const baseProps = {
+    width: GRAPH_WIDTH,
+    height: GRAPH_HEIGHT,
+    padding: GRAPH_PADDING,
+    colorScale: colors,
+  }
   const muiTheme = useTheme()
   const fontColor = muiTheme.palette.text.secondary
 

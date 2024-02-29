@@ -1,46 +1,75 @@
-export type PastLock = {
+export type LockHistory = {
   day: number
+  // can be negative for unlocks
   amount: number
 }
 
-export const getLockBoost = (amountLocked: number) => {
-  if (amountLocked < 100) {
-    return 1
-  }
-  if (amountLocked < 10_000) {
-    return amountLocked / 4950 + 97 / 99
-  }
-  if (amountLocked < 100_000) {
-    return amountLocked / 90000 + 26 / 9
-  }
-  if (amountLocked < 1_000_000) {
-    return amountLocked / 900000 + 35 / 9
-  }
-  return 5
-}
-
-export const getEarlyBirdBoost = (days: number) => {
-  if (days > 48) {
+export const getTokenBoost = (amountLocked: number) => {
+  if (amountLocked <= 100) {
     return 0
   }
-  return 2 - days / 24
+  if (amountLocked <= 1_000) {
+    return amountLocked / 900 - 1 / 9
+  }
+  if (amountLocked < 10_000) {
+    return amountLocked / 9000 + 8 / 9
+  }
+  if (amountLocked < 100_000) {
+    return amountLocked / 90000 + 17 / 9
+  }
+  if (amountLocked < 1_000_000) {
+    return amountLocked / 900000 + 26 / 9
+  }
+  return 4
 }
 
-export const getEarlyBirdBoostAdvanced =
-  (now: number, amountLocked: number, pastLocks: PastLock[]) => (d: { x: number }) => {
-    let firstEarlyBirdLock = pastLocks.find((value) => value.amount >= 1000 && value.day <= d.x)?.day
-
-    if (firstEarlyBirdLock === undefined) {
-      firstEarlyBirdLock = amountLocked >= 1000 && now <= d.x ? now : 48
-    }
-    return getEarlyBirdBoost(firstEarlyBirdLock)
+export const getTimeFactor = (days: number) => {
+  if (days <= 47) {
+    return 1 - 0.0106383 * days
   }
 
-export const getBoostFunction = (now: number, amountLocked: number, pastLocks: PastLock[]) => (d: { x: number }) => {
-  const earlyBoost = getEarlyBirdBoostAdvanced(now, amountLocked, pastLocks)(d)
-  const pastAmounts = pastLocks.filter((value) => value.day <= d.x).reduce((prev, current) => prev + current.amount, 0)
-  const totalAmount = pastAmounts + (now <= d.x ? amountLocked : 0)
-  const lockBoost = getLockBoost(totalAmount)
+  if (days <= 158) {
+    return 0.5 - 0.0045045 * (days - 48)
+  }
 
-  return lockBoost + earlyBoost
+  return 0
 }
+
+type LockInterval = {
+  start: number
+  end: number
+  amount: number
+}
+
+export const getBoostFunction =
+  (now: number, amountDiff: number, history: LockHistory[], targetDate: number = 159) =>
+  (d: { x: number }): number => {
+    // Add new boost to history
+    const newHistory: LockHistory[] = [...history, { amount: amountDiff, day: now }]
+
+    // Filter out all entries that were made before the current day (x)
+    const filteredHistory = newHistory.filter((entry) => entry.day <= d.x && entry.day <= targetDate)
+    const lockIntervals: LockInterval[] = []
+
+    // We transform it into intervals
+    for (let idx = 0; idx < filteredHistory.length; idx++) {
+      const currentEvent = filteredHistory[idx]
+      let nextEvent: LockHistory | undefined = undefined
+      if (filteredHistory.length > idx + 1) {
+        nextEvent = filteredHistory[idx + 1]
+      }
+
+      const previousInterval = lockIntervals.length > 0 ? lockIntervals[lockIntervals.length - 1] : undefined
+
+      lockIntervals.push({
+        start: currentEvent.day,
+        amount: currentEvent.amount + (previousInterval?.amount ?? 0),
+        end: nextEvent?.day ?? targetDate,
+      })
+    }
+
+    // Compute and add the boost for each interval + 1
+    return lockIntervals.reduce((prev, current) => {
+      return prev + getTokenBoost(current.amount) * (getTimeFactor(current.start) - getTimeFactor(current.end))
+    }, 1)
+  }

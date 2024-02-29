@@ -41,7 +41,7 @@ type UserLockingInfos = {
   lockedAmount: BigNumber
 }
 
-type SingleUnlock = {
+export type SingleUnlock = {
   unlockAmount: BigNumber
   unlockedAt: BigNumber
   isUnlocked: boolean
@@ -72,8 +72,6 @@ export const useSafeUserLockingInfos = () => {
           BigNumber.from(0),
           BigNumber.from(0),
         ]
-
-        console.log('Now:', Date.now(), 'UnlockedAt:', unlockedAt.toString(), unlockedAt.mul(1000).toString())
 
         nextUnlock = {
           unlockAmount,

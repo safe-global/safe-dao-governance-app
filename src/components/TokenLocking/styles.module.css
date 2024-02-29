@@ -19,13 +19,6 @@
   min-width: 6px;
 }
 
-.paper {
-  padding: 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-
 .boostInfoBox {
   height: 100%;
   display: flex;

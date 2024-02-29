@@ -6,6 +6,8 @@ import ClaimOverview from '@/components/Claim/steps/ClaimOverview'
 import SuccessfulClaim from '@/components/Claim/steps/SuccessfulClaim'
 import { AppRoutes } from '@/config/routes'
 import { ProgressBar } from '@/components/ProgressBar'
+import { Paper } from '@mui/material'
+import MediumPaper from '../MediumPaper'
 
 export type ClaimFlow = {
   claimedAmount: string
@@ -26,9 +28,9 @@ export const Claim = (): ReactElement => {
   const progress = ((step + 1) / steps.length) * 100
 
   return (
-    <>
+    <MediumPaper>
       <ProgressBar value={progress} />
       {steps[step]}
-    </>
+    </MediumPaper>
   )
 }

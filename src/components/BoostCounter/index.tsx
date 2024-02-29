@@ -4,15 +4,14 @@ import BezierEasing from 'bezier-easing'
 import { useState, useEffect, useRef } from 'react'
 const easeInOut = BezierEasing(0.42, 0, 0.58, 1)
 const DURATION = 1000
+const SCALE_FACTOR = 0.15
 
 const digitRotations: Record<number, number> = {
   [1]: 0,
-  [2]: Math.random() * 10 - 5,
-  [3]: Math.random() * 10 - 5,
-  [4]: Math.random() * 10 - 5,
-  [5]: Math.random() * 10 - 5,
-  [6]: Math.random() * 10 - 5,
-  [7]: Math.random() * 10 - 5,
+  [2]: Math.random() * 6 - 3,
+  [3]: Math.random() * 6 - 3,
+  [4]: Math.random() * 6 - 3,
+  [5]: Math.random() * 6 - 3,
 }
 
 const roundNumber = (num: number, digits: number) => {
@@ -36,7 +35,7 @@ const BoostCounter = ({ value, ...props }: TypographyProps & { value: number }) 
 
   const rotationRef = useRef<number>(0)
 
-  const scale = 1 + Math.floor(currentNumber) * 0.1
+  const scale = 1 + Math.floor(currentNumber) * SCALE_FACTOR
 
   useEffect(() => {
     if (targetRef.current === target) {
@@ -94,7 +93,7 @@ const BoostCounter = ({ value, ...props }: TypographyProps & { value: number }) 
       <Typography
         sx={{
           transform: `scale(${scale}) rotateZ(${isAnimating ? rotationRef.current : 0}deg)`,
-          transition: 'transform 0.25s cubic-bezier(.1,1,1,5)',
+          transition: 'transform 0.3s cubic-bezier(.1,1.5,.8,4)',
         }}
         {...props}
       >

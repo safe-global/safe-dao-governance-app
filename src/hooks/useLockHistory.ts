@@ -1,18 +1,12 @@
-import { PastLock } from '@/utils/boost'
+import { LockHistory } from '@/utils/boost'
 
-export const useLockHistory = (): PastLock[] => {
-  return []
+export const useLockHistory = (): LockHistory[] => {
   return [
     {
-      day: 3,
-      amount: 999,
-    },
-
-    {
-      day: 15,
-      amount: 1200,
+      day: 0,
+      amount: 10000,
     },
   ]
 }
 
-export const FAKE_NOW = 0
+export const FAKE_NOW = 30

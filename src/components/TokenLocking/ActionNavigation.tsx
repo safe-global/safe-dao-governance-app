@@ -29,9 +29,9 @@ export const ActionNavigation = () => {
       <Grid item xs={8}>
         <Box className={`${css.bordered}`} padding={3}>
           <Typography variant="subtitle1" fontWeight={700}>
-            Want tot get a higher boost?
+            Some call for action
           </Typography>
-          <Typography variant="body2">Buy and lock 5000 tokens to get +1.4x</Typography>
+          <Typography variant="body2">Some subtitle</Typography>
         </Box>
       </Grid>
       <Grid item xs={4}>

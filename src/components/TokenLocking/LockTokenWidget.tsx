@@ -10,28 +10,13 @@ import css from './styles.module.css'
 import { createLockTx } from '@/utils/lock'
 import { createApproveTx } from '@/utils/safe-token'
 import { useSafeAppsSDK } from '@gnosis.pm/safe-apps-react-sdk'
-import { useState, ChangeEvent, useMemo, useCallback, useEffect } from 'react'
+import { useState, ChangeEvent, useMemo, useCallback } from 'react'
 import { BigNumberish } from 'ethers'
 import { useChainId } from '@/hooks/useChainId'
-import { getBoostFunction, getEarlyBirdBoost, getLockBoost } from '@/utils/boost'
+import { getBoostFunction, getTimeFactor, getTokenBoost } from '@/utils/boost'
 import { FAKE_NOW, useLockHistory } from '@/hooks/useLockHistory'
 import BoostCounter from '../BoostCounter'
-
-const useDebouncedAmount = (amount: string, timeout: number) => {
-  const [result, setResult] = useState<string>('0')
-
-  useEffect(() => {
-    const update = (value: string) => {
-      setResult(value)
-      console.log('Updating to ', value)
-    }
-
-    const updateTimeout = setTimeout(() => update(amount), timeout)
-    return () => clearTimeout(updateTimeout)
-  }, [amount, timeout])
-
-  return result ?? '0'
-}
+import { useDebounce } from '@/hooks/useDebounce'
 
 export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | undefined }) => {
   const theme = useTheme()
@@ -41,23 +26,22 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
 
   const lockHistory = useLockHistory()
 
-  const prevEarlyBirdLock = lockHistory.find((lock) => lock.amount >= 1000)?.day
-  const totalPrevLocked = lockHistory.reduce((prev, current) => current.amount + prev, 0)
-
   const [amount, setAmount] = useState('0')
 
   const [amountError, setAmountError] = useState<string | undefined>(undefined)
 
-  const debouncedAmount = useDebouncedAmount(amount, 1000)
+  const debouncedAmount = useDebounce(amount, 1000, '0')
   const cleanedAmount = useMemo(() => (debouncedAmount.trim() === '' ? '0' : debouncedAmount.trim()), [debouncedAmount])
 
-  const earlyBirdDays =
-    prevEarlyBirdLock !== undefined ? prevEarlyBirdLock : Number(cleanedAmount) + totalPrevLocked >= 1000 ? fakeNow : 48
-  const earlyBirdBoost = getEarlyBirdBoost(earlyBirdDays)
-
-  const earlyBirdTimestamp = 1713823200000 + earlyBirdDays * 24 * 60 * 60 * 1000
-  const earlyBirdDate = new Date(earlyBirdTimestamp)
-  const newLockBoost = getLockBoost(Number(cleanedAmount) + totalPrevLocked)
+  const boostFunction = useMemo(() => {
+    return getBoostFunction(FAKE_NOW, Number(cleanedAmount), lockHistory)
+  }, [cleanedAmount, lockHistory])
+  const earlyBirdBoostFunction = useMemo(() => {
+    return getBoostFunction(FAKE_NOW, Number(cleanedAmount), lockHistory, 48)
+  }, [cleanedAmount, lockHistory])
+  const endOfSeasonBoost = boostFunction({ x: 158 })
+  const earlyBirdBoost = earlyBirdBoostFunction({ x: 48 }) - 1
+  const newLockBoost = endOfSeasonBoost - earlyBirdBoost
 
   const validateAmount = useCallback(
     (newAmount: string) => {
@@ -78,6 +62,13 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
     },
     [validateAmount],
   )
+
+  const onSetToMax = useCallback(() => {
+    if (!safeBalance) {
+      return
+    }
+    setAmount(formatUnits(safeBalance, 18))
+  }, [safeBalance])
 
   const onLockTokens = async () => {
     const approveTx = createApproveTx(chainId, parseUnits(amount, 18))
@@ -122,7 +113,9 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
                     ),
                     endAdornment: (
                       <InputAdornment position="end">
-                        <button className={css.maxButton}>Max</button>
+                        <button onClick={onSetToMax} className={css.maxButton}>
+                          Max
+                        </button>
                       </InputAdornment>
                     ),
                   }}
@@ -163,18 +156,17 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
                 <Divider />
 
                 <Stack direction="column" width="100%" mt={2} mb={2}>
-                  <Typography color={theme.palette.success.main}>Early Bird</Typography>
+                  <Typography color={theme.palette.info.light}>Early Bird</Typography>
                   <Stack direction="row" width="100%" justifyContent="space-between">
-                    <Typography fontWeight={700} color={theme.palette.success.main}>
+                    <Typography fontWeight={700} color={theme.palette.info.light}>
                       {earlyBirdBoost.toFixed(2)}x
                     </Typography>
-                    <Typography>({earlyBirdDays >= 48 ? 'None' : earlyBirdDate.toLocaleDateString()})</Typography>
                   </Stack>
                 </Stack>
                 <Stack direction="column" width="100%" mb={2}>
-                  <Typography color={theme.palette.info.main}>Lock boost</Typography>
+                  <Typography color={theme.palette.primary.main}>Token boost</Typography>
                   <Stack direction="row" width="100%" justifyContent="space-between">
-                    <Typography fontWeight={700} color={theme.palette.info.main}>
+                    <Typography fontWeight={700} color={theme.palette.primary.main}>
                       {newLockBoost.toFixed(2)}x
                     </Typography>
                     <Typography>+{Number(cleanedAmount).toFixed(0)} SAFE</Typography>
