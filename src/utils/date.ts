@@ -18,3 +18,29 @@ export const timeRemaining = (timestampInSeconds: number) => {
     seconds,
   }
 }
+
+const MONTH_LABEL: Record<number, string> = {
+  0: 'January',
+  1: 'February',
+  2: 'March',
+  3: 'April',
+  4: 'May',
+  5: 'June',
+  6: 'July',
+  7: 'August',
+  8: 'September',
+  9: 'October',
+  10: 'November',
+  11: 'December',
+}
+
+// 23rd April in millis
+const START_TIMESTAMP = 1713823200000
+
+export const formatDay = (days: number) => {
+  const date = new Date(START_TIMESTAMP + days * 24 * 60 * 60 * 1000)
+  const month = date.getMonth()
+  const day = date.getDate()
+
+  return `${MONTH_LABEL[month]} ${day}`
+}

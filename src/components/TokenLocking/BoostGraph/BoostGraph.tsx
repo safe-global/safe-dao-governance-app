@@ -1,0 +1,181 @@
+import { FAKE_NOW } from '@/hooks/useLockHistory'
+import { floorNumber, getBoostFunction, LockHistory } from '@/utils/boost'
+import { useTheme } from '@mui/material/styles'
+import { useMemo } from 'react'
+import { VictoryAxis, VictoryChart, VictoryLine, VictoryScatter, DomainTuple, ForAxes, VictoryArea } from 'victory'
+import { ArrowDownLabel } from './ArrowDownLabel'
+import { AxisTopLabel } from './AxisTopLabel'
+import { BoostGradients } from './BoostGradients'
+import { SEASON2_START } from './graphConstants'
+import { generatePointsFromHistory } from './helper'
+import { ScatterDot } from './ScatterDot'
+
+import { useVictoryTheme } from './theme'
+
+const DOMAIN: ForAxes<DomainTuple> = { x: [-5, SEASON2_START + 5], y: [0.8, 5.5] }
+
+export const BoostGraph = ({
+  lockedAmount,
+  pastLocks,
+  isLock,
+}: {
+  lockedAmount: number
+  pastLocks: LockHistory[]
+  isLock: boolean
+}) => {
+  const theme = useTheme()
+  const victoryTheme = useVictoryTheme()
+
+  const now = FAKE_NOW
+
+  const currentBoostFunction = useMemo(() => getBoostFunction(now, 0, pastLocks), [now, pastLocks])
+  const newBoostFunction = useMemo(() => getBoostFunction(now, lockedAmount, pastLocks), [lockedAmount, now, pastLocks])
+
+  const pastLockPoints = generatePointsFromHistory(pastLocks)
+  return (
+    <div>
+      <BoostGradients />
+      <VictoryChart theme={victoryTheme}>
+        <VictoryArea
+          animate
+          samples={25}
+          domain={DOMAIN}
+          style={{
+            data: {
+              fill: isLock ? 'url(#gain)' : 'url(#loss)',
+              strokeWidth: 2,
+            },
+          }}
+          y={isLock ? newBoostFunction : currentBoostFunction}
+        />
+
+        <VictoryArea
+          animate
+          samples={25}
+          domain={DOMAIN}
+          style={{
+            data: {
+              fill: theme.palette.background.paper,
+              strokeWidth: 2,
+            },
+          }}
+          y={isLock ? () => 1 : newBoostFunction}
+        />
+
+        <VictoryLine
+          animate
+          samples={50}
+          domain={DOMAIN}
+          style={{
+            data: {
+              stroke: theme.palette.border.light,
+              strokeWidth: 2,
+            },
+          }}
+          y={currentBoostFunction}
+        />
+        <VictoryLine
+          interpolation="linear"
+          animate
+          samples={50}
+          style={{
+            data: {
+              stroke: isLock
+                ? lockedAmount === 0 && pastLocks.length === 0
+                  ? theme.palette.border.light
+                  : 'url(#gradient)'
+                : lockedAmount === 0
+                ? 'url(#gradient)'
+                : theme.palette.warning.light,
+              strokeWidth: 3,
+            },
+          }}
+          y={newBoostFunction}
+        />
+
+        <VictoryAxis
+          dependentAxis
+          domain={DOMAIN}
+          tickValues={[1, 3, 5, 7]}
+          tickFormat={(d) => Number(d).toFixed(0) + 'x'}
+          theme={victoryTheme}
+          style={{
+            tickLabels: {
+              padding: 16,
+            },
+          }}
+        />
+        <VictoryAxis
+          orientation="top"
+          tickValues={[0, 47, SEASON2_START]}
+          tickFormat={(value) => {
+            if (value === 0) {
+              return 'Program start'
+            }
+            if (value === 47) {
+              return 'Season 1'
+            }
+
+            return 'Season 2'
+          }}
+          domain={DOMAIN}
+          style={{
+            grid: { stroke: theme.palette.primary.light, strokeDasharray: 2, strokeDashoffset: 2 },
+            ticks: { size: 5 },
+            tickLabels: { fontSize: 12, padding: 16, fill: theme.palette.primary.light },
+          }}
+          tickLabelComponent={<AxisTopLabel />}
+          theme={victoryTheme}
+        />
+        <VictoryAxis
+          tickValues={[now]}
+          tickFormat={(value) => {
+            if (value === now) {
+              return 'Today'
+            }
+            return ''
+          }}
+          domain={DOMAIN}
+          style={{
+            grid: { stroke: theme.palette.text.primary, strokeDasharray: 2, strokeDashoffset: 2 },
+            ticks: { size: 5 },
+            tickLabels: { fontSize: 12, padding: 0, fill: theme.palette.text.primary },
+          }}
+          theme={victoryTheme}
+        />
+
+        <VictoryScatter
+          standalone={false}
+          animate
+          name="scatter-new"
+          style={{
+            data: {
+              fill: theme.palette.secondary.main,
+            },
+            labels: {
+              verticalAnchor: 'middle',
+              fontFamily: 'DM Sans',
+              fontSize: 16,
+              fill: theme.palette.text.primary,
+            },
+          }}
+          labels={[
+            ...pastLockPoints.map(() => ''),
+            floorNumber(newBoostFunction({ x: now }), 2) + 'x',
+            floorNumber(newBoostFunction({ x: SEASON2_START }), 2) + 'x',
+          ]}
+          labelComponent={<ArrowDownLabel />}
+          size={4}
+          dataComponent={<ScatterDot />}
+          domain={DOMAIN}
+          data={[
+            ...pastLockPoints,
+            { x: now, y: newBoostFunction({ x: now }) },
+            { x: SEASON2_START, y: newBoostFunction({ x: SEASON2_START }) },
+          ]}
+          theme={victoryTheme}
+        />
+      </VictoryChart>
+    </div>
+  )
+}

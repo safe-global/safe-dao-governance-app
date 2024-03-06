@@ -4,6 +4,11 @@ export type LockHistory = {
   amount: number
 }
 
+export const floorNumber = (num: number, digits: number) => {
+  const decimal = Math.pow(10, digits)
+  return Math.floor(num * decimal) / decimal
+}
+
 export const getTokenBoost = (amountLocked: number) => {
   if (amountLocked <= 100) {
     return 0
@@ -42,13 +47,13 @@ type LockInterval = {
 }
 
 export const getBoostFunction =
-  (now: number, amountDiff: number, history: LockHistory[], targetDate: number = 159) =>
+  (now: number, amountDiff: number, history: LockHistory[]) =>
   (d: { x: number }): number => {
     // Add new boost to history
     const newHistory: LockHistory[] = [...history, { amount: amountDiff, day: now }]
 
     // Filter out all entries that were made before the current day (x)
-    const filteredHistory = newHistory.filter((entry) => entry.day <= d.x && entry.day <= targetDate)
+    const filteredHistory = newHistory.filter((entry) => entry.day <= d.x)
     const lockIntervals: LockInterval[] = []
 
     // We transform it into intervals
@@ -64,7 +69,7 @@ export const getBoostFunction =
       lockIntervals.push({
         start: currentEvent.day,
         amount: currentEvent.amount + (previousInterval?.amount ?? 0),
-        end: nextEvent?.day ?? targetDate,
+        end: nextEvent?.day ?? d.x,
       })
     }
 
