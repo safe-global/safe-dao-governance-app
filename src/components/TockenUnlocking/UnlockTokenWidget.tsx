@@ -7,7 +7,7 @@ import css from './styles.module.css'
 import { Box, Stack, Grid, Typography, TextField, InputAdornment, Button, Divider } from '@mui/material'
 import { formatUnits, parseUnits } from 'ethers/lib/utils'
 import BoostCounter from '../BoostCounter'
-import { BoostGraph } from '../TokenLocking/BoostGraph'
+import { BoostGraph } from '../TokenLocking/BoostGraph/BoostGraph'
 import { useDebounce } from '@/hooks/useDebounce'
 import { createUnlockTx } from '@/utils/lock'
 import { useState, useMemo, ChangeEvent, useCallback } from 'react'
@@ -35,7 +35,7 @@ export const UnlockTokenWidget = ({
     return getBoostFunction(FAKE_NOW, -Number(cleanedAmount), lockHistory)
   }, [cleanedAmount, lockHistory])
   const earlyBirdBoostFunction = useMemo(() => {
-    return getBoostFunction(FAKE_NOW, -Number(cleanedAmount), lockHistory, 48)
+    return getBoostFunction(FAKE_NOW, -Number(cleanedAmount), lockHistory)
   }, [cleanedAmount, lockHistory])
   const endOfSeasonBoost = boostFunction({ x: 158 })
   const earlyBirdBoost = earlyBirdBoostFunction({ x: 48 }) - 1
@@ -76,7 +76,7 @@ export const UnlockTokenWidget = ({
     >
       <Grid container direction="row" spacing={2}>
         <Grid item xs={8}>
-          <BoostGraph lockedAmount={-Number(cleanedAmount)} pastLocks={lockHistory} />
+          <BoostGraph lockedAmount={-Number(cleanedAmount)} pastLocks={lockHistory} isLock={false} />
 
           <Grid item container gap={2} flexWrap="nowrap" xs={12} mb={1} alignItems="center">
             <Grid item xs={9}>

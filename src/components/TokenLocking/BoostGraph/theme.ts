@@ -1,6 +1,6 @@
 import { useTheme } from '@mui/material/styles'
 import { VictoryThemeDefinition } from 'victory'
-import { GRAPH_HEIGHT, GRAPH_PADDING, GRAPH_WIDTH } from './BoostGraph'
+import { GRAPH_HEIGHT, GRAPH_PADDING, GRAPH_WIDTH } from './graphConstants'
 
 const colors = ['#DDDEE0', '#525252', '#737373', '#969696', '#bdbdbd', '#d9d9d9', '#f0f0f0']
 const grey = '#A1A3A7'
@@ -8,7 +8,7 @@ const grey = '#A1A3A7'
 // Typography
 const sansSerif = "'DM Sans'"
 const letterSpacing = 'normal'
-const fontSize = '14px'
+const fontSize = '12px'
 
 // Strokes
 const strokeLinecap = 'round'
@@ -32,6 +32,7 @@ export const useVictoryTheme = (): VictoryThemeDefinition => {
     fontSize,
     letterSpacing,
     padding: 8,
+    backgroundColor: 'black',
     fill: fontColor,
     stroke: 'transparent',
   }
@@ -55,7 +56,7 @@ export const useVictoryTheme = (): VictoryThemeDefinition => {
         style: {
           axis: {
             fill: 'transparent',
-            stroke: fontColor,
+            stroke: 'none',
             strokeWidth: 1,
             strokeLinecap,
             strokeLinejoin,

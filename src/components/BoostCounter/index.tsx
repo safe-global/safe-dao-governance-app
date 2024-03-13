@@ -1,3 +1,4 @@
+import { floorNumber } from '@/utils/boost'
 import { Box, Typography } from '@mui/material'
 import { TypographyProps } from '@mui/material/Typography'
 import BezierEasing from 'bezier-easing'
@@ -17,11 +18,6 @@ const digitRotations: Record<number, number> = {
 const roundNumber = (num: number, digits: number) => {
   const decimal = Math.pow(10, digits)
   return Math.round(num * decimal) / decimal
-}
-
-const floorNumber = (num: number, digits: number) => {
-  const decimal = Math.pow(10, digits)
-  return Math.floor(num * decimal) / decimal
 }
 
 const BoostCounter = ({ value, ...props }: TypographyProps & { value: number }) => {
