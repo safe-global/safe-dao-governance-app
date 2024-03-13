@@ -3,7 +3,7 @@ const HOUR = 60 * 60
 const MINUTE = 60
 
 export const timeRemaining = (timestampInSeconds: number) => {
-  let remainingSeconds = timestampInSeconds - Date.now() / 1000
+  let remainingSeconds = Math.max(0, timestampInSeconds - Date.now() / 1000)
   const days = Math.floor(remainingSeconds / DAY)
   remainingSeconds = remainingSeconds % DAY
   const hours = Math.floor(remainingSeconds / HOUR)
@@ -38,7 +38,7 @@ const MONTH_LABEL: Record<number, string> = {
 const START_TIMESTAMP = 1713823200000
 
 export const formatDay = (days: number) => {
-  const date = new Date(START_TIMESTAMP + days * 24 * 60 * 60 * 1000)
+  const date = new Date(START_TIMESTAMP + days * DAY * 1000)
   const month = date.getMonth()
   const day = date.getDate()
 

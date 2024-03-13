@@ -29,6 +29,10 @@ export const getTokenBoost = (amountLocked: number) => {
 }
 
 export const getTimeFactor = (days: number) => {
+  if (days < 0) {
+    return 0
+  }
+
   if (days <= 47) {
     return 1 - 0.0106383 * days
   }
