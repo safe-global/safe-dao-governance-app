@@ -1,0 +1,28 @@
+.rewardsInfoTitle {
+  font-weight: 700px;
+  background: linear-gradient(225deg, #5fddff 12.5%, #12ff80 88.07%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.asterixIcon {
+  color: transparent;
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: inherit;
+  width: inherit;
+}
+
+.chip :global .MuiChip-root {
+  border-radius: 4px;
+}
+
+.list :last-child :global .MuiStepLabel-root {
+  align-items: flex-start;
+}
+
+.list :global .MuiStepLabel-iconContainer {
+  margin-top: 0px;
+}

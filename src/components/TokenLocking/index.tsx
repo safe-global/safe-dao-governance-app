@@ -1,12 +1,13 @@
-import { Grid, Stack, Typography } from '@mui/material'
+import { Grid, Stack, SvgIcon, Typography } from '@mui/material'
 import { useSafeTokenBalance, useSafeUserLockingInfos } from '@/hooks/useSafeTokenBalance'
 
 import { Leaderboard } from './Leaderboard'
 import { CurrentStats } from './CurrentStats'
 import { LockTokenWidget } from './LockTokenWidget'
-import { PlaceholderTopRight } from './PlaceholderTopRight'
+import { ActivityRewardsInfo } from '@/components/ActivityRewardsInfo'
 import { ActionNavigation } from './ActionNavigation'
 import PaperContainer from '../PaperContainer'
+import Asterix from '@/public/images/asterix.svg'
 
 const TokenLocking = () => {
   const { isLoading: safeBalanceLoading, data: safeBalance } = useSafeTokenBalance()
@@ -40,11 +41,7 @@ const TokenLocking = () => {
       </Grid>
 
       <Grid item xs={4}>
-        <Stack spacing={3}>
-          <PaperContainer>
-            <PlaceholderTopRight />
-          </PaperContainer>
-        </Stack>
+        <ActivityRewardsInfo />
       </Grid>
     </Grid>
   )
