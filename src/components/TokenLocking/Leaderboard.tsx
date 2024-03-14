@@ -1,10 +1,24 @@
 import { useWallet } from '@/hooks/useWallet'
 import { RsvpTwoTone } from '@mui/icons-material'
-import { Box, Chip, Paper, Table, TableBody, TableContainer, TableHead, TableRow, Typography } from '@mui/material'
+import {
+  Box,
+  Chip,
+  Paper,
+  SvgIcon,
+  Table,
+  TableBody,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
+} from '@mui/material'
 
 import { styled } from '@mui/material/styles'
 import TableCell, { tableCellClasses } from '@mui/material/TableCell'
 import { Identicon } from '../Identicon'
+import FirstPlaceIcon from '@/public/images/leaderboard-first-place.svg'
+import SecondPlaceIcon from '@/public/images/leaderboard-second-place.svg'
+import ThirdPlaceIcon from '@/public/images/leaderboard-third-place.svg'
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -108,15 +122,12 @@ export const Leaderboard = () => {
               >
                 <StyledTableCell align="center">
                   {row.rank <= 3 ? (
-                    <Chip
-                      size="small"
-                      sx={{
-                        backgroundColor: row.rank === 1 ? '#FFE871' : row.rank === 2 ? '#DDDEE0' : '#D3A244',
-                        color: ({ palette }) => palette.background.main,
-                        width: '24px',
-                      }}
-                      label={row.rank}
-                    ></Chip>
+                    <SvgIcon
+                      component={row.rank === 1 ? FirstPlaceIcon : row.rank === 2 ? SecondPlaceIcon : ThirdPlaceIcon}
+                      justifyContent="center"
+                      inheritViewBox
+                      fontSize={row.rank === 1 ? 'large' : row.rank === 2 ? 'medium' : 'small'}
+                    />
                   ) : (
                     `#${row.rank}`
                   )}
