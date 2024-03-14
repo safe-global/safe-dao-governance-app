@@ -5,7 +5,7 @@
   overflow: hidden;
   top: 0;
   left: 0;
-  background: radial-gradient(circle at 75% 25%, #12ff80, #121312 40%),
-    radial-gradient(circle at 25% 125%, #5fddff, #121312 50%);
+  background: radial-gradient(circle at 75% 25%, rgba(18, 255, 128, 0.3) 0%, #000000 40%),
+    radial-gradient(circle at 25% 125%, rgba(41, 182, 246, 0.5) 0%, #121312 50%);
   background-blend-mode: screen;
 }
