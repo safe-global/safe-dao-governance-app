@@ -1,3 +1,5 @@
+import App from 'next/app'
+
 export const AppRoutes = {
   '404': '/404',
   widgets: '/widgets',
@@ -8,3 +10,5 @@ export const AppRoutes = {
   activity: '/activity',
   unlock: '/unlock',
 }
+
+export const RoutesWithNavigation = [AppRoutes.activity, AppRoutes.index]
