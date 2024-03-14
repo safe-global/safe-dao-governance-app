@@ -72,6 +72,17 @@
   transition: width 200ms;
 }
 
+.rewardsInfoTitle {
+  width: 70%;
+  margin-top: 110px;
+  font-weight: 700px;
+  font-style: italic;
+  background: linear-gradient(225deg, #5fddff 12.5%, #12ff80 88.07%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 @keyframes highlight {
   0% {
     transform: scale(1);

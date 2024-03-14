@@ -1,12 +1,13 @@
-import { Typography } from '@mui/material'
+import { SvgIcon, Typography } from '@mui/material'
+import Asterix from '@/public/images/asterix.svg'
+import css from './styles.module.css'
 
 export const PlaceholderTopRight = () => {
   return (
     <>
-      <Typography variant="h2" fontWeight={700}>
-        Placeholder Right Top
+      <Typography className={css.rewardsInfoTitle} variant="h2">
+        Placeholder goes text here
       </Typography>
-      <Typography variant="subtitle1">Some interesting subtitle</Typography>
     </>
   )
 }
