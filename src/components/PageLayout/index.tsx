@@ -1,11 +1,10 @@
 import Head from 'next/head'
-import { Box, Paper } from '@mui/material'
+import { Box } from '@mui/material'
 import type { ReactElement, ReactNode } from 'react'
 
 import manifestJson from '@/public/manifest.json'
-import { BottomCircle, TopCircle } from '@/components/BackgroundCircles'
+import { BackgroundCircles } from '@/components/BackgroundCircles'
 import { Header } from '@/components/Header'
-import { FloatingTiles } from '@/components/FloatingTiles'
 
 import css from './styles.module.css'
 
@@ -18,18 +17,10 @@ export const PageLayout = ({ children }: { children: ReactNode }): ReactElement 
 
       <Header />
 
-      <div className={css.tiles}>
-        <FloatingTiles tiles={50} />
-      </div>
+      <BackgroundCircles />
 
       <Box py={{ sm: 6, xs: undefined }} component="main">
-        <Box className={css.container}>
-          <BottomCircle />
-
-          {children}
-
-          <TopCircle />
-        </Box>
+        <Box className={css.container}>{children}</Box>
       </Box>
     </>
   )
