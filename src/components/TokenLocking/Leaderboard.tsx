@@ -1,5 +1,4 @@
 import { useWallet } from '@/hooks/useWallet'
-import { RsvpTwoTone } from '@mui/icons-material'
 import {
   Box,
   Link,
@@ -20,7 +19,6 @@ import FirstPlaceIcon from '@/public/images/leaderboard-first-place.svg'
 import SecondPlaceIcon from '@/public/images/leaderboard-second-place.svg'
 import ThirdPlaceIcon from '@/public/images/leaderboard-third-place.svg'
 import TitleStar from '@/public/images/leaderboard-title-star.svg'
-import classnames from 'classnames'
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -157,7 +155,7 @@ export const Leaderboard = () => {
                       sx={{ pt: '5px' }}
                     />
                   ) : (
-                    `#${row.rank}`
+                    `${row.rank}`
                   )}
                 </StyledTableCell>
                 <StyledTableCell align="left">
