@@ -31,14 +31,32 @@ export const BoostGraph = ({
   const currentBoostFunction = useMemo(() => getBoostFunction(now, 0, pastLocks), [now, pastLocks])
   const newBoostFunction = useMemo(() => getBoostFunction(now, lockedAmount, pastLocks), [lockedAmount, now, pastLocks])
 
-  const pastLockPoints = generatePointsFromHistory(pastLocks)
+  const pastLockPoints = useMemo(() => generatePointsFromHistory(pastLocks), [pastLocks])
+
+  const currentBoostDataPoints = useMemo(
+    () => [
+      ...pastLockPoints,
+      { x: now, y: currentBoostFunction({ x: now }) },
+      { x: SEASON2_START, y: currentBoostFunction({ x: SEASON2_START }) },
+    ],
+    [currentBoostFunction, now, pastLockPoints],
+  )
+
+  const projectedBoostDataPoints = useMemo(
+    () => [
+      ...pastLockPoints,
+      { x: now, y: newBoostFunction({ x: now }) },
+      { x: SEASON2_START, y: newBoostFunction({ x: SEASON2_START }) },
+    ],
+    [newBoostFunction, now, pastLockPoints],
+  )
+
   return (
     <div>
       <BoostGradients />
       <VictoryChart theme={victoryTheme}>
         <VictoryArea
           animate
-          samples={25}
           domain={DOMAIN}
           style={{
             data: {
@@ -46,12 +64,10 @@ export const BoostGraph = ({
               strokeWidth: 2,
             },
           }}
-          y={isLock ? newBoostFunction : currentBoostFunction}
+          data={isLock ? projectedBoostDataPoints : currentBoostDataPoints}
         />
 
         <VictoryArea
-          animate
-          samples={25}
           domain={DOMAIN}
           style={{
             data: {
@@ -59,12 +75,17 @@ export const BoostGraph = ({
               strokeWidth: 2,
             },
           }}
-          y={isLock ? () => 1 : newBoostFunction}
+          data={
+            isLock
+              ? [
+                  { x: 0, y: 1 },
+                  { x: SEASON2_START, y: 1 },
+                ]
+              : projectedBoostDataPoints
+          }
         />
 
         <VictoryLine
-          animate
-          samples={50}
           domain={DOMAIN}
           style={{
             data: {
@@ -72,12 +93,11 @@ export const BoostGraph = ({
               strokeWidth: 2,
             },
           }}
-          y={currentBoostFunction}
+          data={currentBoostDataPoints}
         />
         <VictoryLine
           interpolation="linear"
           animate
-          samples={50}
           style={{
             data: {
               stroke: isLock
@@ -90,7 +110,7 @@ export const BoostGraph = ({
               strokeWidth: 3,
             },
           }}
-          y={newBoostFunction}
+          data={projectedBoostDataPoints}
         />
 
         <VictoryAxis
@@ -145,7 +165,27 @@ export const BoostGraph = ({
         />
 
         <VictoryScatter
-          standalone={false}
+          name="scatter-new"
+          style={{
+            data: {
+              fill: theme.palette.secondary.main,
+            },
+            labels: {
+              verticalAnchor: 'middle',
+              fontFamily: 'DM Sans',
+              fontSize: 16,
+              fill: theme.palette.text.primary,
+            },
+          }}
+          labels={[...pastLockPoints.map(() => ''), floorNumber(newBoostFunction({ x: now }), 2) + 'x']}
+          labelComponent={<ArrowDownLabel />}
+          size={4}
+          dataComponent={<ScatterDot />}
+          domain={DOMAIN}
+          data={[...pastLockPoints, { x: now, y: newBoostFunction({ x: now }) }]}
+          theme={victoryTheme}
+        />
+        <VictoryScatter
           animate
           name="scatter-new"
           style={{
@@ -159,20 +199,12 @@ export const BoostGraph = ({
               fill: theme.palette.text.primary,
             },
           }}
-          labels={[
-            ...pastLockPoints.map(() => ''),
-            floorNumber(newBoostFunction({ x: now }), 2) + 'x',
-            floorNumber(newBoostFunction({ x: SEASON2_START }), 2) + 'x',
-          ]}
+          labels={[floorNumber(newBoostFunction({ x: SEASON2_START }), 2) + 'x']}
           labelComponent={<ArrowDownLabel />}
           size={4}
           dataComponent={<ScatterDot />}
           domain={DOMAIN}
-          data={[
-            ...pastLockPoints,
-            { x: now, y: newBoostFunction({ x: now }) },
-            { x: SEASON2_START, y: newBoostFunction({ x: SEASON2_START }) },
-          ]}
+          data={[{ x: SEASON2_START, y: newBoostFunction({ x: SEASON2_START }) }]}
           theme={victoryTheme}
         />
       </VictoryChart>

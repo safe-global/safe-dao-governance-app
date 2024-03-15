@@ -1,5 +1,4 @@
-import { Grid, Paper, PaperProps, Stack, Typography } from '@mui/material'
-import css from './styles.module.css'
+import { Grid, Stack, Typography } from '@mui/material'
 import { useSafeTokenBalance, useSafeUserLockingInfos } from '@/hooks/useSafeTokenBalance'
 
 import { Leaderboard } from './Leaderboard'

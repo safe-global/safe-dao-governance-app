@@ -125,10 +125,6 @@ export const Intro = (): ReactElement => {
         </Grid>
 
         <Grid item xs={12}>
-          <Button onClick={onLock}>Lock Safe tokens</Button>
-        </Grid>
-
-        <Grid item xs={12}>
           <OverviewLinks />
         </Grid>
       </Grid>
