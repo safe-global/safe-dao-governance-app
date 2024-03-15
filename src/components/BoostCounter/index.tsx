@@ -1,4 +1,5 @@
 import { floorNumber } from '@/utils/boost'
+import { NorthRounded } from '@mui/icons-material'
 import { Box, Typography } from '@mui/material'
 import { TypographyProps } from '@mui/material/Typography'
 import BezierEasing from 'bezier-easing'
@@ -85,7 +86,8 @@ const BoostCounter = ({ value, ...props }: TypographyProps & { value: number }) 
   const decimals = floorNumber(currentNumber, 2).toString().slice(2)
 
   return (
-    <Box display="inline-flex" gap="4px">
+    <Box display="inline-flex" gap="4px" alignItems="center">
+      <NorthRounded color="primary" sx={{ width: '32px', height: '32px' }} />
       <Typography
         sx={{
           transform: `scale(${scale}) rotateZ(${isAnimating ? rotationRef.current : 0}deg)`,
@@ -95,7 +97,7 @@ const BoostCounter = ({ value, ...props }: TypographyProps & { value: number }) 
       >
         {digit}
       </Typography>
-      <Typography {...props}>{decimals !== '' ? `.${decimals}x` : 'x'}</Typography>
+      <Typography {...props}>{decimals !== '' ? `,${decimals}x` : 'x'}</Typography>
     </Box>
   )
 }

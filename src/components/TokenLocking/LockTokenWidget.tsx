@@ -4,7 +4,6 @@ import { formatUnits, parseUnits } from 'ethers/lib/utils'
 import SafeToken from '@/public/images/token.svg'
 
 import { BoostGraph } from './BoostGraph/BoostGraph'
-import { useTheme } from '@mui/material/styles'
 
 import css from './styles.module.css'
 import { createLockTx } from '@/utils/lock'
@@ -13,17 +12,15 @@ import { useSafeAppsSDK } from '@gnosis.pm/safe-apps-react-sdk'
 import { useState, ChangeEvent, useMemo, useCallback } from 'react'
 import { BigNumberish } from 'ethers'
 import { useChainId } from '@/hooks/useChainId'
-import { floorNumber, getBoostFunction, getTimeFactor, getTokenBoost } from '@/utils/boost'
+import { getBoostFunction } from '@/utils/boost'
 import { FAKE_NOW, useLockHistory } from '@/hooks/useLockHistory'
-import BoostCounter from '../BoostCounter'
 import { useDebounce } from '@/hooks/useDebounce'
 import { SEASON2_START } from './BoostGraph/graphConstants'
+import { BoostBreakdown } from './BoostBreakdown'
 
 export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | undefined }) => {
-  const theme = useTheme()
   const { sdk } = useSafeAppsSDK()
   const chainId = useChainId()
-  const fakeNow = FAKE_NOW
 
   const pastLocks = useLockHistory()
 
@@ -137,57 +134,10 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
             </Grid>
           </Grid>
           <Grid item xs={4}>
-            <Box className={`${css.boostInfoBox} ${css.bordered}`} p={3}>
-              <Typography variant="h4" textAlign="center" mb={3}>
-                Boost breakdown
-              </Typography>
-
-              <Stack direction="row" width="100%" justifyContent="space-between">
-                <Typography fontWeight={700}>Current Boost</Typography>
-                <Typography fontWeight={700}>{floorNumber(currentBoostFunction({ x: fakeNow }), 2)}x</Typography>
-              </Stack>
-
-              <Stack direction="row" width="100%" justifyContent="space-between">
-                <Typography fontWeight={700}>Current Boost increase</Typography>
-                <Typography fontWeight={700}>
-                  {floorNumber(currentBoostFunction({ x: SEASON2_START }) - currentBoostFunction({ x: fakeNow }), 2)}x
-                </Typography>
-              </Stack>
-
-              <Stack direction="column" width="100%">
-                <Divider />
-
-                <Stack direction="column" width="100%" mt={2} mb={2}>
-                  <Typography>Current timefactor</Typography>
-                  <Stack direction="row" width="100%" justifyContent="space-between">
-                    <Typography fontWeight={700}>{getTimeFactor(FAKE_NOW).toFixed(2)}x</Typography>
-                  </Stack>
-                </Stack>
-                <Stack direction="column" width="100%" mb={2}>
-                  <Typography>Added Token boost</Typography>
-                  <Stack direction="row" width="100%" justifyContent="space-between">
-                    <Typography fontWeight={700}>{getTokenBoost(Number(cleanedAmount)).toFixed(2)}x</Typography>
-                    <Typography>+{Number(cleanedAmount).toFixed(0)} SAFE</Typography>
-                  </Stack>
-                </Stack>
-
-                <Stack direction="column" width="100%" mb={2}>
-                  <Typography color={theme.palette.primary.main}>Boost increase</Typography>
-                  <Stack direction="row" width="100%" justifyContent="space-between">
-                    <Typography fontWeight={700} color={theme.palette.primary.main}>
-                      {floorNumber(getTimeFactor(FAKE_NOW) * getTokenBoost(Number(cleanedAmount)), 2)}x
-                    </Typography>
-                  </Stack>
-                </Stack>
-
-                <Divider />
-
-                <Stack direction="column" width="100%" mt={2} alignItems="center">
-                  <BoostCounter value={newBoostFunction({ x: SEASON2_START })} variant="h3" fontWeight={700} />
-                  <Typography variant="body2">Total boost at season end</Typography>
-                </Stack>
-              </Stack>
-            </Box>
+            <BoostBreakdown
+              realizedBoost={currentBoostFunction({ x: FAKE_NOW })}
+              finalBoost={newBoostFunction({ x: SEASON2_START })}
+            />
           </Grid>
         </Grid>
       </Stack>

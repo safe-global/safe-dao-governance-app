@@ -6,7 +6,7 @@ import { VictoryAxis, VictoryChart, VictoryLine, VictoryScatter, DomainTuple, Fo
 import { ArrowDownLabel } from './ArrowDownLabel'
 import { AxisTopLabel } from './AxisTopLabel'
 import { BoostGradients } from './BoostGradients'
-import { SEASON2_START } from './graphConstants'
+import { SEASON1_START, SEASON2_START } from './graphConstants'
 import { generatePointsFromHistory } from './helper'
 import { ScatterDot } from './ScatterDot'
 
@@ -37,6 +37,7 @@ export const BoostGraph = ({
     () => [
       ...pastLockPoints,
       { x: now, y: currentBoostFunction({ x: now }) },
+      { x: SEASON1_START, y: currentBoostFunction({ x: SEASON1_START }) },
       { x: SEASON2_START, y: currentBoostFunction({ x: SEASON2_START }) },
     ],
     [currentBoostFunction, now, pastLockPoints],
@@ -46,6 +47,7 @@ export const BoostGraph = ({
     () => [
       ...pastLockPoints,
       { x: now, y: newBoostFunction({ x: now }) },
+      { x: SEASON1_START, y: newBoostFunction({ x: SEASON1_START }) },
       { x: SEASON2_START, y: newBoostFunction({ x: SEASON2_START }) },
     ],
     [newBoostFunction, now, pastLockPoints],
@@ -133,10 +135,10 @@ export const BoostGraph = ({
               return 'Program start'
             }
             if (value === 47) {
-              return 'Season 1'
+              return 'Points activation'
             }
 
-            return 'Season 2'
+            return 'Getting rewards'
           }}
           domain={DOMAIN}
           style={{
