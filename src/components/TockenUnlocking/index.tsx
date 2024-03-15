@@ -51,9 +51,6 @@ const TokenUnlocking = () => {
         />
       </PaperContainer>
       <PaperContainer sx={{ width: '888px' }}>
-        <Typography variant="h4" fontWeight={700}>
-          Select amount to unlock
-        </Typography>
         <UnlockTokenWidget currentlyLocked={currentlyLocked} lockHistory={lockHistory} />
       </PaperContainer>
       <PaperContainer sx={{ width: '888px' }}>

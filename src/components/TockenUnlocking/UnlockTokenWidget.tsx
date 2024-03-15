@@ -81,11 +81,12 @@ export const UnlockTokenWidget = ({
 
           <Grid item container gap={2} flexWrap="nowrap" xs={12} mb={1} alignItems="center">
             <Grid item xs={9}>
+              <Typography>Select amount to unlock</Typography>
               <TextField
                 variant="outlined"
                 fullWidth
                 value={unlockAmount}
-                helperText={unlockAmountError}
+                helperText={unlockAmountError ?? ' '}
                 error={Boolean(unlockAmountError)}
                 onChange={onChangeUnlockAmount}
                 InputProps={{
