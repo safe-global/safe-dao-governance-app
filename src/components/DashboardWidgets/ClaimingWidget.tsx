@@ -19,7 +19,6 @@ import { formatAmount } from '@/utils/formatters'
 import { Sep5DeadlineChip } from '@/components/Sep5DeadlineChip'
 import { TypographyChip } from '@/components/TypographyChip'
 import { canRedeemSep5Airdrop } from '@/utils/airdrop'
-import { useIsDarkMode } from '@/hooks/useIsDarkMode'
 
 import css from './styles.module.css'
 
@@ -166,7 +165,6 @@ const VotingPowerWidget = (): ReactElement => {
 export const ClaimingWidget = (): ReactElement => {
   const { data: allocation, isLoading } = useSafeTokenAllocation()
   const canRedeemSep5 = canRedeemSep5Airdrop(allocation)
-  const isDarkMode = useIsDarkMode()
 
   if (isLoading) {
     return (
@@ -188,9 +186,7 @@ export const ClaimingWidget = (): ReactElement => {
       sx={{
         minWidth: WIDGET_WIDTH,
         maxWidth: WIDGET_WIDTH,
-        border: canRedeemSep5
-          ? ({ palette }) => (isDarkMode ? `1px solid ${palette.primary.main}` : `1px solid ${palette.secondary.main}`)
-          : undefined,
+        border: canRedeemSep5 ? ({ palette }) => `1px solid ${palette.primary.main}` : undefined,
       }}
     >
       <>{allocation?.votingPower.eq(0) ? <CtaWidget /> : <VotingPowerWidget />}</>

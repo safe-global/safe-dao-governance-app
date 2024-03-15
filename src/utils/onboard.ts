@@ -40,10 +40,6 @@ const CGW_NAMES: { [key in WALLET_KEYS]: string } = {
   [WALLET_KEYS.WALLETCONNECT_V2]: 'walletConnect_v2',
 }
 
-const prefersDarkMode = (): boolean => {
-  return window?.matchMedia('(prefers-color-scheme: dark)')?.matches
-}
-
 // We need to modify the module name as onboard dedupes modules with the same label and the WC v1 and v2 modules have the same
 // @see https://github.com/blocknative/web3-onboard/blob/d399e0b76daf7b363d6a74b100b2c96ccb14536c/packages/core/src/store/actions.ts#L419
 // TODO: When removing this, also remove the associated CSS in `onboard.css`
@@ -66,14 +62,14 @@ const walletConnectV2 = (chain: ChainInfo): WalletInit => {
       themeVariables: {
         '--wcm-z-index': '1302',
       },
-      themeMode: prefersDarkMode() ? 'dark' : 'light',
+      themeMode: 'dark',
     },
     requiredChains: [parseInt(chain.chainId)],
   })
 }
 
 const WALLET_MODULES: { [key in WALLET_KEYS]: (chain: ChainInfo) => WalletInit } = {
-  [WALLET_KEYS.COINBASE]: () => coinbaseModule({ darkMode: prefersDarkMode() }),
+  [WALLET_KEYS.COINBASE]: () => coinbaseModule({ darkMode: true }),
   [WALLET_KEYS.INJECTED]: () => injectedWalletModule(),
   [WALLET_KEYS.KEYSTONE]: () => keystoneModule(),
   [WALLET_KEYS.LEDGER]: () => ledgerModule(),
