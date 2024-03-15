@@ -1,4 +1,4 @@
-import { Box, Button, Link, Stack } from '@mui/material'
+import { Box, Button, CircularProgress, Link, Stack } from '@mui/material'
 
 import NextLink from 'next/link'
 import { AppRoutes } from '@/config/routes'
@@ -13,6 +13,7 @@ import { UnlockStats } from './UnlockStats'
 import { WithdrawStats } from './WinthdrawStats'
 import { UnlockTokenWidget } from './UnlockTokenWidget'
 import { useLockHistory } from '@/hooks/useLockHistory'
+import { useState } from 'react'
 
 const TokenUnlocking = () => {
   const { isLoading: userLockingInfosLoading, data: userLockingInfos } = useSafeUserLockingInfos()
@@ -25,9 +26,14 @@ const TokenUnlocking = () => {
   const nextUnlock = userLockingInfos?.nextUnlock
   const unlockedReady = nextUnlock?.isUnlocked ? nextUnlock.unlockAmount : BigNumber.from(0)
 
+  const [isWithdrawing, setIsWithdrawing] = useState(false)
+
   const onWithdraw = async () => {
+    setIsWithdrawing(true)
     const withdrawTx = createWithdrawTx(chainId)
     await sdk.txs.send({ txs: [withdrawTx] })
+
+    setIsWithdrawing(false)
   }
 
   return (
@@ -53,8 +59,13 @@ const TokenUnlocking = () => {
           nextUnlock={nextUnlock}
         />
         <Box>
-          <Button variant="contained" color="primary" onClick={onWithdraw} disabled={unlockedReady.eq(0)}>
-            Withdraw
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={onWithdraw}
+            disabled={unlockedReady.eq(0) || isWithdrawing}
+          >
+            {isWithdrawing ? <CircularProgress size={20} /> : 'Withdraw'}
           </Button>
         </Box>
       </PaperContainer>

@@ -19,7 +19,6 @@ export const WithdrawStats = ({
   nextUnlock: SingleUnlock | undefined
   loading: boolean
 }) => {
-  const unlockedReady = nextUnlock?.isUnlocked ? nextUnlock.unlockAmount : BigNumber.from(0)
   const nextUnlockAmount = nextUnlock ? Number(formatUnits(nextUnlock?.unlockAmount, 18)) : 0
 
   const timeToUnlock =

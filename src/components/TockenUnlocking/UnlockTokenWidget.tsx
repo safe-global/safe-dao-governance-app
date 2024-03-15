@@ -4,7 +4,17 @@ import SafeToken from '@/public/images/token.svg'
 import { getBoostFunction, getTimeFactor, getTokenBoost, LockHistory } from '@/utils/boost'
 import { formatAmount } from '@/utils/formatters'
 import css from './styles.module.css'
-import { Box, Stack, Grid, Typography, TextField, InputAdornment, Button, Divider } from '@mui/material'
+import {
+  Box,
+  Stack,
+  Grid,
+  Typography,
+  TextField,
+  InputAdornment,
+  Button,
+  Divider,
+  CircularProgress,
+} from '@mui/material'
 import { formatUnits, parseUnits } from 'ethers/lib/utils'
 import BoostCounter from '../BoostCounter'
 import { BoostGraph } from '../TokenLocking/BoostGraph/BoostGraph'
@@ -24,6 +34,9 @@ export const UnlockTokenWidget = ({
 }) => {
   const [unlockAmount, setUnlockAmount] = useState('0')
   const [unlockAmountError, setUnlockAmountError] = useState<string>()
+
+  const [isUnlocking, setIsUnlocking] = useState(false)
+
   const chainId = useChainId()
   const { sdk } = useSafeAppsSDK()
   const theme = useTheme()
@@ -62,8 +75,15 @@ export const UnlockTokenWidget = ({
   }, [currentlyLocked])
 
   const onUnlock = async () => {
+    setIsUnlocking(true)
     const unlockTx = createUnlockTx(chainId, parseUnits(unlockAmount, 18))
-    await sdk.txs.send({ txs: [unlockTx] })
+
+    try {
+      await sdk.txs.send({ txs: [unlockTx] })
+    } catch (err) {
+      console.error(err)
+    }
+    setIsUnlocking(false)
   }
 
   return (
@@ -115,9 +135,9 @@ export const UnlockTokenWidget = ({
                 variant="contained"
                 fullWidth
                 disableElevation
-                disabled={Boolean(unlockAmountError)}
+                disabled={Boolean(unlockAmountError) || isUnlocking}
               >
-                Unlock
+                {isUnlocking ? <CircularProgress size={20} /> : 'Unlock'}
               </Button>
             </Grid>
           </Grid>
