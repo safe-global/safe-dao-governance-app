@@ -6,7 +6,6 @@ import {
   Grid,
   TextField,
   InputAdornment,
-  Skeleton,
   Button,
   Box,
   Divider,
@@ -149,7 +148,7 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
                   variant="contained"
                   fullWidth
                   disableElevation
-                  disabled={Boolean(amountError) || isLocking}
+                  disabled={Boolean(amountError) || isLocking || cleanedAmount === '0'}
                 >
                   {isLocking ? <CircularProgress size={20} /> : 'Lock'}
                 </Button>

@@ -1,7 +1,7 @@
 import { FAKE_NOW } from '@/hooks/useLockHistory'
 import { useTheme } from '@mui/material/styles'
 import SafeToken from '@/public/images/token.svg'
-import { getBoostFunction, getTimeFactor, getTokenBoost, LockHistory } from '@/utils/boost'
+import { floorNumber, getBoostFunction, getTimeFactor, getTokenBoost, LockHistory } from '@/utils/boost'
 import { formatAmount } from '@/utils/formatters'
 import css from './styles.module.css'
 import {
@@ -24,6 +24,7 @@ import { useState, useMemo, ChangeEvent, useCallback } from 'react'
 import { BigNumberish } from 'ethers'
 import { useChainId } from '@/hooks/useChainId'
 import { useSafeAppsSDK } from '@gnosis.pm/safe-apps-react-sdk'
+import { Info, InfoOutlined } from '@mui/icons-material'
 
 export const UnlockTokenWidget = ({
   lockHistory,
@@ -39,7 +40,6 @@ export const UnlockTokenWidget = ({
 
   const chainId = useChainId()
   const { sdk } = useSafeAppsSDK()
-  const theme = useTheme()
 
   const debouncedAmount = useDebounce(unlockAmount, 1000, '0')
   const cleanedAmount = useMemo(() => (debouncedAmount.trim() === '' ? '0' : debouncedAmount.trim()), [debouncedAmount])
@@ -100,12 +100,12 @@ export const UnlockTokenWidget = ({
 
           <Grid item container gap={2} flexWrap="nowrap" xs={12} mb={1} alignItems="center">
             <Grid item xs={9}>
-              <Typography mb={1}>Select amount to unlock</Typography>
+              <Typography>Select amount to unlock</Typography>
               <TextField
                 variant="outlined"
                 fullWidth
                 value={unlockAmount}
-                helperText={unlockAmountError}
+                helperText={unlockAmountError ?? ' '}
                 error={Boolean(unlockAmountError)}
                 onChange={onChangeUnlockAmount}
                 InputProps={{
@@ -124,9 +124,6 @@ export const UnlockTokenWidget = ({
                 }}
                 className={css.input}
               />
-              <Typography variant="caption">
-                Available: {formatAmount(formatUnits(currentlyLocked ?? '0', 18), 2)}
-              </Typography>
             </Grid>
 
             <Grid item xs={4}>
@@ -135,7 +132,7 @@ export const UnlockTokenWidget = ({
                 variant="contained"
                 fullWidth
                 disableElevation
-                disabled={Boolean(unlockAmountError) || isUnlocking}
+                disabled={Boolean(unlockAmountError) || isUnlocking || cleanedAmount === '0'}
               >
                 {isUnlocking ? <CircularProgress size={20} /> : 'Unlock'}
               </Button>
@@ -143,45 +140,21 @@ export const UnlockTokenWidget = ({
           </Grid>
         </Grid>
         <Grid item xs={4}>
-          <Box className={`${css.boostInfoBox} ${css.bordered}`} p={3}>
-            <Typography variant="h4" textAlign="center" mb={3}>
-              Boost breakdown
+          <Box className={`${css.boostInfoBox} ${css.bordered}`} p={3} gap={4} display="flex">
+            <Typography variant="body2">
+              Already realized boost: {floorNumber(getBoostFunction(FAKE_NOW, 0, lockHistory)({ x: FAKE_NOW }), 2)}x
             </Typography>
 
-            <Stack direction="row" width="100%" justifyContent="space-between">
-              <Typography fontWeight={700}>Current Boost</Typography>
-              <Typography fontWeight={700}>
-                {getBoostFunction(FAKE_NOW, 0, lockHistory)({ x: FAKE_NOW }).toFixed(2)}x
-              </Typography>
+            <Stack direction="column" width="100%" mt={2} alignItems="center">
+              <BoostCounter value={newLockBoost + earlyBirdBoost} variant="h3" fontWeight={700} />
+              <Typography variant="body2">Expected final boost</Typography>
             </Stack>
 
-            <Stack direction="column" width="100%">
-              <Divider />
+            <Divider sx={{ ml: '-16px', width: '100%', mr: '-16px' }} />
 
-              <Stack direction="column" width="100%" mt={2} mb={2}>
-                <Typography color={theme.palette.success.light}>Early Bird</Typography>
-                <Stack direction="row" width="100%" justifyContent="space-between">
-                  <Typography fontWeight={700} color={theme.palette.success.light}>
-                    {earlyBirdBoost.toFixed(2)}x
-                  </Typography>
-                </Stack>
-              </Stack>
-              <Stack direction="column" width="100%" mb={2}>
-                <Typography color={theme.palette.info.light}>Lock boost</Typography>
-                <Stack direction="row" width="100%" justifyContent="space-between">
-                  <Typography fontWeight={700} color={theme.palette.info.light}>
-                    {newLockBoost.toFixed(2)}x
-                  </Typography>
-                  <Typography>-{Number(cleanedAmount).toFixed(0)} SAFE</Typography>
-                </Stack>
-              </Stack>
-
-              <Divider />
-
-              <Stack direction="column" width="100%" mt={2} alignItems="center">
-                <BoostCounter value={newLockBoost + earlyBirdBoost} variant="h3" fontWeight={700} />
-                <Typography variant="body2">Total boost</Typography>
-              </Stack>
+            <Stack direction="row" alignItems="center" spacing={2}>
+              <InfoOutlined fontSize="small" />
+              <Typography variant="body2">Your boost will change if you unlock</Typography>
             </Stack>
           </Box>
         </Grid>
