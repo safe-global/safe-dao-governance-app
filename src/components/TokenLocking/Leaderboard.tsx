@@ -2,7 +2,7 @@ import { useWallet } from '@/hooks/useWallet'
 import { RsvpTwoTone } from '@mui/icons-material'
 import {
   Box,
-  Chip,
+  Link,
   Paper,
   SvgIcon,
   Table,
@@ -19,6 +19,8 @@ import { Identicon } from '../Identicon'
 import FirstPlaceIcon from '@/public/images/leaderboard-first-place.svg'
 import SecondPlaceIcon from '@/public/images/leaderboard-second-place.svg'
 import ThirdPlaceIcon from '@/public/images/leaderboard-third-place.svg'
+import TitleStar from '@/public/images/leaderboard-title-star.svg'
+import classnames from 'classnames'
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -43,6 +45,23 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
   '& td:last-child': {
     borderRadius: '0 6px 6px 0',
+  },
+}))
+
+const StyledTable = styled(Table)(({ theme }) => ({
+  borderCollapse: 'separate',
+  '& tr:first-child td': {
+    backgroundColor: theme.palette.background.light,
+    background:
+      'linear-gradient(var(--mui-palette-background-light), var(--mui-palette-background-light)) padding-box,linear-gradient(to bottom, #5FDDFF 12.5%, #12FF80 88.07%) border-box',
+    border: '1px solid transparent',
+  },
+  '& tr:first-child td:before': {},
+  'tr:first-child td:not(:first-child)': {
+    borderLeft: 'none',
+  },
+  '& tr:first-child td:not(:last-child)': {
+    borderRight: 'none',
   },
 }))
 
@@ -94,13 +113,30 @@ export const Leaderboard = () => {
       amountLocked: 505238,
     },
   ]
+
   return (
     <Box>
-      <Typography variant="h2" fontWeight={700}>
-        Leaderboard
-      </Typography>
+      <Box sx={{ display: 'flex' }}>
+        <SvgIcon component={TitleStar} inheritViewBox sx={{ mr: '8px', mt: '4px' }} />
+        <Box sx={{ flex: '1' }}>
+          <Typography variant="h2" fontWeight={700} sx={{ mr: '8px', display: 'inline' }}>
+            Leaderboard
+          </Typography>
+          <Typography
+            variant="subtitle1"
+            fontSize="small"
+            sx={{ color: 'var(--mui-palette-text-secondary)', my: '8px', fontSize: '14px' }}
+          >
+            Higher ranking means higher chances to get rewards.
+          </Typography>
+        </Box>
+        <Link href="" color="inherit">
+          <Typography sx={{ m: '8px 32px ', fontSize: '14px' }}>How it works</Typography>
+        </Link>
+      </Box>
+
       <TableContainer component={Paper} sx={{ marginTop: -6 }}>
-        <Table sx={{ minWidth: 700 }} aria-label="customized table">
+        <StyledTable sx={{ minWidth: 700 }} aria-label="customized table">
           <TableHead>
             <TableRow>
               <StyledTableCell align="right"></StyledTableCell>
@@ -110,16 +146,7 @@ export const Leaderboard = () => {
           </TableHead>
           <TableBody>
             {rows.map((row) => (
-              <StyledTableRow
-                key={row.name}
-                sx={
-                  ownAddress === row.address
-                    ? {
-                        backgroundColor: ({ palette }) => palette.background.main,
-                      }
-                    : undefined
-                }
-              >
+              <StyledTableRow key={row.name}>
                 <StyledTableCell align="center">
                   {row.rank <= 3 ? (
                     <SvgIcon
@@ -127,6 +154,7 @@ export const Leaderboard = () => {
                       justifyContent="center"
                       inheritViewBox
                       fontSize={row.rank === 1 ? 'large' : row.rank === 2 ? 'medium' : 'small'}
+                      sx={{ pt: '5px' }}
                     />
                   ) : (
                     `#${row.rank}`
@@ -142,7 +170,7 @@ export const Leaderboard = () => {
               </StyledTableRow>
             ))}
           </TableBody>
-        </Table>
+        </StyledTable>
       </TableContainer>
     </Box>
   )
