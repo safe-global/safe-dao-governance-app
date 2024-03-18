@@ -58,22 +58,18 @@ const App = ({
   emotionCache?: EmotionCache
 }): ReactElement => {
   const { pathname, query } = useRouter()
-  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
-
-  // Workaround for dark mode widgets
-  const isDarkMode = query.theme ? query.theme === 'dark' : prefersDarkMode
 
   useEffect(() => {
     if (typeof document !== 'undefined') {
-      document.documentElement.setAttribute('data-theme', isDarkMode ? 'dark' : 'light')
+      document.documentElement.setAttribute('data-theme', 'dark')
     }
-  }, [isDarkMode])
+  }, [])
 
   const theme = useMemo(() => {
     // Extend the theme with the CssVarsProvider
-    return extendMuiTheme(initTheme(isDarkMode))
+    return extendMuiTheme(initTheme())
     // Widgets don't navigate, so we need not worry about the query changing
-  }, [isDarkMode])
+  }, [])
 
   const page = <Component {...pageProps} />
 

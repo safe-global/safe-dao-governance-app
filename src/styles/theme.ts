@@ -50,14 +50,13 @@ declare module '@mui/material/Button' {
   }
 }
 
-const initTheme = (darkMode: boolean) => {
-  const colors = darkMode ? darkPalette : palette
-  const shadowColor = colors.primary.light
+const initTheme = () => {
+  const shadowColor = darkPalette.primary.light
 
   return createTheme({
     palette: {
-      mode: darkMode ? 'dark' : 'light',
-      ...colors,
+      mode: 'dark',
+      ...darkPalette,
     },
     spacing: base,
     shape: {
@@ -65,10 +64,10 @@ const initTheme = (darkMode: boolean) => {
     },
     shadows: [
       'none',
-      darkMode ? `0 0 2px ${shadowColor}` : `0 1px 4px ${shadowColor}0a, 0 4px 10px ${shadowColor}14`,
-      darkMode ? `0 0 2px ${shadowColor}` : `0 1px 4px ${shadowColor}0a, 0 4px 10px ${shadowColor}14`,
-      darkMode ? `0 0 2px ${shadowColor}` : `0 2px 20px ${shadowColor}0a, 0 8px 32px ${shadowColor}14`,
-      darkMode ? `0 0 2px ${shadowColor}` : `0 8px 32px ${shadowColor}0a, 0 24px 60px ${shadowColor}14`,
+      `0 0 2px ${shadowColor}`,
+      `0 0 2px ${shadowColor}`,
+      `0 0 2px ${shadowColor}`,
+      `0 0 2px ${shadowColor}`,
       ...Array(20).fill('none'),
     ] as Shadows,
     typography: {
