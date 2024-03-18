@@ -67,7 +67,7 @@ const App = ({
 
   const theme = useMemo(() => {
     // Extend the theme with the CssVarsProvider
-    return extendMuiTheme(initTheme(true))
+    return extendMuiTheme(initTheme())
     // Widgets don't navigate, so we need not worry about the query changing
   }, [])
 
