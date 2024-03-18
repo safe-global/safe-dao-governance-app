@@ -1,5 +1,16 @@
 import { formatAmount } from '@/utils/formatters'
-import { Chip, Typography, Stack, Grid, TextField, InputAdornment, Skeleton, Button, Box, Divider } from '@mui/material'
+import {
+  Chip,
+  Typography,
+  Stack,
+  Grid,
+  TextField,
+  InputAdornment,
+  Button,
+  Box,
+  Divider,
+  CircularProgress,
+} from '@mui/material'
 import { formatUnits, parseUnits } from 'ethers/lib/utils'
 import SafeToken from '@/public/images/token.svg'
 
@@ -27,6 +38,8 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
   const [amount, setAmount] = useState('0')
 
   const [amountError, setAmountError] = useState<string | undefined>(undefined)
+
+  const [isLocking, setIsLocking] = useState(false)
 
   const debouncedAmount = useDebounce(amount, 1000, '0')
   const cleanedAmount = useMemo(() => (debouncedAmount.trim() === '' ? '0' : debouncedAmount.trim()), [debouncedAmount])
@@ -65,9 +78,15 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
   }, [safeBalance])
 
   const onLockTokens = async () => {
+    setIsLocking(true)
     const approveTx = createApproveTx(chainId, parseUnits(amount, 18))
     const lockTx = createLockTx(chainId, parseUnits(amount, 18))
-    await sdk.txs.send({ txs: [approveTx, lockTx] })
+    try {
+      await sdk.txs.send({ txs: [approveTx, lockTx] })
+    } catch (error) {
+      console.error(error)
+    }
+    setIsLocking(false)
   }
 
   return (
@@ -126,9 +145,9 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
                   variant="contained"
                   fullWidth
                   disableElevation
-                  disabled={Boolean(amountError)}
+                  disabled={Boolean(amountError) || isLocking || cleanedAmount === '0'}
                 >
-                  Lock
+                  {isLocking ? <CircularProgress size={20} /> : 'Lock'}
                 </Button>
               </Grid>
             </Grid>

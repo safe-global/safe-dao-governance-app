@@ -6,7 +6,7 @@ import { useTheme } from '@mui/material/styles'
 export const BoostGradients = () => {
   const theme = useTheme()
   return (
-    <svg height={0}>
+    <svg width={0} height={0}>
       <defs>
         <linearGradient id="gradient" x1="1" x2="0" y1="0" y2="1">
           <stop offset="0%" stop-color={theme.palette.primary.main}>
