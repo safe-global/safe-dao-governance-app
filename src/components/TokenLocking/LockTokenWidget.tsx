@@ -18,7 +18,7 @@ import { BoostGraph } from './BoostGraph/BoostGraph'
 import { useTheme } from '@mui/material/styles'
 
 import css from './styles.module.css'
-import { createLockTx } from '@/utils/lock'
+import { createLockTx, toRelativeLockHistory } from '@/utils/lock'
 import { createApproveTx } from '@/utils/safe-token'
 import { useSafeAppsSDK } from '@gnosis.pm/safe-apps-react-sdk'
 import { useState, ChangeEvent, useMemo, useCallback } from 'react'
@@ -38,6 +38,8 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
 
   const pastLocks = useLockHistory()
 
+  const relativeLockHistory = useMemo(() => toRelativeLockHistory(pastLocks), [pastLocks])
+
   const [amount, setAmount] = useState('0')
 
   const [amountError, setAmountError] = useState<string | undefined>(undefined)
@@ -47,10 +49,10 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
   const debouncedAmount = useDebounce(amount, 1000, '0')
   const cleanedAmount = useMemo(() => (debouncedAmount.trim() === '' ? '0' : debouncedAmount.trim()), [debouncedAmount])
 
-  const currentBoostFunction = useMemo(() => getBoostFunction(FAKE_NOW, 0, pastLocks), [pastLocks])
+  const currentBoostFunction = useMemo(() => getBoostFunction(FAKE_NOW, 0, relativeLockHistory), [relativeLockHistory])
   const newBoostFunction = useMemo(
-    () => getBoostFunction(FAKE_NOW, Number(cleanedAmount), pastLocks),
-    [cleanedAmount, pastLocks],
+    () => getBoostFunction(FAKE_NOW, Number(cleanedAmount), relativeLockHistory),
+    [cleanedAmount, relativeLockHistory],
   )
 
   const validateAmount = useCallback(
@@ -109,7 +111,7 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
       >
         <Grid container direction="row" spacing={2}>
           <Grid item xs={8}>
-            <BoostGraph lockedAmount={Number(cleanedAmount)} pastLocks={pastLocks} isLock />
+            <BoostGraph lockedAmount={Number(cleanedAmount)} pastLocks={relativeLockHistory} isLock />
 
             <Grid container gap={2} flexWrap="nowrap" mb={1} alignItems="center">
               <Grid item xs={8}>

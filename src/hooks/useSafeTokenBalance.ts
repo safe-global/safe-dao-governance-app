@@ -5,7 +5,6 @@ import useSWR from 'swr'
 import { fetchTokenBalance, fetchTokenLockingAllowance } from '@/utils/safe-token'
 import { fetchLockedAmount, fetchUnlockData } from '@/utils/lock'
 import { BigNumber } from 'ethers'
-import { useMemo } from 'react'
 
 export const useSafeTokenBalance = () => {
   const QUERY_KEY = 'safe-token-balance'

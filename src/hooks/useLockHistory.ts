@@ -1,22 +1,75 @@
-import { LockHistory } from '@/utils/boost'
+import { useAddress } from './useAddress'
+import useSWRInfinite from 'swr/infinite'
+import { useMemo } from 'react'
 
-const FAKE_LOCKS = [
-  {
-    day: 0,
-    amount: 1000,
-  },
-  {
-    day: 10,
-    amount: 5000,
-  },
-  {
-    day: 20,
-    amount: 4000,
-  },
-]
+type LockingHistoryEntry =
+  | {
+      eventType: 'LOCKED'
+      executionDate: string
+      transactionHash: string
+      holder: string
+      amount: string
+      logIndex: string
+    }
+  | {
+      eventType: 'UNLOCKED'
+      executionDate: string
+      transactionHash: string
+      holder: string
+      amount: string
+      logIndex: string
+      unlockIndex: string
+    }
+  | {
+      eventType: 'WITHDRAWN'
+      executionDate: string
+      transactionHash: string
+      holder: string
+      amount: string
+      logIndex: string
+      unlockIndex: string
+    }
 
-export const useLockHistory = (): LockHistory[] => {
-  return FAKE_LOCKS
+type LockingHistoryEventPage = {
+  count: number
+  next: string | null
+  previous: string | null
+  results: LockingHistoryEntry[]
 }
 
-export const FAKE_NOW = 40
+export const useLockHistory = () => {
+  const address = useAddress()
+
+  const getKey = useMemo(
+    () => (pageIndex: number, previousPageData: LockingHistoryEventPage) => {
+      if (!previousPageData) {
+        // Load first page
+        return `https://safe-client.staging.5afe.dev/v1/locking/${address}/history`
+      }
+      if (previousPageData && !previousPageData.next) return null // reached the end
+
+      // Load next page
+      return `https://safe-client.staging.5afe.dev/v1/locking/${address}/history?cursor=${previousPageData.next}`
+    },
+    [address],
+  )
+
+  const { data } = useSWRInfinite(getKey, async (url: string) => {
+    return await fetch(url).then((resp) => {
+      if (resp.ok) {
+        return resp.json() as Promise<LockingHistoryEventPage>
+      } else {
+        throw new Error('Error fetching lock history.')
+      }
+    })
+  })
+
+  return useMemo(() => {
+    if (data === undefined) {
+      return []
+    }
+    return data.flatMap((entry) => entry.results)
+  }, [data])
+}
+
+export const FAKE_NOW = 10

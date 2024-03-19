@@ -46,7 +46,7 @@ export const CHAIN_SAFE_TOKEN_ADDRESS: ChainConfig<string> = {
 
 export const CHAIN_SAFE_LOCKING_ADDRESS: ChainConfig<string> = {
   [Chains.MAINNET]: '0x0',
-  [Chains.SEPOLIA]: '0xECB34B0EbcF4B85A7c113d4fA73cd2A450B40445',
+  [Chains.SEPOLIA]: '0x6603fbb35fafae1674f5a38697a21baced8bfad2',
 }
 
 // Claiming

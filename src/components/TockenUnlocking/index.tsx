@@ -4,7 +4,7 @@ import NextLink from 'next/link'
 import { AppRoutes } from '@/config/routes'
 import { BigNumber } from 'ethers'
 import { useSafeAppsSDK } from '@gnosis.pm/safe-apps-react-sdk'
-import { createWithdrawTx } from '@/utils/lock'
+import { createWithdrawTx, toRelativeLockHistory } from '@/utils/lock'
 import { useChainId } from '@/hooks/useChainId'
 import { useSafeUserLockingInfos } from '@/hooks/useSafeTokenBalance'
 import PaperContainer from '../PaperContainer'
@@ -18,13 +18,15 @@ import { formatUnits } from 'ethers/lib/utils'
 import { Odometer } from '../Odometer'
 
 import SafeToken from '@/public/images/token.svg'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 
 const TokenUnlocking = () => {
   const { isLoading: userLockingInfosLoading, data: userLockingInfos } = useSafeUserLockingInfos()
   const { sdk } = useSafeAppsSDK()
   const chainId = useChainId()
   const lockHistory = useLockHistory()
+
+  const relativeLockHistory = useMemo(() => toRelativeLockHistory(lockHistory), [lockHistory])
 
   const currentlyLocked = userLockingInfos?.lockedAmount ?? BigNumber.from(0)
   const unlockedTotal = userLockingInfos?.totalUnlockedAmount ?? BigNumber.from(0)
@@ -61,7 +63,7 @@ const TokenUnlocking = () => {
         />
       </PaperContainer>
       <PaperContainer sx={{ width: '888px' }}>
-        <UnlockTokenWidget currentlyLocked={currentlyLocked} lockHistory={lockHistory} />
+        <UnlockTokenWidget currentlyLocked={currentlyLocked} lockHistory={relativeLockHistory} />
       </PaperContainer>
       <PaperContainer sx={{ width: '888px' }}>
         <Typography variant="h4" fontWeight={700}>

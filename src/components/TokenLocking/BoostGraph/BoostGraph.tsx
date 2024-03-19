@@ -1,12 +1,13 @@
 import { FAKE_NOW } from '@/hooks/useLockHistory'
-import { floorNumber, getBoostFunction, LockHistory } from '@/utils/boost'
+import { floorNumber, getBoostFunction } from '@/utils/boost'
+import { LockHistory } from '@/utils/lock'
 import { useTheme } from '@mui/material/styles'
 import { useMemo } from 'react'
 import { VictoryAxis, VictoryChart, VictoryLine, VictoryScatter, DomainTuple, ForAxes, VictoryArea } from 'victory'
 import { ArrowDownLabel } from './ArrowDownLabel'
 import { AxisTopLabel } from './AxisTopLabel'
 import { BoostGradients } from './BoostGradients'
-import { SEASON2_START } from './graphConstants'
+import { SEASON1_START, SEASON2_START } from './graphConstants'
 import { generatePointsFromHistory } from './helper'
 import { ScatterDot } from './ScatterDot'
 
@@ -36,7 +37,9 @@ export const BoostGraph = ({
   const currentBoostDataPoints = useMemo(
     () => [
       ...pastLockPoints,
+      { x: 0, y: currentBoostFunction({ x: 0 }) },
       { x: now, y: currentBoostFunction({ x: now }) },
+      { x: SEASON1_START, y: currentBoostFunction({ x: SEASON1_START }) },
       { x: SEASON2_START, y: currentBoostFunction({ x: SEASON2_START }) },
     ],
     [currentBoostFunction, now, pastLockPoints],
@@ -45,7 +48,9 @@ export const BoostGraph = ({
   const projectedBoostDataPoints = useMemo(
     () => [
       ...pastLockPoints,
+      { x: 0, y: newBoostFunction({ x: 0 }) },
       { x: now, y: newBoostFunction({ x: now }) },
+      { x: SEASON1_START, y: newBoostFunction({ x: SEASON1_START }) },
       { x: SEASON2_START, y: newBoostFunction({ x: SEASON2_START }) },
     ],
     [newBoostFunction, now, pastLockPoints],

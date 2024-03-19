@@ -34,8 +34,8 @@ const MONTH_LABEL: Record<number, string> = {
   11: 'December',
 }
 
-// 23rd April in millis
-const START_TIMESTAMP = 1713866400000
+/**  23rd April in millis */
+export const START_TIMESTAMP = 1713866400000
 
 export const formatDay = (days: number) => {
   const date = new Date(START_TIMESTAMP + days * DAY * 1000)

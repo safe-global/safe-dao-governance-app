@@ -1,7 +1,9 @@
 import { CHAIN_SAFE_LOCKING_ADDRESS } from '@/config/constants'
-import { BigNumber, Contract } from 'ethers'
+import { BigNumber } from 'ethers'
 import type { JsonRpcProvider } from '@ethersproject/providers'
-import { defaultAbiCoder, Interface } from 'ethers/lib/utils'
+import { defaultAbiCoder, formatUnits, Interface, parseUnits } from 'ethers/lib/utils'
+import { useLockHistory } from '@/hooks/useLockHistory'
+import { START_TIMESTAMP } from './date'
 
 const safeLockingInterface = new Interface([
   'function lock(uint96)',
@@ -10,6 +12,20 @@ const safeLockingInterface = new Interface([
   'function getUnlock(address,uint32)',
   'function withdraw(uint32)',
 ])
+
+export type LockHistory = {
+  day: number
+  // can be negative for unlocks
+  amount: number
+}
+export const toRelativeLockHistory = (data: ReturnType<typeof useLockHistory>): LockHistory[] => {
+  return data
+    .filter((entry) => entry.eventType !== 'WITHDRAWN')
+    .map((entry) => ({
+      day: Math.floor((Date.parse(entry.executionDate) - START_TIMESTAMP) / (1000 * 60 * 60 * 24)),
+      amount: Number(formatUnits(BigNumber.from(entry.amount), 18)) * (entry.eventType === 'LOCKED' ? 1 : -1),
+    }))
+}
 
 export const createLockTx = (chainId: string, amount: BigNumber) => {
   return {
