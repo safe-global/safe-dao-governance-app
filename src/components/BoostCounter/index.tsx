@@ -21,7 +21,11 @@ const roundNumber = (num: number, digits: number) => {
   return Math.round(num * decimal) / decimal
 }
 
-const BoostCounter = ({ value, ...props }: TypographyProps & { value: number }) => {
+const BoostCounter = ({
+  value,
+  direction,
+  ...props
+}: TypographyProps & { value: number; direction?: 'north' | 'south' }) => {
   const [isAnimating, setIsAnimating] = useState(false)
   const [start, setStart] = useState(0)
   const [target, setTarget] = useState(0)
@@ -87,7 +91,9 @@ const BoostCounter = ({ value, ...props }: TypographyProps & { value: number }) 
 
   return (
     <Box display="inline-flex" gap="4px" alignItems="center">
-      <NorthRounded color="primary" sx={{ width: '32px', height: '32px' }} />
+      {direction === 'north' && <NorthRounded color="primary" sx={{ width: '32px', height: '32px' }} />}
+      {direction === 'south' && <NorthRounded color="warning" sx={{ width: '32px', height: '32px' }} />}
+
       <Typography
         sx={{
           transform: `scale(${scale}) rotateZ(${isAnimating ? rotationRef.current : 0}deg)`,
@@ -103,9 +109,3 @@ const BoostCounter = ({ value, ...props }: TypographyProps & { value: number }) 
 }
 
 export default BoostCounter
-
-/**
- * 2,80
- * 2.
- * 2,80 * 100 = 280 % 100 = 80
- */

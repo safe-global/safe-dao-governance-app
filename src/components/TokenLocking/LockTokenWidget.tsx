@@ -156,6 +156,7 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
             <BoostBreakdown
               realizedBoost={currentBoostFunction({ x: FAKE_NOW })}
               finalBoost={newBoostFunction({ x: SEASON2_START })}
+              isLock
             />
           </Grid>
         </Grid>

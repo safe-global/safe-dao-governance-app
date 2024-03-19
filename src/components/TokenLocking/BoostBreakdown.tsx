@@ -6,7 +6,7 @@ import { BoostMeter } from './BoostMeter'
 
 import css from './styles.module.css'
 
-const mapBoostToSignalStrength = (boost: number) => {
+const BoostStrengthSignal = ({ boost, color }: { boost: number; color: 'primary' | 'warning' | undefined }) => {
   const strength = Math.floor(boost / 1.25)
 
   if (strength === 0) {
@@ -15,7 +15,7 @@ const mapBoostToSignalStrength = (boost: number) => {
 
   const iconProps = {
     fontSize: 'large',
-    color: 'primary',
+    color,
     sx: {
       position: 'relative',
       left: -35,
@@ -31,14 +31,25 @@ const mapBoostToSignalStrength = (boost: number) => {
   return <SignalCellularAlt {...iconProps} />
 }
 
-export const BoostBreakdown = ({ realizedBoost, finalBoost }: { realizedBoost: number; finalBoost: number }) => {
+export const BoostBreakdown = ({
+  realizedBoost,
+  finalBoost,
+  isLock,
+}: {
+  realizedBoost: number
+  finalBoost: number
+  isLock: boolean
+}) => {
+  const isVisibleDifference = Math.abs(floorNumber(realizedBoost, 2) - floorNumber(finalBoost, 2))
+
+  const highlightColor = isVisibleDifference ? (isLock ? 'primary' : 'warning') : undefined
   return (
     <Stack gap={2} height="100%">
       <Box className={`${css.boostInfoBox} ${css.bordered}`} p={3} gap={4} height="100%" display="flex">
         <Stack direction="row" justifyContent="space-between" width="100%" height="100%" alignItems="start">
           <span>
             <SignalCellularAlt color="border" fontSize="large" />
-            {mapBoostToSignalStrength(finalBoost)}
+            <BoostStrengthSignal boost={finalBoost} color={highlightColor} />
           </span>
           <Typography variant="body2" color="text.secondary">
             Realized boost {floorNumber(realizedBoost, 2)}x
@@ -46,7 +57,13 @@ export const BoostBreakdown = ({ realizedBoost, finalBoost }: { realizedBoost: n
         </Stack>
 
         <Stack direction="column" width="100%" alignItems="start" mt={8} spacing={1}>
-          <BoostCounter value={finalBoost} variant="h2" fontWeight={700} color="primary" />
+          <BoostCounter
+            value={finalBoost}
+            variant="h2"
+            fontWeight={700}
+            color={highlightColor}
+            direction={isVisibleDifference ? (isLock ? 'north' : 'south') : undefined}
+          />
           <Typography variant="body2" color="text.secondary">
             Expected final point boost
           </Typography>
