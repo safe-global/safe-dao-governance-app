@@ -1,4 +1,5 @@
 import { FAKE_NOW } from '@/hooks/useLockHistory'
+import { AccessTime } from '@mui/icons-material'
 import { Box, LinearProgress, Stack, Typography } from '@mui/material'
 import { SEASON2_START } from './BoostGraph/graphConstants'
 
@@ -6,7 +7,7 @@ export const BoostMeter = () => {
   const value = ((SEASON2_START - FAKE_NOW) / SEASON2_START) * 100
 
   return (
-    <Stack direction="row" spacing={2} height="100%">
+    <Stack direction="row" spacing={2} height="100%" alignItems="flex-end">
       <LinearProgress
         variant="determinate"
         value={value}
@@ -27,10 +28,13 @@ export const BoostMeter = () => {
         }}
       />
       <Box>
+        <AccessTime fontSize="small" />
         <Typography variant="subtitle2" fontWeight={700}>
           Early boost meter
         </Typography>
-        <Typography variant="body2">The boost decreases over time.</Typography>
+        <Typography variant="body2" color="text.secondary">
+          The boost decreases over time.
+        </Typography>
       </Box>
     </Stack>
   )

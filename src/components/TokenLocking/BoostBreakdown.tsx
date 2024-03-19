@@ -52,8 +52,8 @@ export const BoostBreakdown = ({ realizedBoost, finalBoost }: { realizedBoost: n
           </Typography>
         </Stack>
       </Box>
-      <Box className={`${css.boostInfoBox} ${css.bordered}`} p={3} gap={4} display="flex" width="100%">
-        <Box height="80px">
+      <Box className={`${css.boostInfoBox} ${css.bordered}`} p={2} gap={4} display="flex" width="100%">
+        <Box height="88px">
           <BoostMeter />
         </Box>
       </Box>
