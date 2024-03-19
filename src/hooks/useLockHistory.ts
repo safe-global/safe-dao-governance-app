@@ -1,6 +1,6 @@
 import { LockHistory } from '@/utils/boost'
 
-const FAKE_LOCKS = [
+/* const FAKE_LOCKS = [
   {
     day: 0,
     amount: 1000,
@@ -13,10 +13,12 @@ const FAKE_LOCKS = [
     day: 20,
     amount: 4000,
   },
-]
+] */
+
+const FAKE_LOCKS: LockHistory[] = []
 
 export const useLockHistory = (): LockHistory[] => {
   return FAKE_LOCKS
 }
 
-export const FAKE_NOW = 40
+export const FAKE_NOW = 0

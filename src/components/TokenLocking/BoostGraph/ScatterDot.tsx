@@ -4,7 +4,6 @@ import { useTheme } from '@mui/material/styles'
 import { FAKE_NOW } from '@/hooks/useLockHistory'
 import { useState } from 'react'
 import { ArrowDownLabel } from './ArrowDownLabel'
-import { useVictoryTheme } from './theme'
 import { SEASON2_START } from './graphConstants'
 import { floorNumber } from '@/utils/boost'
 
@@ -13,9 +12,8 @@ import { floorNumber } from '@/utils/boost'
  * @param props
  * @returns
  */
-export const ScatterDot = (props: PointProps) => {
+export const ScatterDot = ({ backgroundColor, ...props }: PointProps & { backgroundColor: string }) => {
   const theme = useTheme()
-  const victoryTheme = useVictoryTheme()
 
   const [hovered, setHovered] = useState(false)
 
@@ -66,6 +64,7 @@ export const ScatterDot = (props: PointProps) => {
           x={props.x}
           y={props.y}
           text={`${floorNumber(props.datum.y, 2)}x`}
+          backgroundColor={backgroundColor}
         />
       )}
     </>

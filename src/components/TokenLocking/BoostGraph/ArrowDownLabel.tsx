@@ -1,6 +1,8 @@
-import { Background, VictoryLabel, VictoryLabelProps } from 'victory'
+import { useTheme } from '@mui/material/styles'
+import { Background, VictoryLabel, VictoryLabelProps, VictoryLabelStyleObject } from 'victory'
 
-export const ArrowDownLabel = (props: VictoryLabelProps) => {
+export const ArrowDownLabel = ({ backgroundColor, ...props }: VictoryLabelProps & { backgroundColor: string }) => {
+  const theme = useTheme()
   if (props.x === undefined || props.y === undefined || props.text === '') {
     return null
   }
@@ -8,7 +10,7 @@ export const ArrowDownLabel = (props: VictoryLabelProps) => {
     <>
       <rect
         style={{ transformOrigin: 'center', transformBox: 'fill-box' }}
-        fill="black"
+        fill={backgroundColor}
         width={8}
         height={8}
         transform="rotate(45)"
@@ -19,7 +21,8 @@ export const ArrowDownLabel = (props: VictoryLabelProps) => {
         {...props}
         backgroundPadding={[8]}
         backgroundComponent={<Background rx={6} ry={6} />}
-        backgroundStyle={[{ fill: 'black' }]}
+        backgroundStyle={[{ fill: backgroundColor }]}
+        style={{ ...props.style, fill: theme.palette.background.main } as VictoryLabelStyleObject}
         dy={-36}
       />
     </>

@@ -1,4 +1,5 @@
 import { floorNumber } from '@/utils/boost'
+import { NorthRounded, SouthRounded } from '@mui/icons-material'
 import { Box, Typography } from '@mui/material'
 import { TypographyProps } from '@mui/material/Typography'
 import BezierEasing from 'bezier-easing'
@@ -20,7 +21,11 @@ const roundNumber = (num: number, digits: number) => {
   return Math.round(num * decimal) / decimal
 }
 
-const BoostCounter = ({ value, ...props }: TypographyProps & { value: number }) => {
+const BoostCounter = ({
+  value,
+  direction,
+  ...props
+}: TypographyProps & { value: number; direction?: 'north' | 'south' }) => {
   const [isAnimating, setIsAnimating] = useState(false)
   const [start, setStart] = useState(0)
   const [target, setTarget] = useState(0)
@@ -85,7 +90,10 @@ const BoostCounter = ({ value, ...props }: TypographyProps & { value: number }) 
   const decimals = floorNumber(currentNumber, 2).toString().slice(2)
 
   return (
-    <Box display="inline-flex" gap="4px">
+    <Box display="inline-flex" gap="4px" alignItems="center">
+      {direction === 'north' && <NorthRounded color="primary" sx={{ width: '32px', height: '32px' }} />}
+      {direction === 'south' && <SouthRounded color="warning" sx={{ width: '32px', height: '32px' }} />}
+
       <Typography
         sx={{
           transform: `scale(${scale}) rotateZ(${isAnimating ? rotationRef.current : 0}deg)`,
@@ -95,15 +103,9 @@ const BoostCounter = ({ value, ...props }: TypographyProps & { value: number }) 
       >
         {digit}
       </Typography>
-      <Typography {...props}>{decimals !== '' ? `.${decimals}x` : 'x'}</Typography>
+      <Typography {...props}>{decimals !== '' ? `,${decimals}x` : 'x'}</Typography>
     </Box>
   )
 }
 
 export default BoostCounter
-
-/**
- * 2,80
- * 2.
- * 2,80 * 100 = 280 % 100 = 80
- */
