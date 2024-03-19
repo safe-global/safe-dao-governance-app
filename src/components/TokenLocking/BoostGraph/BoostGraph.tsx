@@ -1,4 +1,4 @@
-import { FAKE_NOW } from '@/hooks/useLockHistory'
+import { NOW_DAYS } from '@/hooks/useLockHistory'
 import { floorNumber, getBoostFunction } from '@/utils/boost'
 import { LockHistory } from '@/utils/lock'
 import { useTheme } from '@mui/material/styles'
@@ -27,7 +27,7 @@ export const BoostGraph = ({
   const theme = useTheme()
   const victoryTheme = useVictoryTheme()
 
-  const now = FAKE_NOW
+  const now = NOW_DAYS
 
   const currentBoostFunction = useMemo(() => getBoostFunction(now, 0, pastLocks), [now, pastLocks])
   const newBoostFunction = useMemo(() => getBoostFunction(now, lockedAmount, pastLocks), [lockedAmount, now, pastLocks])

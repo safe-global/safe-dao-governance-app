@@ -38,6 +38,13 @@ export const CHAIN_SHORT_NAME: ChainConfig<string> = {
   [Chains.SEPOLIA]: 'sep',
 }
 
+export const CHAIN_START_TIMESTAMPS: ChainConfig<number> = {
+  [Chains.MAINNET]: 1713866400000, // 23rd April 2024
+  [Chains.SEPOLIA]: 1709290800000, // 01st March 2024
+}
+
+export const START_TIMESTAMP = IS_PRODUCTION ? 1713866400000 : 1709290800000
+
 // Token
 export const CHAIN_SAFE_TOKEN_ADDRESS: ChainConfig<string> = {
   [Chains.MAINNET]: '0x5afe3855358e112b5647b952709e6165e1c1eeee',

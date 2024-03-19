@@ -1,6 +1,8 @@
 import { useAddress } from './useAddress'
 import useSWRInfinite from 'swr/infinite'
 import { useMemo } from 'react'
+import { START_TIMESTAMP } from '@/config/constants'
+import { toDaysSinceStart } from '@/utils/date'
 
 type LockingHistoryEntry =
   | {
@@ -72,4 +74,4 @@ export const useLockHistory = () => {
   }, [data])
 }
 
-export const FAKE_NOW = 10
+export const NOW_DAYS = toDaysSinceStart(Date.now())

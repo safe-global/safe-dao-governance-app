@@ -1,4 +1,4 @@
-import { FAKE_NOW } from '@/hooks/useLockHistory'
+import { NOW_DAYS } from '@/hooks/useLockHistory'
 import { useTheme } from '@mui/material/styles'
 import SafeToken from '@/public/images/token.svg'
 import { floorNumber, getBoostFunction, getTimeFactor, getTokenBoost } from '@/utils/boost'
@@ -45,10 +45,10 @@ export const UnlockTokenWidget = ({
   const cleanedAmount = useMemo(() => (debouncedAmount.trim() === '' ? '0' : debouncedAmount.trim()), [debouncedAmount])
 
   const boostFunction = useMemo(() => {
-    return getBoostFunction(FAKE_NOW, -Number(cleanedAmount), lockHistory)
+    return getBoostFunction(NOW_DAYS, -Number(cleanedAmount), lockHistory)
   }, [cleanedAmount, lockHistory])
   const earlyBirdBoostFunction = useMemo(() => {
-    return getBoostFunction(FAKE_NOW, -Number(cleanedAmount), lockHistory)
+    return getBoostFunction(NOW_DAYS, -Number(cleanedAmount), lockHistory)
   }, [cleanedAmount, lockHistory])
   const endOfSeasonBoost = boostFunction({ x: 158 })
   const earlyBirdBoost = earlyBirdBoostFunction({ x: 48 }) - 1
@@ -142,7 +142,7 @@ export const UnlockTokenWidget = ({
         <Grid item xs={4}>
           <Box className={`${css.boostInfoBox} ${css.bordered}`} p={3} gap={4} display="flex">
             <Typography variant="body2">
-              Already realized boost: {floorNumber(getBoostFunction(FAKE_NOW, 0, lockHistory)({ x: FAKE_NOW }), 2)}x
+              Already realized boost: {floorNumber(getBoostFunction(NOW_DAYS, 0, lockHistory)({ x: NOW_DAYS }), 2)}x
             </Typography>
 
             <Stack direction="column" width="100%" mt={2} alignItems="center">

@@ -25,7 +25,7 @@ import { useState, ChangeEvent, useMemo, useCallback } from 'react'
 import { BigNumberish } from 'ethers'
 import { useChainId } from '@/hooks/useChainId'
 import { floorNumber, getBoostFunction, getTimeFactor, getTokenBoost } from '@/utils/boost'
-import { FAKE_NOW, useLockHistory } from '@/hooks/useLockHistory'
+import { NOW_DAYS, useLockHistory } from '@/hooks/useLockHistory'
 import BoostCounter from '../BoostCounter'
 import { useDebounce } from '@/hooks/useDebounce'
 import { SEASON2_START } from './BoostGraph/graphConstants'
@@ -34,7 +34,7 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
   const theme = useTheme()
   const { sdk } = useSafeAppsSDK()
   const chainId = useChainId()
-  const fakeNow = FAKE_NOW
+  const fakeNow = NOW_DAYS
 
   const pastLocks = useLockHistory()
 
@@ -49,9 +49,9 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
   const debouncedAmount = useDebounce(amount, 1000, '0')
   const cleanedAmount = useMemo(() => (debouncedAmount.trim() === '' ? '0' : debouncedAmount.trim()), [debouncedAmount])
 
-  const currentBoostFunction = useMemo(() => getBoostFunction(FAKE_NOW, 0, relativeLockHistory), [relativeLockHistory])
+  const currentBoostFunction = useMemo(() => getBoostFunction(NOW_DAYS, 0, relativeLockHistory), [relativeLockHistory])
   const newBoostFunction = useMemo(
-    () => getBoostFunction(FAKE_NOW, Number(cleanedAmount), relativeLockHistory),
+    () => getBoostFunction(NOW_DAYS, Number(cleanedAmount), relativeLockHistory),
     [cleanedAmount, relativeLockHistory],
   )
 
@@ -181,7 +181,7 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
                 <Stack direction="column" width="100%" mt={2} mb={2}>
                   <Typography>Current timefactor</Typography>
                   <Stack direction="row" width="100%" justifyContent="space-between">
-                    <Typography fontWeight={700}>{getTimeFactor(FAKE_NOW).toFixed(2)}x</Typography>
+                    <Typography fontWeight={700}>{getTimeFactor(NOW_DAYS).toFixed(2)}x</Typography>
                   </Stack>
                 </Stack>
                 <Stack direction="column" width="100%" mb={2}>
@@ -196,7 +196,7 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
                   <Typography color={theme.palette.primary.main}>Boost increase</Typography>
                   <Stack direction="row" width="100%" justifyContent="space-between">
                     <Typography fontWeight={700} color={theme.palette.primary.main}>
-                      {floorNumber(getTimeFactor(FAKE_NOW) * getTokenBoost(Number(cleanedAmount)), 2)}x
+                      {floorNumber(getTimeFactor(NOW_DAYS) * getTokenBoost(Number(cleanedAmount)), 2)}x
                     </Typography>
                   </Stack>
                 </Stack>
