@@ -33,23 +33,27 @@ const BoostStrengthSignal = ({ boost, color }: { boost: number; color: 'primary'
 
 export const BoostBreakdown = ({
   realizedBoost,
-  finalBoost,
+  currentFinalBoost,
+  newFinalBoost,
   isLock,
 }: {
   realizedBoost: number
-  finalBoost: number
+  currentFinalBoost: number
+  newFinalBoost: number
   isLock: boolean
 }) => {
-  const isVisibleDifference = Math.abs(floorNumber(realizedBoost, 2) - floorNumber(finalBoost, 2))
+  const isVisibleDifference = Math.abs(floorNumber(currentFinalBoost, 2) - floorNumber(newFinalBoost, 2))
 
-  const highlightColor = isVisibleDifference ? (isLock ? 'primary' : 'warning') : undefined
   return (
     <Stack gap={2} height="100%">
       <Box className={`${css.boostInfoBox} ${css.bordered}`} p={3} gap={4} height="100%" display="flex">
         <Stack direction="row" justifyContent="space-between" width="100%" height="100%" alignItems="start">
           <span>
             <SignalCellularAlt color="border" fontSize="large" />
-            <BoostStrengthSignal boost={finalBoost} color={highlightColor} />
+            <BoostStrengthSignal
+              boost={newFinalBoost}
+              color={isVisibleDifference ? (isLock ? 'primary' : 'warning') : undefined}
+            />
           </span>
           <Typography variant="body2" color="text.secondary">
             Realized boost {floorNumber(realizedBoost, 2)}x
@@ -58,10 +62,10 @@ export const BoostBreakdown = ({
 
         <Stack direction="column" width="100%" alignItems="start" mt={8} spacing={1}>
           <BoostCounter
-            value={finalBoost}
+            value={newFinalBoost}
             variant="h2"
             fontWeight={700}
-            color={highlightColor}
+            color={isVisibleDifference ? (isLock ? 'primary' : 'warning.main') : undefined}
             direction={isVisibleDifference ? (isLock ? 'north' : 'south') : undefined}
           />
           <Typography variant="body2" color="text.secondary">

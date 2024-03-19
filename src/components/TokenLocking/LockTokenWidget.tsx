@@ -1,16 +1,5 @@
 import { formatAmount } from '@/utils/formatters'
-import {
-  Chip,
-  Typography,
-  Stack,
-  Grid,
-  TextField,
-  InputAdornment,
-  Button,
-  Box,
-  Divider,
-  CircularProgress,
-} from '@mui/material'
+import { Chip, Typography, Stack, Grid, TextField, InputAdornment, Button, Box, CircularProgress } from '@mui/material'
 import { formatUnits, parseUnits } from 'ethers/lib/utils'
 import SafeToken from '@/public/images/token.svg'
 
@@ -155,7 +144,8 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
           <Grid item xs={4}>
             <BoostBreakdown
               realizedBoost={currentBoostFunction({ x: FAKE_NOW })}
-              finalBoost={newBoostFunction({ x: SEASON2_START })}
+              currentFinalBoost={currentBoostFunction({ x: SEASON2_START })}
+              newFinalBoost={newBoostFunction({ x: SEASON2_START })}
               isLock
             />
           </Grid>

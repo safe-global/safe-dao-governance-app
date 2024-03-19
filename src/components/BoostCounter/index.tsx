@@ -1,5 +1,5 @@
 import { floorNumber } from '@/utils/boost'
-import { NorthRounded } from '@mui/icons-material'
+import { NorthRounded, SouthRounded } from '@mui/icons-material'
 import { Box, Typography } from '@mui/material'
 import { TypographyProps } from '@mui/material/Typography'
 import BezierEasing from 'bezier-easing'
@@ -92,7 +92,7 @@ const BoostCounter = ({
   return (
     <Box display="inline-flex" gap="4px" alignItems="center">
       {direction === 'north' && <NorthRounded color="primary" sx={{ width: '32px', height: '32px' }} />}
-      {direction === 'south' && <NorthRounded color="warning" sx={{ width: '32px', height: '32px' }} />}
+      {direction === 'south' && <SouthRounded color="warning" sx={{ width: '32px', height: '32px' }} />}
 
       <Typography
         sx={{
