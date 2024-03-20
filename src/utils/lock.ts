@@ -1,4 +1,4 @@
-import { CHAIN_SAFE_LOCKING_ADDRESS, CHAIN_START_TIMESTAMPS, START_TIMESTAMP } from '@/config/constants'
+import { CHAIN_SAFE_LOCKING_ADDRESS } from '@/config/constants'
 import { BigNumber } from 'ethers'
 import type { JsonRpcProvider } from '@ethersproject/providers'
 import { defaultAbiCoder, formatUnits, Interface, parseUnits } from 'ethers/lib/utils'
@@ -18,11 +18,11 @@ export type LockHistory = {
   // can be negative for unlocks
   amount: number
 }
-export const toRelativeLockHistory = (data: ReturnType<typeof useLockHistory>): LockHistory[] => {
+export const toRelativeLockHistory = (data: ReturnType<typeof useLockHistory>, startTime: number): LockHistory[] => {
   return data
     .filter((entry) => entry.eventType !== 'WITHDRAWN')
     .map((entry) => ({
-      day: toDaysSinceStart(Date.parse(entry.executionDate)),
+      day: toDaysSinceStart(Date.parse(entry.executionDate), startTime),
       amount: Number(formatUnits(BigNumber.from(entry.amount), 18)) * (entry.eventType === 'LOCKED' ? 1 : -1),
     }))
 }

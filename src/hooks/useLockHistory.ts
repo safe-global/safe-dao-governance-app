@@ -1,8 +1,9 @@
 import { useAddress } from './useAddress'
 import useSWRInfinite from 'swr/infinite'
 import { useMemo } from 'react'
-import { START_TIMESTAMP } from '@/config/constants'
 import { toDaysSinceStart } from '@/utils/date'
+import { useChainId } from './useChainId'
+import { CHAIN_START_TIMESTAMPS } from '@/config/constants'
 
 type LockingHistoryEntry =
   | {
@@ -41,6 +42,7 @@ type LockingHistoryEventPage = {
 
 export const useLockHistory = () => {
   const address = useAddress()
+  const chainId = useChainId()
 
   const getKey = useMemo(
     () => (pageIndex: number, previousPageData: LockingHistoryEventPage) => {
@@ -73,5 +75,3 @@ export const useLockHistory = () => {
     return data.flatMap((entry) => entry.results)
   }, [data])
 }
-
-export const NOW_DAYS = toDaysSinceStart(Date.now())

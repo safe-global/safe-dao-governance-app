@@ -19,14 +19,16 @@ import { Odometer } from '../Odometer'
 
 import SafeToken from '@/public/images/token.svg'
 import { useMemo, useState } from 'react'
+import { CHAIN_START_TIMESTAMPS } from '@/config/constants'
 
 const TokenUnlocking = () => {
   const { isLoading: userLockingInfosLoading, data: userLockingInfos } = useSafeUserLockingInfos()
   const { sdk } = useSafeAppsSDK()
   const chainId = useChainId()
+  const startTime = CHAIN_START_TIMESTAMPS[chainId]
   const lockHistory = useLockHistory()
 
-  const relativeLockHistory = useMemo(() => toRelativeLockHistory(lockHistory), [lockHistory])
+  const relativeLockHistory = useMemo(() => toRelativeLockHistory(lockHistory, startTime), [lockHistory, startTime])
 
   const currentlyLocked = userLockingInfos?.lockedAmount ?? BigNumber.from(0)
   const unlockedTotal = userLockingInfos?.totalUnlockedAmount ?? BigNumber.from(0)

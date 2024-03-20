@@ -1,5 +1,7 @@
-import { NOW_DAYS } from '@/hooks/useLockHistory'
+import { CHAIN_START_TIMESTAMPS } from '@/config/constants'
+import { useChainId } from '@/hooks/useChainId'
 import { floorNumber, getBoostFunction } from '@/utils/boost'
+import { getCurrentDays } from '@/utils/date'
 import { LockHistory } from '@/utils/lock'
 import { useTheme } from '@mui/material/styles'
 import { useMemo } from 'react'
@@ -26,13 +28,14 @@ export const BoostGraph = ({
 }) => {
   const theme = useTheme()
   const victoryTheme = useVictoryTheme()
-
-  const now = NOW_DAYS
+  const chainId = useChainId()
+  const startTime = CHAIN_START_TIMESTAMPS[chainId]
+  const now = useMemo(() => getCurrentDays(startTime), [startTime])
 
   const currentBoostFunction = useMemo(() => getBoostFunction(now, 0, pastLocks), [now, pastLocks])
   const newBoostFunction = useMemo(() => getBoostFunction(now, lockedAmount, pastLocks), [lockedAmount, now, pastLocks])
 
-  const pastLockPoints = useMemo(() => generatePointsFromHistory(pastLocks), [pastLocks])
+  const pastLockPoints = useMemo(() => generatePointsFromHistory(pastLocks, now), [pastLocks, now])
 
   const currentBoostDataPoints = useMemo(
     () => [
@@ -149,7 +152,7 @@ export const BoostGraph = ({
             ticks: { size: 5 },
             tickLabels: { fontSize: 12, padding: 16, fill: theme.palette.primary.light },
           }}
-          tickLabelComponent={<AxisTopLabel />}
+          tickLabelComponent={<AxisTopLabel startTime={startTime} />}
           theme={victoryTheme}
         />
         <VictoryAxis
@@ -185,7 +188,7 @@ export const BoostGraph = ({
           labels={[...pastLockPoints.map(() => ''), floorNumber(newBoostFunction({ x: now }), 2) + 'x']}
           labelComponent={<ArrowDownLabel />}
           size={4}
-          dataComponent={<ScatterDot />}
+          dataComponent={<ScatterDot today={now} />}
           domain={DOMAIN}
           data={[...pastLockPoints, { x: now, y: newBoostFunction({ x: now }) }]}
           theme={victoryTheme}
@@ -207,7 +210,7 @@ export const BoostGraph = ({
           labels={[floorNumber(newBoostFunction({ x: SEASON2_START }), 2) + 'x']}
           labelComponent={<ArrowDownLabel />}
           size={4}
-          dataComponent={<ScatterDot />}
+          dataComponent={<ScatterDot today={now} />}
           domain={DOMAIN}
           data={[{ x: SEASON2_START, y: newBoostFunction({ x: SEASON2_START }) }]}
           theme={victoryTheme}

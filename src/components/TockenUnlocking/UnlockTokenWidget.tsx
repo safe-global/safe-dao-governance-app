@@ -1,8 +1,5 @@
-import { NOW_DAYS } from '@/hooks/useLockHistory'
-import { useTheme } from '@mui/material/styles'
 import SafeToken from '@/public/images/token.svg'
-import { floorNumber, getBoostFunction, getTimeFactor, getTokenBoost } from '@/utils/boost'
-import { formatAmount } from '@/utils/formatters'
+import { floorNumber, getBoostFunction } from '@/utils/boost'
 import css from './styles.module.css'
 import {
   Box,
@@ -24,7 +21,9 @@ import { useState, useMemo, ChangeEvent, useCallback } from 'react'
 import { BigNumberish } from 'ethers'
 import { useChainId } from '@/hooks/useChainId'
 import { useSafeAppsSDK } from '@gnosis.pm/safe-apps-react-sdk'
-import { Info, InfoOutlined } from '@mui/icons-material'
+import { InfoOutlined } from '@mui/icons-material'
+import { getCurrentDays } from '@/utils/date'
+import { CHAIN_START_TIMESTAMPS } from '@/config/constants'
 
 export const UnlockTokenWidget = ({
   lockHistory,
@@ -41,15 +40,17 @@ export const UnlockTokenWidget = ({
   const chainId = useChainId()
   const { sdk } = useSafeAppsSDK()
 
+  const todayInDays = getCurrentDays(CHAIN_START_TIMESTAMPS[chainId])
+
   const debouncedAmount = useDebounce(unlockAmount, 1000, '0')
   const cleanedAmount = useMemo(() => (debouncedAmount.trim() === '' ? '0' : debouncedAmount.trim()), [debouncedAmount])
 
   const boostFunction = useMemo(() => {
-    return getBoostFunction(NOW_DAYS, -Number(cleanedAmount), lockHistory)
-  }, [cleanedAmount, lockHistory])
+    return getBoostFunction(todayInDays, -Number(cleanedAmount), lockHistory)
+  }, [cleanedAmount, lockHistory, todayInDays])
   const earlyBirdBoostFunction = useMemo(() => {
-    return getBoostFunction(NOW_DAYS, -Number(cleanedAmount), lockHistory)
-  }, [cleanedAmount, lockHistory])
+    return getBoostFunction(todayInDays, -Number(cleanedAmount), lockHistory)
+  }, [cleanedAmount, lockHistory, todayInDays])
   const endOfSeasonBoost = boostFunction({ x: 158 })
   const earlyBirdBoost = earlyBirdBoostFunction({ x: 48 }) - 1
   const newLockBoost = endOfSeasonBoost - earlyBirdBoost
@@ -142,7 +143,8 @@ export const UnlockTokenWidget = ({
         <Grid item xs={4}>
           <Box className={`${css.boostInfoBox} ${css.bordered}`} p={3} gap={4} display="flex">
             <Typography variant="body2">
-              Already realized boost: {floorNumber(getBoostFunction(NOW_DAYS, 0, lockHistory)({ x: NOW_DAYS }), 2)}x
+              Already realized boost:{' '}
+              {floorNumber(getBoostFunction(todayInDays, 0, lockHistory)({ x: todayInDays }), 2)}x
             </Typography>
 
             <Stack direction="column" width="100%" mt={2} alignItems="center">
