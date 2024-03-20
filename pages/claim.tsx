@@ -1,9 +1,20 @@
 import type { NextPage } from 'next'
 
-import { Claim } from '@/components/Claim'
+import SuccessfulClaim from '@/components/Claim/SuccessfulClaim'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { AppRoutes } from '@/config/routes'
+import MediumPaper from '@/components/MediumPaper'
 
 const ClaimPage: NextPage = () => {
-  return <Claim />
+  const router = useRouter()
+  const query = useSearchParams()
+  const claimedAmount = query.get('claimedAmount') || ''
+
+  return (
+    <MediumPaper>
+      <SuccessfulClaim data={{ claimedAmount }} onNext={() => router.push(AppRoutes.index)} />
+    </MediumPaper>
+  )
 }
 
 export default ClaimPage

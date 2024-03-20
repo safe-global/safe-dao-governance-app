@@ -1,0 +1,8 @@
+.overview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 182px;
+  height: 93px;
+}

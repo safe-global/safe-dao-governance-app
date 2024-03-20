@@ -12,9 +12,7 @@ export const TotalVotingPower = (): ReactElement => {
 
   return (
     <>
-      <Typography color="text.secondary">Total voting power is</Typography>
-
-      <Typography variant="h2" mt={0.5}>
+      <Typography variant="h3" fontWeight={700} mt={0.5}>
         {formattedAmount} SAFE
       </Typography>
     </>

@@ -1,4 +1,4 @@
-import { Grid, Typography, Box, Button, CircularProgress, Stack, Paper, Link } from '@mui/material'
+import { Grid, Typography, Box, Button, CircularProgress, Paper } from '@mui/material'
 import { useRouter } from 'next/router'
 import { formatEther } from 'ethers/lib/utils'
 import { BigNumber } from 'ethers'
@@ -21,11 +21,10 @@ import { isSafe } from '@/utils/wallet'
 import { InfoBox } from '@/components/InfoBox'
 import { useIsDelegationPending } from '@/hooks/usePendingDelegations'
 import { Sep5InfoBox } from '@/components/Sep5InfoBox'
-import ClaimOverview from '@/components/Claim'
-import PaperContainer from '@/components/PaperContainer'
 import { canRedeemSep5Airdrop } from '@/utils/airdrop'
 
 import css from './styles.module.css'
+import MediumPaper from '../MediumPaper'
 
 export const Intro = (): ReactElement => {
   const router = useRouter()
@@ -76,39 +75,59 @@ export const Intro = (): ReactElement => {
     )
   }
   return (
-    <Grid container spacing={3} direction="row">
-      <Grid item xs={12} mb={3}>
-        <Typography variant="h2">Claim SAFE tokens and engage in governance</Typography>
-      </Grid>
+    <MediumPaper>
+      <Grid container p={7} alignItems="center" justifyContent="center" gap={4}>
+        <Grid item xs={12} px={3}>
+          <Grid container alignItems="center" justifyContent="center" spacing={2}>
+            <Grid item xs={6} display="flex" flexDirection="column" alignItems="center">
+              <SafeToken alt="Safe Token logo" width={84} height={84} />
 
-      <Grid item xs={8}>
-        <Stack spacing={3}>
-          <ClaimOverview />
-
-          <PaperContainer>
-            <Typography variant="h6" fontWeight={700}>
-              Delegate your voting power
-            </Typography>
-            <Grid item xs={12}>
-              <SelectedDelegate delegate={delegate || undefined} action={action} shortenAddress hint />
+              <Box mt={4} display="flex" flexDirection="column" alignItems="center" textAlign="center">
+                <TotalVotingPower />
+              </Box>
             </Grid>
-          </PaperContainer>
-        </Stack>
-      </Grid>
 
-      <Grid item xs={4}>
-        <PaperContainer>
-          <Box my={10} textAlign="center">
-            <SafeToken alt="Safe Token logo" width={84} height={84} />
+            {hasAllocation && (
+              <Grid item xs={6} display="flex" gap={2} flexDirection="column">
+                <InfoBox className={css.overview}>
+                  <Typography variant="body2" color="text.secondary">
+                    Claimable now
+                  </Typography>
+                  <Typography fontWeight={700}>{formatAmount(formatEther(total.claimable), 2)} SAFE</Typography>
+                </InfoBox>
+                <InfoBox className={css.overview}>
+                  <Typography variant="body2" color="text.secondary">
+                    Claimable in the future
+                  </Typography>
+                  <Typography fontWeight={700}>{formatAmount(formatEther(total.inVesting), 2)} SAFE</Typography>
+                </InfoBox>
+              </Grid>
+            )}
 
-            <Box mt={4} display="flex" flexDirection="column">
-              <Typography>Total voting power is</Typography>
-              <TotalVotingPower />
-            </Box>
-          </Box>
-          <OverviewLinks></OverviewLinks>
-        </PaperContainer>
+            {canRedeemSep5 && (
+              <Grid item xs={12}>
+                <Sep5InfoBox />
+              </Grid>
+            )}
+
+            {isClaimable && (
+              <Grid item xs={12} display="flex" justifyContent="center">
+                <Button variant="contained" size="stretched" onClick={onClaim} disabled={isWrongChain}>
+                  Claim Safe Tokens
+                </Button>
+              </Grid>
+            )}
+          </Grid>
+        </Grid>
+
+        <Grid item xs={12}>
+          <SelectedDelegate delegate={delegate || undefined} action={action} shortenAddress hint />
+        </Grid>
+
+        <Grid item xs={12}>
+          <OverviewLinks />
+        </Grid>
       </Grid>
-    </Grid>
+    </MediumPaper>
   )
 }
