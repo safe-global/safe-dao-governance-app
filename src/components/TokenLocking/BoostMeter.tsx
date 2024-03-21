@@ -1,10 +1,17 @@
-import { FAKE_NOW } from '@/hooks/useLockHistory'
+import { CHAIN_START_TIMESTAMPS } from '@/config/constants'
+import { useChainId } from '@/hooks/useChainId'
+import { getCurrentDays } from '@/utils/date'
 import { AccessTime } from '@mui/icons-material'
 import { Box, LinearProgress, Stack, Typography } from '@mui/material'
+import { useMemo } from 'react'
 import { SEASON2_START } from './BoostGraph/graphConstants'
 
 export const BoostMeter = () => {
-  const value = ((SEASON2_START - FAKE_NOW) / SEASON2_START) * 100
+  const chainId = useChainId()
+  const startTime = CHAIN_START_TIMESTAMPS[chainId]
+  const now = useMemo(() => getCurrentDays(startTime), [startTime])
+
+  const value = ((SEASON2_START - now) / SEASON2_START) * 100
 
   return (
     <Stack direction="row" spacing={2} height="100%" alignItems="flex-end">

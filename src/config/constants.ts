@@ -38,6 +38,11 @@ export const CHAIN_SHORT_NAME: ChainConfig<string> = {
   [Chains.SEPOLIA]: 'sep',
 }
 
+export const CHAIN_START_TIMESTAMPS: ChainConfig<number> = {
+  [Chains.MAINNET]: 1713866400000, // 23rd April 2024
+  [Chains.SEPOLIA]: 1709290800000, // 01st March 2024
+}
+
 // Token
 export const CHAIN_SAFE_TOKEN_ADDRESS: ChainConfig<string> = {
   [Chains.MAINNET]: '0x5afe3855358e112b5647b952709e6165e1c1eeee',
@@ -45,8 +50,8 @@ export const CHAIN_SAFE_TOKEN_ADDRESS: ChainConfig<string> = {
 }
 
 export const CHAIN_SAFE_LOCKING_ADDRESS: ChainConfig<string> = {
-  [Chains.MAINNET]: '0x0',
-  [Chains.SEPOLIA]: '0xECB34B0EbcF4B85A7c113d4fA73cd2A450B40445',
+  [Chains.MAINNET]: '0x0a7CB434f96f65972D46A5c1A64a9654dC9959b2',
+  [Chains.SEPOLIA]: '0xb161ccb96b9b817F9bDf0048F212725128779DE9',
 }
 
 // Claiming

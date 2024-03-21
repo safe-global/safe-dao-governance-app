@@ -1,8 +1,4 @@
-export type LockHistory = {
-  day: number
-  // can be negative for unlocks
-  amount: number
-}
+import { LockHistory } from './lock'
 
 export const floorNumber = (num: number, digits: number) => {
   const decimal = Math.pow(10, digits)
@@ -71,9 +67,9 @@ export const getBoostFunction =
       const previousInterval = lockIntervals.length > 0 ? lockIntervals[lockIntervals.length - 1] : undefined
 
       lockIntervals.push({
-        start: currentEvent.day,
+        start: Math.max(currentEvent.day, 0),
         amount: currentEvent.amount + (previousInterval?.amount ?? 0),
-        end: nextEvent?.day ?? d.x,
+        end: Math.max(nextEvent?.day ?? d.x, 0),
       })
     }
 

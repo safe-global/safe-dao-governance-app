@@ -1,5 +1,6 @@
 import { SEASON1_START, SEASON2_START } from '@/components/TokenLocking/BoostGraph/graphConstants'
-import { floorNumber, getBoostFunction, getTimeFactor, getTokenBoost, LockHistory } from '../boost'
+import { floorNumber, getBoostFunction, getTimeFactor, getTokenBoost } from '../boost'
+import { LockHistory } from '../lock'
 
 describe('boost', () => {
   describe('floorNumber', () => {

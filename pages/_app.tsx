@@ -28,6 +28,8 @@ import { useSafeSnapshot } from '@/hooks/useSafeSnapshot'
 import { usePendingDelegations } from '@/hooks/usePendingDelegations'
 
 import '@/styles/globals.css'
+import { useSafeTokenBalance, useSafeUserLockingInfos } from '@/hooks/useSafeTokenBalance'
+import { useLockHistory } from '@/hooks/useLockHistory'
 
 const InitApp = (): null => {
   setGatewayBaseUrl(GATEWAY_URL)
@@ -38,11 +40,16 @@ const InitApp = (): null => {
 
   usePendingDelegations()
 
-  // Populate caches
+  // Populate claiming app caches
   useChain()
   useDelegatesFile()
   useIsTokenPaused()
   useSafeSnapshot()
+
+  // Populate locking app caches
+  useSafeTokenBalance()
+  useSafeUserLockingInfos()
+  useLockHistory()
 
   return null
 }

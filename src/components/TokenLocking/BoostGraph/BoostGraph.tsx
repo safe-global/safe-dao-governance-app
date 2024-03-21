@@ -1,5 +1,8 @@
-import { FAKE_NOW } from '@/hooks/useLockHistory'
-import { floorNumber, getBoostFunction, LockHistory } from '@/utils/boost'
+import { CHAIN_START_TIMESTAMPS } from '@/config/constants'
+import { useChainId } from '@/hooks/useChainId'
+import { floorNumber, getBoostFunction } from '@/utils/boost'
+import { getCurrentDays } from '@/utils/date'
+import { LockHistory } from '@/utils/lock'
 import { useTheme } from '@mui/material/styles'
 import { useMemo } from 'react'
 import { VictoryAxis, VictoryChart, VictoryLine, VictoryScatter, DomainTuple, ForAxes, VictoryArea } from 'victory'
@@ -25,17 +28,19 @@ export const BoostGraph = ({
 }) => {
   const theme = useTheme()
   const victoryTheme = useVictoryTheme()
-
-  const now = FAKE_NOW
+  const chainId = useChainId()
+  const startTime = CHAIN_START_TIMESTAMPS[chainId]
+  const now = useMemo(() => getCurrentDays(startTime), [startTime])
 
   const currentBoostFunction = useMemo(() => getBoostFunction(now, 0, pastLocks), [now, pastLocks])
   const newBoostFunction = useMemo(() => getBoostFunction(now, lockedAmount, pastLocks), [lockedAmount, now, pastLocks])
 
-  const pastLockPoints = useMemo(() => generatePointsFromHistory(pastLocks), [pastLocks])
+  const pastLockPoints = useMemo(() => generatePointsFromHistory(pastLocks, now), [pastLocks, now])
 
   const currentBoostDataPoints = useMemo(
     () => [
       ...pastLockPoints,
+      { x: 0, y: currentBoostFunction({ x: 0 }) },
       { x: now, y: currentBoostFunction({ x: now }) },
       { x: SEASON1_START, y: currentBoostFunction({ x: SEASON1_START }) },
       { x: SEASON2_START, y: currentBoostFunction({ x: SEASON2_START }) },
@@ -46,6 +51,7 @@ export const BoostGraph = ({
   const projectedBoostDataPoints = useMemo(
     () => [
       ...pastLockPoints,
+      { x: 0, y: newBoostFunction({ x: 0 }) },
       { x: now, y: newBoostFunction({ x: now }) },
       { x: SEASON1_START, y: newBoostFunction({ x: SEASON1_START }) },
       { x: SEASON2_START, y: newBoostFunction({ x: SEASON2_START }) },
@@ -146,7 +152,7 @@ export const BoostGraph = ({
             ticks: { size: 5 },
             tickLabels: { fontSize: 12, padding: 16, fill: theme.palette.primary.light },
           }}
-          tickLabelComponent={<AxisTopLabel />}
+          tickLabelComponent={<AxisTopLabel startTime={startTime} />}
           theme={victoryTheme}
         />
         <VictoryAxis
@@ -185,7 +191,10 @@ export const BoostGraph = ({
           }
           size={4}
           dataComponent={
-            <ScatterDot backgroundColor={isLock ? theme.palette.primary.main : theme.palette.warning.main} />
+            <ScatterDot
+              today={now}
+              backgroundColor={isLock ? theme.palette.primary.main : theme.palette.warning.main}
+            />
           }
           domain={DOMAIN}
           data={[...pastLockPoints, { x: now, y: newBoostFunction({ x: now }) }]}
@@ -211,7 +220,10 @@ export const BoostGraph = ({
           }
           size={4}
           dataComponent={
-            <ScatterDot backgroundColor={isLock ? theme.palette.primary.main : theme.palette.warning.main} />
+            <ScatterDot
+              today={now}
+              backgroundColor={isLock ? theme.palette.primary.main : theme.palette.warning.main}
+            />
           }
           domain={DOMAIN}
           data={[{ x: SEASON2_START, y: newBoostFunction({ x: SEASON2_START }) }]}

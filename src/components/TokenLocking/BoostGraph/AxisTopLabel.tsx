@@ -1,10 +1,14 @@
 import { formatDay } from '@/utils/date'
-import { VictoryLabel } from 'victory'
+import { VictoryLabel, VictoryLabelProps } from 'victory'
 
-export const AxisTopLabel = (props: any) => {
-  const days: number = props.datum
+export const AxisTopLabel = ({ startTime, ...props }: VictoryLabelProps & { startTime: number; datum?: number }) => {
+  const days = props.datum
 
-  const dateLabel = formatDay(days)
+  if (days === undefined) {
+    return null
+  }
+
+  const dateLabel = formatDay(days, startTime)
 
   return (
     <>

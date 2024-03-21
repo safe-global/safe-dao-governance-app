@@ -6,23 +6,29 @@ import SafeToken from '@/public/images/token.svg'
 import { BoostGraph } from './BoostGraph/BoostGraph'
 
 import css from './styles.module.css'
-import { createLockTx } from '@/utils/lock'
+import { createLockTx, toRelativeLockHistory } from '@/utils/lock'
 import { createApproveTx } from '@/utils/safe-token'
 import { useSafeAppsSDK } from '@gnosis.pm/safe-apps-react-sdk'
 import { useState, ChangeEvent, useMemo, useCallback } from 'react'
 import { BigNumberish } from 'ethers'
 import { useChainId } from '@/hooks/useChainId'
 import { getBoostFunction } from '@/utils/boost'
-import { FAKE_NOW, useLockHistory } from '@/hooks/useLockHistory'
+import { useLockHistory } from '@/hooks/useLockHistory'
 import { useDebounce } from '@/hooks/useDebounce'
 import { SEASON2_START } from './BoostGraph/graphConstants'
+import { CHAIN_START_TIMESTAMPS } from '@/config/constants'
+import { getCurrentDays } from '@/utils/date'
 import { BoostBreakdown } from './BoostBreakdown'
 
 export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | undefined }) => {
   const { sdk } = useSafeAppsSDK()
   const chainId = useChainId()
+  const startTime = CHAIN_START_TIMESTAMPS[chainId]
+  const todayInDays = getCurrentDays(startTime)
 
   const pastLocks = useLockHistory()
+
+  const relativeLockHistory = useMemo(() => toRelativeLockHistory(pastLocks, startTime), [pastLocks, startTime])
 
   const [amount, setAmount] = useState('0')
 
@@ -33,10 +39,13 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
   const debouncedAmount = useDebounce(amount, 1000, '0')
   const cleanedAmount = useMemo(() => (debouncedAmount.trim() === '' ? '0' : debouncedAmount.trim()), [debouncedAmount])
 
-  const currentBoostFunction = useMemo(() => getBoostFunction(FAKE_NOW, 0, pastLocks), [pastLocks])
+  const currentBoostFunction = useMemo(
+    () => getBoostFunction(todayInDays, 0, relativeLockHistory),
+    [relativeLockHistory, todayInDays],
+  )
   const newBoostFunction = useMemo(
-    () => getBoostFunction(FAKE_NOW, Number(cleanedAmount), pastLocks),
-    [cleanedAmount, pastLocks],
+    () => getBoostFunction(todayInDays, Number(cleanedAmount), relativeLockHistory),
+    [cleanedAmount, relativeLockHistory, todayInDays],
   )
 
   const validateAmount = useCallback(
@@ -95,7 +104,7 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
       >
         <Grid container direction="row" spacing={2}>
           <Grid item xs={8}>
-            <BoostGraph lockedAmount={Number(cleanedAmount)} pastLocks={pastLocks} isLock />
+            <BoostGraph lockedAmount={Number(cleanedAmount)} pastLocks={relativeLockHistory} isLock />
 
             <Grid container gap={2} flexWrap="nowrap" mb={1} alignItems="center">
               <Grid item xs={8}>
@@ -143,7 +152,7 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
           </Grid>
           <Grid item xs={4}>
             <BoostBreakdown
-              realizedBoost={currentBoostFunction({ x: FAKE_NOW })}
+              realizedBoost={currentBoostFunction({ x: todayInDays })}
               currentFinalBoost={currentBoostFunction({ x: SEASON2_START })}
               newFinalBoost={newBoostFunction({ x: SEASON2_START })}
               isLock

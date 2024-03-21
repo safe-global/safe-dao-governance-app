@@ -34,13 +34,16 @@ const MONTH_LABEL: Record<number, string> = {
   11: 'December',
 }
 
-// 23rd April in millis
-const START_TIMESTAMP = 1713866400000
-
-export const formatDay = (days: number) => {
-  const date = new Date(START_TIMESTAMP + days * DAY * 1000)
+export const formatDay = (days: number, start: number) => {
+  const date = new Date(start + days * DAY * 1000)
   const month = date.getMonth()
   const day = date.getDate()
 
   return `${MONTH_LABEL[month]} ${day}`
 }
+
+export const toDaysSinceStart = (timestamp: number, start: number) => {
+  return Math.floor((timestamp - start) / (1000 * 60 * 60 * 24))
+}
+
+export const getCurrentDays = (startTime: number) => toDaysSinceStart(Date.now(), startTime)

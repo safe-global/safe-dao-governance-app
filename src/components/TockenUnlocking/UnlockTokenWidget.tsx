@@ -1,16 +1,17 @@
-import { FAKE_NOW } from '@/hooks/useLockHistory'
 import SafeToken from '@/public/images/token.svg'
-import { getBoostFunction, LockHistory } from '@/utils/boost'
+import { getBoostFunction } from '@/utils/boost'
 import css from './styles.module.css'
 import { Stack, Grid, Typography, TextField, InputAdornment, Button, CircularProgress } from '@mui/material'
 import { formatUnits, parseUnits } from 'ethers/lib/utils'
 import { BoostGraph } from '../TokenLocking/BoostGraph/BoostGraph'
 import { useDebounce } from '@/hooks/useDebounce'
-import { createUnlockTx } from '@/utils/lock'
+import { createUnlockTx, LockHistory } from '@/utils/lock'
 import { useState, useMemo, ChangeEvent, useCallback } from 'react'
 import { BigNumberish } from 'ethers'
 import { useChainId } from '@/hooks/useChainId'
 import { useSafeAppsSDK } from '@gnosis.pm/safe-apps-react-sdk'
+import { getCurrentDays } from '@/utils/date'
+import { CHAIN_START_TIMESTAMPS } from '@/config/constants'
 import { BoostBreakdown } from '../TokenLocking/BoostBreakdown'
 import { SEASON2_START } from '../TokenLocking/BoostGraph/graphConstants'
 
@@ -29,13 +30,15 @@ export const UnlockTokenWidget = ({
   const chainId = useChainId()
   const { sdk } = useSafeAppsSDK()
 
+  const todayInDays = getCurrentDays(CHAIN_START_TIMESTAMPS[chainId])
+
   const debouncedAmount = useDebounce(unlockAmount, 1000, '0')
   const cleanedAmount = useMemo(() => (debouncedAmount.trim() === '' ? '0' : debouncedAmount.trim()), [debouncedAmount])
 
-  const currentBoostFunction = useMemo(() => getBoostFunction(FAKE_NOW, 0, lockHistory), [lockHistory])
+  const currentBoostFunction = useMemo(() => getBoostFunction(todayInDays, 0, lockHistory), [todayInDays, lockHistory])
   const newBoostFunction = useMemo(
-    () => getBoostFunction(FAKE_NOW, -Number(cleanedAmount), lockHistory),
-    [cleanedAmount, lockHistory],
+    () => getBoostFunction(todayInDays, -Number(cleanedAmount), lockHistory),
+    [cleanedAmount, lockHistory, todayInDays],
   )
 
   const onChangeUnlockAmount = (event: ChangeEvent<HTMLInputElement>) => {
@@ -125,7 +128,7 @@ export const UnlockTokenWidget = ({
         </Grid>
         <Grid item xs={4}>
           <BoostBreakdown
-            realizedBoost={currentBoostFunction({ x: FAKE_NOW })}
+            realizedBoost={currentBoostFunction({ x: todayInDays })}
             currentFinalBoost={currentBoostFunction({ x: SEASON2_START })}
             newFinalBoost={newBoostFunction({ x: SEASON2_START })}
             isLock={false}
