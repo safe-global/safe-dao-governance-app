@@ -81,9 +81,6 @@ const ClaimOverview = (): ReactElement => {
 
   const decimals = getDecimalLength(total.inVesting)
 
-  const hasAllocation = Number(total.allocation) > 0
-  const isClaimable = Number(total.claimable) > 0
-
   // Flags
   const isInvestorClaimingDisabled = !!investorVesting && isTokenPaused
 
