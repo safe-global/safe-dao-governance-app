@@ -1,6 +1,5 @@
 import { Grid, Typography, Box, Button, CircularProgress, Stack, Paper, Link } from '@mui/material'
 import { useRouter } from 'next/router'
-import { formatEther } from 'ethers/lib/utils'
 import { BigNumber } from 'ethers'
 import type { ReactElement } from 'react'
 
@@ -10,7 +9,6 @@ import { SelectedDelegate } from '@/components/SelectedDelegate'
 import { AppRoutes } from '@/config/routes'
 import { useSafeTokenAllocation } from '@/hooks/useSafeTokenAllocation'
 import { TotalVotingPower } from '@/components/TotalVotingPower'
-import { formatAmount } from '@/utils/formatters'
 import { useTaggedAllocations } from '@/hooks/useTaggedAllocations'
 import { useIsWrongChain } from '@/hooks/useIsWrongChain'
 import SafeToken from '@/public/images/token.svg'
@@ -18,14 +16,10 @@ import { getGovernanceAppSafeAppUrl } from '@/utils/safe-apps'
 import { useChainId } from '@/hooks/useChainId'
 import { useWallet } from '@/hooks/useWallet'
 import { isSafe } from '@/utils/wallet'
-import { InfoBox } from '@/components/InfoBox'
 import { useIsDelegationPending } from '@/hooks/usePendingDelegations'
-import { Sep5InfoBox } from '@/components/Sep5InfoBox'
 import ClaimOverview from '@/components/Claim'
 import PaperContainer from '@/components/PaperContainer'
 import { canRedeemSep5Airdrop } from '@/utils/airdrop'
-
-import css from './styles.module.css'
 
 export const Intro = (): ReactElement => {
   const router = useRouter()
@@ -37,8 +31,6 @@ export const Intro = (): ReactElement => {
 
   const { isLoading, data: allocation } = useSafeTokenAllocation()
   const { total } = useTaggedAllocations()
-
-  const canRedeemSep5 = canRedeemSep5Airdrop(allocation)
 
   const hasAllocation = Number(total.allocation) > 0
   const isClaimable = Number(total.claimable) > 0
@@ -77,13 +69,13 @@ export const Intro = (): ReactElement => {
   }
   return (
     <Grid container spacing={3} direction="row">
-      <Grid item xs={12} mb={3}>
+      <Grid item xs={12}>
         <Typography variant="h2">Claim SAFE tokens and engage in governance</Typography>
       </Grid>
 
       <Grid item xs={8}>
         <Stack spacing={3}>
-          <ClaimOverview />
+          {isClaimable && <ClaimOverview />}
 
           <PaperContainer>
             <Typography variant="h6" fontWeight={700}>
@@ -98,7 +90,7 @@ export const Intro = (): ReactElement => {
 
       <Grid item xs={4}>
         <PaperContainer>
-          <Box my={10} textAlign="center">
+          <Box my={11} textAlign="center">
             <SafeToken alt="Safe Token logo" width={84} height={84} />
 
             <Box mt={4} display="flex" flexDirection="column">
