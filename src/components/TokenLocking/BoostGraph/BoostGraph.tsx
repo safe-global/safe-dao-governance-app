@@ -141,10 +141,10 @@ export const BoostGraph = ({
               return 'Program start'
             }
             if (value === 47) {
-              return 'Season 1'
+              return 'Points activation'
             }
 
-            return 'Season 2'
+            return 'Getting rewards'
           }}
           domain={DOMAIN}
           style={{
@@ -186,9 +186,16 @@ export const BoostGraph = ({
             },
           }}
           labels={[...pastLockPoints.map(() => ''), floorNumber(newBoostFunction({ x: now }), 2) + 'x']}
-          labelComponent={<ArrowDownLabel />}
+          labelComponent={
+            <ArrowDownLabel backgroundColor={isLock ? theme.palette.primary.main : theme.palette.warning.main} />
+          }
           size={4}
-          dataComponent={<ScatterDot today={now} />}
+          dataComponent={
+            <ScatterDot
+              today={now}
+              backgroundColor={isLock ? theme.palette.primary.main : theme.palette.warning.main}
+            />
+          }
           domain={DOMAIN}
           data={[...pastLockPoints, { x: now, y: newBoostFunction({ x: now }) }]}
           theme={victoryTheme}
@@ -208,9 +215,16 @@ export const BoostGraph = ({
             },
           }}
           labels={[floorNumber(newBoostFunction({ x: SEASON2_START }), 2) + 'x']}
-          labelComponent={<ArrowDownLabel />}
+          labelComponent={
+            <ArrowDownLabel backgroundColor={isLock ? theme.palette.primary.main : theme.palette.warning.main} />
+          }
           size={4}
-          dataComponent={<ScatterDot today={now} />}
+          dataComponent={
+            <ScatterDot
+              today={now}
+              backgroundColor={isLock ? theme.palette.primary.main : theme.palette.warning.main}
+            />
+          }
           domain={DOMAIN}
           data={[{ x: SEASON2_START, y: newBoostFunction({ x: SEASON2_START }) }]}
           theme={victoryTheme}

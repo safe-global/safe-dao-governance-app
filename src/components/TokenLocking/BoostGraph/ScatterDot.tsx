@@ -10,7 +10,11 @@ import { floorNumber } from '@/utils/boost'
  * @param props
  * @returns
  */
-export const ScatterDot = ({ today, ...props }: PointProps & { today: number }) => {
+export const ScatterDot = ({
+  today,
+  backgroundColor,
+  ...props
+}: PointProps & { today: number; backgroundColor: string }) => {
   const theme = useTheme()
 
   const [hovered, setHovered] = useState(false)
@@ -62,6 +66,7 @@ export const ScatterDot = ({ today, ...props }: PointProps & { today: number }) 
           x={props.x}
           y={props.y}
           text={`${floorNumber(props.datum.y, 2)}x`}
+          backgroundColor={backgroundColor}
         />
       )}
     </>

@@ -1,19 +1,8 @@
 import SafeToken from '@/public/images/token.svg'
-import { floorNumber, getBoostFunction } from '@/utils/boost'
+import { getBoostFunction } from '@/utils/boost'
 import css from './styles.module.css'
-import {
-  Box,
-  Stack,
-  Grid,
-  Typography,
-  TextField,
-  InputAdornment,
-  Button,
-  Divider,
-  CircularProgress,
-} from '@mui/material'
+import { Stack, Grid, Typography, TextField, InputAdornment, Button, CircularProgress } from '@mui/material'
 import { formatUnits, parseUnits } from 'ethers/lib/utils'
-import BoostCounter from '../BoostCounter'
 import { BoostGraph } from '../TokenLocking/BoostGraph/BoostGraph'
 import { useDebounce } from '@/hooks/useDebounce'
 import { createUnlockTx, LockHistory } from '@/utils/lock'
@@ -21,9 +10,10 @@ import { useState, useMemo, ChangeEvent, useCallback } from 'react'
 import { BigNumberish } from 'ethers'
 import { useChainId } from '@/hooks/useChainId'
 import { useSafeAppsSDK } from '@gnosis.pm/safe-apps-react-sdk'
-import { InfoOutlined } from '@mui/icons-material'
 import { getCurrentDays } from '@/utils/date'
 import { CHAIN_START_TIMESTAMPS } from '@/config/constants'
+import { BoostBreakdown } from '../TokenLocking/BoostBreakdown'
+import { SEASON2_START } from '../TokenLocking/BoostGraph/graphConstants'
 
 export const UnlockTokenWidget = ({
   lockHistory,
@@ -45,15 +35,11 @@ export const UnlockTokenWidget = ({
   const debouncedAmount = useDebounce(unlockAmount, 1000, '0')
   const cleanedAmount = useMemo(() => (debouncedAmount.trim() === '' ? '0' : debouncedAmount.trim()), [debouncedAmount])
 
-  const boostFunction = useMemo(() => {
-    return getBoostFunction(todayInDays, -Number(cleanedAmount), lockHistory)
-  }, [cleanedAmount, lockHistory, todayInDays])
-  const earlyBirdBoostFunction = useMemo(() => {
-    return getBoostFunction(todayInDays, -Number(cleanedAmount), lockHistory)
-  }, [cleanedAmount, lockHistory, todayInDays])
-  const endOfSeasonBoost = boostFunction({ x: 158 })
-  const earlyBirdBoost = earlyBirdBoostFunction({ x: 48 }) - 1
-  const newLockBoost = endOfSeasonBoost - earlyBirdBoost
+  const currentBoostFunction = useMemo(() => getBoostFunction(todayInDays, 0, lockHistory), [todayInDays, lockHistory])
+  const newBoostFunction = useMemo(
+    () => getBoostFunction(todayInDays, -Number(cleanedAmount), lockHistory),
+    [cleanedAmount, lockHistory, todayInDays],
+  )
 
   const onChangeUnlockAmount = (event: ChangeEvent<HTMLInputElement>) => {
     const error = validateAmount(event.target.value || '0')
@@ -141,24 +127,12 @@ export const UnlockTokenWidget = ({
           </Grid>
         </Grid>
         <Grid item xs={4}>
-          <Box className={`${css.boostInfoBox} ${css.bordered}`} p={3} gap={4} display="flex">
-            <Typography variant="body2">
-              Already realized boost:{' '}
-              {floorNumber(getBoostFunction(todayInDays, 0, lockHistory)({ x: todayInDays }), 2)}x
-            </Typography>
-
-            <Stack direction="column" width="100%" mt={2} alignItems="center">
-              <BoostCounter value={newLockBoost + earlyBirdBoost} variant="h3" fontWeight={700} />
-              <Typography variant="body2">Expected final boost</Typography>
-            </Stack>
-
-            <Divider sx={{ ml: '-16px', width: '100%', mr: '-16px' }} />
-
-            <Stack direction="row" alignItems="center" spacing={2}>
-              <InfoOutlined fontSize="small" />
-              <Typography variant="body2">Your boost will change if you unlock</Typography>
-            </Stack>
-          </Box>
+          <BoostBreakdown
+            realizedBoost={currentBoostFunction({ x: todayInDays })}
+            currentFinalBoost={currentBoostFunction({ x: SEASON2_START })}
+            newFinalBoost={newBoostFunction({ x: SEASON2_START })}
+            isLock={false}
+          />
         </Grid>
       </Grid>
     </Stack>
