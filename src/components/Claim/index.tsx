@@ -133,7 +133,7 @@ const ClaimOverview = (): ReactElement => {
   return (
     <PaperContainer>
       <Grid container spacing={3} direction="row" justifyContent="space-evenly">
-        <Grid item container xs={12} mb={1} spacing={3}>
+        <Grid item container xs={12} spacing={3}>
           <Grid item xs={12} sm={6}>
             <ClaimCard
               variant="claimable"
@@ -153,7 +153,7 @@ const ClaimOverview = (): ReactElement => {
             />
           </Grid>
         </Grid>
-        <Grid item xs={12}>
+        <Grid item pt={2} xs={12}>
           <Stack spacing={3}>
             <InfoAlert>
               <Typography variant="body2" color="text.secondary">
@@ -190,7 +190,7 @@ const ClaimOverview = (): ReactElement => {
             <Divider />
 
             <Box>
-              <Typography variant="h6" fontWeight={700}>
+              <Typography variant="h6" mt={2} fontWeight={700}>
                 How much do you want to claim?
               </Typography>
               <Typography color="text.secondary" variant="body1">
