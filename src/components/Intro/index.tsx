@@ -19,7 +19,6 @@ import { isSafe } from '@/utils/wallet'
 import { useIsDelegationPending } from '@/hooks/usePendingDelegations'
 import ClaimOverview from '@/components/Claim'
 import PaperContainer from '@/components/PaperContainer'
-import { canRedeemSep5Airdrop } from '@/utils/airdrop'
 
 export const Intro = (): ReactElement => {
   const router = useRouter()
@@ -32,7 +31,6 @@ export const Intro = (): ReactElement => {
   const { isLoading, data: allocation } = useSafeTokenAllocation()
   const { total } = useTaggedAllocations()
 
-  const hasAllocation = Number(total.allocation) > 0
   const isClaimable = Number(total.claimable) > 0
 
   const isDelegating = useIsDelegationPending()
@@ -48,11 +46,7 @@ export const Intro = (): ReactElement => {
     }
   }
 
-  const onClaim = onClick(AppRoutes.claim)
-
   const onDelegate = onClick(AppRoutes.delegate)
-
-  const onLock = onClick(AppRoutes.activity)
 
   const action = (
     <Button variant="contained" size="stretched" onClick={onDelegate} disabled={!canDelegate}>
@@ -81,7 +75,7 @@ export const Intro = (): ReactElement => {
             <Typography variant="h6" fontWeight={700}>
               Delegate your voting power
             </Typography>
-            <Grid item xs={12}>
+            <Grid item xs={8}>
               <SelectedDelegate delegate={delegate || undefined} action={action} shortenAddress hint />
             </Grid>
           </PaperContainer>

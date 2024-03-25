@@ -4,7 +4,6 @@ import {
   Button,
   Paper,
   Box,
-  Tooltip,
   Stack,
   SvgIcon,
   Divider,
@@ -12,12 +11,10 @@ import {
   CircularProgress,
   InputAdornment,
 } from '@mui/material'
-import ShieldOutlinedIcon from '@mui/icons-material/ShieldOutlined'
 import { useState, type ReactElement, ChangeEvent } from 'react'
 
 import PaperContainer from '../PaperContainer'
-import { TotalVotingPower } from '../TotalVotingPower'
-import { InfoOutlined } from '@mui/icons-material'
+
 import TitleStar from '@/public/images/leaderboard-title-star.svg'
 import { maxDecimals, minMaxValue, mustBeFloat } from '@/utils/validation'
 import { useIsTokenPaused } from '@/hooks/useIsTokenPaused'
@@ -74,7 +71,7 @@ const ClaimOverview = (): ReactElement => {
 
   const canRedeemSep5 = canRedeemSep5Airdrop(allocation)
 
-  const { sep5Vesting, ecosystemVesting, investorVesting } = getVestingTypes(allocation?.vestingData ?? [])
+  const { ecosystemVesting, investorVesting } = getVestingTypes(allocation?.vestingData ?? [])
 
   const { sep5, user, ecosystem, investor, total } = useTaggedAllocations()
   const totalClaimableAmountInEth = formatEther(total.claimable)
@@ -205,7 +202,7 @@ const ClaimOverview = (): ReactElement => {
             )}
 
             <Grid item container gap={3} flexWrap="nowrap" xs={12} mb={1}>
-              <Grid item xs={4}>
+              <Grid item xs={6}>
                 <TextField
                   variant="outlined"
                   fullWidth
