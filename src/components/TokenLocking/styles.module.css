@@ -86,3 +86,112 @@
 .highlight {
   animation: highlight 1s;
 }
+
+.gradientText {
+  background: linear-gradient(225deg, #5FDDFF 12.5%, #12FF80 88.07%);
+  background-clip: text;
+  color: transparent;
+}
+
+.steps {
+  z-index: 1;
+}
+
+.step {
+  position: relative;
+  padding-left: 40px;
+  margin-bottom: 40px;
+  counter-increment: item;
+}
+
+.step:last-child {
+  margin-bottom: 0;
+}
+
+.step:before {
+  content: counter(item);
+  width: 24px;
+  height: 24px;
+  display: block;
+  background: #636669;
+  border-radius: 50%;
+  color: #121312;
+  text-align: center;
+  position: absolute;
+  left: 0;
+}
+
+.step:after {
+  content: "";
+  left: 12px;
+  top: 36px;
+  position: absolute;
+  height: calc(100% - 16px);
+  width: 1px;
+  background-color: #303033;
+}
+
+.activeStep:before {
+  background-color: #12ff80;
+}
+
+.activeStep:after {
+  background-color: #12ff80;
+}
+
+.comingSoon {
+  background-color: #12ff80;
+  border-radius: 4px;
+  color: #121312;
+  padding: 4px 8px;
+}
+
+.stepDate {
+  background-color: #121312;
+  padding: 20px;
+  border-radius: 6px;
+}
+
+.rewards {
+  position: relative;
+}
+
+.rewardsBackground {
+  pointer-events: none;
+}
+
+.rewardsBackground:before {
+  content: "";
+  background: radial-gradient(41.34% 41.34% at 50% 50%, #29B6F6 0%, transparent 82.5%);
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  top: -200px;
+  left: 100px;
+  opacity: 0.2;
+}
+
+.rewardsBackground:after {
+  content: "";
+  background: radial-gradient(41.34% 41.34% at 50% 50%, rgba(18, 255, 128, 0.60) 0%, rgba(18, 255, 128, 0.00) 82.5%);
+  position: absolute;
+  width: 700px;
+  height: 700px;
+  top: -100px;
+  left: -250px;
+  opacity: 0.2;
+}
+
+.rewards:after {
+  content: "";
+  left: 12px;
+  top: -4px;
+  position: absolute;
+  height: calc(100% - 16px);
+  width: 1px;
+  background-color: #303033;
+}
+
+.diamondImage {
+  text-align: center;
+}
