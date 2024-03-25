@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   Paper,
+  Skeleton,
   SvgIcon,
   Table,
   TableBody,
@@ -91,6 +92,20 @@ const LookupAddress = ({ address }: { address: string }) => {
   )
 }
 
+const Ranking = ({ position }: { position: number }) => {
+  return position <= 3 ? (
+    <SvgIcon
+      component={position === 1 ? FirstPlaceIcon : position === 2 ? SecondPlaceIcon : ThirdPlaceIcon}
+      justifyContent="center"
+      inheritViewBox
+      fontSize={position === 1 ? 'large' : position === 2 ? 'medium' : 'small'}
+      sx={{ pt: '5px' }}
+    />
+  ) : (
+    <>{position}</>
+  )
+}
+
 const OwnRank = () => {
   const ownRankResult = useOwnRank()
   const { data: ownRank } = ownRankResult
@@ -99,19 +114,7 @@ const OwnRank = () => {
     return (
       <HighlightedTableRow key={ownRank.holder}>
         <StyledTableCell align="center">
-          {ownRank.position <= 3 ? (
-            <SvgIcon
-              component={
-                ownRank.position === 1 ? FirstPlaceIcon : ownRank.position === 2 ? SecondPlaceIcon : ThirdPlaceIcon
-              }
-              justifyContent="center"
-              inheritViewBox
-              fontSize={ownRank.position === 1 ? 'large' : ownRank.position === 2 ? 'medium' : 'small'}
-              sx={{ pt: '5px' }}
-            />
-          ) : (
-            `${ownRank.position}`
-          )}
+          <Ranking position={ownRank.position} />
         </StyledTableCell>
         <StyledTableCell align="left">
           <LookupAddress address={ownRank.holder} />
@@ -129,22 +132,29 @@ const LeaderboardPage = ({ index, onLoadMore }: { index: number; onLoadMore?: ()
   const leaderboardPage = useGlobalLeaderboardPage(LIMIT, index * LIMIT)
   const rows = leaderboardPage?.results ?? []
 
+  if (leaderboardPage === undefined) {
+    return (
+      <>
+        <StyledTableRow>
+          <StyledTableCell align="center">
+            <Skeleton />
+          </StyledTableCell>
+          <StyledTableCell align="left">
+            <Skeleton />
+          </StyledTableCell>
+          <StyledTableCell align="left">
+            <Skeleton />
+          </StyledTableCell>
+        </StyledTableRow>
+      </>
+    )
+  }
   return (
     <>
       {rows.map((row) => (
         <StyledTableRow key={row.holder}>
           <StyledTableCell align="center">
-            {row.position <= 3 ? (
-              <SvgIcon
-                component={row.position === 1 ? FirstPlaceIcon : row.position === 2 ? SecondPlaceIcon : ThirdPlaceIcon}
-                justifyContent="center"
-                inheritViewBox
-                fontSize="large"
-                sx={{ pt: '5px' }}
-              />
-            ) : (
-              `${row.position}`
-            )}
+            <Ranking position={row.position} />
           </StyledTableCell>
           <StyledTableCell align="left">
             <LookupAddress address={row.holder} />
@@ -164,7 +174,7 @@ const LeaderboardPage = ({ index, onLoadMore }: { index: number; onLoadMore?: ()
 }
 
 export const Leaderboard = () => {
-  const [pages, setPages] = useState([0])
+  const [pages, setPages] = useState(1)
 
   return (
     <Box>
@@ -193,11 +203,11 @@ export const Leaderboard = () => {
           </TableHead>
           <TableBody>
             <OwnRank />
-            {pages.map((page) => (
+            {Array.from(new Array(pages)).map((_, index) => (
               <LeaderboardPage
-                index={page}
-                key={page}
-                onLoadMore={page === pages.length - 1 ? () => setPages((prev) => [...prev, prev.length]) : undefined}
+                index={index}
+                key={index}
+                onLoadMore={index === pages - 1 ? () => setPages((prev) => prev + 1) : undefined}
               />
             ))}
           </TableBody>
