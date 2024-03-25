@@ -103,11 +103,7 @@ const TokenUnlocking = () => {
 
       <Typography variant="h1">Unlock / Withdraw</Typography>
       <PaperContainer sx={{ width: '888px' }}>
-        <UnlockStats
-          currentlyLocked={currentlyLocked}
-          unlockedTotal={unlockedTotal}
-          loading={userLockingInfosLoading}
-        />
+        <UnlockStats currentlyLocked={currentlyLocked} unlockedTotal={unlockedTotal} />
       </PaperContainer>
       <PaperContainer sx={{ width: '888px' }}>
         <UnlockTokenWidget currentlyLocked={currentlyLocked} lockHistory={relativeLockHistory} />
