@@ -12,6 +12,7 @@ import { ProgressBar } from '@/components/ProgressBar'
 import { AppRoutes } from '@/config/routes'
 import type { Delegate } from '@/hooks/useDelegate'
 import type { ContractDelegate } from '@/hooks/useContractDelegate'
+import MediumPaper from '../MediumPaper'
 
 export type DelegateFlow = {
   safeGuardian?: FileDelegate
@@ -43,8 +44,10 @@ export const Delegation = (): ReactElement => {
 
   return (
     <>
-      <ProgressBar value={progress} />
-      {steps[step]}
+      <MediumPaper>
+        <ProgressBar value={progress} />
+        {steps[step]}
+      </MediumPaper>
     </>
   )
 }

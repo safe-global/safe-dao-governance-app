@@ -25,34 +25,16 @@ export const ClaimCard = ({
   variant: 'claimable' | 'vesting'
   decimals: number
 }): ReactElement => {
-  const { palette } = useTheme()
-
   const ecosystemAmountInEth = formatEther(ecosystemAmount)
   const totalAmountInEth = formatEther(totalAmount)
   const numericalTotalAmountInEth = Number(totalAmountInEth)
 
   const isClaimable = variant === 'claimable'
 
-  const color = isClaimable ? palette.background.default : palette.text.primary
-
   return (
-    <Paper
-      sx={{
-        p: 3,
-        backgroundColor: ({ palette }) => (isClaimable ? palette.primary.main : palette.background.default),
-        color,
-        position: 'relative',
-      }}
-    >
-      {isClaimable && (
-        <>
-          <SingleGreenTile className={css.singleTile} color="secondary" />
-          <DoubleGreenTile className={css.doubleTile} color="secondary" />
-        </>
-      )}
-
-      <Typography marginBottom={2} fontWeight={700}>
-        {isClaimable ? 'Claim now' : 'Claim in future (vesting)'}
+    <Paper sx={{ p: 3, backgroundColor: 'background.default', position: 'relative' }}>
+      <Typography marginBottom={3} fontWeight={700}>
+        {isClaimable ? 'Claim now' : 'Claim at the end of the season'}
 
         {!isClaimable && (
           <Tooltip
@@ -60,21 +42,14 @@ export const ClaimCard = ({
             arrow
             placement="top"
           >
-            <InfoOutlined
-              sx={{
-                height: '16px',
-                width: '16px',
-                mb: '-2px',
-                ml: 1,
-              }}
-            />
+            <InfoOutlined sx={{ color: 'border.main', height: '16px', width: '16px', mb: '-2px', ml: 1 }} />
           </Tooltip>
         )}
       </Typography>
 
       <Grid container direction="column">
         <Grid item display="flex" gap={1} alignItems="center">
-          <Typography variant="subtitle2" color={color}>
+          <Typography variant="subtitle2" color="text.primary">
             Total
           </Typography>
           <Tooltip

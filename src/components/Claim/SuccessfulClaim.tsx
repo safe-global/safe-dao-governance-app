@@ -1,8 +1,12 @@
 import { Grid, Typography, Button } from '@mui/material'
 import type { ReactElement } from 'react'
+import { useSearchParams } from 'next/navigation'
 
 import SafeLogo from '@/public/images/safe-logo.svg'
-import type { ClaimFlow } from '@/components/Claim'
+
+export type ClaimFlow = {
+  claimedAmount: string
+}
 
 const SuccessfulClaim = ({ data, onNext }: { data: ClaimFlow; onNext: () => void }): ReactElement => {
   return (

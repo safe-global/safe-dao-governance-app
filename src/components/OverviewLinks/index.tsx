@@ -1,5 +1,5 @@
 import NextLink from 'next/link'
-import { SvgIcon, Grid, Typography, Paper, Box, Link } from '@mui/material'
+import { SvgIcon, Grid, Typography, Paper, Box, Link, Stack } from '@mui/material'
 import { useRef } from 'react'
 import type { ReactElement, SyntheticEvent } from 'react'
 
@@ -65,18 +65,10 @@ export const OverviewLinks = (): ReactElement => {
   const snapshotUrl = CHAIN_SNAPSHOT_URL[chainId]
 
   return (
-    <Grid container spacing={2}>
-      <Grid item xs={12} sm={6}>
-        <SafeDaoCard />
-      </Grid>
-      <Grid item xs container>
-        <Grid item xs={12} pb={{ sm: 1, xs: 2 }}>
-          <ExternalLinkCard href={FORUM_URL} header="Discuss" title="Safe{DAO} forum" />
-        </Grid>
-        <Grid item xs={12}>
-          <ExternalLinkCard href={snapshotUrl} header="Vote" title="Snapshot" />
-        </Grid>
-      </Grid>
-    </Grid>
+    <Stack spacing={2}>
+      <SafeDaoCard />
+      <ExternalLinkCard href={FORUM_URL} header="Discuss" title="Safe{DAO} forum" />
+      <ExternalLinkCard href={snapshotUrl} header="Vote" title="Snapshot" />
+    </Stack>
   )
 }

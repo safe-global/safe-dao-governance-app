@@ -9,6 +9,7 @@ import SafeDao from '@/components/EducationSeries/steps/SafeDao'
 import Disclaimer from '@/components/EducationSeries/steps/Disclaimer'
 import { AppRoutes } from '@/config/routes'
 import { ProgressBar } from '@/components/ProgressBar'
+import MediumPaper from '../MediumPaper'
 
 export const EducationSeries = (): ReactElement => {
   const router = useRouter()
@@ -30,9 +31,9 @@ export const EducationSeries = (): ReactElement => {
   const progress = ((step + 1) / steps.length) * 100
 
   return (
-    <>
+    <MediumPaper>
       <ProgressBar value={progress} />
       {steps[step]}
-    </>
+    </MediumPaper>
   )
 }
