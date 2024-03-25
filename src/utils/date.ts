@@ -42,6 +42,10 @@ export const formatDay = (days: number, start: number) => {
   return `${MONTH_LABEL[month]} ${day}`
 }
 
+export const isGreater24HoursDiff = (timestamp1: number, timestamp2: number) => {
+  return Math.abs(timestamp1 - timestamp2) > 1000 * 60 * 60 * 24
+}
+
 export const toDaysSinceStart = (timestamp: number, start: number) => {
   return Math.floor((timestamp - start) / (1000 * 60 * 60 * 24))
 }

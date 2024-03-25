@@ -9,13 +9,11 @@ import SafeToken from '@/public/images/token.svg'
 import css from './styles.module.css'
 
 export const UnlockStats = ({
-  loading,
   currentlyLocked,
   unlockedTotal,
 }: {
   currentlyLocked: BigNumberish
   unlockedTotal: BigNumberish
-  loading: boolean
 }) => {
   return (
     <Grid container direction="row" spacing={2}>
@@ -41,13 +39,7 @@ export const UnlockStats = ({
                   }}
                   className={css.amountDisplay}
                 >
-                  {loading ? (
-                    <Skeleton />
-                  ) : (
-                    <>
-                      <Odometer value={Number(formatUnits(currentlyLocked ?? '0', 18))} decimals={2} /> SAFE
-                    </>
-                  )}
+                  <Odometer value={Number(formatUnits(currentlyLocked ?? '0', 18))} decimals={2} /> SAFE
                 </Typography>
               </Grid>
             </Box>
@@ -77,13 +69,7 @@ export const UnlockStats = ({
                   }}
                   className={css.amountDisplay}
                 >
-                  {loading ? (
-                    <Skeleton />
-                  ) : (
-                    <>
-                      <Odometer value={Number(formatUnits(unlockedTotal ?? '0', 18))} decimals={2} /> SAFE
-                    </>
-                  )}
+                  <Odometer value={Number(formatUnits(unlockedTotal ?? '0', 18))} decimals={2} /> SAFE
                 </Typography>
               </Grid>
             </Box>
