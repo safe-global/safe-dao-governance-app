@@ -1,8 +1,8 @@
-import { useWallet } from '@/hooks/useWallet'
 import {
   Box,
-  Link,
+  Button,
   Paper,
+  Skeleton,
   SvgIcon,
   Table,
   TableBody,
@@ -19,6 +19,11 @@ import FirstPlaceIcon from '@/public/images/leaderboard-first-place.svg'
 import SecondPlaceIcon from '@/public/images/leaderboard-second-place.svg'
 import ThirdPlaceIcon from '@/public/images/leaderboard-third-place.svg'
 import TitleStar from '@/public/images/leaderboard-title-star.svg'
+import { useGlobalLeaderboardPage, useOwnRank } from '@/hooks/useLeaderboard'
+import { formatAmount } from '@/utils/formatters'
+import { formatEther } from 'ethers/lib/utils'
+import { ReactElement, useState } from 'react'
+import { useEnsLookup } from '@/hooks/useEnsLookup'
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -46,71 +51,130 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }))
 
-const StyledTable = styled(Table)(({ theme }) => ({
-  borderCollapse: 'separate',
-  '& tr:first-child td': {
+const HighlightedTableRow = styled(TableRow)(({ theme }) => ({
+  // hide last border
+  '& td:first-child': {
+    borderRadius: '6px 0 0 6px',
+  },
+  '& td:last-child': {
+    borderRadius: '0 6px 6px 0',
+  },
+  '& td': {
     backgroundColor: theme.palette.background.light,
     background:
       'linear-gradient(var(--mui-palette-background-light), var(--mui-palette-background-light)) padding-box,linear-gradient(to bottom, #5FDDFF 12.5%, #12FF80 88.07%) border-box',
-    border: '1px solid transparent',
+    border: '1px solid transparent !important',
   },
-  '& tr:first-child td:before': {},
-  'tr:first-child td:not(:first-child)': {
-    borderLeft: 'none',
+  '& td:not(:first-child)': {
+    borderLeft: 'none !important',
   },
-  '& tr:first-child td:not(:last-child)': {
-    borderRight: 'none',
+  '& td:not(:last-child)': {
+    borderRight: 'none !important',
   },
+
+  '& td:before': {},
 }))
 
-export const Leaderboard = () => {
-  const wallet = useWallet()
+const StyledTable = styled(Table)(({ theme }) => ({
+  borderCollapse: 'separate',
+}))
 
-  const ownAddress = wallet?.address ?? '0x85380007DF137839015C2C1254c4b6cec130C589'
-  const rows = [
-    {
-      rank: 600,
-      address: ownAddress,
-      name: undefined,
-      amountLocked: 3000,
-    },
-    {
-      rank: 1,
-      address: '0x3819b800c67Be64029C1393c8b2e0d0d627dADE2',
-      name: 'loremipsum.eth',
-      amountLocked: 20192938,
-    },
-    {
-      rank: 2,
-      address: '0x8803523c9Cc0F948C66FA906ac9065CB03fDc9A3',
-      name: undefined,
-      amountLocked: 1374464,
-    },
-    {
-      rank: 3,
-      address: '0x46f3451faA4A00D14B02ba55C2437B96FA3d0981',
-      name: undefined,
-      amountLocked: 955430,
-    },
-    {
-      rank: 4,
-      address: '0xB5E64e857bb7b5350196C5BAc8d639ceC1072745',
-      name: 'usame.eth',
-      amountLocked: 874900,
-    },
-    {
-      rank: 5,
-      address: '0x46f3451faA4A00D14B02ba55C2437B96FA3d0981',
-      name: undefined,
-      amountLocked: 600000,
-    },
-    {
-      rank: 6,
-      address: '0x8803523c9Cc0F948C66FA906ac9065CB03fDc9A3',
-      name: undefined,
-      amountLocked: 505238,
-    },
-  ]
+const LookupAddress = ({ address }: { address: string }) => {
+  const name = useEnsLookup(address)
+
+  return (
+    <>
+      <Box display="flex" flexDirection="row" gap={2} alignItems="center">
+        <Identicon size={32} address={address}></Identicon>
+        {name ? name : address}
+      </Box>
+    </>
+  )
+}
+
+const Ranking = ({ position }: { position: number }) => {
+  return position <= 3 ? (
+    <SvgIcon
+      component={position === 1 ? FirstPlaceIcon : position === 2 ? SecondPlaceIcon : ThirdPlaceIcon}
+      justifyContent="center"
+      inheritViewBox
+      fontSize={position === 1 ? 'large' : position === 2 ? 'medium' : 'small'}
+      sx={{ pt: '5px' }}
+    />
+  ) : (
+    <>{position}</>
+  )
+}
+
+const OwnRank = () => {
+  const ownRankResult = useOwnRank()
+  const { data: ownRank } = ownRankResult
+
+  if (ownRank) {
+    return (
+      <HighlightedTableRow key={ownRank.holder}>
+        <StyledTableCell align="center">
+          <Ranking position={ownRank.position} />
+        </StyledTableCell>
+        <StyledTableCell align="left">
+          <LookupAddress address={ownRank.holder} />
+        </StyledTableCell>
+        <StyledTableCell align="left">{formatAmount(formatEther(ownRank.lockedAmount), 0)}</StyledTableCell>
+      </HighlightedTableRow>
+    )
+  }
+
+  return null
+}
+
+const LeaderboardPage = ({ index, onLoadMore }: { index: number; onLoadMore?: () => void }): ReactElement => {
+  const LIMIT = 10
+  const leaderboardPage = useGlobalLeaderboardPage(LIMIT, index * LIMIT)
+  const rows = leaderboardPage?.results ?? []
+
+  if (leaderboardPage === undefined) {
+    return (
+      <>
+        <StyledTableRow>
+          <StyledTableCell align="center">
+            <Skeleton />
+          </StyledTableCell>
+          <StyledTableCell align="left">
+            <Skeleton />
+          </StyledTableCell>
+          <StyledTableCell align="left">
+            <Skeleton />
+          </StyledTableCell>
+        </StyledTableRow>
+      </>
+    )
+  }
+  return (
+    <>
+      {rows.map((row) => (
+        <StyledTableRow key={row.holder}>
+          <StyledTableCell align="center">
+            <Ranking position={row.position} />
+          </StyledTableCell>
+          <StyledTableCell align="left">
+            <LookupAddress address={row.holder} />
+          </StyledTableCell>
+          <StyledTableCell align="left">{formatAmount(formatEther(row.lockedAmount), 0)}</StyledTableCell>
+        </StyledTableRow>
+      ))}
+      {onLoadMore && leaderboardPage?.next && (
+        <tr>
+          <td colSpan={3} style={{ textAlign: 'center' }}>
+            <Button onClick={onLoadMore}>Load more</Button>
+          </td>
+        </tr>
+      )}
+    </>
+  )
+}
+
+export const Leaderboard = () => {
+  const [pages, setPages] = useState(1)
 
   return (
     <Box>
@@ -120,17 +184,10 @@ export const Leaderboard = () => {
           <Typography variant="h2" fontWeight={700} sx={{ mr: '8px', display: 'inline' }}>
             Leaderboard
           </Typography>
-          <Typography
-            variant="subtitle1"
-            fontSize="small"
-            sx={{ color: 'var(--mui-palette-text-secondary)', my: '8px', fontSize: '14px' }}
-          >
+          <Typography variant="subtitle1" fontSize="small" color="text.secondary" sx={{ my: '8px', fontSize: '14px' }}>
             Higher ranking means higher chances to get rewards.
           </Typography>
         </Box>
-        <Link href="" color="inherit">
-          <Typography sx={{ m: '8px 32px ', fontSize: '14px' }}>How it works</Typography>
-        </Link>
       </Box>
 
       <TableContainer component={Paper} sx={{ marginTop: -6 }}>
@@ -139,33 +196,19 @@ export const Leaderboard = () => {
             <TableRow>
               <StyledTableCell align="right"></StyledTableCell>
               <StyledTableCell align="right"></StyledTableCell>
-              <StyledTableCell align="left">Tokens Locked</StyledTableCell>
+              <StyledTableCell align="left">
+                <Typography color="text.secondary">Tokens Locked</Typography>
+              </StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => (
-              <StyledTableRow key={row.name}>
-                <StyledTableCell align="center">
-                  {row.rank <= 3 ? (
-                    <SvgIcon
-                      component={row.rank === 1 ? FirstPlaceIcon : row.rank === 2 ? SecondPlaceIcon : ThirdPlaceIcon}
-                      justifyContent="center"
-                      inheritViewBox
-                      fontSize={row.rank === 1 ? 'large' : row.rank === 2 ? 'medium' : 'small'}
-                      sx={{ pt: '5px' }}
-                    />
-                  ) : (
-                    `${row.rank}`
-                  )}
-                </StyledTableCell>
-                <StyledTableCell align="left">
-                  <Box display="flex" flexDirection="row" gap={2} alignItems="center">
-                    <Identicon size={32} address={row.address}></Identicon>
-                    {row.name ?? row.address}
-                  </Box>
-                </StyledTableCell>
-                <StyledTableCell align="left">{row.amountLocked}</StyledTableCell>
-              </StyledTableRow>
+            <OwnRank />
+            {Array.from(new Array(pages)).map((_, index) => (
+              <LeaderboardPage
+                index={index}
+                key={index}
+                onLoadMore={index === pages - 1 ? () => setPages((prev) => prev + 1) : undefined}
+              />
             ))}
           </TableBody>
         </StyledTable>

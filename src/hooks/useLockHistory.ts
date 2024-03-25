@@ -1,9 +1,8 @@
 import { useAddress } from './useAddress'
 import useSWRInfinite from 'swr/infinite'
 import { useMemo } from 'react'
-import { toDaysSinceStart } from '@/utils/date'
-import { useChainId } from './useChainId'
-import { CHAIN_START_TIMESTAMPS } from '@/config/constants'
+import { CGW_BASE_URL } from '@/config/constants'
+import { toCursorParam } from '@/utils/gateway'
 
 type LockingHistoryEntry =
   | {
@@ -42,23 +41,26 @@ type LockingHistoryEventPage = {
 
 export const useLockHistory = () => {
   const address = useAddress()
-  const chainId = useChainId()
 
   const getKey = useMemo(
     () => (pageIndex: number, previousPageData: LockingHistoryEventPage) => {
+      if (!address) {
+        // We cannot fetch data while the address is resolving
+        return null
+      }
       if (!previousPageData) {
         // Load first page
-        return `https://safe-client.staging.5afe.dev/v1/locking/${address}/history`
+        return `${CGW_BASE_URL}/v1/locking/${address}/history`
       }
       if (previousPageData && !previousPageData.next) return null // reached the end
 
       // Load next page
-      return `https://safe-client.staging.5afe.dev/v1/locking/${address}/history?cursor=${previousPageData.next}`
+      return previousPageData.next
     },
     [address],
   )
 
-  const { data } = useSWRInfinite(getKey, async (url: string) => {
+  const { data, size, setSize } = useSWRInfinite(getKey, async (url: string) => {
     return await fetch(url).then((resp) => {
       if (resp.ok) {
         return resp.json() as Promise<LockingHistoryEventPage>
@@ -67,6 +69,14 @@ export const useLockHistory = () => {
       }
     })
   })
+
+  // We need to load everything
+  if (data && data.length > 0) {
+    const totalPages = Math.ceil(data[0].count / 100)
+    if (totalPages > size) {
+      setSize(Math.ceil(data[0].count / 100))
+    }
+  }
 
   return useMemo(() => {
     if (data === undefined) {
