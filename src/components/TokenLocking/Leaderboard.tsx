@@ -166,7 +166,16 @@ const LeaderboardPage = ({ index, onLoadMore }: { index: number; onLoadMore?: ()
       {onLoadMore && leaderboardPage?.next && (
         <tr>
           <td colSpan={3} style={{ textAlign: 'center' }}>
-            <Link onClick={onLoadMore}>Load more</Link>
+            <Link
+              sx={{
+                '&:hover': {
+                  cursor: 'pointer',
+                },
+              }}
+              onClick={onLoadMore}
+            >
+              Load more
+            </Link>
           </td>
         </tr>
       )}
