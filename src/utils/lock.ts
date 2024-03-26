@@ -2,7 +2,7 @@ import { CHAIN_SAFE_LOCKING_ADDRESS } from '@/config/constants'
 import { BigNumber } from 'ethers'
 import type { JsonRpcProvider } from '@ethersproject/providers'
 import { defaultAbiCoder, formatUnits, Interface, parseUnits } from 'ethers/lib/utils'
-import { useLockHistory } from '@/hooks/useLockHistory'
+import { LockingHistoryEntry, UnlockEvent, useLockHistory, WithdrawEvent } from '@/hooks/useLockHistory'
 import { toDaysSinceStart } from './date'
 
 const safeLockingInterface = new Interface([
@@ -12,6 +12,9 @@ const safeLockingInterface = new Interface([
   'function getUnlock(address,uint32)',
   'function withdraw(uint32)',
 ])
+
+export const isUnlockEvent = (event: LockingHistoryEntry): event is UnlockEvent => event.eventType === 'UNLOCKED'
+export const isWithdrawEvent = (event: LockingHistoryEntry): event is WithdrawEvent => event.eventType === 'WITHDRAWN'
 
 export type LockHistory = {
   day: number

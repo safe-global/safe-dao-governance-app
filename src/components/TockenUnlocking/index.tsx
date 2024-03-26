@@ -2,11 +2,9 @@ import { Box, Button, CircularProgress, Grid, Link, Paper, Stack, Typography } f
 
 import NextLink from 'next/link'
 import { AppRoutes } from '@/config/routes'
-import { BigNumber } from 'ethers'
 import { useSafeAppsSDK } from '@gnosis.pm/safe-apps-react-sdk'
 import { createWithdrawTx, toRelativeLockHistory } from '@/utils/lock'
 import { useChainId } from '@/hooks/useChainId'
-import { useSafeUserLockingInfos } from '@/hooks/useSafeTokenBalance'
 import PaperContainer from '../PaperContainer'
 import { UnlockStats } from './UnlockStats'
 import { UnlockTokenWidget } from './UnlockTokenWidget'
@@ -20,9 +18,9 @@ import { Odometer } from '../Odometer'
 import SafeToken from '@/public/images/token.svg'
 import { useMemo, useState } from 'react'
 import { CHAIN_START_TIMESTAMPS } from '@/config/constants'
+import { useSummarizedLockHistory } from '@/hooks/useSummarizedLockHistory'
 
 const TokenUnlocking = () => {
-  const { isLoading: userLockingInfosLoading, data: userLockingInfos } = useSafeUserLockingInfos()
   const { sdk } = useSafeAppsSDK()
   const chainId = useChainId()
   const startTime = CHAIN_START_TIMESTAMPS[chainId]
@@ -30,10 +28,7 @@ const TokenUnlocking = () => {
 
   const relativeLockHistory = useMemo(() => toRelativeLockHistory(lockHistory, startTime), [lockHistory, startTime])
 
-  const currentlyLocked = userLockingInfos?.lockedAmount ?? BigNumber.from(0)
-  const unlockedTotal = userLockingInfos?.totalUnlockedAmount ?? BigNumber.from(0)
-  const nextUnlock = userLockingInfos?.nextUnlock
-  const unlockedReady = nextUnlock?.isUnlocked ? nextUnlock.unlockAmount : BigNumber.from(0)
+  const { totalLocked, totalUnlocked, totalWithdrawable } = useSummarizedLockHistory(lockHistory)
 
   const [isWithdrawing, setIsWithdrawing] = useState(false)
 
@@ -58,14 +53,10 @@ const TokenUnlocking = () => {
 
       <Typography variant="h1">Unlock / Withdraw</Typography>
       <PaperContainer sx={{ width: '888px' }}>
-        <UnlockStats
-          currentlyLocked={currentlyLocked}
-          unlockedTotal={unlockedTotal}
-          loading={userLockingInfosLoading}
-        />
+        <UnlockStats currentlyLocked={totalLocked} unlockedTotal={totalUnlocked} />
       </PaperContainer>
       <PaperContainer sx={{ width: '888px' }}>
-        <UnlockTokenWidget currentlyLocked={currentlyLocked} lockHistory={relativeLockHistory} />
+        <UnlockTokenWidget currentlyLocked={totalLocked} lockHistory={relativeLockHistory} />
       </PaperContainer>
       <PaperContainer sx={{ width: '888px' }}>
         <Typography variant="h4" fontWeight={700}>
@@ -95,7 +86,7 @@ const TokenUnlocking = () => {
                     }}
                     className={css.amountDisplay}
                   >
-                    <Odometer value={Number(formatUnits(unlockedReady ?? '0', 18))} decimals={2} /> SAFE
+                    <Odometer value={Number(formatUnits(totalWithdrawable ?? '0', 18))} decimals={2} /> SAFE
                   </Typography>
                 </Grid>
               </Box>
@@ -103,7 +94,7 @@ const TokenUnlocking = () => {
                 variant="contained"
                 color="primary"
                 onClick={onWithdraw}
-                disabled={unlockedReady.eq(0) || isWithdrawing}
+                disabled={totalWithdrawable.eq(0) || isWithdrawing}
                 sx={{ ml: 'auto !important' }}
               >
                 {isWithdrawing ? <CircularProgress size={20} /> : 'Withdraw'}

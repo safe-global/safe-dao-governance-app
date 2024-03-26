@@ -4,33 +4,36 @@ import { useMemo } from 'react'
 import { CGW_BASE_URL } from '@/config/constants'
 import { toCursorParam } from '@/utils/gateway'
 
-type LockingHistoryEntry =
-  | {
-      eventType: 'LOCKED'
-      executionDate: string
-      transactionHash: string
-      holder: string
-      amount: string
-      logIndex: string
-    }
-  | {
-      eventType: 'UNLOCKED'
-      executionDate: string
-      transactionHash: string
-      holder: string
-      amount: string
-      logIndex: string
-      unlockIndex: string
-    }
-  | {
-      eventType: 'WITHDRAWN'
-      executionDate: string
-      transactionHash: string
-      holder: string
-      amount: string
-      logIndex: string
-      unlockIndex: string
-    }
+export type LockEvent = {
+  eventType: 'LOCKED'
+  executionDate: string
+  transactionHash: string
+  holder: string
+  amount: string
+  logIndex: string
+}
+
+export type UnlockEvent = {
+  eventType: 'UNLOCKED'
+  executionDate: string
+  transactionHash: string
+  holder: string
+  amount: string
+  logIndex: string
+  unlockIndex: string
+}
+
+export type WithdrawEvent = {
+  eventType: 'WITHDRAWN'
+  executionDate: string
+  transactionHash: string
+  holder: string
+  amount: string
+  logIndex: string
+  unlockIndex: string
+}
+
+export type LockingHistoryEntry = LockEvent | UnlockEvent | WithdrawEvent
 
 type LockingHistoryEventPage = {
   count: number
