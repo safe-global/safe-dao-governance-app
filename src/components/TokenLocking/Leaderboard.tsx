@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Link,
   Paper,
   Skeleton,
   SvgIcon,
@@ -165,7 +166,7 @@ const LeaderboardPage = ({ index, onLoadMore }: { index: number; onLoadMore?: ()
       {onLoadMore && leaderboardPage?.next && (
         <tr>
           <td colSpan={3} style={{ textAlign: 'center' }}>
-            <Button onClick={onLoadMore}>Load more</Button>
+            <Link onClick={onLoadMore}>Load more</Link>
           </td>
         </tr>
       )}

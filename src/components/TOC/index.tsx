@@ -7,7 +7,11 @@ import { AppRoutes } from '@/config/routes'
 export const TOC = () => {
   return (
     <Stack spacing={3}>
-      <Link href={AppRoutes.activity} component={NextLink} sx={{ display: 'flex', alignItems: 'center' }}>
+      <Link
+        href={AppRoutes.activity}
+        component={NextLink}
+        sx={{ display: 'flex', alignItems: 'center', color: ({ palette }) => palette.primary.main }}
+      >
         <ChevronLeft />
         Back to main
       </Link>
