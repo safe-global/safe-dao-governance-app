@@ -86,8 +86,8 @@ export const SelectedDelegate = ({
       </Card>
       {hint && (
         <InfoAlert mt={2}>
-          <Typography variant="body2">
-            You only delegate your voting power and not the ownership of your Safe Tokens.
+          <Typography variant="body2" color="text.secondary">
+            You only delegate your voting power and not the ownership over your tokens.
           </Typography>
         </InfoAlert>
       )}

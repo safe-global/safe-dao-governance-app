@@ -34,7 +34,7 @@ export const ClaimCard = ({
   return (
     <Paper sx={{ p: 3, backgroundColor: 'background.default', position: 'relative' }}>
       <Typography marginBottom={3} fontWeight={700}>
-        {isClaimable ? 'Claim now' : 'Claim at the end of the season'}
+        {isClaimable ? 'Claim now' : 'Claim in future (vesting)'}
 
         {!isClaimable && (
           <Tooltip
