@@ -195,3 +195,67 @@
 .diamondImage {
   text-align: center;
 }
+
+.milesReceipt {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 1000px;
+  height: 450px;
+  display: flex;
+  overflow: hidden;
+}
+
+.leftReceipt, .rightReceipt {
+  background-color: #121312;
+  border-radius: 20px;
+  padding: 40px;
+}
+
+.leftReceipt {
+  position: relative;
+  flex-grow: 1;
+}
+
+.leftReceipt:after {
+  content: "";
+  border-right: 1px dashed white;
+  position: absolute;
+  right: 0;
+  top: 20px;
+  height: calc(100% - 40px);
+}
+
+.rightReceipt {
+  width: 388px;
+}
+
+.barcode {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.closeButton {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+}
+
+.gradientBackground {
+  position: absolute;
+  width: 1000px;
+  height: 1000px;
+  opacity: 0.3;
+  z-index: 1;
+  top: -200px;
+  left: -100px;
+  background: radial-gradient(41.34% 41.34% at 50% 50%, rgba(18, 255, 128, 0.60) 0%, rgba(18, 255, 128, 0.00) 82.5%);
+  pointer-events: none;
+}
+
+.unlockGradient {
+  background: radial-gradient(41.34% 41.34% at 50% 50%, #FF8061 0%, rgba(255, 128, 97, 0.00) 82.5%);
+}
