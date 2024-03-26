@@ -27,7 +27,7 @@ const SafeDaoCard = () => {
         <SvgIcon component={Hat} inheritViewBox color="info" />
       </div>
       <Box>
-        <Typography variant="h3" fontWeight={700}>
+        <Typography variant="h3" fontWeight={700} mt={5}>
           What is Safe DAO?
         </Typography>
         <Link href={AppRoutes.safedao} component={NextLink} ref={linkRef}>
