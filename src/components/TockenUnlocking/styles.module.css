@@ -33,15 +33,6 @@
   min-width: 6px;
 }
 
-.amountDisplay {
-  line-height: 2em;
-  font-weight: 700;
-  display: inline-flex;
-  gap: 4px;
-  align-items: center;
-  z-index: 1;
-}
-
 .badge :global .MuiBadge-badge {
   bottom: 4px;
   right: 4px;
