@@ -28,9 +28,7 @@ const SafeDaoCard = () => {
       </div>
       <Box>
         <Typography variant="h3" fontWeight={700}>
-          What is
-          <br />
-          Safe{`{DAO}`}?
+          What is Safe DAO?
         </Typography>
         <Link href={AppRoutes.safedao} component={NextLink} ref={linkRef}>
           Learn more
