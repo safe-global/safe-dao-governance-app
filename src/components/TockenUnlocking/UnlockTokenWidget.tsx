@@ -1,5 +1,5 @@
 import SafeToken from '@/public/images/token.svg'
-import { getBoostFunction } from '@/utils/boost'
+import { floorNumber, getBoostFunction } from '@/utils/boost'
 import css from './styles.module.css'
 import { Stack, Grid, Typography, TextField, InputAdornment, Button, CircularProgress } from '@mui/material'
 import { formatUnits, parseUnits } from 'ethers/lib/utils'
@@ -17,6 +17,7 @@ import { SEASON2_START } from '../TokenLocking/BoostGraph/graphConstants'
 import Track from '../Track'
 import { LOCK_EVENTS } from '@/analytics/lockEvents'
 import { trackSafeAppEvent } from '@/utils/analytics'
+import MilesReceipt from '@/components/TokenLocking/MilesReceipt'
 
 export const UnlockTokenWidget = ({
   lockHistory,
@@ -25,6 +26,7 @@ export const UnlockTokenWidget = ({
   lockHistory: LockHistory[]
   currentlyLocked: BigNumberish
 }) => {
+  const [receiptOpen, setReceiptOpen] = useState<boolean>(false)
   const [unlockAmount, setUnlockAmount] = useState('0')
   const [unlockAmountError, setUnlockAmountError] = useState<string>()
 
@@ -71,6 +73,7 @@ export const UnlockTokenWidget = ({
     try {
       await sdk.txs.send({ txs: [unlockTx] })
       trackSafeAppEvent(LOCK_EVENTS.UNLOCK_SUCCESS.action)
+      setReceiptOpen(true)
     } catch (err) {
       console.error(err)
     }
@@ -141,6 +144,13 @@ export const UnlockTokenWidget = ({
           />
         </Grid>
       </Grid>
+      <MilesReceipt
+        open={receiptOpen}
+        onClose={() => setReceiptOpen(false)}
+        amount={unlockAmount}
+        newFinalBoost={floorNumber(newBoostFunction({ x: SEASON2_START }), 2)}
+        isUnlock
+      />
     </Stack>
   )
 }

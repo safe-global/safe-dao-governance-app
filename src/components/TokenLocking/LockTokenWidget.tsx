@@ -12,7 +12,7 @@ import { useSafeAppsSDK } from '@gnosis.pm/safe-apps-react-sdk'
 import { useState, ChangeEvent, useMemo, useCallback } from 'react'
 import { BigNumberish } from 'ethers'
 import { useChainId } from '@/hooks/useChainId'
-import { getBoostFunction } from '@/utils/boost'
+import { floorNumber, getBoostFunction } from '@/utils/boost'
 import { useLockHistory } from '@/hooks/useLockHistory'
 import { useDebounce } from '@/hooks/useDebounce'
 import { SEASON2_START } from './BoostGraph/graphConstants'
@@ -22,8 +22,10 @@ import { BoostBreakdown } from './BoostBreakdown'
 import Track from '../Track'
 import { LOCK_EVENTS } from '@/analytics/lockEvents'
 import { trackSafeAppEvent } from '@/utils/analytics'
+import MilesReceipt from '@/components/TokenLocking/MilesReceipt'
 
 export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | undefined }) => {
+  const [receiptOpen, setReceiptOpen] = useState<boolean>(false)
   const { sdk } = useSafeAppsSDK()
   const chainId = useChainId()
   const startTime = CHAIN_START_TIMESTAMPS[chainId]
@@ -85,6 +87,7 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
     try {
       await sdk.txs.send({ txs: [approveTx, lockTx] })
       trackSafeAppEvent(LOCK_EVENTS.LOCK_SUCCESS.action)
+      setReceiptOpen(true)
     } catch (error) {
       console.error(error)
     }
@@ -166,6 +169,12 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
           </Grid>
         </Grid>
       </Stack>
+      <MilesReceipt
+        open={receiptOpen}
+        onClose={() => setReceiptOpen(false)}
+        amount={amount}
+        newFinalBoost={floorNumber(newBoostFunction({ x: SEASON2_START }), 2)}
+      />
     </>
   )
 }
