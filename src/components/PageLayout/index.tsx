@@ -8,8 +8,10 @@ import { Header } from '@/components/Header'
 
 import css from './styles.module.css'
 import NavTabs from '../NavTabs'
-import { AppRoutes, RoutesWithNavigation } from '@/config/routes'
+import { AppRoutes } from '@/config/routes'
 import { useRouter } from 'next/router'
+
+export const RoutesWithNavigation = [AppRoutes.activity, AppRoutes.index]
 
 export const PageLayout = ({ children }: { children: ReactNode }): ReactElement => {
   const router = useRouter()
