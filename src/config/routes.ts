@@ -9,6 +9,7 @@ export const AppRoutes = {
   claim: '/claim',
   activity: '/activity',
   unlock: '/unlock',
+  terms: '/terms',
 }
 
 export const RoutesWithNavigation = [AppRoutes.activity, AppRoutes.index]
