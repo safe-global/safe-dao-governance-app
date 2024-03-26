@@ -4,7 +4,7 @@ import PaperContainer from '../PaperContainer'
 import NextLink from 'next/link'
 import { AppRoutes } from '@/config/routes'
 
-export const TOC = () => {
+export const TermsAndConditions = () => {
   return (
     <Stack spacing={3}>
       <Link
