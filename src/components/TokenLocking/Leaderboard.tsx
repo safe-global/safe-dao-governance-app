@@ -98,7 +98,7 @@ const Ranking = ({ position }: { position: number }) => {
       component={position === 1 ? FirstPlaceIcon : position === 2 ? SecondPlaceIcon : ThirdPlaceIcon}
       justifyContent="center"
       inheritViewBox
-      fontSize={position === 1 ? 'large' : position === 2 ? 'medium' : 'small'}
+      fontSize="medium"
       sx={{ pt: '5px' }}
     />
   ) : (
