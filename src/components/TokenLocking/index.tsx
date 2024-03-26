@@ -1,6 +1,6 @@
-import { Grid, Stack, SvgIcon, Typography } from '@mui/material'
+import { Grid, Link, Stack, SvgIcon, Typography } from '@mui/material'
 import { useSafeTokenBalance, useSafeUserLockingInfos } from '@/hooks/useSafeTokenBalance'
-
+import NextLink from 'next/link'
 import { Leaderboard } from './Leaderboard'
 import { CurrentStats } from './CurrentStats'
 import { LockTokenWidget } from './LockTokenWidget'
@@ -8,6 +8,7 @@ import { PlaceholderTopRight } from './PlaceholderTopRight'
 import { ActionNavigation } from './ActionNavigation'
 import PaperContainer from '../PaperContainer'
 import Asterix from '@/public/images/asterix.svg'
+import { AppRoutes } from '@/config/routes'
 
 const TokenLocking = () => {
   const { isLoading: safeBalanceLoading, data: safeBalance } = useSafeTokenBalance()
@@ -51,6 +52,11 @@ const TokenLocking = () => {
             <PlaceholderTopRight />
           </PaperContainer>
         </Stack>
+      </Grid>
+      <Grid item xs={12}>
+        <Link href={AppRoutes.toc} component={NextLink} sx={{ float: 'right' }}>
+          Terms and Conditions
+        </Link>
       </Grid>
     </Grid>
   )
