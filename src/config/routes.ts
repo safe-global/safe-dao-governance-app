@@ -10,6 +10,9 @@ export const AppRoutes = {
   activity: '/activity',
   unlock: '/unlock',
   terms: '/terms',
+  connect: '/connect',
 }
 
 export const RoutesWithNavigation = [AppRoutes.activity, AppRoutes.index]
+
+export const RoutesRequiringWallet = [AppRoutes.activity, AppRoutes.claim, AppRoutes.unlock, AppRoutes.index]
