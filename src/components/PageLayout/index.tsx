@@ -8,21 +8,23 @@ import { Header } from '@/components/Header'
 
 import css from './styles.module.css'
 import NavTabs from '../NavTabs'
-import { AppRoutes, RoutesRequiringWallet, RoutesWithNavigation } from '@/config/routes'
+import { AppRoutes, RoutesWithNavigation, RoutesRequiringWallet } from '@/config/routes'
 import { useRouter } from 'next/router'
 import { useWallet } from '@/hooks/useWallet'
+import { useIsSafeApp } from '@/hooks/useIsSafeApp'
 
 export const PageLayout = ({ children }: { children: ReactNode }): ReactElement => {
   const router = useRouter()
   const showNavigation = RoutesWithNavigation.includes(router.route)
 
   const wallet = useWallet()
+  const isSafeApp = useIsSafeApp()
 
   useEffect(() => {
-    if (!wallet && RoutesRequiringWallet.includes(router.route)) {
+    if (!wallet && !isSafeApp && RoutesRequiringWallet.includes(router.route)) {
       router.push(AppRoutes.connect)
     }
-  })
+  }, [isSafeApp, router, wallet])
 
   return (
     <>
