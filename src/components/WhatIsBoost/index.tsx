@@ -1,10 +1,12 @@
-import { Link, Stack, Typography } from '@mui/material'
+import { Link, Stack, SvgIcon, Typography } from '@mui/material'
 import { AppRoutes } from '@/config/routes'
 import NextLink from 'next/link'
 import { ChevronLeft, SignalCellularAlt, SignalCellularAlt2Bar } from '@mui/icons-material'
 import PaperContainer from '@/components/PaperContainer'
 import TokenBoost from '@/public/images/token-boost.png'
 import Timefactor from '@/public/images/timefactor.png'
+import SafeLogo from '@/public/images/safe-logo-round.svg'
+import ClockIcon from '@/public/images/clock-alt.svg'
 import Image from 'next/image'
 import css from './styles.module.css'
 
@@ -43,7 +45,8 @@ const WhatIsBoost = () => {
           further:
         </Typography>
 
-        <Typography variant="h3" fontWeight="bold" mt={3}>
+        <Typography variant="h3" fontWeight="bold" mt={3} display="flex" alignItems="center" gap={1}>
+          <SvgIcon component={SafeLogo} inheritViewBox />
           Token boost
         </Typography>
 
@@ -55,7 +58,8 @@ const WhatIsBoost = () => {
 
         <Image src={TokenBoost} alt="Token boost diagram" style={{ width: '100%', height: 'auto' }} />
 
-        <Typography variant="h3" fontWeight="bold" mt={3}>
+        <Typography variant="h3" fontWeight="bold" mt={3} display="flex" alignItems="center" gap={1}>
+          <SvgIcon component={ClockIcon} inheritViewBox sx={{ color: ({ palette }) => palette.primary.main }} />
           Timefactor boost
         </Typography>
 
