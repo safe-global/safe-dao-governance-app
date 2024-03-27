@@ -10,6 +10,7 @@ import css from './styles.module.css'
 import NavTabs from '../NavTabs'
 import { AppRoutes, RoutesWithNavigation } from '@/config/routes'
 import { useRouter } from 'next/router'
+import { NAVIGATION_EVENTS } from '@/analytics/navigation'
 
 export const PageLayout = ({ children }: { children: ReactNode }): ReactElement => {
   const router = useRouter()
@@ -33,10 +34,12 @@ export const PageLayout = ({ children }: { children: ReactNode }): ReactElement 
                 {
                   label: 'Activity App',
                   href: AppRoutes.activity,
+                  event: NAVIGATION_EVENTS.OPEN_LOCKING,
                 },
                 {
                   label: 'Governance / Claiming',
                   href: AppRoutes.index,
+                  event: NAVIGATION_EVENTS.OPEN_CLAIM,
                 },
               ]}
             />

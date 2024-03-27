@@ -9,12 +9,15 @@ export const LOCK_EVENTS = {
     action: 'Withdraw tokens button',
   },
   LOCK_SUCCESS: {
-    action: 'Lock successful',
+    action: 'Transaction proposed',
+    label: 'locking',
   },
   UNLOCK_SUCCESS: {
-    action: 'Unlock successful',
+    action: 'Transaction proposed',
+    label: 'unlocking',
   },
   WITHDRAW_SUCCESS: {
-    action: 'Withdraw successful',
+    action: 'Transaction proposed',
+    label: 'withdrawal',
   },
 }

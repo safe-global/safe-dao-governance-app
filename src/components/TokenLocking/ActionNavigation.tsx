@@ -1,11 +1,12 @@
+import { NAVIGATION_EVENTS } from '@/analytics/navigation'
 import { AppRoutes } from '@/config/routes'
 import { useChainId } from '@/hooks/useChainId'
 import { useWallet } from '@/hooks/useWallet'
 import { getGovernanceAppSafeAppUrl } from '@/utils/safe-apps'
 import { isSafe } from '@/utils/wallet'
-import { ChevronRight } from '@mui/icons-material'
-import { Grid, Typography, Stack, Button, Box } from '@mui/material'
+import { Typography, Stack, Button, Box } from '@mui/material'
 import { useRouter } from 'next/router'
+import Track from '../Track'
 
 import css from './styles.module.css'
 
@@ -30,12 +31,18 @@ export const ActionNavigation = () => {
         <Typography variant="subtitle1" fontWeight={700}>
           Remove SAFE from locking
         </Typography>
-
-        <Button variant="outlined" color="primary" onClick={onUnlockAndWithdraw} sx={{ borderWidth: '1px !important' }}>
-          <Box display="flex" alignItems="center">
-            <Box>Unlock/Withdraw</Box>
-          </Box>
-        </Button>
+        <Track {...NAVIGATION_EVENTS.OPEN_UNLOCKING}>
+          <Button
+            variant="outlined"
+            color="primary"
+            onClick={onUnlockAndWithdraw}
+            sx={{ borderWidth: '1px !important' }}
+          >
+            <Box display="flex" alignItems="center">
+              <Box>Unlock/Withdraw</Box>
+            </Box>
+          </Button>
+        </Track>
       </Box>
     </Stack>
   )
