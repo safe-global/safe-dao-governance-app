@@ -11,9 +11,5 @@ export const useEnsLookup = (address: string | undefined): string | undefined =>
     return undefined
   })
 
-  if (lookupResult.data) {
-    return lookupResult.data
-  }
-
-  return address
+  return lookupResult.data || undefined
 }

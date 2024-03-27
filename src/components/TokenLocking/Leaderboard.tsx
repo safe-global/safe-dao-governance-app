@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   Link,
   Paper,
   Skeleton,
@@ -11,7 +10,9 @@ import {
   TableHead,
   TableRow,
   Typography,
+  useMediaQuery,
 } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
 
 import { styled } from '@mui/material/styles'
 import TableCell, { tableCellClasses } from '@mui/material/TableCell'
@@ -80,14 +81,25 @@ const StyledTable = styled(Table)(({ theme }) => ({
   borderCollapse: 'separate',
 }))
 
+export const shortenAddress = (address: string, length = 4): string => {
+  if (!address) {
+    return ''
+  }
+
+  return `${address.slice(0, length + 2)}...${address.slice(-length)}`
+}
+
 const LookupAddress = ({ address }: { address: string }) => {
   const name = useEnsLookup(address)
+  const theme = useTheme()
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'))
+  const displayAddress = isSmallScreen ? shortenAddress(address) : address
 
   return (
     <>
       <Box display="flex" flexDirection="row" gap={2} alignItems="center">
         <Identicon size={32} address={address}></Identicon>
-        {name ? name : address}
+        {name ? name : displayAddress}
       </Box>
     </>
   )
@@ -109,6 +121,7 @@ const Ranking = ({ position }: { position: number }) => {
 
 const OwnRank = () => {
   const ownRankResult = useOwnRank()
+
   const { data: ownRank } = ownRankResult
 
   if (ownRank) {

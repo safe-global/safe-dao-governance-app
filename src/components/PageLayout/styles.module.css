@@ -4,21 +4,16 @@
   margin: auto;
 }
 
-.tiles {
-  position: relative;
-  top: -200px;
-}
-
 @media (max-width: 1600px) {
   .container {
     width: 90vw;
   }
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 600px) {
   .container {
-    width: 100%;
     height: 100%;
+    width: 100%;
   }
 
   .tiles {

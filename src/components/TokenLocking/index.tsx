@@ -21,7 +21,7 @@ const TokenLocking = () => {
         <Typography variant="h2">SAFE Activity Rewards</Typography>
       </Grid>
 
-      <Grid item xs={8}>
+      <Grid item xs={12} lg={8}>
         <Stack spacing={3}>
           <PaperContainer>
             <CurrentStats
@@ -41,7 +41,7 @@ const TokenLocking = () => {
         </Stack>
       </Grid>
 
-      <Grid item xs={4}>
+      <Grid item xs={12} lg={4}>
         <Stack spacing={3}>
           <PaperContainer sx={{ position: 'relative', overflow: 'hidden' }}>
             <SvgIcon
