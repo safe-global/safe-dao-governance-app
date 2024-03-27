@@ -16,11 +16,6 @@ const digitRotations: Record<number, number> = {
   [5]: Math.random() * 6 - 3,
 }
 
-const roundNumber = (num: number, digits: number) => {
-  const decimal = Math.pow(10, digits)
-  return Math.round(num * decimal) / decimal
-}
-
 const BoostCounter = ({
   value,
   direction,
@@ -66,7 +61,7 @@ const BoostCounter = ({
       ) {
         rotationRef.current = digitRotations[floorNumber(newNumber, 0)]
       }
-      setCurrentNumber(roundNumber(newNumber, 3))
+      setCurrentNumber(floorNumber(newNumber, 3))
 
       if (elapsed < DURATION && targetRef.current === target) {
         requestAnimationFrame(tick)
