@@ -59,7 +59,7 @@ export const ConnectWallet = (): ReactElement => {
         </Grid>
 
         <Grid item xs={12}>
-          <OverviewLinks />
+          <OverviewLinks gridView />
         </Grid>
       </Grid>
     </PaperContainer>

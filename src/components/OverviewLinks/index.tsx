@@ -57,16 +57,24 @@ const ExternalLinkCard = ({ header, title, href }: { header: string; title: stri
   )
 }
 
-export const OverviewLinks = (): ReactElement => {
+export const OverviewLinks = ({ gridView }: { gridView?: boolean }): ReactElement => {
   const chainId = useChainId()
 
   const snapshotUrl = CHAIN_SNAPSHOT_URL[chainId]
 
   return (
-    <Stack spacing={2}>
-      <SafeDaoCard />
-      <ExternalLinkCard href={FORUM_URL} header="Discuss" title="Safe{DAO} forum" />
-      <ExternalLinkCard href={snapshotUrl} header="Vote" title="Snapshot" />
-    </Stack>
+    <Grid container spacing={2}>
+      <Grid item xs={12} sm={gridView ? 6 : 12}>
+        <SafeDaoCard />
+      </Grid>
+      <Grid item xs container>
+        <Grid item xs={12} pb={{ sm: 1, xs: 2 }}>
+          <ExternalLinkCard href={FORUM_URL} header="Discuss" title="Safe{DAO} forum" />
+        </Grid>
+        <Grid item xs={12}>
+          <ExternalLinkCard href={snapshotUrl} header="Vote" title="Snapshot" />
+        </Grid>
+      </Grid>
+    </Grid>
   )
 }
