@@ -1,9 +1,5 @@
 import { NAVIGATION_EVENTS } from '@/analytics/navigation'
 import { AppRoutes } from '@/config/routes'
-import { useChainId } from '@/hooks/useChainId'
-import { useWallet } from '@/hooks/useWallet'
-import { getGovernanceAppSafeAppUrl } from '@/utils/safe-apps'
-import { isSafe } from '@/utils/wallet'
 import { Typography, Stack, Button, Box } from '@mui/material'
 import { useRouter } from 'next/router'
 import Track from '../Track'
@@ -12,16 +8,9 @@ import css from './styles.module.css'
 
 export const ActionNavigation = () => {
   const router = useRouter()
-  const wallet = useWallet()
-  const chainId = useChainId()
 
   const onNavigate = (route: (typeof AppRoutes)[keyof typeof AppRoutes]) => async () => {
-    // Safe is connected via WC
-    if (wallet && (await isSafe(wallet))) {
-      window.open(getGovernanceAppSafeAppUrl(chainId, wallet.address), '_blank')?.focus()
-    } else {
-      router.push(route)
-    }
+    router.push(route)
   }
 
   const onUnlockAndWithdraw = onNavigate(AppRoutes.unlock)

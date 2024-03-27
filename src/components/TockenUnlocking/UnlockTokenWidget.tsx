@@ -9,7 +9,6 @@ import { createUnlockTx, LockHistory } from '@/utils/lock'
 import { useState, useMemo, ChangeEvent, useCallback } from 'react'
 import { BigNumberish } from 'ethers'
 import { useChainId } from '@/hooks/useChainId'
-import { useSafeAppsSDK } from '@gnosis.pm/safe-apps-react-sdk'
 import { getCurrentDays } from '@/utils/date'
 import { CHAIN_START_TIMESTAMPS } from '@/config/constants'
 import { BoostBreakdown } from '../TokenLocking/BoostBreakdown'
@@ -18,6 +17,7 @@ import Track from '../Track'
 import { LOCK_EVENTS } from '@/analytics/lockEvents'
 import { trackSafeAppEvent } from '@/utils/analytics'
 import MilesReceipt from '@/components/TokenLocking/MilesReceipt'
+import { useTxSender } from '@/hooks/useTxSender'
 
 export const UnlockTokenWidget = ({
   lockHistory,
@@ -33,7 +33,7 @@ export const UnlockTokenWidget = ({
   const [isUnlocking, setIsUnlocking] = useState(false)
 
   const chainId = useChainId()
-  const { sdk } = useSafeAppsSDK()
+  const txSender = useTxSender()
 
   const todayInDays = getCurrentDays(CHAIN_START_TIMESTAMPS[chainId])
 
@@ -71,7 +71,7 @@ export const UnlockTokenWidget = ({
     const unlockTx = createUnlockTx(chainId, parseUnits(unlockAmount, 18))
 
     try {
-      await sdk.txs.send({ txs: [unlockTx] })
+      await txSender?.sendTxs([unlockTx])
       trackSafeAppEvent(LOCK_EVENTS.UNLOCK_SUCCESS.action)
       setReceiptOpen(true)
     } catch (err) {
@@ -79,6 +79,8 @@ export const UnlockTokenWidget = ({
     }
     setIsUnlocking(false)
   }
+
+  const isDisabled = !txSender || Boolean(unlockAmountError) || isUnlocking || cleanedAmount === '0'
 
   return (
     <Stack
@@ -122,13 +124,7 @@ export const UnlockTokenWidget = ({
 
             <Grid item xs={4}>
               <Track {...LOCK_EVENTS.UNLOCK_BUTTON}>
-                <Button
-                  onClick={onUnlock}
-                  variant="contained"
-                  fullWidth
-                  disableElevation
-                  disabled={Boolean(unlockAmountError) || isUnlocking || cleanedAmount === '0'}
-                >
+                <Button onClick={onUnlock} variant="contained" fullWidth disableElevation disabled={isDisabled}>
                   {isUnlocking ? <CircularProgress size={20} /> : 'Unlock'}
                 </Button>
               </Track>

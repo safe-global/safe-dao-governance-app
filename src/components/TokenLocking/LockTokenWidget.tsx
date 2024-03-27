@@ -8,28 +8,31 @@ import { BoostGraph } from './BoostGraph/BoostGraph'
 import css from './styles.module.css'
 import { createLockTx, toRelativeLockHistory } from '@/utils/lock'
 import { createApproveTx } from '@/utils/safe-token'
-import { useSafeAppsSDK } from '@gnosis.pm/safe-apps-react-sdk'
 import { useState, ChangeEvent, useMemo, useCallback } from 'react'
-import { BigNumberish } from 'ethers'
+import { BigNumber, BigNumberish } from 'ethers'
 import { useChainId } from '@/hooks/useChainId'
 import { floorNumber, getBoostFunction } from '@/utils/boost'
 import { useLockHistory } from '@/hooks/useLockHistory'
 import { useDebounce } from '@/hooks/useDebounce'
 import { SEASON2_START } from './BoostGraph/graphConstants'
-import { CHAIN_START_TIMESTAMPS } from '@/config/constants'
+import { CHAIN_START_TIMESTAMPS, UNLIMITED_APPROVAL_AMOUNT } from '@/config/constants'
 import { getCurrentDays } from '@/utils/date'
 import { BoostBreakdown } from './BoostBreakdown'
 import Track from '../Track'
 import { LOCK_EVENTS } from '@/analytics/lockEvents'
 import { trackSafeAppEvent } from '@/utils/analytics'
 import MilesReceipt from '@/components/TokenLocking/MilesReceipt'
+import { useTxSender } from '@/hooks/useTxSender'
+import { useSafeTokenLockingAllowance } from '@/hooks/useSafeTokenBalance'
+import type { BaseTransaction } from '@gnosis.pm/safe-apps-sdk/dist/src/types/sdk.d'
 
 export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | undefined }) => {
   const [receiptOpen, setReceiptOpen] = useState<boolean>(false)
-  const { sdk } = useSafeAppsSDK()
   const chainId = useChainId()
+  const txSender = useTxSender()
   const startTime = CHAIN_START_TIMESTAMPS[chainId]
   const todayInDays = getCurrentDays(startTime)
+  const { data: safeTokenAllowance, isLoading: isAllowanceLoading } = useSafeTokenLockingAllowance()
 
   const pastLocks = useLockHistory()
 
@@ -81,11 +84,25 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
   }, [safeBalance])
 
   const onLockTokens = async () => {
+    if (!txSender) {
+      throw new Error('Cannot lock tokens without connected wallet')
+    }
     setIsLocking(true)
-    const approveTx = createApproveTx(chainId, parseUnits(amount, 18))
-    const lockTx = createLockTx(chainId, parseUnits(amount, 18))
+    let txs: BaseTransaction[] = []
+    if (BigNumber.from(safeTokenAllowance).lt(amount)) {
+      // Approval is too low for the locking operation
+      const approvalAmount = txSender?.isBatchingSupported ? parseUnits(amount, 18) : UNLIMITED_APPROVAL_AMOUNT
+      txs.push(createApproveTx(chainId, approvalAmount))
+    }
+    txs.push(createLockTx(chainId, parseUnits(amount, 18)))
     try {
-      await sdk.txs.send({ txs: [approveTx, lockTx] })
+      if (txSender?.isBatchingSupported) {
+        await txSender.sendTxs(txs)
+      } else {
+        for (let i = 0; i < txs.length; i++) {
+          await txSender?.sendTxs([txs[i]])
+        }
+      }
       trackSafeAppEvent(LOCK_EVENTS.LOCK_SUCCESS.action)
       setReceiptOpen(true)
     } catch (error) {
@@ -93,6 +110,8 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
     }
     setIsLocking(false)
   }
+
+  const isDisabled = isAllowanceLoading || Boolean(amountError) || isLocking || cleanedAmount === '0'
 
   return (
     <>
@@ -146,13 +165,7 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
 
               <Grid item xs={4}>
                 <Track {...LOCK_EVENTS.LOCK_BUTTON}>
-                  <Button
-                    onClick={onLockTokens}
-                    variant="contained"
-                    fullWidth
-                    disableElevation
-                    disabled={Boolean(amountError) || isLocking || cleanedAmount === '0'}
-                  >
+                  <Button onClick={onLockTokens} variant="contained" fullWidth disableElevation disabled={isDisabled}>
                     {isLocking ? <CircularProgress size={20} /> : 'Lock'}
                   </Button>
                 </Track>

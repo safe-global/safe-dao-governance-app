@@ -22,12 +22,16 @@ import { useSummarizedLockHistory } from '@/hooks/useSummarizedLockHistory'
 import Track from '../Track'
 import { LOCK_EVENTS } from '@/analytics/lockEvents'
 import { trackSafeAppEvent } from '@/utils/analytics'
+import { useTxSender } from '@/hooks/useTxSender'
 
 const TokenUnlocking = () => {
   const { sdk } = useSafeAppsSDK()
   const chainId = useChainId()
   const startTime = CHAIN_START_TIMESTAMPS[chainId]
   const lockHistory = useLockHistory()
+  const txSender = useTxSender()
+
+  const isTransactionPossible = !!txSender
 
   const relativeLockHistory = useMemo(() => toRelativeLockHistory(lockHistory, startTime), [lockHistory, startTime])
 
@@ -39,7 +43,7 @@ const TokenUnlocking = () => {
     setIsWithdrawing(true)
     const withdrawTx = createWithdrawTx(chainId)
     try {
-      await sdk.txs.send({ txs: [withdrawTx] })
+      await txSender?.sendTxs([withdrawTx])
       trackSafeAppEvent(LOCK_EVENTS.WITHDRAW_SUCCESS.action)
     } catch (error) {
       console.error(error)
@@ -103,7 +107,7 @@ const TokenUnlocking = () => {
                   variant="contained"
                   color="primary"
                   onClick={onWithdraw}
-                  disabled={totalWithdrawable.eq(0) || isWithdrawing}
+                  disabled={totalWithdrawable.eq(0) || isWithdrawing || !isTransactionPossible}
                   sx={{ ml: 'auto !important' }}
                 >
                   {isWithdrawing ? <CircularProgress size={20} /> : 'Withdraw'}

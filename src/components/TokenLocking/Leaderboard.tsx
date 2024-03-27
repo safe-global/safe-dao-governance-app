@@ -55,7 +55,6 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }))
 
 const HighlightedTableRow = styled(TableRow)(({ theme }) => ({
-  // hide last border
   '& td:first-child': {
     borderRadius: '6px 0 0 6px',
   },
@@ -74,8 +73,6 @@ const HighlightedTableRow = styled(TableRow)(({ theme }) => ({
   '& td:not(:last-child)': {
     borderRight: 'none !important',
   },
-
-  '& td:before': {},
 }))
 
 const StyledTable = styled(Table)(({ theme }) => ({
