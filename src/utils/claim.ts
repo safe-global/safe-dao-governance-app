@@ -1,5 +1,5 @@
 import { BigNumber } from 'ethers'
-import type { BaseTransaction } from '@gnosis.pm/safe-apps-sdk/dist/src/types/sdk.d'
+import type { BaseTransaction } from '@safe-global/safe-apps-sdk/src/types'
 
 import { getVestingTypes } from '@/utils/vesting'
 import { getAirdropInterface } from '@/services/contracts/Airdrop'

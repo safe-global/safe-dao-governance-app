@@ -1,4 +1,4 @@
-import SafeProvider from '@gnosis.pm/safe-apps-react-sdk'
+import SafeProvider from '@safe-global/safe-apps-react-sdk'
 
 import { render, renderHook } from '@testing-library/react'
 import type { RenderHookOptions } from '@testing-library/react'

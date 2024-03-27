@@ -2,7 +2,7 @@ import { Box, Button, CircularProgress, Grid, Link, Paper, Stack, Typography } f
 
 import NextLink from 'next/link'
 import { AppRoutes } from '@/config/routes'
-import { useSafeAppsSDK } from '@gnosis.pm/safe-apps-react-sdk'
+import { useSafeAppsSDK } from '@safe-global/safe-apps-react-sdk'
 import { createWithdrawTx, toRelativeLockHistory } from '@/utils/lock'
 import { useChainId } from '@/hooks/useChainId'
 import PaperContainer from '../PaperContainer'

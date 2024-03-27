@@ -1,11 +1,11 @@
-import SafeProvider from '@gnosis.pm/safe-apps-react-sdk'
+import SafeProvider from '@safe-global/safe-apps-react-sdk'
 import { useEffect, useMemo } from 'react'
 import { CacheProvider } from '@emotion/react'
 import {
   Experimental_CssVarsProvider as CssVarsProvider,
   experimental_extendTheme as extendMuiTheme,
 } from '@mui/material/styles'
-import { useMediaQuery, CssBaseline } from '@mui/material'
+import { CssBaseline } from '@mui/material'
 import { setBaseUrl as setGatewayBaseUrl } from '@safe-global/safe-gateway-typescript-sdk'
 import { useRouter } from 'next/router'
 import type { EmotionCache } from '@emotion/react'
