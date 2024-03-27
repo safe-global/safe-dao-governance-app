@@ -1,12 +1,9 @@
 import { ShieldOutlined } from '@mui/icons-material'
 import { Grid, Paper, Typography, Tooltip, Badge } from '@mui/material'
-import { useTheme } from '@mui/material/styles'
 import { formatEther } from 'ethers/lib/utils'
 import InfoOutlined from '@mui/icons-material/InfoOutlined'
 import type { ReactElement } from 'react'
 
-import SingleGreenTile from '@/public/images/single-green-tile.svg'
-import DoubleGreenTile from '@/public/images/double-green-tile.svg'
 import { formatAmount } from '@/utils/formatters'
 import { Odometer } from '@/components/Odometer'
 
@@ -27,7 +24,6 @@ export const ClaimCard = ({
 }): ReactElement => {
   const ecosystemAmountInEth = formatEther(ecosystemAmount)
   const totalAmountInEth = formatEther(totalAmount)
-  const numericalTotalAmountInEth = Number(totalAmountInEth)
 
   const isClaimable = variant === 'claimable'
 
