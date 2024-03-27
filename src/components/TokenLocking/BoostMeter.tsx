@@ -53,6 +53,7 @@ export const BoostMeter = ({
       <LinearProgress
         variant="determinate"
         value={value}
+        color={value > 50 ? 'primary' : 'warning'}
         sx={{
           height: '100%',
           border: ({ palette }) => `4px solid ${palette.border.light}`,
