@@ -8,6 +8,7 @@ import { ReactNode } from 'react'
 import Diamond from '@/public/images/diamond.png'
 import StarIcon from '@/public/images/star.svg'
 import Image from 'next/image'
+import { useOwnRank } from '@/hooks/useLeaderboard'
 
 const JUNE_10_TIMESTAMP = 1718013600000
 const SEPTEMBER_10_TIMESTAMP = 1725962400000
@@ -47,9 +48,11 @@ const Step = ({
   )
 }
 
-export const PlaceholderTopRight = () => {
+export const ActivityRewardsInfo = () => {
   const chainId = useChainId()
   const today = Date.now()
+  const ownRankResult = useOwnRank()
+  const { data: ownRank } = ownRankResult
 
   const stepsActive = [
     today >= CHAIN_START_TIMESTAMPS[chainId],
@@ -62,12 +65,16 @@ export const PlaceholderTopRight = () => {
   return (
     <>
       <div className={css.steps}>
-        <Typography variant="overline" fontWeight="bold" color="text.secondary" mb="6px">
-          Your current ranking
-        </Typography>
-        <Typography variant="h3" fontWeight="bold" display="flex" alignItems="center" gap={1}>
-          <SvgIcon component={StarIcon} inheritViewBox />#{mockRanking}
-        </Typography>
+        {ownRank && (
+          <>
+            <Typography variant="overline" fontWeight="bold" color="text.secondary" mb="6px">
+              Your current ranking
+            </Typography>
+            <Typography variant="h3" fontWeight="bold" display="flex" alignItems="center" gap={1}>
+              <SvgIcon component={StarIcon} inheritViewBox />#{ownRank.position}
+            </Typography>
+          </>
+        )}
         <Typography variant="h1" fontWeight={700} mt="52px" mb="40px" maxWidth="60%" className={css.gradientText}>
           Interact with Safe and get rewards
         </Typography>
