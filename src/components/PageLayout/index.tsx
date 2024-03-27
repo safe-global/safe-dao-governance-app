@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import { Box } from '@mui/material'
-import type { ReactElement, ReactNode } from 'react'
+import { ReactElement, ReactNode, useEffect } from 'react'
 
 import manifestJson from '@/public/manifest.json'
 import { BackgroundCircles } from '@/components/BackgroundCircles'
@@ -8,12 +8,21 @@ import { Header } from '@/components/Header'
 
 import css from './styles.module.css'
 import NavTabs from '../NavTabs'
-import { AppRoutes, RoutesWithNavigation } from '@/config/routes'
+import { AppRoutes, RoutesRequiringWallet, RoutesWithNavigation } from '@/config/routes'
 import { useRouter } from 'next/router'
+import { useWallet } from '@/hooks/useWallet'
 
 export const PageLayout = ({ children }: { children: ReactNode }): ReactElement => {
   const router = useRouter()
   const showNavigation = RoutesWithNavigation.includes(router.route)
+
+  const wallet = useWallet()
+
+  useEffect(() => {
+    if (!wallet && RoutesRequiringWallet.includes(router.route)) {
+      router.push(AppRoutes.connect)
+    }
+  })
 
   return (
     <>
