@@ -23,7 +23,7 @@ export const PageLayout = ({ children }: { children: ReactNode }): ReactElement 
 
   useEffect(() => {
     if (!wallet && !isSafeApp && RoutesRequiringWallet.includes(router.route)) {
-      router.push(AppRoutes.connect)
+      router.push(AppRoutes.splash)
     }
   }, [isSafeApp, router, wallet])
 

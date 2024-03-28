@@ -1,27 +1,66 @@
-import { Grid, Typography, Button } from '@mui/material'
+import { Typography, Button, Chip, Stack, SvgIcon, Box, CircularProgress } from '@mui/material'
 import { hexValue } from 'ethers/lib/utils'
-import type { ReactElement } from 'react'
+import { ReactElement, useState } from 'react'
 
 import { useOnboard } from '@/hooks/useOnboard'
-import { KeyholeIcon } from '@/components/KeyholeIcon'
-import { OverviewLinks } from '@/components/OverviewLinks'
+
 import { useChainId } from '@/hooks/useChainId'
-import { getConnectedWallet } from '@/hooks/useWallet'
-import SafeLogo from '@/public/images/safe-logo.svg'
+import { getConnectedWallet, useWallet } from '@/hooks/useWallet'
 import { useRouter } from 'next/router'
 import { AppRoutes } from '@/config/routes'
-import PaperContainer from '../PaperContainer'
+import Barcode from '@/public/images/barcode.svg'
 
-export const ConnectWallet = (): ReactElement => {
+import css from './styles.module.css'
+import SafeMiles from '@/public/images/safe-miles.svg'
+import { useIsSafeApp } from '@/hooks/useIsSafeApp'
+import { CHAIN_START_TIMESTAMPS } from '@/config/constants'
+import Asterix from '@/public/images/asterix.svg'
+import { useLockHistory } from '@/hooks/useLockHistory'
+
+const JUNE_10_TIMESTAMP = 1718013600000
+const SEPTEMBER_10_TIMESTAMP = 1725962400000
+
+const Step = ({ index, title, active }: { index: number; title: string; active: boolean }) => {
+  return (
+    <Stack direction="row" gap={2}>
+      <Chip
+        size="small"
+        sx={{ width: '24px', height: '24px' }}
+        label={index + 1}
+        color={active ? 'primary' : undefined}
+      />
+      <Typography>{title}</Typography>
+    </Stack>
+  )
+}
+
+/**
+ * This page handles wallet connection and initial data loading.
+ */
+export const SplashScreen = (): ReactElement => {
   const onboard = useOnboard()
   const chainId = useChainId()
   const router = useRouter()
 
-  const onClick = async () => {
+  const [isConnecting, setIsConnecting] = useState(false)
+
+  const isSafeApp = useIsSafeApp()
+  const wallet = useWallet()
+
+  const today = Date.now()
+  const stepsActive = [
+    today >= CHAIN_START_TIMESTAMPS[chainId],
+    today >= JUNE_10_TIMESTAMP,
+    today >= SEPTEMBER_10_TIMESTAMP,
+  ]
+
+  const isDisconnected = !isSafeApp && !wallet
+
+  const onConnect = async () => {
     if (!onboard) {
       return
     }
-
+    setIsConnecting(true)
     try {
       const wallets = await onboard.connectWallet()
       const wallet = getConnectedWallet(wallets)
@@ -32,40 +71,63 @@ export const ConnectWallet = (): ReactElement => {
       if (isWrongChain) {
         await onboard.setChain({ wallet: wallet.label, chainId: hexValue(parseInt(chainId)) })
       }
-
-      router.push(AppRoutes.index)
     } catch {
       return
+    } finally {
+      setIsConnecting(false)
     }
   }
 
+  const onContinue = async () => {
+    router.push(AppRoutes.activity)
+  }
+
   return (
-    <PaperContainer>
-      <Grid container flexDirection="column" alignItems="center" px={1} py={6}>
-        <SafeLogo alt="Safe{DAO} logo" width={125} height={110} />
+    <div className={css.milesReceipt}>
+      <Stack className={css.leftReceipt} justifyContent="space-between">
+        <SvgIcon
+          component={Asterix}
+          inheritViewBox
+          sx={{ color: 'transparent', position: 'absolute', top: 0, right: 0, height: 'inherit', width: 'inherit' }}
+        />
+        <SvgIcon component={SafeMiles} inheritViewBox sx={{ width: '154px', height: 'auto' }} />
+        <Stack spacing={3} p={3}>
+          <Typography variant="h2" fontWeight="bold">
+            Interact with Safe and get rewards
+          </Typography>
+          <Typography>Short intro text about the program.</Typography>
+          <Box>
+            {isDisconnected ? (
+              <Button variant="contained" color="primary" onClick={onConnect} disabled={isConnecting}>
+                {isConnecting ? (
+                  <Box display="flex" alignItems="center" flexDirection="row" gap={1}>
+                    <Typography>Connecting</Typography>
+                    <CircularProgress size={12} />
+                  </Box>
+                ) : (
+                  'Connect wallet'
+                )}
+              </Button>
+            ) : (
+              <Button variant="contained" color="primary" onClick={onContinue}>
+                Continue
+              </Button>
+            )}
+          </Box>
+        </Stack>
+      </Stack>
 
-        <Typography variant="h1" m={5} mb={6} textAlign="center">
-          Welcome to the next generation of digital ownership
+      <Stack className={css.rightReceipt} gap={3} justifyContent="center">
+        <Typography variant="caption" textTransform="uppercase" letterSpacing="1px">
+          What is the Safe{'{'}Miles{'}'} program?
         </Typography>
-
-        <Grid item xs>
-          <KeyholeIcon />
-        </Grid>
-
-        <Typography color="text.secondary" my={3} mx={18} textAlign="center">
-          Connect your wallet to view your SAFE balance and delegate voting power
-        </Typography>
-
-        <Grid item xs={4} mb={4}>
-          <Button variant="contained" color="primary" size="stretched" onClick={onClick}>
-            Connect wallet
-          </Button>
-        </Grid>
-
-        <Grid item xs={12}>
-          <OverviewLinks />
-        </Grid>
-      </Grid>
-    </PaperContainer>
+        <Stack gap={1}>
+          <Step index={0} title="Lock SAFE to boost your miles!" active={stepsActive[0]} />
+          <Step index={1} title="Earn miles for activity" active={stepsActive[1]} />
+          <Step index={2} title="Get rewards for earned miles" active={stepsActive[2]} />
+        </Stack>
+        <Barcode className={css.barcode} />
+      </Stack>
+    </div>
   )
 }

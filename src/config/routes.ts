@@ -8,11 +8,12 @@ export const AppRoutes = {
   delegate: '/delegate',
   claim: '/claim',
   activity: '/activity',
+  governance: '/governance',
   unlock: '/unlock',
   terms: '/terms',
-  connect: '/connect',
+  splash: '/splash',
 }
 
-export const RoutesWithNavigation = [AppRoutes.activity, AppRoutes.index]
+export const RoutesWithNavigation = [AppRoutes.activity, AppRoutes.governance]
 
 export const RoutesRequiringWallet = [AppRoutes.activity, AppRoutes.claim, AppRoutes.unlock, AppRoutes.index]
