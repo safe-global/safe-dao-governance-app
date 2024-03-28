@@ -24,7 +24,6 @@
   flex-direction: column;
   gap: 16px;
   align-items: center;
-  justify-content: center;
 }
 
 .bordered {
@@ -88,7 +87,7 @@
 }
 
 .gradientText {
-  background: linear-gradient(225deg, #5FDDFF 12.5%, #12FF80 88.07%);
+  background: linear-gradient(225deg, #5fddff 12.5%, #12ff80 88.07%);
   background-clip: text;
   color: transparent;
 }
@@ -122,7 +121,7 @@
 }
 
 .step:after {
-  content: "";
+  content: '';
   left: 12px;
   top: 36px;
   position: absolute;
@@ -161,8 +160,8 @@
 }
 
 .rewardsBackground:before {
-  content: "";
-  background: radial-gradient(41.34% 41.34% at 50% 50%, #29B6F6 0%, transparent 82.5%);
+  content: '';
+  background: radial-gradient(41.34% 41.34% at 50% 50%, #29b6f6 0%, transparent 82.5%);
   position: absolute;
   width: 500px;
   height: 500px;
@@ -172,8 +171,8 @@
 }
 
 .rewardsBackground:after {
-  content: "";
-  background: radial-gradient(41.34% 41.34% at 50% 50%, rgba(18, 255, 128, 0.60) 0%, rgba(18, 255, 128, 0.00) 82.5%);
+  content: '';
+  background: radial-gradient(41.34% 41.34% at 50% 50%, rgba(18, 255, 128, 0.6) 0%, rgba(18, 255, 128, 0) 82.5%);
   position: absolute;
   width: 700px;
   height: 700px;
@@ -183,7 +182,7 @@
 }
 
 .rewards:after {
-  content: "";
+  content: '';
   left: 12px;
   top: -4px;
   position: absolute;
@@ -207,7 +206,8 @@
   overflow: hidden;
 }
 
-.leftReceipt, .rightReceipt {
+.leftReceipt,
+.rightReceipt {
   background-color: #121312;
   border-radius: 20px;
   padding: 40px;
@@ -219,7 +219,7 @@
 }
 
 .leftReceipt:after {
-  content: "";
+  content: '';
   border-right: 1px dashed white;
   position: absolute;
   right: 0;
@@ -252,10 +252,10 @@
   z-index: 1;
   top: -200px;
   left: -100px;
-  background: radial-gradient(41.34% 41.34% at 50% 50%, rgba(18, 255, 128, 0.60) 0%, rgba(18, 255, 128, 0.00) 82.5%);
+  background: radial-gradient(41.34% 41.34% at 50% 50%, rgba(18, 255, 128, 0.6) 0%, rgba(18, 255, 128, 0) 82.5%);
   pointer-events: none;
 }
 
 .unlockGradient {
-  background: radial-gradient(41.34% 41.34% at 50% 50%, #FF8061 0%, rgba(255, 128, 97, 0.00) 82.5%);
+  background: radial-gradient(41.34% 41.34% at 50% 50%, #ff8061 0%, rgba(255, 128, 97, 0) 82.5%);
 }

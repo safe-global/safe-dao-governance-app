@@ -15,7 +15,7 @@ import { useState, type ReactElement, ChangeEvent } from 'react'
 
 import PaperContainer from '../PaperContainer'
 
-import TitleStar from '@/public/images/leaderboard-title-star.svg'
+import StarIcon from '@/public/images/star.svg'
 import { maxDecimals, minMaxValue, mustBeFloat } from '@/utils/validation'
 import { useIsTokenPaused } from '@/hooks/useIsTokenPaused'
 import { useSafeTokenAllocation } from '@/hooks/useSafeTokenAllocation'
@@ -23,7 +23,7 @@ import { useTaggedAllocations } from '@/hooks/useTaggedAllocations'
 import { getVestingTypes } from '@/utils/vesting'
 import { formatEther } from 'ethers/lib/utils'
 import { createClaimTxs } from '@/utils/claim'
-import { useSafeAppsSDK } from '@gnosis.pm/safe-apps-react-sdk'
+import { useSafeAppsSDK } from '@safe-global/safe-apps-react-sdk'
 import { useIsWrongChain } from '@/hooks/useIsWrongChain'
 import SafeToken from '@/public/images/token.svg'
 
@@ -59,7 +59,7 @@ const ClaimOverview = (): ReactElement => {
   const isWrongChain = useIsWrongChain()
   const router = useRouter()
 
-  const [amount, setAmount] = useState('')
+  const [amount, setAmount] = useState('0')
   const [isMaxAmountSelected, setIsMaxAmountSelected] = useState(false)
   const [amountError, setAmountError] = useState<string>()
   const [creatingTxs, setCreatingTxs] = useState(false)
@@ -173,11 +173,11 @@ const ClaimOverview = (): ReactElement => {
                 gap: 1,
               }}
             >
-              <Stack direction="row" spacing={2} alignItems="center">
-                <SvgIcon fontSize="large" component={TitleStar} />
+              <Stack direction="row" spacing={2} alignItems="center" fontSize={38}>
+                <SvgIcon component={StarIcon} inheritViewBox fontSize="inherit" />
                 <Box>
                   <Typography variant="subtitle1" fontWeight={700}>
-                    Claim your tokens as rewards
+                    Claim your tokens as rewards!
                   </Typography>
                   <Typography variant="body2">You get more tokens if you are active in activity program.</Typography>
                 </Box>

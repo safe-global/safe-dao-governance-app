@@ -3,11 +3,14 @@ import NextLink, { type LinkProps as NextLinkProps } from 'next/link'
 import { Tab, Tabs, Typography, type TabProps } from '@mui/material'
 import { useRouter } from 'next/router'
 import css from './styles.module.css'
+import { useIsSafeApp } from '@/hooks/useIsSafeApp'
+import Track from '../Track'
 
 export type NavItem = {
   label: string
   icon?: ReactElement
   href: string
+  event: { action: string }
 }
 
 type Props = TabProps & NextLinkProps
@@ -38,27 +41,29 @@ const NextLinkComposed = forwardRef<HTMLAnchorElement, Props>(function NextCompo
 const NavTabs = ({ tabs }: { tabs: NavItem[] }) => {
   const router = useRouter()
   const activeTab = Math.max(0, tabs.map((tab) => tab.href).indexOf(router.pathname))
-  const query = router.query.safe ? { safe: router.query.safe } : undefined
+
+  const isSafeApp = useIsSafeApp()
 
   return (
     <Tabs value={activeTab} variant="scrollable" allowScrollButtonsMobile className={css.tabs}>
       {tabs.map((tab, idx) => (
-        <Tab
-          component={NextLinkComposed}
-          key={tab.href}
-          href={{ pathname: tab.href, query }}
-          className={css.tab}
-          label={
-            <Typography
-              variant="body2"
-              fontWeight={700}
-              color={activeTab === idx ? 'primary' : 'primary.light'}
-              className={css.label}
-            >
-              {tab.label}
-            </Typography>
-          }
-        />
+        <Track {...tab.event} label={isSafeApp ? 'safe-app' : 'standalone'} key={tab.href}>
+          <Tab
+            component={NextLinkComposed}
+            href={{ pathname: tab.href }}
+            className={css.tab}
+            label={
+              <Typography
+                variant="body2"
+                fontWeight={700}
+                color={activeTab === idx ? 'primary' : 'primary.light'}
+                className={css.label}
+              >
+                {tab.label}
+              </Typography>
+            }
+          />
+        </Track>
       ))}
     </Tabs>
   )

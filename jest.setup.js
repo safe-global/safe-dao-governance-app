@@ -43,3 +43,7 @@ jest.mock('@web3-onboard/core', () => () => ({
     get: () => mockOnboardState,
   },
 }))
+
+const { TextEncoder, TextDecoder } = require('util')
+global.TextEncoder = TextEncoder
+global.TextDecoder = TextDecoder

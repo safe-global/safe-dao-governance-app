@@ -1,7 +1,7 @@
 import { RPC_AUTHENTICATION } from '@safe-global/safe-gateway-typescript-sdk'
 import { Web3Provider } from '@ethersproject/providers'
-import { SafeAppProvider } from '@gnosis.pm/safe-apps-provider'
-import type { useSafeAppsSDK } from '@gnosis.pm/safe-apps-react-sdk'
+import { SafeAppProvider } from '@safe-global/safe-apps-provider'
+import type { useSafeAppsSDK } from '@safe-global/safe-apps-react-sdk'
 import type { EIP1193Provider } from '@web3-onboard/core'
 import type { RpcUri } from '@safe-global/safe-gateway-typescript-sdk'
 

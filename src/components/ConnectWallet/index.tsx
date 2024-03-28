@@ -8,10 +8,14 @@ import { OverviewLinks } from '@/components/OverviewLinks'
 import { useChainId } from '@/hooks/useChainId'
 import { getConnectedWallet } from '@/hooks/useWallet'
 import SafeLogo from '@/public/images/safe-logo.svg'
+import { useRouter } from 'next/router'
+import { AppRoutes } from '@/config/routes'
+import PaperContainer from '../PaperContainer'
 
 export const ConnectWallet = (): ReactElement => {
   const onboard = useOnboard()
   const chainId = useChainId()
+  const router = useRouter()
 
   const onClick = async () => {
     if (!onboard) {
@@ -28,36 +32,40 @@ export const ConnectWallet = (): ReactElement => {
       if (isWrongChain) {
         await onboard.setChain({ wallet: wallet.label, chainId: hexValue(parseInt(chainId)) })
       }
+
+      router.push(AppRoutes.index)
     } catch {
       return
     }
   }
 
   return (
-    <Grid container flexDirection="column" alignItems="center" px={1} py={6}>
-      <SafeLogo alt="Safe{DAO} logo" width={125} height={110} />
+    <PaperContainer>
+      <Grid container flexDirection="column" alignItems="center" px={1} py={6}>
+        <SafeLogo alt="Safe{DAO} logo" width={125} height={110} />
 
-      <Typography variant="h1" m={5} mb={6} textAlign="center">
-        Welcome to the next generation of digital ownership
-      </Typography>
+        <Typography variant="h1" m={5} mb={6} textAlign="center">
+          Welcome to the next generation of digital ownership
+        </Typography>
 
-      <Grid item xs>
-        <KeyholeIcon />
+        <Grid item xs>
+          <KeyholeIcon />
+        </Grid>
+
+        <Typography color="text.secondary" my={3} mx={18} textAlign="center">
+          Connect your wallet to view your SAFE balance and delegate voting power
+        </Typography>
+
+        <Grid item xs={4} mb={4}>
+          <Button variant="contained" color="primary" size="stretched" onClick={onClick}>
+            Connect wallet
+          </Button>
+        </Grid>
+
+        <Grid item xs={12}>
+          <OverviewLinks />
+        </Grid>
       </Grid>
-
-      <Typography color="text.secondary" my={3} mx={18} textAlign="center">
-        Connect your wallet to view your SAFE balance and delegate voting power
-      </Typography>
-
-      <Grid item xs={4} mb={4}>
-        <Button variant="contained" color="primary" size="stretched" onClick={onClick}>
-          Connect wallet
-        </Button>
-      </Grid>
-
-      <Grid item xs={12}>
-        <OverviewLinks />
-      </Grid>
-    </Grid>
+    </PaperContainer>
   )
 }

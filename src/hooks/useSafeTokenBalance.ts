@@ -26,7 +26,7 @@ export const useSafeTokenLockingAllowance = () => {
   const chainId = useChainId()
   const address = useAddress()
 
-  return useSWR(web3 ? QUERY_KEY : null, () => {
+  return useSWR(web3 && address ? QUERY_KEY : null, () => {
     if (!address || !web3) {
       return '0'
     }

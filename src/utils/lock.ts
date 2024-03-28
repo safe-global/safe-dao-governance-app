@@ -57,7 +57,6 @@ export const createWithdrawTx = (chainId: string) => {
     to: CHAIN_SAFE_LOCKING_ADDRESS[chainId],
     data: safeLockingInterface.encodeFunctionData('withdraw', [0]),
     value: '0',
-    operation: 0,
   }
 }
 

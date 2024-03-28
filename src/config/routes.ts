@@ -6,6 +6,7 @@ export const AppRoutes = {
   safedao: '/safedao',
   index: '/',
   delegate: '/delegate',
+  connect: '/connect',
   claim: '/claim',
   boost: '/boost',
   activity: '/activity',
