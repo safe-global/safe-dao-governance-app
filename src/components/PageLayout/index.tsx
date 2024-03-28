@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import { Box } from '@mui/material'
-import { ReactElement, ReactNode, useEffect } from 'react'
+import { ReactElement, ReactNode } from 'react'
 
 import manifestJson from '@/public/manifest.json'
 import { BackgroundCircles } from '@/components/BackgroundCircles'
@@ -8,24 +8,15 @@ import { Header } from '@/components/Header'
 
 import css from './styles.module.css'
 import NavTabs from '../NavTabs'
-import { AppRoutes, RoutesWithNavigation, RoutesRequiringWallet } from '@/config/routes'
+import { AppRoutes } from '@/config/routes'
 import { useRouter } from 'next/router'
 import { NAVIGATION_EVENTS } from '@/analytics/navigation'
-import { useWallet } from '@/hooks/useWallet'
-import { useIsSafeApp } from '@/hooks/useIsSafeApp'
+
+const RoutesWithNavigation = [AppRoutes.activity, AppRoutes.governance]
 
 export const PageLayout = ({ children }: { children: ReactNode }): ReactElement => {
   const router = useRouter()
   const showNavigation = RoutesWithNavigation.includes(router.route)
-
-  const wallet = useWallet()
-  const isSafeApp = useIsSafeApp()
-
-  useEffect(() => {
-    if (!wallet && !isSafeApp && RoutesRequiringWallet.includes(router.route)) {
-      router.push(AppRoutes.splash)
-    }
-  }, [isSafeApp, router, wallet])
 
   return (
     <>
@@ -49,7 +40,7 @@ export const PageLayout = ({ children }: { children: ReactNode }): ReactElement 
                 },
                 {
                   label: 'Governance / Claiming',
-                  href: AppRoutes.index,
+                  href: AppRoutes.governance,
                   event: NAVIGATION_EVENTS.OPEN_CLAIM,
                 },
               ]}

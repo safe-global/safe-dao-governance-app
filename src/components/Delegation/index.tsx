@@ -37,7 +37,7 @@ export const Delegation = (): ReactElement => {
   const steps = [
     <SelectDelegate key={0} data={data} setData={setData} onNext={(data: DelegateFlow) => nextStep(data)} />,
     <ReviewDelegate key={1} data={data} onBack={prevStep} onNext={() => nextStep(data)} />,
-    <SuccessfulDelegation key={4} onNext={() => router.push(AppRoutes.index)} />,
+    <SuccessfulDelegation key={4} onNext={() => router.push(AppRoutes.governance)} />,
   ]
 
   const progress = ((step + 1) / steps.length) * 100

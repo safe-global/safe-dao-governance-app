@@ -1,5 +1,16 @@
 import { formatAmount } from '@/utils/formatters'
-import { Chip, Typography, Stack, Grid, TextField, InputAdornment, Button, Box, CircularProgress } from '@mui/material'
+import {
+  Chip,
+  Typography,
+  Stack,
+  Grid,
+  TextField,
+  InputAdornment,
+  Button,
+  Box,
+  CircularProgress,
+  Link,
+} from '@mui/material'
 import { formatUnits, parseUnits } from 'ethers/lib/utils'
 import SafeToken from '@/public/images/token.svg'
 
@@ -24,6 +35,8 @@ import { trackSafeAppEvent } from '@/utils/analytics'
 import MilesReceipt from '@/components/TokenLocking/MilesReceipt'
 import { BaseTransaction, useTxSender } from '@/hooks/useTxSender'
 import { useSafeTokenLockingAllowance } from '@/hooks/useSafeTokenBalance'
+import { AppRoutes } from '@/config/routes'
+import NextLink from 'next/link'
 
 export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | undefined }) => {
   const [receiptOpen, setReceiptOpen] = useState<boolean>(false)
@@ -124,6 +137,9 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
         <Typography variant="h4" fontWeight={700}>
           Increase your boost for future points
         </Typography>
+        <Link href={AppRoutes.boost} component={NextLink} sx={{ ml: 'auto' }}>
+          How does boost work?
+        </Link>
       </Box>
       <Stack
         spacing={3}
