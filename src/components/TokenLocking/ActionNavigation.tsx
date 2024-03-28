@@ -27,9 +27,7 @@ export const ActionNavigation = () => {
             onClick={onUnlockAndWithdraw}
             sx={{ borderWidth: '1px !important' }}
           >
-            <Box display="flex" alignItems="center">
-              <Box>Unlock/Withdraw</Box>
-            </Box>
+            Unlock/Withdraw
           </Button>
         </Track>
       </Box>
