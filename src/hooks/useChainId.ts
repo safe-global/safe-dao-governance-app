@@ -1,7 +1,7 @@
 import { ExternalStore } from '@/services/ExternalStore'
 import { Chains, IS_PRODUCTION, _DEFAULT_CHAIN_ID } from '@/config/constants'
 import { useIsSafeApp } from '@/hooks/useIsSafeApp'
-import { useSafeAppsSDK } from '@gnosis.pm/safe-apps-react-sdk'
+import { useSafeAppsSDK } from '@safe-global/safe-apps-react-sdk'
 
 export const defaultChainIdStore = new ExternalStore(_DEFAULT_CHAIN_ID)
 

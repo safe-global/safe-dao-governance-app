@@ -19,9 +19,8 @@ import { CHAIN_START_TIMESTAMPS, UNLIMITED_APPROVAL_AMOUNT } from '@/config/cons
 import { getCurrentDays } from '@/utils/date'
 import { BoostBreakdown } from './BoostBreakdown'
 import MilesReceipt from '@/components/TokenLocking/MilesReceipt'
-import { useTxSender } from '@/hooks/useTxSender'
+import { BaseTransaction, useTxSender } from '@/hooks/useTxSender'
 import { useSafeTokenLockingAllowance } from '@/hooks/useSafeTokenBalance'
-import type { BaseTransaction } from '@gnosis.pm/safe-apps-sdk/dist/src/types/sdk.d'
 
 export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | undefined }) => {
   const [receiptOpen, setReceiptOpen] = useState<boolean>(false)

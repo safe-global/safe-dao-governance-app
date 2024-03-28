@@ -15,7 +15,6 @@ import { useState, type ReactElement, ChangeEvent } from 'react'
 
 import PaperContainer from '../PaperContainer'
 
-import TitleStar from '@/public/images/leaderboard-title-star.svg'
 import StarIcon from '@/public/images/star.svg'
 import { maxDecimals, minMaxValue, mustBeFloat } from '@/utils/validation'
 import { useIsTokenPaused } from '@/hooks/useIsTokenPaused'
@@ -24,7 +23,7 @@ import { useTaggedAllocations } from '@/hooks/useTaggedAllocations'
 import { getVestingTypes } from '@/utils/vesting'
 import { formatEther } from 'ethers/lib/utils'
 import { createClaimTxs } from '@/utils/claim'
-import { useSafeAppsSDK } from '@gnosis.pm/safe-apps-react-sdk'
+import { useSafeAppsSDK } from '@safe-global/safe-apps-react-sdk'
 import { useIsWrongChain } from '@/hooks/useIsWrongChain'
 import SafeToken from '@/public/images/token.svg'
 

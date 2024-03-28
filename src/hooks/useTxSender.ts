@@ -1,7 +1,10 @@
-import { useSafeAppsSDK } from '@gnosis.pm/safe-apps-react-sdk'
+import { useSafeAppsSDK } from '@safe-global/safe-apps-react-sdk'
 import { useIsSafeApp } from './useIsSafeApp'
 import { useWallet } from './useWallet'
-import type { BaseTransaction } from '@gnosis.pm/safe-apps-sdk/dist/src/types/sdk.d'
+
+import SafeAppsSDK from '@safe-global/safe-apps-sdk'
+
+export type BaseTransaction = Parameters<SafeAppsSDK['txs']['send']>[0]['txs'][number]
 
 export type TxSender = {
   isBatchingSupported: boolean
