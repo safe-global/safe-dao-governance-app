@@ -29,7 +29,7 @@ export const PageLayout = ({ children }: { children: ReactNode }): ReactElement 
       <BackgroundCircles />
 
       <Box
-        pt={{ sm: 13, xs: undefined }}
+        pt={{ sm: 7, xs: undefined }}
         pb={{ sm: 6, xs: undefined }}
         sx={{ minHeight: '100vh', display: 'flex', alignItems: 'center' }}
         component="main"

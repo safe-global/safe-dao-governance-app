@@ -1,6 +1,6 @@
 import type { NextPage } from 'next'
 
-import { SplashScreen } from '@/components/ConnectWallet'
+import { SplashScreen } from '@/components/SplashScreen'
 
 const SplashPage: NextPage = () => {
   return <SplashScreen />

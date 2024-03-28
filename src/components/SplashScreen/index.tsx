@@ -15,7 +15,6 @@ import SafeMiles from '@/public/images/safe-miles.svg'
 import { useIsSafeApp } from '@/hooks/useIsSafeApp'
 import { CHAIN_START_TIMESTAMPS } from '@/config/constants'
 import Asterix from '@/public/images/asterix.svg'
-import { useLockHistory } from '@/hooks/useLockHistory'
 
 const JUNE_10_TIMESTAMP = 1718013600000
 const SEPTEMBER_10_TIMESTAMP = 1725962400000
@@ -83,51 +82,53 @@ export const SplashScreen = (): ReactElement => {
   }
 
   return (
-    <div className={css.milesReceipt}>
-      <Stack className={css.leftReceipt} justifyContent="space-between">
-        <SvgIcon
-          component={Asterix}
-          inheritViewBox
-          sx={{ color: 'transparent', position: 'absolute', top: 0, right: 0, height: 'inherit', width: 'inherit' }}
-        />
-        <SvgIcon component={SafeMiles} inheritViewBox sx={{ width: '154px', height: 'auto' }} />
-        <Stack spacing={3} p={3}>
-          <Typography variant="h2" fontWeight="bold">
-            Interact with Safe and get rewards
-          </Typography>
-          <Typography>Short intro text about the program.</Typography>
-          <Box>
-            {isDisconnected ? (
-              <Button variant="contained" color="primary" onClick={onConnect} disabled={isConnecting}>
-                {isConnecting ? (
-                  <Box display="flex" alignItems="center" flexDirection="row" gap={1}>
-                    <Typography>Connecting</Typography>
-                    <CircularProgress size={12} />
-                  </Box>
-                ) : (
-                  'Connect wallet'
-                )}
-              </Button>
-            ) : (
-              <Button variant="contained" color="primary" onClick={onContinue}>
-                Continue
-              </Button>
-            )}
-          </Box>
+    <Box display="flex">
+      <div className={css.milesReceipt}>
+        <Stack className={css.leftReceipt} justifyContent="space-between">
+          <SvgIcon
+            component={Asterix}
+            inheritViewBox
+            sx={{ color: 'transparent', position: 'absolute', top: 0, right: 0, height: 'inherit', width: 'inherit' }}
+          />
+          <SvgIcon component={SafeMiles} inheritViewBox sx={{ width: '154px', height: 'auto' }} />
+          <Stack spacing={3} p={3}>
+            <Typography variant="h2" fontWeight="bold">
+              Interact with Safe and get rewards
+            </Typography>
+            <Typography>Short intro text about the program.</Typography>
+            <Box>
+              {isDisconnected ? (
+                <Button variant="contained" color="primary" onClick={onConnect} disabled={isConnecting}>
+                  {isConnecting ? (
+                    <Box display="flex" alignItems="center" flexDirection="row" gap={1}>
+                      <Typography>Connecting</Typography>
+                      <CircularProgress size={12} />
+                    </Box>
+                  ) : (
+                    'Connect wallet'
+                  )}
+                </Button>
+              ) : (
+                <Button variant="contained" color="primary" onClick={onContinue}>
+                  Continue
+                </Button>
+              )}
+            </Box>
+          </Stack>
         </Stack>
-      </Stack>
 
-      <Stack className={css.rightReceipt} gap={3} justifyContent="center">
-        <Typography variant="caption" textTransform="uppercase" letterSpacing="1px">
-          What is the Safe{'{'}Miles{'}'} program?
-        </Typography>
-        <Stack gap={1}>
-          <Step index={0} title="Lock SAFE to boost your miles!" active={stepsActive[0]} />
-          <Step index={1} title="Earn miles for activity" active={stepsActive[1]} />
-          <Step index={2} title="Get rewards for earned miles" active={stepsActive[2]} />
+        <Stack className={css.rightReceipt} gap={3} justifyContent="center">
+          <Typography variant="caption" textTransform="uppercase" letterSpacing="1px">
+            What is the Safe{'{'}Miles{'}'} program?
+          </Typography>
+          <Stack gap={1}>
+            <Step index={0} title="Lock SAFE to boost your miles!" active={stepsActive[0]} />
+            <Step index={1} title="Earn miles for activity" active={stepsActive[1]} />
+            <Step index={2} title="Get rewards for earned miles" active={stepsActive[2]} />
+          </Stack>
+          <Barcode className={css.barcode} />
         </Stack>
-        <Barcode className={css.barcode} />
-      </Stack>
-    </div>
+      </div>
+    </Box>
   )
 }

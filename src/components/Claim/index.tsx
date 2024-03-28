@@ -35,6 +35,10 @@ import { Sep5InfoBox } from '../Sep5InfoBox'
 import { formatAmount } from '@/utils/formatters'
 import { ClaimCard } from '../ClaimCard'
 import { InfoAlert } from '../InfoAlert'
+import { useWallet } from '@/hooks/useWallet'
+import { isSafe } from '@/utils/wallet'
+import { getGovernanceAppSafeAppUrl } from '@/utils/safe-apps'
+import { useChainId } from '@/hooks/useChainId'
 
 const validateAmount = (amount: string, maxAmount: string) => {
   return mustBeFloat(amount) || minMaxValue(0, maxAmount, amount) || maxDecimals(amount, 18)
@@ -58,6 +62,8 @@ const ClaimOverview = (): ReactElement => {
   const { sdk, safe } = useSafeAppsSDK()
   const isWrongChain = useIsWrongChain()
   const router = useRouter()
+  const wallet = useWallet()
+  const chainId = useChainId()
 
   const [amount, setAmount] = useState('0')
   const [isMaxAmountSelected, setIsMaxAmountSelected] = useState(false)
@@ -95,7 +101,16 @@ const ClaimOverview = (): ReactElement => {
     setIsMaxAmountSelected(false)
   }
 
-  const onClaim = async () => {
+  const onClick = (handler: () => Promise<void>) => async () => {
+    // Safe is connected via WC
+    if (wallet && (await isSafe(wallet))) {
+      window.open(getGovernanceAppSafeAppUrl(chainId, wallet.address), '_blank')?.focus()
+    } else {
+      handler()
+    }
+  }
+
+  const onClaim = onClick(async () => {
     setCreatingTxs(true)
 
     const txs = createClaimTxs({
@@ -117,7 +132,7 @@ const ClaimOverview = (): ReactElement => {
       console.error(error)
       setCreatingTxs(false)
     }
-  }
+  })
 
   const setToMaxAmount = () => {
     const amountAsNumber = Number(formatEther(total.claimable))
