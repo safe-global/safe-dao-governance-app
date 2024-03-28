@@ -79,7 +79,7 @@ export const BoostBreakdown = ({
             </Typography>
           </Stack>
         ) : (
-          <Stack direction="column" width="100%" alignItems="start" mt={8} spacing={1}>
+          <Stack direction="column" width="100%" alignItems="start" mt="auto" spacing={1}>
             <BoostCounter
               value={newFinalBoost}
               variant="h2"

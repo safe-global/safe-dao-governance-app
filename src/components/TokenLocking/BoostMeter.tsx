@@ -32,7 +32,7 @@ export const BoostMeter = ({
     if (isVisibleDifference && prediction) {
       boostMeterInfo = (
         <Typography>
-          If you lock in 10 days your boost will be only{' '}
+          If you lock in 10 days your boost will only be{' '}
           <b style={{ color: theme.palette.warning.main }}>{floorNumber(prediction, 2)}x</b>
         </Typography>
       )
