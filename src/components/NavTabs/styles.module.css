@@ -1,0 +1,41 @@
+.tabs {
+  overflow: initial;
+  margin-bottom: 24px;
+}
+
+/* Scroll buttons */
+.tabs :global .MuiTabs-scrollButtons.Mui-disabled {
+  opacity: 0.3;
+}
+
+.tabs :global .MuiTabScrollButton-root ~ .MuiTabs-scroller p {
+  padding-bottom: 0;
+}
+
+.tabs :global .MuiTabScrollButton-root:first-of-type {
+  margin-left: calc(16 * -1);
+}
+
+.tabs :global .MuiTabScrollButton-root:last-of-type {
+  margin-right: calc(16 * -1);
+}
+
+.tabs :global .MuiTabScrollButton-root ~ .MuiTabs-scroller p {
+  padding-bottom: 0;
+}
+
+.tabs :global .MuiTabs-scroller {
+  border-bottom: 1px solid #303033;
+}
+
+.tab {
+  opacity: 1;
+  padding: 0 24;
+  position: relative;
+  z-index: 2;
+}
+
+.label {
+  text-transform: none;
+  padding-bottom: 6px;
+}

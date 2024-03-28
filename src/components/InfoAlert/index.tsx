@@ -5,7 +5,7 @@ import type { ReactElement } from 'react'
 
 export const InfoAlert = ({ children, ...props }: BoxProps): ReactElement => {
   return (
-    <Box display="flex" gap={1} color="text.secondary" {...props}>
+    <Box display="flex" gap={1} color="border.main" {...props}>
       <InfoOutlined
         sx={{
           height: '16px',

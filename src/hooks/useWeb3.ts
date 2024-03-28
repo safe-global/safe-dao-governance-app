@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { useSafeAppsSDK } from '@gnosis.pm/safe-apps-react-sdk'
+import { useSafeAppsSDK } from '@safe-global/safe-apps-react-sdk'
 import type { JsonRpcProvider } from '@ethersproject/providers'
 
 import { useWallet } from '@/hooks/useWallet'

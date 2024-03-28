@@ -1,12 +1,7 @@
 .container {
-  width: 650px;
+  width: 1344px;
   position: relative;
   margin: auto;
-}
-
-.tiles {
-  position: relative;
-  top: -200px;
 }
 
 @media (max-width: 600px) {

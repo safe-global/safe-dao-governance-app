@@ -12,6 +12,7 @@ import { ProgressBar } from '@/components/ProgressBar'
 import { AppRoutes } from '@/config/routes'
 import type { Delegate } from '@/hooks/useDelegate'
 import type { ContractDelegate } from '@/hooks/useContractDelegate'
+import MediumPaper from '../MediumPaper'
 
 export type DelegateFlow = {
   safeGuardian?: FileDelegate
@@ -36,15 +37,17 @@ export const Delegation = (): ReactElement => {
   const steps = [
     <SelectDelegate key={0} data={data} setData={setData} onNext={(data: DelegateFlow) => nextStep(data)} />,
     <ReviewDelegate key={1} data={data} onBack={prevStep} onNext={() => nextStep(data)} />,
-    <SuccessfulDelegation key={4} onNext={() => router.push(AppRoutes.index)} />,
+    <SuccessfulDelegation key={4} onNext={() => router.push(AppRoutes.governance)} />,
   ]
 
   const progress = ((step + 1) / steps.length) * 100
 
   return (
     <>
-      <ProgressBar value={progress} />
-      {steps[step]}
+      <MediumPaper>
+        <ProgressBar value={progress} />
+        {steps[step]}
+      </MediumPaper>
     </>
   )
 }

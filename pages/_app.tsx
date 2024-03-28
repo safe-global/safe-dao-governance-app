@@ -1,11 +1,11 @@
-import SafeProvider from '@gnosis.pm/safe-apps-react-sdk'
+import SafeProvider from '@safe-global/safe-apps-react-sdk'
 import { useEffect, useMemo } from 'react'
 import { CacheProvider } from '@emotion/react'
 import {
   Experimental_CssVarsProvider as CssVarsProvider,
   experimental_extendTheme as extendMuiTheme,
 } from '@mui/material/styles'
-import { useMediaQuery, CssBaseline } from '@mui/material'
+import { CssBaseline } from '@mui/material'
 import { setBaseUrl as setGatewayBaseUrl } from '@safe-global/safe-gateway-typescript-sdk'
 import { useRouter } from 'next/router'
 import type { EmotionCache } from '@emotion/react'
@@ -28,6 +28,8 @@ import { useSafeSnapshot } from '@/hooks/useSafeSnapshot'
 import { usePendingDelegations } from '@/hooks/usePendingDelegations'
 
 import '@/styles/globals.css'
+import { useSafeTokenBalance, useSafeUserLockingInfos } from '@/hooks/useSafeTokenBalance'
+import { useLockHistory } from '@/hooks/useLockHistory'
 
 const InitApp = (): null => {
   setGatewayBaseUrl(GATEWAY_URL)
@@ -38,11 +40,16 @@ const InitApp = (): null => {
 
   usePendingDelegations()
 
-  // Populate caches
+  // Populate claiming app caches
   useChain()
   useDelegatesFile()
   useIsTokenPaused()
   useSafeSnapshot()
+
+  // Populate locking app caches
+  useSafeTokenBalance()
+  useSafeUserLockingInfos()
+  useLockHistory()
 
   return null
 }
@@ -58,22 +65,18 @@ const App = ({
   emotionCache?: EmotionCache
 }): ReactElement => {
   const { pathname, query } = useRouter()
-  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
-
-  // Workaround for dark mode widgets
-  const isDarkMode = query.theme ? query.theme === 'dark' : prefersDarkMode
 
   useEffect(() => {
     if (typeof document !== 'undefined') {
-      document.documentElement.setAttribute('data-theme', isDarkMode ? 'dark' : 'light')
+      document.documentElement.setAttribute('data-theme', 'dark')
     }
-  }, [isDarkMode])
+  }, [])
 
   const theme = useMemo(() => {
     // Extend the theme with the CssVarsProvider
-    return extendMuiTheme(initTheme(isDarkMode))
+    return extendMuiTheme(initTheme())
     // Widgets don't navigate, so we need not worry about the query changing
-  }, [isDarkMode])
+  }, [])
 
   const page = <Component {...pageProps} />
 

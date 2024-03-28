@@ -7,22 +7,14 @@ import trezorIcon from '@web3-onboard/trezor/dist/icon'
 import ledgerIcon from '@web3-onboard/ledger/dist/icon'
 import tahoIcon from '@web3-onboard/taho/dist/icon'
 
-import { INJECTED_WALLET_KEYS, WALLET_KEYS } from '@/utils/onboard'
+import { WALLET_KEYS } from '@/utils/onboard'
 
 type Props = {
-  [k in keyof (typeof WALLET_KEYS & typeof INJECTED_WALLET_KEYS)]: string
+  [k in keyof typeof WALLET_KEYS]: string
 }
 
 const WALLET_ICONS: Props = {
-  [INJECTED_WALLET_KEYS.METAMASK]: metamaskIcon,
-  [WALLET_KEYS.COINBASE]: coinbaseIcon,
-  [WALLET_KEYS.INJECTED]: metamaskIcon,
-  [WALLET_KEYS.KEYSTONE]: keystoneIcon,
-  [WALLET_KEYS.WALLETCONNECT]: walletConnectIcon,
   [WALLET_KEYS.WALLETCONNECT_V2]: walletConnectIcon,
-  [WALLET_KEYS.TREZOR]: trezorIcon,
-  [WALLET_KEYS.LEDGER]: ledgerIcon,
-  [WALLET_KEYS.TAHO]: tahoIcon,
 }
 
 export const WalletIcon = ({ provider }: { provider: string }) => {

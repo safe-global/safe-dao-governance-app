@@ -1,0 +1,18 @@
+.info {
+    background: #121312;
+    padding: 24px;
+    border-radius: 6px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.signalWrapper {
+    position: relative;
+}
+
+.signalWrapper svg:last-child {
+    position: absolute;
+    left: 0;
+}

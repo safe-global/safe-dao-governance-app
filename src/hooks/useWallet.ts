@@ -4,7 +4,6 @@ import type { EIP1193Provider, WalletState } from '@web3-onboard/core'
 
 import { useOnboard } from '@/hooks/useOnboard'
 import { localItem } from '@/services/storage/local'
-import { isWalletUnlocked } from '@/utils/wallet'
 
 export type ConnectedWallet = {
   label: string
@@ -99,12 +98,8 @@ export const useInitWallet = () => {
       return
     }
 
-    isWalletUnlocked(label).then((isUnlocked) => {
-      if (isUnlocked) {
-        onboard.connectWallet({
-          autoSelect: { label, disableModals: true },
-        })
-      }
+    onboard.connectWallet({
+      autoSelect: { label, disableModals: true },
     })
   }, [onboard])
 }

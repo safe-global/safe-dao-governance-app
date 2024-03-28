@@ -1,25 +1,12 @@
-.circle {
-  position: absolute;
-  border-radius: 50%;
+.circles {
   z-index: -1;
-}
-
-.top {
-  width: 350px;
-  height: 350px;
-  left: -100px;
-  top: 50px;
-}
-
-.bottom {
-  width: 450px;
-  height: 450px;
-  right: -100px;
-  bottom: -100px;
-}
-
-@media (max-width: 600px) {
-  .circle {
-    display: none;
-  }
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  top: 0;
+  left: 0;
+  background: radial-gradient(circle at 75% 25%, rgba(18, 255, 128, 0.3) 0%, #000000 40%),
+    radial-gradient(circle at 25% 125%, rgba(41, 182, 246, 0.5) 0%, #121312 50%);
+  background-blend-mode: screen;
 }

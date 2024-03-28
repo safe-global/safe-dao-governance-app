@@ -24,8 +24,8 @@
     "@emotion/react": "^11.10.5",
     "@emotion/server": "^11.10.0",
     "@emotion/styled": "^11.10.5",
-    "@gnosis.pm/safe-apps-provider": "^0.15.1",
-    "@gnosis.pm/safe-apps-react-sdk": "^4.6.2",
+    "@safe-global/safe-apps-provider": "^0.18.2",
+    "@safe-global/safe-apps-react-sdk": "^4.7.1",
     "@mui/icons-material": "^5.11.0",
     "@mui/material": "^5.11.5",
     "@safe-global/safe-gateway-typescript-sdk": "^3.5.6",
@@ -45,7 +45,8 @@
     "next": "13.1.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "swr": "^2.1.0"
+    "swr": "^2.1.0",
+    "victory": "^36.9.2"
   },
   "devDependencies": {
     "@svgr/webpack": "^6.5.1",

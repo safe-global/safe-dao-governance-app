@@ -1,3 +1,5 @@
+import { BigNumber } from 'ethers'
+
 // General
 export const IS_PRODUCTION = process.env.NEXT_PUBLIC_IS_PRODUCTION === 'true'
 export const INFURA_TOKEN = process.env.NEXT_PUBLIC_INFURA_TOKEN || ''
@@ -38,16 +40,28 @@ export const CHAIN_SHORT_NAME: ChainConfig<string> = {
   [Chains.SEPOLIA]: 'sep',
 }
 
+export const CHAIN_START_TIMESTAMPS: ChainConfig<number> = {
+  [Chains.MAINNET]: Date.parse('Tue Apr 23 2024 12:00:00 GMT+0000'),
+  [Chains.SEPOLIA]: Date.parse('Tue Mar 01 2024 12:00:00 GMT+0000'),
+}
+
 // Token
 export const CHAIN_SAFE_TOKEN_ADDRESS: ChainConfig<string> = {
   [Chains.MAINNET]: '0x5afe3855358e112b5647b952709e6165e1c1eeee',
   [Chains.SEPOLIA]: '0xd16d9C09d13E9Cf77615771eADC5d51a1Ae92a26',
 }
 
+export const CHAIN_SAFE_LOCKING_ADDRESS: ChainConfig<string> = {
+  [Chains.MAINNET]: '0x0a7CB434f96f65972D46A5c1A64a9654dC9959b2',
+  [Chains.SEPOLIA]: '0xb161ccb96b9b817F9bDf0048F212725128779DE9',
+}
+
 // Claiming
 const CLAIMING_DATA_URL = IS_PRODUCTION
   ? 'https://safe-claiming-app-data.safe.global'
   : 'https://safe-claiming-app-data.staging.5afe.dev'
+
+export const CGW_BASE_URL = IS_PRODUCTION ? 'https://safe-client.safe.global' : 'https://safe-client.staging.5afe.dev'
 
 export const GUARDIANS_URL = `${CLAIMING_DATA_URL}/guardians/guardians.json`
 export const GUARDIANS_IMAGE_URL = `${CLAIMING_DATA_URL}/guardians/images`
@@ -84,3 +98,8 @@ export const SEP5_PROPOSAL_URL =
   'https://snapshot.org/#/safe.eth/proposal/0xb4765551b4814b592d02ce67de05527ac1d2b88a8c814c4346ecc0c947c9b941'
 
 export const DISCORD_URL = 'https://chat.safe.global'
+
+export const UNLIMITED_APPROVAL_AMOUNT = BigNumber.from(2).pow(256).sub(1)
+
+export const SEASON2_START = 160
+export const SEASON1_START = 48
