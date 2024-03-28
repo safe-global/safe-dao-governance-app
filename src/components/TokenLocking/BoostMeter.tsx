@@ -1,11 +1,10 @@
-import { CHAIN_START_TIMESTAMPS } from '@/config/constants'
+import { CHAIN_START_TIMESTAMPS, SEASON2_START } from '@/config/constants'
 import { useChainId } from '@/hooks/useChainId'
 import { floorNumber } from '@/utils/boost'
 import { getCurrentDays } from '@/utils/date'
 import { AccessTime } from '@mui/icons-material'
 import { Box, LinearProgress, Stack, Tooltip, Typography } from '@mui/material'
 import { ReactElement, useMemo } from 'react'
-import { SEASON2_START } from './BoostGraph/graphConstants'
 
 import { useTheme } from '@mui/material/styles'
 
