@@ -74,6 +74,9 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
 
   const validateAmount = useCallback(
     (newAmount: string) => {
+      if (!newAmount || isNaN(Number(newAmount))) {
+        return 'The value must be a number'
+      }
       const parsed = parseUnits(newAmount, 18)
       if (parsed.gt(safeBalance ?? '0')) {
         return 'Amount exceeds balance'
