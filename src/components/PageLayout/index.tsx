@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import { Box } from '@mui/material'
-import { ReactElement, ReactNode, useEffect } from 'react'
+import { ReactElement, ReactNode } from 'react'
 
 import manifestJson from '@/public/manifest.json'
 import { BackgroundCircles } from '@/components/BackgroundCircles'
@@ -11,24 +11,12 @@ import NavTabs from '../NavTabs'
 import { AppRoutes } from '@/config/routes'
 import { useRouter } from 'next/router'
 import { NAVIGATION_EVENTS } from '@/analytics/navigation'
-import { useWallet } from '@/hooks/useWallet'
-import { useIsSafeApp } from '@/hooks/useIsSafeApp'
 
-const RoutesWithNavigation = [AppRoutes.activity, AppRoutes.index]
-const RoutesRequiringWallet = [AppRoutes.activity, AppRoutes.claim, AppRoutes.unlock, AppRoutes.index]
+const RoutesWithNavigation = [AppRoutes.activity, AppRoutes.governance]
 
 export const PageLayout = ({ children }: { children: ReactNode }): ReactElement => {
   const router = useRouter()
   const showNavigation = RoutesWithNavigation.includes(router.route)
-
-  const wallet = useWallet()
-  const isSafeApp = useIsSafeApp()
-
-  useEffect(() => {
-    if (!wallet && !isSafeApp && RoutesRequiringWallet.includes(router.route)) {
-      router.push(AppRoutes.connect)
-    }
-  }, [isSafeApp, router, wallet])
 
   return (
     <>
@@ -40,7 +28,12 @@ export const PageLayout = ({ children }: { children: ReactNode }): ReactElement 
 
       <BackgroundCircles />
 
-      <Box py={{ sm: 6, xs: undefined }} component="main">
+      <Box
+        pt={{ sm: 7, xs: undefined }}
+        pb={{ sm: 6, xs: undefined }}
+        sx={{ minHeight: '100vh', display: 'flex', alignItems: 'center' }}
+        component="main"
+      >
         <Box className={css.container}>
           {showNavigation && (
             <NavTabs
@@ -52,7 +45,7 @@ export const PageLayout = ({ children }: { children: ReactNode }): ReactElement 
                 },
                 {
                   label: 'Governance / Claiming',
-                  href: AppRoutes.index,
+                  href: AppRoutes.governance,
                   event: NAVIGATION_EVENTS.OPEN_CLAIM,
                 },
               ]}

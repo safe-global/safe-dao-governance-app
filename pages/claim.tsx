@@ -12,7 +12,7 @@ const ClaimPage: NextPage = () => {
 
   return (
     <MediumPaper>
-      <SuccessfulClaim data={{ claimedAmount }} onNext={() => router.push(AppRoutes.index)} />
+      <SuccessfulClaim data={{ claimedAmount }} onNext={() => router.push(AppRoutes.governance)} />
     </MediumPaper>
   )
 }

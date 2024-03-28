@@ -20,7 +20,7 @@ import { useIsDelegationPending } from '@/hooks/usePendingDelegations'
 import ClaimOverview from '@/components/Claim'
 import PaperContainer from '@/components/PaperContainer'
 
-export const Intro = (): ReactElement => {
+export const GovernanceAndClaiming = (): ReactElement => {
   const router = useRouter()
   const isWrongChain = useIsWrongChain()
   const wallet = useWallet()

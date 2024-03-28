@@ -4,11 +4,6 @@
   margin: auto;
 }
 
-.tiles {
-  position: relative;
-  top: -200px;
-}
-
 @media (max-width: 600px) {
   .container {
     width: 100%;

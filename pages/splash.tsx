@@ -2,8 +2,8 @@ import type { NextPage } from 'next'
 
 import { SplashScreen } from '@/components/SplashScreen'
 
-const IndexPage: NextPage = () => {
+const SplashPage: NextPage = () => {
   return <SplashScreen />
 }
 
-export default IndexPage
+export default SplashPage
