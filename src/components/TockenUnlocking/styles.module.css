@@ -52,3 +52,12 @@
 .gauge {
   transition: width 200ms;
 }
+
+.amountDisplay {
+  line-height: 2em;
+  font-weight: 700;
+  display: inline-flex;
+  gap: 4px;
+  align-items: center;
+  z-index: 1;
+}
