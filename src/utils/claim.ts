@@ -1,10 +1,10 @@
 import { BigNumber } from 'ethers'
-import type { BaseTransaction } from '@safe-global/safe-apps-sdk/src/types'
 
 import { getVestingTypes } from '@/utils/vesting'
 import { getAirdropInterface } from '@/services/contracts/Airdrop'
 import { splitAirdropAmounts } from '@/utils/airdrop'
 import type { Vesting } from '@/hooks/useSafeTokenAllocation'
+import { BaseTransaction } from '@/hooks/useTxSender'
 
 const airdropInterface = getAirdropInterface()
 
