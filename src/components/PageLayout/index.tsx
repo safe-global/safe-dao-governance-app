@@ -8,11 +8,14 @@ import { Header } from '@/components/Header'
 
 import css from './styles.module.css'
 import NavTabs from '../NavTabs'
-import { AppRoutes, RoutesWithNavigation, RoutesRequiringWallet } from '@/config/routes'
+import { AppRoutes } from '@/config/routes'
 import { useRouter } from 'next/router'
 import { NAVIGATION_EVENTS } from '@/analytics/navigation'
 import { useWallet } from '@/hooks/useWallet'
 import { useIsSafeApp } from '@/hooks/useIsSafeApp'
+
+const RoutesWithNavigation = [AppRoutes.activity, AppRoutes.index]
+const RoutesRequiringWallet = [AppRoutes.activity, AppRoutes.claim, AppRoutes.unlock, AppRoutes.index]
 
 export const PageLayout = ({ children }: { children: ReactNode }): ReactElement => {
   const router = useRouter()
