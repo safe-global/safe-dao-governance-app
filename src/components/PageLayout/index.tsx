@@ -10,6 +10,7 @@ import css from './styles.module.css'
 import NavTabs from '../NavTabs'
 import { AppRoutes, RoutesWithNavigation, RoutesRequiringWallet } from '@/config/routes'
 import { useRouter } from 'next/router'
+import { NAVIGATION_EVENTS } from '@/analytics/navigation'
 import { useWallet } from '@/hooks/useWallet'
 import { useIsSafeApp } from '@/hooks/useIsSafeApp'
 
@@ -44,10 +45,12 @@ export const PageLayout = ({ children }: { children: ReactNode }): ReactElement 
                 {
                   label: 'Activity App',
                   href: AppRoutes.activity,
+                  event: NAVIGATION_EVENTS.OPEN_LOCKING,
                 },
                 {
                   label: 'Governance / Claiming',
                   href: AppRoutes.index,
+                  event: NAVIGATION_EVENTS.OPEN_CLAIM,
                 },
               ]}
             />

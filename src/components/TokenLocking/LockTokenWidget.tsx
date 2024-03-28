@@ -18,6 +18,9 @@ import { SEASON2_START } from './BoostGraph/graphConstants'
 import { CHAIN_START_TIMESTAMPS, UNLIMITED_APPROVAL_AMOUNT } from '@/config/constants'
 import { getCurrentDays } from '@/utils/date'
 import { BoostBreakdown } from './BoostBreakdown'
+import Track from '../Track'
+import { LOCK_EVENTS } from '@/analytics/lockEvents'
+import { trackSafeAppEvent } from '@/utils/analytics'
 import MilesReceipt from '@/components/TokenLocking/MilesReceipt'
 import { BaseTransaction, useTxSender } from '@/hooks/useTxSender'
 import { useSafeTokenLockingAllowance } from '@/hooks/useSafeTokenBalance'
@@ -99,7 +102,7 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
           await txSender?.sendTxs([txs[i]])
         }
       }
-
+      trackSafeAppEvent(LOCK_EVENTS.LOCK_SUCCESS.action)
       setReceiptOpen(true)
     } catch (error) {
       console.error(error)
@@ -160,9 +163,11 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
               </Grid>
 
               <Grid item xs={4}>
-                <Button onClick={onLockTokens} variant="contained" fullWidth disableElevation disabled={isDisabled}>
-                  {isLocking ? <CircularProgress size={20} /> : 'Lock'}
-                </Button>
+                <Track {...LOCK_EVENTS.LOCK_BUTTON}>
+                  <Button onClick={onLockTokens} variant="contained" fullWidth disableElevation disabled={isDisabled}>
+                    {isLocking ? <CircularProgress size={20} /> : 'Lock'}
+                  </Button>
+                </Track>
               </Grid>
             </Grid>
           </Grid>

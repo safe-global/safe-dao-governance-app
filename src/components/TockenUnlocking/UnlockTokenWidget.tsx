@@ -13,6 +13,9 @@ import { getCurrentDays } from '@/utils/date'
 import { CHAIN_START_TIMESTAMPS } from '@/config/constants'
 import { BoostBreakdown } from '../TokenLocking/BoostBreakdown'
 import { SEASON2_START } from '../TokenLocking/BoostGraph/graphConstants'
+import Track from '../Track'
+import { LOCK_EVENTS } from '@/analytics/lockEvents'
+import { trackSafeAppEvent } from '@/utils/analytics'
 import MilesReceipt from '@/components/TokenLocking/MilesReceipt'
 import { useTxSender } from '@/hooks/useTxSender'
 
@@ -69,6 +72,7 @@ export const UnlockTokenWidget = ({
 
     try {
       await txSender?.sendTxs([unlockTx])
+      trackSafeAppEvent(LOCK_EVENTS.UNLOCK_SUCCESS.action)
       setReceiptOpen(true)
     } catch (err) {
       console.error(err)
@@ -119,9 +123,11 @@ export const UnlockTokenWidget = ({
             </Grid>
 
             <Grid item xs={4}>
-              <Button onClick={onUnlock} variant="contained" fullWidth disableElevation disabled={isDisabled}>
-                {isUnlocking ? <CircularProgress size={20} /> : 'Unlock'}
-              </Button>
+              <Track {...LOCK_EVENTS.UNLOCK_BUTTON}>
+                <Button onClick={onUnlock} variant="contained" fullWidth disableElevation disabled={isDisabled}>
+                  {isUnlocking ? <CircularProgress size={20} /> : 'Unlock'}
+                </Button>
+              </Track>
             </Grid>
           </Grid>
         </Grid>

@@ -19,6 +19,9 @@ import SafeToken from '@/public/images/token.svg'
 import { useMemo, useState } from 'react'
 import { CHAIN_START_TIMESTAMPS } from '@/config/constants'
 import { useSummarizedLockHistory } from '@/hooks/useSummarizedLockHistory'
+import Track from '../Track'
+import { LOCK_EVENTS } from '@/analytics/lockEvents'
+import { trackSafeAppEvent } from '@/utils/analytics'
 import { useTxSender } from '@/hooks/useTxSender'
 
 const TokenUnlocking = () => {
@@ -41,6 +44,7 @@ const TokenUnlocking = () => {
     const withdrawTx = createWithdrawTx(chainId)
     try {
       await txSender?.sendTxs([withdrawTx])
+      trackSafeAppEvent(LOCK_EVENTS.WITHDRAW_SUCCESS.action)
     } catch (error) {
       console.error(error)
     }
@@ -98,15 +102,17 @@ const TokenUnlocking = () => {
                   </Typography>
                 </Grid>
               </Box>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={onWithdraw}
-                disabled={totalWithdrawable.eq(0) || isWithdrawing || !isTransactionPossible}
-                sx={{ ml: 'auto !important' }}
-              >
-                {isWithdrawing ? <CircularProgress size={20} /> : 'Withdraw'}
-              </Button>
+              <Track {...LOCK_EVENTS.WITHDRAW_BUTTON}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={onWithdraw}
+                  disabled={totalWithdrawable.eq(0) || isWithdrawing || !isTransactionPossible}
+                  sx={{ ml: 'auto !important' }}
+                >
+                  {isWithdrawing ? <CircularProgress size={20} /> : 'Withdraw'}
+                </Button>
+              </Track>
             </Stack>
           </Paper>
         </Grid>

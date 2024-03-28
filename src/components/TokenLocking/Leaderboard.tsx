@@ -25,6 +25,8 @@ import { formatAmount } from '@/utils/formatters'
 import { formatEther } from 'ethers/lib/utils'
 import { ReactElement, useState } from 'react'
 import { useEnsLookup } from '@/hooks/useEnsLookup'
+import Track from '../Track'
+import { NAVIGATION_EVENTS } from '@/analytics/navigation'
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -163,16 +165,18 @@ const LeaderboardPage = ({ index, onLoadMore }: { index: number; onLoadMore?: ()
       {onLoadMore && leaderboardPage?.next && (
         <tr>
           <td colSpan={3} style={{ textAlign: 'center' }}>
-            <Link
-              sx={{
-                '&:hover': {
-                  cursor: 'pointer',
-                },
-              }}
-              onClick={onLoadMore}
-            >
-              Load more
-            </Link>
+            <Track {...NAVIGATION_EVENTS.LEADERBOARD_SHOW_MORE}>
+              <Link
+                sx={{
+                  '&:hover': {
+                    cursor: 'pointer',
+                  },
+                }}
+                onClick={onLoadMore}
+              >
+                Show more
+              </Link>
+            </Track>
           </td>
         </tr>
       )}
