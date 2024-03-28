@@ -15,4 +15,7 @@ const customJestConfig = {
   testEnvironment: 'jest-environment-jsdom',
 }
 
-module.exports = createJestConfig(customJestConfig)
+module.exports = async () => ({
+  ...(await createJestConfig(customJestConfig)()),
+  transformIgnorePatterns: ['node_modules/(?!(isows)/)'],
+})
