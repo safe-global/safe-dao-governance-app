@@ -1,7 +1,7 @@
 import { useAddress } from './useAddress'
 import useSWRInfinite from 'swr/infinite'
 import { useMemo } from 'react'
-import { CGW_BASE_URL } from '@/config/constants'
+import { CGW_BASE_URL, POLLING_INTERVAL } from '@/config/constants'
 import { toCursorParam } from '@/utils/gateway'
 
 export type LockEvent = {
@@ -63,15 +63,21 @@ export const useLockHistory = () => {
     [address],
   )
 
-  const { data, size, setSize } = useSWRInfinite(getKey, async (url: string) => {
-    return await fetch(url).then((resp) => {
-      if (resp.ok) {
-        return resp.json() as Promise<LockingHistoryEventPage>
-      } else {
-        throw new Error('Error fetching lock history.')
-      }
-    })
-  })
+  const { data, size, setSize } = useSWRInfinite(
+    getKey,
+    async (url: string) => {
+      return await fetch(url).then((resp) => {
+        if (resp.ok) {
+          return resp.json() as Promise<LockingHistoryEventPage>
+        } else {
+          throw new Error('Error fetching lock history.')
+        }
+      })
+    },
+    {
+      refreshInterval: POLLING_INTERVAL,
+    },
+  )
 
   // We need to load everything
   if (data && data.length > 0) {

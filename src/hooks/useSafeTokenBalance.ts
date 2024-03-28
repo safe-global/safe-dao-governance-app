@@ -5,6 +5,7 @@ import useSWR from 'swr'
 import { fetchTokenBalance, fetchTokenLockingAllowance } from '@/utils/safe-token'
 import { fetchLockedAmount, fetchUnlockData } from '@/utils/lock'
 import { BigNumber } from 'ethers'
+import { POLLING_INTERVAL } from '@/config/constants'
 
 export const useSafeTokenBalance = () => {
   const QUERY_KEY = 'safe-token-balance'
@@ -12,12 +13,18 @@ export const useSafeTokenBalance = () => {
   const chainId = useChainId()
   const address = useAddress()
 
-  return useSWR(web3 && address ? QUERY_KEY : null, () => {
-    if (!address || !web3) {
-      return '0'
-    }
-    return fetchTokenBalance(chainId, address, web3)
-  })
+  return useSWR(
+    web3 && address ? QUERY_KEY : null,
+    () => {
+      if (!address || !web3) {
+        return '0'
+      }
+      return fetchTokenBalance(chainId, address, web3)
+    },
+    {
+      refreshInterval: POLLING_INTERVAL,
+    },
+  )
 }
 
 export const useSafeTokenLockingAllowance = () => {
