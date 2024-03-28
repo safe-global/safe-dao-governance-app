@@ -55,6 +55,11 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
     [cleanedAmount, relativeLockHistory, todayInDays],
   )
 
+  const boostIn10DaysFunction = useMemo(
+    () => getBoostFunction(todayInDays + 10, Number(cleanedAmount), relativeLockHistory),
+    [cleanedAmount, relativeLockHistory, todayInDays],
+  )
+
   const validateAmount = useCallback(
     (newAmount: string) => {
       const parsed = parseUnits(newAmount, 18)
@@ -177,6 +182,7 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
               currentFinalBoost={currentBoostFunction({ x: SEASON2_START })}
               newFinalBoost={newBoostFunction({ x: SEASON2_START })}
               isLock
+              boostPrediction={boostIn10DaysFunction({ x: SEASON2_START })}
             />
           </Grid>
         </Grid>
