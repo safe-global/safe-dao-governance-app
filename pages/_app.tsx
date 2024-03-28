@@ -22,7 +22,6 @@ import { useIsTokenPaused } from '@/hooks/useIsTokenPaused'
 import { useInitWallet } from '@/hooks/useWallet'
 import { EnsureWalletConnection } from '@/components/EnsureWalletConnection'
 import { createEmotionCache } from '@/styles/emotion'
-import { GATEWAY_URL } from '@/config/constants'
 import { isDashboard } from '@/utils/routes'
 import { useSafeSnapshot } from '@/hooks/useSafeSnapshot'
 import { usePendingDelegations } from '@/hooks/usePendingDelegations'
@@ -30,6 +29,7 @@ import { usePendingDelegations } from '@/hooks/usePendingDelegations'
 import '@/styles/globals.css'
 import { useSafeTokenBalance, useSafeUserLockingInfos } from '@/hooks/useSafeTokenBalance'
 import { useLockHistory } from '@/hooks/useLockHistory'
+import { GATEWAY_URL } from '@/config/constants'
 
 const InitApp = (): null => {
   setGatewayBaseUrl(GATEWAY_URL)

@@ -61,7 +61,10 @@ const CLAIMING_DATA_URL = IS_PRODUCTION
   ? 'https://safe-claiming-app-data.safe.global'
   : 'https://safe-claiming-app-data.staging.5afe.dev'
 
-export const CGW_BASE_URL = IS_PRODUCTION ? 'https://safe-client.safe.global' : 'https://safe-client.staging.5afe.dev'
+export const CGW_BASE_URL = {
+  [Chains.MAINNET]: 'https://safe-client.safe.global',
+  [Chains.SEPOLIA]: 'https://safe-client.staging.5afe.dev',
+}
 
 export const GUARDIANS_URL = `${CLAIMING_DATA_URL}/guardians/guardians.json`
 export const GUARDIANS_IMAGE_URL = `${CLAIMING_DATA_URL}/guardians/images`

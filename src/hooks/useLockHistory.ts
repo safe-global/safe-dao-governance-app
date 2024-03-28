@@ -1,8 +1,7 @@
 import { useAddress } from './useAddress'
 import useSWRInfinite from 'swr/infinite'
 import { useMemo } from 'react'
-import { CGW_BASE_URL } from '@/config/constants'
-import { toCursorParam } from '@/utils/gateway'
+import { useGatewayBaseUrl } from './useGatewayBaseUrl'
 
 export type LockEvent = {
   eventType: 'LOCKED'
@@ -44,6 +43,7 @@ type LockingHistoryEventPage = {
 
 export const useLockHistory = () => {
   const address = useAddress()
+  const gatewayBaseUrl = useGatewayBaseUrl()
 
   const getKey = useMemo(
     () => (pageIndex: number, previousPageData: LockingHistoryEventPage) => {
@@ -53,14 +53,14 @@ export const useLockHistory = () => {
       }
       if (!previousPageData) {
         // Load first page
-        return `${CGW_BASE_URL}/v1/locking/${address}/history`
+        return `${gatewayBaseUrl}/v1/locking/${address}/history`
       }
       if (previousPageData && !previousPageData.next) return null // reached the end
 
       // Load next page
       return previousPageData.next
     },
-    [address],
+    [address, gatewayBaseUrl],
   )
 
   const { data, size, setSize } = useSWRInfinite(getKey, async (url: string) => {
