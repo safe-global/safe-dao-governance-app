@@ -1,4 +1,4 @@
-import { Divider, Link, Stack, SvgIcon, Typography } from '@mui/material'
+import { Chip, Divider, Link, Stack, SvgIcon, Typography } from '@mui/material'
 import css from './styles.module.css'
 import clsx from 'clsx'
 import ClockIcon from '@/public/images/clock-alt.svg'

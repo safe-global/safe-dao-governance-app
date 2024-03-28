@@ -42,12 +42,12 @@ const TokenLocking = () => {
       </Grid>
 
       <Grid item xs={4}>
-        <Stack spacing={3}>
-          <PaperContainer sx={{ position: 'relative', overflow: 'hidden' }}>
+        <Stack spacing={3} justifyContent="stretch" height="100%">
+          <PaperContainer sx={{ position: 'relative', overflow: 'hidden', height: '100%' }}>
             <SvgIcon
               component={Asterix}
               inheritViewBox
-              sx={{ color: 'transparent', position: 'absolute', top: 0, right: 0, height: 'inherit', width: 'inherit' }}
+              sx={{ color: 'transparent', position: 'absolute', top: 0, right: 0, height: '208px', width: 'inherit' }}
             />
             <ActivityRewardsInfo />
           </PaperContainer>
