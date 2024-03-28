@@ -13,11 +13,9 @@ import Barcode from '@/public/images/barcode.svg'
 import css from './styles.module.css'
 import SafeMiles from '@/public/images/safe-miles.svg'
 import { useIsSafeApp } from '@/hooks/useIsSafeApp'
-import { CHAIN_START_TIMESTAMPS } from '@/config/constants'
+import { CHAIN_START_TIMESTAMPS, SEASON1_START, SEASON2_START } from '@/config/constants'
 import Asterix from '@/public/images/asterix.svg'
-
-const JUNE_10_TIMESTAMP = 1718013600000
-const SEPTEMBER_10_TIMESTAMP = 1725962400000
+import { toDaysSinceStart } from '@/utils/date'
 
 const Step = ({ index, title, active }: { index: number; title: string; active: boolean }) => {
   return (
@@ -46,12 +44,8 @@ export const SplashScreen = (): ReactElement => {
   const isSafeApp = useIsSafeApp()
   const wallet = useWallet()
 
-  const today = Date.now()
-  const stepsActive = [
-    today >= CHAIN_START_TIMESTAMPS[chainId],
-    today >= JUNE_10_TIMESTAMP,
-    today >= SEPTEMBER_10_TIMESTAMP,
-  ]
+  const daysSinceStart = toDaysSinceStart(Date.now(), CHAIN_START_TIMESTAMPS[chainId])
+  const stepsActive = [daysSinceStart >= 0, daysSinceStart >= SEASON1_START, daysSinceStart >= SEASON2_START]
 
   const isDisconnected = !isSafeApp && !wallet
 

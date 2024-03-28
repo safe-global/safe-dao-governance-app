@@ -41,8 +41,8 @@ export const CHAIN_SHORT_NAME: ChainConfig<string> = {
 }
 
 export const CHAIN_START_TIMESTAMPS: ChainConfig<number> = {
-  [Chains.MAINNET]: 1713866400000, // 23rd April 2024
-  [Chains.SEPOLIA]: 1709290800000, // 01st March 2024
+  [Chains.MAINNET]: Date.parse('Tue Apr 23 2024 12:00:00 GMT+0000'),
+  [Chains.SEPOLIA]: Date.parse('Tue Mar 01 2024 12:00:00 GMT+0000'),
 }
 
 // Token
@@ -100,3 +100,6 @@ export const SEP5_PROPOSAL_URL =
 export const DISCORD_URL = 'https://chat.safe.global'
 
 export const UNLIMITED_APPROVAL_AMOUNT = BigNumber.from(2).pow(256).sub(1)
+
+export const SEASON2_START = 160
+export const SEASON1_START = 48

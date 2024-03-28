@@ -2,8 +2,8 @@ import { Point, PointProps } from 'victory'
 import { useTheme } from '@mui/material/styles'
 import { useState } from 'react'
 import { ArrowDownLabel } from './ArrowDownLabel'
-import { SEASON2_START } from './graphConstants'
 import { floorNumber } from '@/utils/boost'
+import { SEASON2_START } from '@/config/constants'
 
 /**
  * Draws different circles based on the date
