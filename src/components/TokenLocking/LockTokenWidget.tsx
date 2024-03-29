@@ -25,8 +25,7 @@ import { useChainId } from '@/hooks/useChainId'
 import { floorNumber, getBoostFunction } from '@/utils/boost'
 import { useLockHistory } from '@/hooks/useLockHistory'
 import { useDebounce } from '@/hooks/useDebounce'
-import { SEASON2_START } from './BoostGraph/graphConstants'
-import { CHAIN_START_TIMESTAMPS, UNLIMITED_APPROVAL_AMOUNT } from '@/config/constants'
+import { CHAIN_START_TIMESTAMPS, SEASON2_START, UNLIMITED_APPROVAL_AMOUNT } from '@/config/constants'
 import { getCurrentDays } from '@/utils/date'
 import { BoostBreakdown } from './BoostBreakdown'
 import Track from '../Track'
@@ -104,15 +103,17 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
     if (!txSender) {
       throw new Error('Cannot lock tokens without connected wallet')
     }
-    setIsLocking(true)
-    let txs: BaseTransaction[] = []
-    if (BigNumber.from(safeTokenAllowance).lt(amount)) {
-      // Approval is too low for the locking operation
-      const approvalAmount = txSender?.isBatchingSupported ? parseUnits(amount, 18) : UNLIMITED_APPROVAL_AMOUNT
-      txs.push(createApproveTx(chainId, approvalAmount))
-    }
-    txs.push(createLockTx(chainId, parseUnits(amount, 18)))
     try {
+      const amountToLockWei = parseUnits(amount, 18)
+      setIsLocking(true)
+      let txs: BaseTransaction[] = []
+      if (BigNumber.from(safeTokenAllowance).lt(amountToLockWei)) {
+        // Approval is too low for the locking operation
+        const approvalAmount = txSender?.isBatchingSupported ? amountToLockWei : UNLIMITED_APPROVAL_AMOUNT
+        txs.push(createApproveTx(chainId, approvalAmount))
+      }
+      txs.push(createLockTx(chainId, amountToLockWei))
+
       if (txSender?.isBatchingSupported) {
         await txSender.sendTxs(txs)
       } else {
@@ -124,8 +125,9 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
       setReceiptOpen(true)
     } catch (error) {
       console.error(error)
+    } finally {
+      setIsLocking(false)
     }
-    setIsLocking(false)
   }
 
   const isDisabled = isAllowanceLoading || Boolean(amountError) || isLocking || cleanedAmount === '0'

@@ -1,5 +1,6 @@
 import { useAddress } from './useAddress'
 import useSWR from 'swr'
+import { POLLING_INTERVAL } from '@/config/constants'
 import { toCursorParam } from '@/utils/gateway'
 import { useGatewayBaseUrl } from './useGatewayBaseUrl'
 
@@ -36,6 +37,7 @@ export const useOwnRank = () => {
         }
       })
     },
+    { refreshInterval: POLLING_INTERVAL },
   )
 }
 
@@ -52,15 +54,19 @@ export const useGlobalLeaderboardPage = (limit: number, offset?: number) => {
     return `${gatewayBaseUrl}/v1/locking/leaderboard?${toCursorParam(limit, offset)}`
   }
 
-  const { data } = useSWR(getKey(limit, offset), async (url: string) => {
-    return await fetch(url).then((resp) => {
-      if (resp.ok) {
-        return resp.json() as Promise<LeaderboardPage>
-      } else {
-        throw new Error('Error fetching leaderboard.')
-      }
-    })
-  })
+  const { data } = useSWR(
+    getKey(limit, offset),
+    async (url: string) => {
+      return await fetch(url).then((resp) => {
+        if (resp.ok) {
+          return resp.json() as Promise<LeaderboardPage>
+        } else {
+          throw new Error('Error fetching leaderboard.')
+        }
+      })
+    },
+    { refreshInterval: POLLING_INTERVAL },
+  )
 
   return data
 }
