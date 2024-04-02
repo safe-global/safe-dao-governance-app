@@ -259,3 +259,22 @@
 .unlockGradient {
   background: radial-gradient(41.34% 41.34% at 50% 50%, #ff8061 0%, rgba(255, 128, 97, 0) 82.5%);
 }
+
+.activityRewardsAccordion :global .MuiAccordionSummary-content {
+  margin: auto;
+  height: 64px;
+}
+
+.activityRewardsAccordion :global .Mui-expanded.MuiAccordionSummary-root {
+  border-bottom: 1px solid var(--mui-palette-border-light);
+}
+
+.activityRewardsAccordion :global .MuiAccordionDetails-root {
+  padding: 0;
+}
+
+@media (max-width: 1199px) {
+  .activityRewards {
+    order: -1;
+  }
+}

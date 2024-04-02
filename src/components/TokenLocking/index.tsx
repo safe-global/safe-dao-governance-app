@@ -7,8 +7,9 @@ import { LockTokenWidget } from './LockTokenWidget'
 import { ActivityRewardsInfo } from './ActivityRewardsInfo'
 import { ActionNavigation } from './ActionNavigation'
 import PaperContainer from '../PaperContainer'
-import Asterix from '@/public/images/asterix.svg'
 import { AppRoutes } from '@/config/routes'
+
+import css from './styles.module.css'
 
 const TokenLocking = () => {
   const { isLoading: safeBalanceLoading, data: safeBalance } = useSafeTokenBalance()
@@ -41,16 +42,9 @@ const TokenLocking = () => {
         </Stack>
       </Grid>
 
-      <Grid item xs={12} lg={4}>
+      <Grid item xs={12} lg={4} className={css.activityRewards}>
         <Stack spacing={3} justifyContent="stretch" height="100%">
-          <PaperContainer sx={{ position: 'relative', overflow: 'hidden', height: '100%' }}>
-            <SvgIcon
-              component={Asterix}
-              inheritViewBox
-              sx={{ color: 'transparent', position: 'absolute', top: 0, right: 0, height: '208px', width: 'inherit' }}
-            />
-            <ActivityRewardsInfo />
-          </PaperContainer>
+          <ActivityRewardsInfo />
         </Stack>
       </Grid>
       <Grid item xs={12}>

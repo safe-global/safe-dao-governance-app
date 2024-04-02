@@ -1,4 +1,14 @@
-import { Divider, Link, Stack, SvgIcon, Typography } from '@mui/material'
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Divider,
+  Link,
+  Stack,
+  SvgIcon,
+  Typography,
+  useMediaQuery,
+} from '@mui/material'
 import css from './styles.module.css'
 import clsx from 'clsx'
 import ClockIcon from '@/public/images/clock-alt.svg'
@@ -10,6 +20,11 @@ import StarIcon from '@/public/images/star.svg'
 import Image from 'next/image'
 import { useOwnRank } from '@/hooks/useLeaderboard'
 import { toDaysSinceStart } from '@/utils/date'
+import Asterix from '@/public/images/asterix.svg'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+
+import { useTheme } from '@mui/material/styles'
+import PaperContainer from '../PaperContainer'
 
 const Step = ({
   active,
@@ -46,7 +61,7 @@ const Step = ({
   )
 }
 
-export const ActivityRewardsInfo = () => {
+const ActivityRewardsInfoContent = () => {
   const chainId = useChainId()
   const ownRankResult = useOwnRank()
   const { data: ownRank } = ownRankResult
@@ -55,7 +70,13 @@ export const ActivityRewardsInfo = () => {
   const stepsActive = [daysSinceStart >= 0, daysSinceStart >= SEASON1_START, daysSinceStart >= SEASON2_START]
 
   return (
-    <>
+    <PaperContainer sx={{ position: 'relative', overflow: 'hidden', height: '100%' }}>
+      <SvgIcon
+        component={Asterix}
+        inheritViewBox
+        sx={{ color: 'transparent', position: 'absolute', top: 0, right: 0, height: '208px', width: 'inherit' }}
+      />
+
       <div className={css.steps}>
         {ownRank && (
           <>
@@ -131,6 +152,26 @@ export const ActivityRewardsInfo = () => {
       <Link href="#" sx={{ textAlign: 'center' }}>
         More info about Activity Miles
       </Link>
-    </>
+    </PaperContainer>
+  )
+}
+
+export const ActivityRewardsInfo = () => {
+  const theme = useTheme()
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'))
+
+  return isSmallScreen ? (
+    <Accordion className={css.activityRewardsAccordion}>
+      <AccordionSummary id="panel-header" aria-controls="panel-content" expandIcon={<ExpandMoreIcon />}>
+        <Typography variant="h4" fontWeight="bold" display="flex" alignItems="center">
+          How the program works
+        </Typography>
+      </AccordionSummary>
+      <AccordionDetails>
+        <ActivityRewardsInfoContent />
+      </AccordionDetails>
+    </Accordion>
+  ) : (
+    <ActivityRewardsInfoContent />
   )
 }
