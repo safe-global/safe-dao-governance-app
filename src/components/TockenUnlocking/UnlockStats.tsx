@@ -12,11 +12,11 @@ export const UnlockStats = ({
 }) => {
   return (
     <Grid container direction="row" spacing={2}>
-      <Grid item xs={6}>
+      <Grid item xs={12} lg={6}>
         <TokenAmount amount={currentlyLocked} label="Locked" loading={false} />
       </Grid>
 
-      <Grid item xs={6}>
+      <Grid item xs={12} lg={6}>
         <TokenAmount amount={unlockedTotal} label="Unlocked" loading={false} />
       </Grid>
     </Grid>

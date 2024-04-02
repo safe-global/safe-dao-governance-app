@@ -53,71 +53,69 @@ const TokenUnlocking = () => {
   }
 
   return (
-    <Stack spacing={3}>
-      <Link
-        href={AppRoutes.activity}
-        component={NextLink}
-        sx={{ display: 'flex', alignItems: 'center', color: ({ palette }) => palette.primary.main }}
-      >
-        <ChevronLeft />
-        Back to main
-      </Link>
+    <Box maxWidth="888px" margin="auto">
+      <Stack spacing={3}>
+        <Link href={AppRoutes.activity} component={NextLink} sx={{ color: ({ palette }) => palette.primary.main }}>
+          <ChevronLeft />
+          Back to main
+        </Link>
 
-      <Typography variant="h1">Unlock / Withdraw</Typography>
-      <PaperContainer sx={{ width: '888px' }}>
-        <UnlockStats currentlyLocked={totalLocked} unlockedTotal={totalUnlocked} />
-      </PaperContainer>
-      <PaperContainer sx={{ width: '888px' }}>
-        <UnlockTokenWidget currentlyLocked={totalLocked} lockHistory={relativeLockHistory} />
-      </PaperContainer>
-      <PaperContainer sx={{ width: '888px' }}>
-        <Typography variant="h4" fontWeight={700}>
-          Withdraw your tokens
-        </Typography>
-        <Typography>After unlocking tokens you need to wait 24h to be able to withdraw your tokens.</Typography>
+        <Typography variant="h1">Unlock / Withdraw</Typography>
+        <PaperContainer>
+          <UnlockStats currentlyLocked={totalLocked} unlockedTotal={totalUnlocked} />
+        </PaperContainer>
+        <PaperContainer>
+          <UnlockTokenWidget currentlyLocked={totalLocked} lockHistory={relativeLockHistory} />
+        </PaperContainer>
+        <PaperContainer>
+          <Typography variant="h4" fontWeight={700}>
+            Withdraw your tokens
+          </Typography>
+          <Typography>After unlocking tokens you need to wait 24h to be able to withdraw your tokens.</Typography>
 
-        <Grid item xs={6}>
-          <Paper
-            sx={{
-              p: 4,
-              backgroundColor: ({ palette }) => palette.background.default,
-              color: ({ palette }) => palette.text.primary,
-              position: 'relative',
-            }}
-          >
-            <Stack direction="row" spacing={2} alignItems="center">
-              <SafeToken width={48} height={48} />
-              <Box>
-                <Typography color="text.secondary">Withdrawable</Typography>
+          <Grid item xs={6}>
+            <Paper
+              sx={{
+                p: 4,
+                backgroundColor: ({ palette }) => palette.background.default,
+                color: ({ palette }) => palette.text.primary,
+                position: 'relative',
+              }}
+            >
+              <Stack direction="row" spacing={2} alignItems="center">
+                <SafeToken width={48} height={48} />
+                <Box>
+                  <Typography color="text.secondary">Withdrawable</Typography>
 
-                <Grid item display="flex" alignItems="center">
-                  <Typography
-                    variant="h3"
-                    variantMapping={{
-                      h3: 'span',
-                    }}
-                    className={css.amountDisplay}
+                  <Grid item display="flex" alignItems="center">
+                    <Typography
+                      variant="h3"
+                      variantMapping={{
+                        h3: 'span',
+                      }}
+                      className={css.amountDisplay}
+                    >
+                      <Odometer value={Number(formatUnits(totalWithdrawable ?? '0', 18))} decimals={2} /> SAFE
+                    </Typography>
+                  </Grid>
+                </Box>
+                <Track {...LOCK_EVENTS.WITHDRAW_BUTTON}>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={onWithdraw}
+                    disabled={totalWithdrawable.eq(0) || isWithdrawing || !isTransactionPossible}
+                    sx={{ ml: 'auto !important' }}
                   >
-                    <Odometer value={Number(formatUnits(totalWithdrawable ?? '0', 18))} decimals={2} /> SAFE
-                  </Typography>
-                </Grid>
-              </Box>
-              <Track {...LOCK_EVENTS.WITHDRAW_BUTTON}>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={onWithdraw}
-                  disabled={totalWithdrawable.eq(0) || isWithdrawing || !isTransactionPossible}
-                  sx={{ ml: 'auto !important' }}
-                >
-                  {isWithdrawing ? <CircularProgress size={20} /> : 'Withdraw'}
-                </Button>
-              </Track>
-            </Stack>
-          </Paper>
-        </Grid>
-      </PaperContainer>
-    </Stack>
+                    {isWithdrawing ? <CircularProgress size={20} /> : 'Withdraw'}
+                  </Button>
+                </Track>
+              </Stack>
+            </Paper>
+          </Grid>
+        </PaperContainer>
+      </Stack>
+    </Box>
   )
 }
 
