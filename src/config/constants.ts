@@ -80,7 +80,7 @@ export const AIRDROP_TAGS = {
 // Delegation
 export const CHAIN_DELEGATE_ID: ChainConfig<string> = {
   [Chains.MAINNET]: 'safe.eth',
-  [Chains.SEPOLIA]: 'tutis.eth',
+  [Chains.SEPOLIA]: 'panzerschrank.eth',
 }
 
 export const DELEGATE_REGISTRY_ADDRESS = '0x469788fe6e9e9681c6ebf3bf78e7fd26fc015446'
