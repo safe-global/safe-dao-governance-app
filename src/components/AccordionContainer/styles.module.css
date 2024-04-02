@@ -1,0 +1,12 @@
+.container :global .MuiAccordionSummary-content {
+  margin: auto;
+  height: 64px;
+}
+
+.container :global .Mui-expanded.MuiAccordionSummary-root {
+  border-bottom: 1px solid var(--mui-palette-border-light);
+}
+
+.container :global .MuiAccordionDetails-root {
+  padding: 0;
+}

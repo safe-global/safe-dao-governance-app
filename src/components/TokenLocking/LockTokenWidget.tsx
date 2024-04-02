@@ -11,6 +11,7 @@ import {
   CircularProgress,
   Link,
 } from '@mui/material'
+import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward'
 import { formatUnits, parseUnits } from 'ethers/lib/utils'
 import SafeToken from '@/public/images/token.svg'
 
@@ -134,12 +135,14 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
 
   return (
     <>
-      <Box display="flex" flexDirection="row" alignItems="center" gap={2}>
-        <Chip label="1" size="medium" sx={{ width: '32px' }} />
-        <Typography variant="h4" fontWeight={700}>
-          Increase your boost for future points
-        </Typography>
-        <Link href={AppRoutes.boost} component={NextLink} sx={{ ml: 'auto' }}>
+      <Box className={css.lockingHeader} gap={2}>
+        <Box display="flex" flex="1" alignItems="center" flexDirection="row" gap={2}>
+          <ArrowOutwardIcon />
+          <Typography variant="h4" fontWeight={700}>
+            Lock tokens to boost your miles
+          </Typography>
+        </Box>
+        <Link href={AppRoutes.boost} component={NextLink}>
           How does boost work?
         </Link>
       </Box>
@@ -151,11 +154,11 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
         }}
       >
         <Grid container direction="row" spacing={2}>
-          <Grid item xs={8}>
+          <Grid item xs={12} md={8}>
             <BoostGraph lockedAmount={Number(cleanedAmount)} pastLocks={relativeLockHistory} isLock />
 
             <Grid container gap={2} flexWrap="nowrap" mb={1} alignItems="center">
-              <Grid item xs={8}>
+              <Grid item xs={12} md={8}>
                 <Typography mb={1}>Select amount to lock</Typography>
                 <TextField
                   variant="outlined"
@@ -185,7 +188,7 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
                 </Typography>
               </Grid>
 
-              <Grid item xs={4}>
+              <Grid item xs={12} md={4}>
                 <Track {...LOCK_EVENTS.LOCK_BUTTON}>
                   <Button onClick={onLockTokens} variant="contained" fullWidth disableElevation disabled={isDisabled}>
                     {isLocking ? <CircularProgress size={20} /> : 'Lock'}
@@ -194,7 +197,7 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
               </Grid>
             </Grid>
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={12} md={4}>
             <BoostBreakdown
               realizedBoost={currentBoostFunction({ x: todayInDays })}
               currentFinalBoost={currentBoostFunction({ x: SEASON2_START })}

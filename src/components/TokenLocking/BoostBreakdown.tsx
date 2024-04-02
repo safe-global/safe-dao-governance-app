@@ -52,8 +52,8 @@ export const BoostBreakdown = ({
   const isInitialState = realizedBoost === 1 && currentFinalBoost === 1 && newFinalBoost === 1
 
   return (
-    <Stack gap={2} height="100%">
-      <Box className={`${css.boostInfoBox} ${css.bordered}`} p={3} gap={4} height="100%" display="flex">
+    <Stack direction={{ xs: 'row', md: 'column' }} gap={2} height="100%">
+      <Box className={`${css.boostInfoBox} ${css.bordered}`} p={3} gap={4} flex="1" height="100%" display="flex">
         <Stack direction="row" justifyContent="space-between" width="100%" alignItems="start">
           <span>
             {!isInitialState && (
@@ -93,7 +93,7 @@ export const BoostBreakdown = ({
           </Stack>
         )}
       </Box>
-      <Box className={`${css.boostInfoBox} ${css.bordered}`} p={2} gap={4} display="flex" width="100%">
+      <Box className={`${css.boostInfoBox} ${css.bordered}`} flex="1" p={2} gap={4} display="flex" width="100%">
         <Box height="88px">
           <BoostMeter isLock={isLock} isVisibleDifference={isVisibleDifference} prediction={boostPrediction} />
         </Box>

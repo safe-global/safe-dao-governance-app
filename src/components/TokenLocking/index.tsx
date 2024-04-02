@@ -18,7 +18,7 @@ const TokenLocking = () => {
 
   return (
     <Grid container spacing={3} direction="row">
-      <Grid item xs={12} mb={3}>
+      <Grid item xs={12} mb={3} className={css.pageTitle}>
         <Typography variant="h2">SAFE Activity Rewards</Typography>
       </Grid>
 

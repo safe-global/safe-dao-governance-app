@@ -39,3 +39,14 @@
   text-transform: none;
   padding-bottom: 6px;
 }
+
+@media (max-width: 599px) {
+  .tabs span {
+    flex: 1;
+    min-width: fit-content;
+  }
+
+  .tab {
+    width: 100%;
+  }
+}
