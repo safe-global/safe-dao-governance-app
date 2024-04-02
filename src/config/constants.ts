@@ -1,3 +1,5 @@
+import { BigNumber } from 'ethers'
+
 // General
 export const IS_PRODUCTION = process.env.NEXT_PUBLIC_IS_PRODUCTION === 'true'
 export const INFURA_TOKEN = process.env.NEXT_PUBLIC_INFURA_TOKEN || ''
@@ -39,8 +41,8 @@ export const CHAIN_SHORT_NAME: ChainConfig<string> = {
 }
 
 export const CHAIN_START_TIMESTAMPS: ChainConfig<number> = {
-  [Chains.MAINNET]: 1713866400000, // 23rd April 2024
-  [Chains.SEPOLIA]: 1709290800000, // 01st March 2024
+  [Chains.MAINNET]: Date.parse('Tue Apr 23 2024 12:00:00 GMT+0000'),
+  [Chains.SEPOLIA]: Date.parse('Tue Mar 01 2024 12:00:00 GMT+0000'),
 }
 
 // Token
@@ -96,3 +98,8 @@ export const SEP5_PROPOSAL_URL =
   'https://snapshot.org/#/safe.eth/proposal/0xb4765551b4814b592d02ce67de05527ac1d2b88a8c814c4346ecc0c947c9b941'
 
 export const DISCORD_URL = 'https://chat.safe.global'
+
+export const UNLIMITED_APPROVAL_AMOUNT = BigNumber.from(2).pow(256).sub(1)
+
+export const SEASON2_START = 160
+export const SEASON1_START = 48

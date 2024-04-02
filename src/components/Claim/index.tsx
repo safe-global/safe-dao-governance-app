@@ -15,7 +15,6 @@ import { useState, type ReactElement, ChangeEvent } from 'react'
 
 import PaperContainer from '../PaperContainer'
 
-import TitleStar from '@/public/images/leaderboard-title-star.svg'
 import StarIcon from '@/public/images/star.svg'
 import { maxDecimals, minMaxValue, mustBeFloat } from '@/utils/validation'
 import { useIsTokenPaused } from '@/hooks/useIsTokenPaused'
@@ -24,7 +23,7 @@ import { useTaggedAllocations } from '@/hooks/useTaggedAllocations'
 import { getVestingTypes } from '@/utils/vesting'
 import { formatEther } from 'ethers/lib/utils'
 import { createClaimTxs } from '@/utils/claim'
-import { useSafeAppsSDK } from '@gnosis.pm/safe-apps-react-sdk'
+import { useSafeAppsSDK } from '@safe-global/safe-apps-react-sdk'
 import { useIsWrongChain } from '@/hooks/useIsWrongChain'
 import SafeToken from '@/public/images/token.svg'
 
@@ -36,6 +35,10 @@ import { Sep5InfoBox } from '../Sep5InfoBox'
 import { formatAmount } from '@/utils/formatters'
 import { ClaimCard } from '../ClaimCard'
 import { InfoAlert } from '../InfoAlert'
+import { useWallet } from '@/hooks/useWallet'
+import { isSafe } from '@/utils/wallet'
+import { getGovernanceAppSafeAppUrl } from '@/utils/safe-apps'
+import { useChainId } from '@/hooks/useChainId'
 
 const validateAmount = (amount: string, maxAmount: string) => {
   return mustBeFloat(amount) || minMaxValue(0, maxAmount, amount) || maxDecimals(amount, 18)
@@ -59,6 +62,8 @@ const ClaimOverview = (): ReactElement => {
   const { sdk, safe } = useSafeAppsSDK()
   const isWrongChain = useIsWrongChain()
   const router = useRouter()
+  const wallet = useWallet()
+  const chainId = useChainId()
 
   const [amount, setAmount] = useState('0')
   const [isMaxAmountSelected, setIsMaxAmountSelected] = useState(false)
@@ -96,7 +101,16 @@ const ClaimOverview = (): ReactElement => {
     setIsMaxAmountSelected(false)
   }
 
-  const onClaim = async () => {
+  const onClick = (handler: () => Promise<void>) => async () => {
+    // Safe is connected via WC
+    if (wallet && (await isSafe(wallet))) {
+      window.open(getGovernanceAppSafeAppUrl(chainId, wallet.address), '_blank')?.focus()
+    } else {
+      handler()
+    }
+  }
+
+  const onClaim = onClick(async () => {
     setCreatingTxs(true)
 
     const txs = createClaimTxs({
@@ -118,7 +132,7 @@ const ClaimOverview = (): ReactElement => {
       console.error(error)
       setCreatingTxs(false)
     }
-  }
+  })
 
   const setToMaxAmount = () => {
     const amountAsNumber = Number(formatEther(total.claimable))

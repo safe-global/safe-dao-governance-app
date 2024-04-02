@@ -1,0 +1,36 @@
+.milesReceipt {
+  width: 90%;
+  height: 537px;
+  display: flex;
+  overflow: hidden;
+}
+
+.leftReceipt,
+.rightReceipt {
+  background-color: #121312;
+  border-radius: 20px;
+  padding: 40px;
+}
+
+.leftReceipt {
+  position: relative;
+  flex-grow: 1;
+}
+
+.leftReceipt:after {
+  content: '';
+  border-right: 1px dashed white;
+  position: absolute;
+  right: 0;
+  top: 20px;
+  height: calc(100% - 40px);
+}
+
+.rightReceipt {
+  width: 388px;
+}
+
+.barcode {
+  position: absolute;
+  right: 10%;
+}

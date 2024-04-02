@@ -1,7 +1,7 @@
 import { act } from '@testing-library/react'
 import { waitFor } from '@testing-library/react'
 import { JsonRpcProvider } from '@ethersproject/providers'
-import * as SafeAppsSdk from '@gnosis.pm/safe-apps-react-sdk'
+import * as SafeAppsSdk from '@safe-global/safe-apps-react-sdk'
 
 import { renderHook } from '@/tests/test-utils'
 import * as useWeb3 from '@/hooks/useWeb3'
@@ -10,10 +10,10 @@ import * as useWallet from '@/hooks/useWallet'
 import { useEnsResolution } from '@/hooks/useEnsResolution'
 import type { ChainInfo } from '@safe-global/safe-gateway-typescript-sdk'
 
-jest.mock('@gnosis.pm/safe-apps-react-sdk', () => {
+jest.mock('@safe-global/safe-apps-react-sdk', () => {
   return {
     __esModule: true,
-    ...jest.requireActual('@gnosis.pm/safe-apps-react-sdk'),
+    ...jest.requireActual('@safe-global/safe-apps-react-sdk'),
   }
 })
 

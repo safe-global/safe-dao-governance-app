@@ -3,14 +3,13 @@ import css from './styles.module.css'
 import clsx from 'clsx'
 import ClockIcon from '@/public/images/clock-alt.svg'
 import { useChainId } from '@/hooks/useChainId'
-import { CHAIN_START_TIMESTAMPS } from '@/config/constants'
+import { CHAIN_START_TIMESTAMPS, SEASON1_START, SEASON2_START } from '@/config/constants'
 import { ReactNode } from 'react'
 import Diamond from '@/public/images/diamond.png'
 import StarIcon from '@/public/images/star.svg'
 import Image from 'next/image'
-
-const JUNE_10_TIMESTAMP = 1718013600000
-const SEPTEMBER_10_TIMESTAMP = 1725962400000
+import { useOwnRank } from '@/hooks/useLeaderboard'
+import { toDaysSinceStart } from '@/utils/date'
 
 const Step = ({
   active,
@@ -47,27 +46,27 @@ const Step = ({
   )
 }
 
-export const PlaceholderTopRight = () => {
+export const ActivityRewardsInfo = () => {
   const chainId = useChainId()
-  const today = Date.now()
+  const ownRankResult = useOwnRank()
+  const { data: ownRank } = ownRankResult
 
-  const stepsActive = [
-    today >= CHAIN_START_TIMESTAMPS[chainId],
-    today >= JUNE_10_TIMESTAMP,
-    today >= SEPTEMBER_10_TIMESTAMP,
-  ]
-
-  const mockRanking = 10000
+  const daysSinceStart = toDaysSinceStart(Date.now(), CHAIN_START_TIMESTAMPS[chainId])
+  const stepsActive = [daysSinceStart >= 0, daysSinceStart >= SEASON1_START, daysSinceStart >= SEASON2_START]
 
   return (
     <>
       <div className={css.steps}>
-        <Typography variant="overline" fontWeight="bold" color="text.secondary" mb="6px">
-          Your current ranking
-        </Typography>
-        <Typography variant="h3" fontWeight="bold" display="flex" alignItems="center" gap={1}>
-          <SvgIcon component={StarIcon} inheritViewBox />#{mockRanking}
-        </Typography>
+        {ownRank && (
+          <>
+            <Typography variant="overline" fontWeight="bold" color="text.secondary" mb="6px">
+              Your current ranking
+            </Typography>
+            <Typography variant="h3" fontWeight="bold" display="flex" alignItems="center" gap={1}>
+              <SvgIcon component={StarIcon} inheritViewBox />#{ownRank.position}
+            </Typography>
+          </>
+        )}
         <Typography variant="h1" fontWeight={700} mt="52px" mb="40px" maxWidth="60%" className={css.gradientText}>
           Interact with Safe and get rewards
         </Typography>
@@ -97,7 +96,7 @@ export const PlaceholderTopRight = () => {
 
         <Step
           active={stepsActive[2]}
-          activationDate="September 10"
+          activationDate="September 30"
           title="Get rewards from your activity miles!"
           description="Get rewards from your boosted activity miles! A higher ranking provides higher chances for rewards."
         />

@@ -1,6 +1,6 @@
 import { BigNumber } from 'ethers'
 import { formatEther } from 'ethers/lib/utils'
-import { useSafeAppsSDK } from '@gnosis.pm/safe-apps-react-sdk'
+import { useSafeAppsSDK } from '@safe-global/safe-apps-react-sdk'
 import { Box, Button, Typography, Link, Skeleton, Card, IconButton, Grid, Tooltip } from '@mui/material'
 import ModeEditOutlinedIcon from '@mui/icons-material/ModeEditOutlined'
 import CheckSharpIcon from '@mui/icons-material/CheckSharp'

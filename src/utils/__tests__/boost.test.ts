@@ -1,4 +1,4 @@
-import { SEASON1_START, SEASON2_START } from '@/components/TokenLocking/BoostGraph/graphConstants'
+import { SEASON1_START, SEASON2_START } from '@/config/constants'
 import { floorNumber, getBoostFunction, getTimeFactor, getTokenBoost } from '../boost'
 import { LockHistory } from '../lock'
 

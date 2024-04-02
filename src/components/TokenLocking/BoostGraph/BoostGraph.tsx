@@ -1,4 +1,4 @@
-import { CHAIN_START_TIMESTAMPS } from '@/config/constants'
+import { CHAIN_START_TIMESTAMPS, SEASON1_START, SEASON2_START } from '@/config/constants'
 import { useChainId } from '@/hooks/useChainId'
 import { floorNumber, getBoostFunction } from '@/utils/boost'
 import { getCurrentDays } from '@/utils/date'
@@ -9,7 +9,6 @@ import { VictoryAxis, VictoryChart, VictoryLine, VictoryScatter, DomainTuple, Fo
 import { ArrowDownLabel } from './ArrowDownLabel'
 import { AxisTopLabel } from './AxisTopLabel'
 import { BoostGradients } from './BoostGradients'
-import { SEASON1_START, SEASON2_START } from './graphConstants'
 import { generatePointsFromHistory } from './helper'
 import { ScatterDot } from './ScatterDot'
 
@@ -135,12 +134,12 @@ export const BoostGraph = ({
         />
         <VictoryAxis
           orientation="top"
-          tickValues={[0, 47, SEASON2_START]}
+          tickValues={[0, SEASON1_START, SEASON2_START]}
           tickFormat={(value) => {
             if (value === 0) {
               return 'Program start'
             }
-            if (value === 47) {
+            if (value === SEASON1_START) {
               return 'Points activation'
             }
 

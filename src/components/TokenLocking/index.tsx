@@ -4,7 +4,7 @@ import NextLink from 'next/link'
 import { Leaderboard } from './Leaderboard'
 import { CurrentStats } from './CurrentStats'
 import { LockTokenWidget } from './LockTokenWidget'
-import { PlaceholderTopRight } from './PlaceholderTopRight'
+import { ActivityRewardsInfo } from './ActivityRewardsInfo'
 import { ActionNavigation } from './ActionNavigation'
 import PaperContainer from '../PaperContainer'
 import Asterix from '@/public/images/asterix.svg'
@@ -42,14 +42,14 @@ const TokenLocking = () => {
       </Grid>
 
       <Grid item xs={12} lg={4}>
-        <Stack spacing={3}>
-          <PaperContainer sx={{ position: 'relative', overflow: 'hidden' }}>
+        <Stack spacing={3} justifyContent="stretch" height="100%">
+          <PaperContainer sx={{ position: 'relative', overflow: 'hidden', height: '100%' }}>
             <SvgIcon
               component={Asterix}
               inheritViewBox
-              sx={{ color: 'transparent', position: 'absolute', top: 0, right: 0, height: 'inherit', width: 'inherit' }}
+              sx={{ color: 'transparent', position: 'absolute', top: 0, right: 0, height: '208px', width: 'inherit' }}
             />
-            <PlaceholderTopRight />
+            <ActivityRewardsInfo />
           </PaperContainer>
         </Stack>
       </Grid>

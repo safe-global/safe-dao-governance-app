@@ -1,4 +1,4 @@
-import { useSafeAppsSDK } from '@gnosis.pm/safe-apps-react-sdk'
+import { useSafeAppsSDK } from '@safe-global/safe-apps-react-sdk'
 import { getAddress, isAddress } from 'ethers/lib/utils'
 import { useEffect, useState } from 'react'
 

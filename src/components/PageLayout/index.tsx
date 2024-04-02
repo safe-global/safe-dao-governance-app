@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import { Box } from '@mui/material'
-import type { ReactElement, ReactNode } from 'react'
+import { ReactElement, ReactNode } from 'react'
 
 import manifestJson from '@/public/manifest.json'
 import { BackgroundCircles } from '@/components/BackgroundCircles'
@@ -8,8 +8,11 @@ import { Header } from '@/components/Header'
 
 import css from './styles.module.css'
 import NavTabs from '../NavTabs'
-import { AppRoutes, RoutesWithNavigation } from '@/config/routes'
+import { AppRoutes } from '@/config/routes'
 import { useRouter } from 'next/router'
+import { NAVIGATION_EVENTS } from '@/analytics/navigation'
+
+const RoutesWithNavigation = [AppRoutes.activity, AppRoutes.governance]
 
 export const PageLayout = ({ children }: { children: ReactNode }): ReactElement => {
   const router = useRouter()
@@ -25,7 +28,12 @@ export const PageLayout = ({ children }: { children: ReactNode }): ReactElement 
 
       <BackgroundCircles />
 
-      <Box py={{ sm: 6, xs: undefined }} component="main">
+      <Box
+        pt={{ sm: 7, xs: undefined }}
+        pb={{ sm: 6, xs: undefined }}
+        sx={{ minHeight: '100vh', display: 'flex', alignItems: 'center' }}
+        component="main"
+      >
         <Box className={css.container}>
           {showNavigation && (
             <NavTabs
@@ -33,10 +41,12 @@ export const PageLayout = ({ children }: { children: ReactNode }): ReactElement 
                 {
                   label: 'Activity App',
                   href: AppRoutes.activity,
+                  event: NAVIGATION_EVENTS.OPEN_LOCKING,
                 },
                 {
                   label: 'Governance / Claiming',
-                  href: AppRoutes.index,
+                  href: AppRoutes.governance,
+                  event: NAVIGATION_EVENTS.OPEN_CLAIM,
                 },
               ]}
             />
