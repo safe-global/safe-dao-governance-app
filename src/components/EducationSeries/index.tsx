@@ -25,7 +25,7 @@ export const EducationSeries = (): ReactElement => {
     <Distribution key={1} onBack={prevStep} onNext={onNext} />,
     <SafeToken key={2} onBack={prevStep} onNext={onNext} />,
     <SafeDao key={3} onBack={prevStep} onNext={onNext} />,
-    <Disclaimer key={4} onBack={prevStep} onNext={() => router.push(AppRoutes.index)} />,
+    <Disclaimer key={4} onBack={prevStep} onNext={() => router.push(AppRoutes.governance)} />,
   ]
 
   const progress = ((step + 1) / steps.length) * 100

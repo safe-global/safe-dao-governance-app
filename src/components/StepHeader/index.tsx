@@ -9,7 +9,7 @@ export const StepHeader = ({ title }: { title: ReactNode }): ReactElement => {
   const router = useRouter()
 
   const onClose = () => {
-    router.push(AppRoutes.index)
+    router.push(AppRoutes.governance)
   }
 
   return (
