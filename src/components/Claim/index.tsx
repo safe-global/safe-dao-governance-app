@@ -41,6 +41,9 @@ import { getGovernanceAppSafeAppUrl } from '@/utils/safe-apps'
 import { useChainId } from '@/hooks/useChainId'
 
 const validateAmount = (amount: string, maxAmount: string) => {
+  if (isNaN(Number(amount))) {
+    return 'The value must be a number'
+  }
   return mustBeFloat(amount) || minMaxValue(0, maxAmount, amount) || maxDecimals(amount, 18)
 }
 
@@ -94,7 +97,7 @@ const ClaimOverview = (): ReactElement => {
 
   // Handlers
   const onChangeAmount = (event: ChangeEvent<HTMLInputElement>) => {
-    const error = validateAmount(amount || '0', totalClaimableAmountInEth)
+    const error = validateAmount(event.target.value || '0', totalClaimableAmountInEth)
     setAmount(event.target.value)
     setAmountError(error)
 
