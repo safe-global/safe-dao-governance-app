@@ -2,7 +2,6 @@ import { Box, Button, CircularProgress, Grid, Link, Paper, Stack, Typography } f
 
 import NextLink from 'next/link'
 import { AppRoutes } from '@/config/routes'
-import { useSafeAppsSDK } from '@safe-global/safe-apps-react-sdk'
 import { createWithdrawTx, toRelativeLockHistory } from '@/utils/lock'
 import { useChainId } from '@/hooks/useChainId'
 import PaperContainer from '../PaperContainer'
@@ -25,7 +24,6 @@ import { trackSafeAppEvent } from '@/utils/analytics'
 import { useTxSender } from '@/hooks/useTxSender'
 
 const TokenUnlocking = () => {
-  const { sdk } = useSafeAppsSDK()
   const chainId = useChainId()
   const startTime = CHAIN_START_TIMESTAMPS[chainId]
   const lockHistory = useLockHistory()

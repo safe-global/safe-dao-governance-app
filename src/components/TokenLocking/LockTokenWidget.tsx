@@ -78,6 +78,9 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
       if (parsed.gt(safeBalance ?? '0')) {
         return 'Amount exceeds balance'
       }
+      if (parsed.lte(0)) {
+        return 'Amount needs to be greater zero'
+      }
     },
     [safeBalance],
   )
@@ -98,6 +101,8 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
     }
     setAmount(formatUnits(safeBalance, 18))
   }, [safeBalance])
+
+  const isMaxDisabled = BigNumber.from(0).gte(safeBalance ?? 0)
 
   const onLockTokens = async () => {
     if (!txSender) {
@@ -160,6 +165,9 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
                 <TextField
                   variant="outlined"
                   fullWidth
+                  onFocus={(event) => {
+                    event.target.select()
+                  }}
                   value={amount}
                   onChange={onChangeAmount}
                   helperText={amountError}
@@ -172,7 +180,7 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
                     ),
                     endAdornment: (
                       <InputAdornment position="end">
-                        <button onClick={onSetToMax} className={css.maxButton}>
+                        <button disabled={isMaxDisabled} onClick={onSetToMax} className={css.maxButton}>
                           Max
                         </button>
                       </InputAdornment>

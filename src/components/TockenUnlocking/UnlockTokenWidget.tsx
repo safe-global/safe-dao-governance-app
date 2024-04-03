@@ -56,6 +56,9 @@ export const UnlockTokenWidget = ({
     if (parsed.gt(currentlyLocked ?? '0')) {
       return 'Amount exceeds locked tokens'
     }
+    if (parsed.lte(0)) {
+      return 'Amount needs to be greater zero'
+    }
   }
 
   const onSetToMax = useCallback(() => {
@@ -103,6 +106,9 @@ export const UnlockTokenWidget = ({
                 helperText={unlockAmountError ?? ' '}
                 error={Boolean(unlockAmountError)}
                 onChange={onChangeUnlockAmount}
+                onFocus={(event) => {
+                  event.target.select()
+                }}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start" sx={{ width: '24px', height: '24px' }}>
