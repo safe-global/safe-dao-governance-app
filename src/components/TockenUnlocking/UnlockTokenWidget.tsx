@@ -52,6 +52,9 @@ export const UnlockTokenWidget = ({
   }
 
   const validateAmount = (newAmount: string) => {
+    if (isNaN(Number(newAmount))) {
+      return 'The value must be a number'
+    }
     const parsed = parseUnits(newAmount, 18)
     if (parsed.gt(currentlyLocked ?? '0')) {
       return 'Amount exceeds locked tokens'

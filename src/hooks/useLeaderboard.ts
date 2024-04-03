@@ -1,7 +1,8 @@
 import { useAddress } from './useAddress'
 import useSWR from 'swr'
-import { CGW_BASE_URL, POLLING_INTERVAL } from '@/config/constants'
+import { POLLING_INTERVAL } from '@/config/constants'
 import { toCursorParam } from '@/utils/gateway'
+import { useGatewayBaseUrl } from './useGatewayBaseUrl'
 
 type LeaderboardEntry = {
   holder: string
@@ -20,9 +21,10 @@ type LeaderboardPage = {
 
 export const useOwnRank = () => {
   const address = useAddress()
+  const gatewayBaseUrl = useGatewayBaseUrl()
 
   return useSWR(
-    address ? `${CGW_BASE_URL}/v1/locking/leaderboard/rank/${address}` : null,
+    address ? `${gatewayBaseUrl}/v1/locking/leaderboard/rank/${address}` : null,
     async (url: string | null) => {
       if (!url) {
         return undefined
@@ -40,14 +42,16 @@ export const useOwnRank = () => {
 }
 
 export const useGlobalLeaderboardPage = (limit: number, offset?: number) => {
+  const gatewayBaseUrl = useGatewayBaseUrl()
+
   const getKey = (limit: number, offset?: number) => {
     if (!offset) {
       // Load first page
-      return `${CGW_BASE_URL}/v1/locking/leaderboard?${toCursorParam(limit)}`
+      return `${gatewayBaseUrl}/v1/locking/leaderboard?${toCursorParam(limit)}`
     }
 
     // Load next page
-    return `${CGW_BASE_URL}/v1/locking/leaderboard?${toCursorParam(limit, offset)}`
+    return `${gatewayBaseUrl}/v1/locking/leaderboard?${toCursorParam(limit, offset)}`
   }
 
   const { data } = useSWR(
