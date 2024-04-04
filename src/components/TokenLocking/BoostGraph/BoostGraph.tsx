@@ -35,6 +35,7 @@ export const BoostGraph = ({
   const newBoostFunction = useMemo(() => getBoostFunction(now, lockedAmount, pastLocks), [lockedAmount, now, pastLocks])
 
   const pastLockPoints = useMemo(() => generatePointsFromHistory(pastLocks, now), [pastLocks, now])
+  const pastLockPointsIncludeToday = pastLockPoints.some((p) => p.x === now)
 
   const currentBoostDataPoints = useMemo(
     () => [
@@ -196,7 +197,11 @@ export const BoostGraph = ({
             />
           }
           domain={DOMAIN}
-          data={[...pastLockPoints, { x: now, y: newBoostFunction({ x: now }) }]}
+          data={
+            pastLockPointsIncludeToday
+              ? pastLockPoints
+              : [...pastLockPoints, { x: now, y: newBoostFunction({ x: now }) }]
+          }
           theme={victoryTheme}
         />
         <VictoryScatter

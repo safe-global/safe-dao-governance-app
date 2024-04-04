@@ -21,8 +21,17 @@ export type LockHistory = {
   // can be negative for unlocks
   amount: number
 }
+
+/**
+ * Return the relative lock history sorted by execution time
+ *
+ * @param data lockHistory
+ * @param startTime startTime as timestamp
+ * @returns sorted history of lock amount differences
+ */
 export const toRelativeLockHistory = (data: ReturnType<typeof useLockHistory>, startTime: number): LockHistory[] => {
-  return data
+  const sortedHistory = [...data].sort((d1, d2) => Date.parse(d1.executionDate) - Date.parse(d2.executionDate))
+  return sortedHistory
     .filter((entry) => entry.eventType !== 'WITHDRAWN')
     .map((entry) => ({
       day: toDaysSinceStart(Date.parse(entry.executionDate), startTime),

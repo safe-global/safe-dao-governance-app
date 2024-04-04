@@ -100,17 +100,18 @@ const TokenUnlocking = () => {
                   </Typography>
                 </Grid>
               </Box>
-              <Track {...LOCK_EVENTS.WITHDRAW_BUTTON}>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={onWithdraw}
-                  disabled={totalWithdrawable.eq(0) || isWithdrawing || !isTransactionPossible}
-                  sx={{ ml: 'auto !important' }}
-                >
-                  {isWithdrawing ? <CircularProgress size={20} /> : 'Withdraw'}
-                </Button>
-              </Track>
+              <Box sx={{ ml: 'auto !important' }}>
+                <Track {...LOCK_EVENTS.WITHDRAW_BUTTON}>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={onWithdraw}
+                    disabled={totalWithdrawable.eq(0) || isWithdrawing || !isTransactionPossible}
+                  >
+                    {isWithdrawing ? <CircularProgress size={20} /> : 'Withdraw'}
+                  </Button>
+                </Track>
+              </Box>
             </Stack>
           </Paper>
         </Grid>

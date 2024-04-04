@@ -55,6 +55,11 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
 
   const [isLocking, setIsLocking] = useState(false)
 
+  const onCloseReceipt = () => {
+    setAmount('0')
+    setReceiptOpen(false)
+  }
+
   const debouncedAmount = useDebounce(amount, 1000, '0')
   const cleanedAmount = useMemo(() => (debouncedAmount.trim() === '' ? '0' : debouncedAmount.trim()), [debouncedAmount])
 
@@ -74,7 +79,11 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
 
   const validateAmount = useCallback(
     (newAmount: string) => {
-      const parsed = parseUnits(newAmount, 18)
+      const numberAmount = Number(newAmount)
+      if (isNaN(numberAmount)) {
+        return 'The value must be a number'
+      }
+      const parsed = parseUnits(numberAmount.toString(), 18)
       if (parsed.gt(safeBalance ?? '0')) {
         return 'Amount exceeds balance'
       }
@@ -87,9 +96,10 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
 
   const onChangeAmount = useCallback(
     (event: ChangeEvent<HTMLInputElement>) => {
-      const error = validateAmount(event.target.value || '0')
+      const newValue = event.target.value.replaceAll(',', '.')
+      const error = validateAmount(newValue || '0')
 
-      setAmount(event.target.value)
+      setAmount(newValue)
       setAmountError(error)
     },
     [validateAmount],
@@ -215,8 +225,8 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
       </Stack>
       <MilesReceipt
         open={receiptOpen}
-        onClose={() => setReceiptOpen(false)}
-        amount={amount}
+        onClose={onCloseReceipt}
+        amount={formatAmount(amount, 0)}
         newFinalBoost={floorNumber(newBoostFunction({ x: SEASON2_START }), 2)}
       />
     </>
