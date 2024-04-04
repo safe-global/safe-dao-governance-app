@@ -68,6 +68,10 @@ export const UnlockTokenWidget = ({
       if (parsed.gt(currentlyLocked ?? '0')) {
         return 'Amount exceeds your locked tokens.'
       }
+
+      if (parsed.lte(0)) {
+        return 'Amount must be greater than zero'
+      }
     },
     [currentlyLocked],
   )
@@ -117,6 +121,9 @@ export const UnlockTokenWidget = ({
                 helperText={unlockAmountError ?? ' '}
                 error={Boolean(unlockAmountError)}
                 onChange={onChangeUnlockAmount}
+                onFocus={(event) => {
+                  event.target.select()
+                }}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start" sx={{ width: '24px', height: '24px' }}>

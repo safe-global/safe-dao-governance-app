@@ -6,7 +6,7 @@ import Track from '../Track'
 
 import css from './styles.module.css'
 
-export const ActionNavigation = () => {
+export const ActionNavigation = ({ disabled }: { disabled: boolean }) => {
   const router = useRouter()
 
   const onNavigate = (route: (typeof AppRoutes)[keyof typeof AppRoutes]) => async () => {
@@ -26,6 +26,7 @@ export const ActionNavigation = () => {
             color="primary"
             onClick={onUnlockAndWithdraw}
             sx={{ borderWidth: '1px !important' }}
+            disabled={disabled}
           >
             Unlock/Withdraw
           </Button>

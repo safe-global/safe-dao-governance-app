@@ -1,5 +1,5 @@
 import { Grid, Link, Stack, SvgIcon, Typography } from '@mui/material'
-import { useSafeTokenBalance, useSafeUserLockingInfos } from '@/hooks/useSafeTokenBalance'
+import { useSafeTokenBalance } from '@/hooks/useSafeTokenBalance'
 import NextLink from 'next/link'
 import { Leaderboard } from './Leaderboard'
 import { CurrentStats } from './CurrentStats'
@@ -9,11 +9,14 @@ import { ActionNavigation } from './ActionNavigation'
 import PaperContainer from '../PaperContainer'
 import Asterix from '@/public/images/asterix.svg'
 import { AppRoutes } from '@/config/routes'
+import { useSummarizedLockHistory } from '@/hooks/useSummarizedLockHistory'
+import { useLockHistory } from '@/hooks/useLockHistory'
 
 const TokenLocking = () => {
   const { isLoading: safeBalanceLoading, data: safeBalance } = useSafeTokenBalance()
-  const { isLoading: userLockingInfosLoading, data: userLockingInfos } = useSafeUserLockingInfos()
-  const currentlyLocked = userLockingInfos?.lockedAmount
+  const { totalLocked, totalUnlocked, totalWithdrawable } = useSummarizedLockHistory(useLockHistory())
+
+  const isUnlockAvailable = totalLocked.gt(0) || totalUnlocked.gt(0) || totalWithdrawable.gt(0)
 
   return (
     <Grid container spacing={3} direction="row">
@@ -25,7 +28,7 @@ const TokenLocking = () => {
         <Stack spacing={3}>
           <PaperContainer>
             <CurrentStats
-              currentlyLocked={currentlyLocked ?? 0}
+              currentlyLocked={totalLocked ?? 0}
               loading={safeBalanceLoading}
               safeBalance={safeBalance ?? 0}
             />
@@ -33,7 +36,7 @@ const TokenLocking = () => {
 
           <PaperContainer>
             <LockTokenWidget safeBalance={safeBalance} />
-            <ActionNavigation />
+            <ActionNavigation disabled={!isUnlockAvailable} />
           </PaperContainer>
           <PaperContainer>
             <Leaderboard />
