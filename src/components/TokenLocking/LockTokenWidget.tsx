@@ -79,7 +79,7 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
         return 'Amount exceeds balance'
       }
       if (parsed.lte(0)) {
-        return 'Amount needs to be greater zero'
+        return 'Amount must be greater than zero'
       }
     },
     [safeBalance],

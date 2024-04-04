@@ -57,7 +57,7 @@ export const UnlockTokenWidget = ({
       return 'Amount exceeds locked tokens'
     }
     if (parsed.lte(0)) {
-      return 'Amount needs to be greater zero'
+      return 'Amount must be greater than zero'
     }
   }
 
