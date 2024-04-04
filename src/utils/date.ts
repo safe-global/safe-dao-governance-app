@@ -42,12 +42,26 @@ export const formatDay = (days: number, start: number) => {
   return `${MONTH_LABEL[month]} ${day}`
 }
 
+export const DAY_IN_MS = 1000 * 60 * 60 * 24
+
 export const isGreater24HoursDiff = (timestamp1: number, timestamp2: number) => {
-  return Math.abs(timestamp1 - timestamp2) > 1000 * 60 * 60 * 24
+  return Math.abs(timestamp1 - timestamp2) > DAY_IN_MS
 }
 
 export const toDaysSinceStart = (timestamp: number, start: number) => {
-  return Math.floor((timestamp - start) / (1000 * 60 * 60 * 24))
+  return Math.floor((timestamp - start) / DAY_IN_MS)
 }
 
 export const getCurrentDays = (startTime: number) => toDaysSinceStart(Date.now(), startTime)
+
+export const formatDate = (date: Date) => {
+  const options: Intl.DateTimeFormatOptions = {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+  }
+
+  return `${date.toLocaleString(undefined, options)}h`
+}
