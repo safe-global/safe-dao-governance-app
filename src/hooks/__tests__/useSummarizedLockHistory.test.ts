@@ -7,6 +7,7 @@ const holder = hexZeroPad('0x1234', 20)
 
 const FAKE_YESTERDAY = '2024-03-19T11:00:00.000Z'
 const FAKE_TODAY = '2024-03-20T12:00:00.000Z'
+const FAKE_1H_AGO = '2024-03-20T11:00:00.000Z'
 
 const createLock = (amount: string, executionDate: string = FAKE_TODAY.toString()): LockEvent => ({
   executionDate,
@@ -59,6 +60,7 @@ describe('useSummarizedLockHistory', () => {
     expect(result.current.totalLocked.eq(0)).toBeTruthy()
     expect(result.current.totalUnlocked.eq(0)).toBeTruthy()
     expect(result.current.totalWithdrawable.eq(0)).toBeTruthy()
+    expect(result.current.nextUnlock).toBeUndefined()
   })
 
   it('should add lock events', () => {
@@ -69,33 +71,39 @@ describe('useSummarizedLockHistory', () => {
     expect(result.current.totalLocked.eq(700)).toBeTruthy()
     expect(result.current.totalUnlocked.eq(0)).toBeTruthy()
     expect(result.current.totalWithdrawable.eq(0)).toBeTruthy()
+    expect(result.current.nextUnlock).toBeUndefined()
   })
 
   it('should summarize lock and unlock events', () => {
+    const expectedNextUnlock = createUnlock('400', '2', FAKE_1H_AGO)
     const { result } = renderHook(() =>
-      useSummarizedLockHistory([createLock('1000'), createUnlock('200', '1'), createUnlock('400', '2')]),
+      useSummarizedLockHistory([createLock('1000'), createUnlock('200', '1'), expectedNextUnlock]),
     )
 
     expect(result.current.totalLocked.eq(400)).toBeTruthy()
     expect(result.current.totalUnlocked.eq(600)).toBeTruthy()
     expect(result.current.totalWithdrawable.eq(0)).toBeTruthy()
+    expect(result.current.nextUnlock).toEqual(expectedNextUnlock)
   })
 
   it('should show withdrawable amount 24h after unlock', () => {
+    const expectedNextUnlock = createUnlock('100', '2', FAKE_TODAY.toString())
     const { result } = renderHook(() =>
       useSummarizedLockHistory([
         createLock('1000', FAKE_YESTERDAY.toString()),
         createUnlock('200', '1', FAKE_YESTERDAY.toString()),
-        createUnlock('100', '2', FAKE_TODAY.toString()),
+        expectedNextUnlock,
       ]),
     )
 
     expect(result.current.totalLocked.eq(700)).toBeTruthy()
     expect(result.current.totalUnlocked.eq(300)).toBeTruthy()
     expect(result.current.totalWithdrawable.eq(200)).toBeTruthy()
+    expect(result.current.nextUnlock).toEqual(expectedNextUnlock)
   })
 
   it('should substract already withdrawn amounts from withdrawable amount', () => {
+    const expectedNextUnlock = createUnlock('100', '2', FAKE_TODAY.toString())
     const { result } = renderHook(() =>
       useSummarizedLockHistory([
         createLock('1000', FAKE_YESTERDAY.toString()),
@@ -108,5 +116,6 @@ describe('useSummarizedLockHistory', () => {
     expect(result.current.totalLocked.eq(700)).toBeTruthy()
     expect(result.current.totalUnlocked.eq(100)).toBeTruthy()
     expect(result.current.totalWithdrawable.eq(0)).toBeTruthy()
+    expect(result.current.nextUnlock).toEqual(expectedNextUnlock)
   })
 })

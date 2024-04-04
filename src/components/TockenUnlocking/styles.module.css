@@ -61,3 +61,15 @@
   align-items: center;
   z-index: 1;
 }
+
+.nextWithdrawal {
+  border-radius: 6px;
+  border: 1px var(--mui-palette-primary-main) solid;
+  color: var(--mui-palette-text-secondary);
+  padding: 16px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}
