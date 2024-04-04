@@ -32,7 +32,8 @@ const MilesReceipt = ({
               {isUnlock ? 'Your tokens are unlocked' : 'Welcome on board'}
             </Typography>
             <Typography mb={5}>
-              You successfully {isUnlock ? 'unlocked' : 'locked'} {amount} SAFE
+              You successfully started {isUnlock ? 'unlocking' : 'locking'} {amount} SAFE. Once the transaction is
+              signed and executed the changes will be reflected in this App.
               <br />
               {isUnlock ? 'Withdrawal will be available in 24h' : ''}
             </Typography>
@@ -56,22 +57,15 @@ const MilesReceipt = ({
             Your activity update
           </Typography>
 
-          <div>
-            <Stack direction="row" alignItems="baseline">
-              <ArrowIcon color={isUnlock ? 'warning' : 'primary'} fontSize="small" />
-              <Typography variant="h2" component="div" fontWeight="bold" color={isUnlock ? 'warning.main' : 'primary'}>
-                {amount}
-              </Typography>
-              <Typography color="text.secondary" ml={1}>
-                Tokens {isUnlock ? 'unlocked' : 'locked'}
-              </Typography>
-            </Stack>
-            <Typography>
-              {isUnlock
-                ? 'More tokens unlocked = lower position in the leaderboard'
-                : 'More tokens locked = higher position in the leaderboard'}
+          <Stack direction="row" alignItems="baseline">
+            <ArrowIcon color={isUnlock ? 'warning' : 'primary'} fontSize="small" />
+            <Typography variant="h2" component="div" fontWeight="bold" color={isUnlock ? 'warning.main' : 'primary'}>
+              {amount}
             </Typography>
-          </div>
+            <Typography color="text.secondary" ml={1}>
+              Tokens {isUnlock ? 'unlocked' : 'locked'}
+            </Typography>
+          </Stack>
 
           <div>
             <Stack direction="row" alignItems="baseline">
@@ -83,7 +77,7 @@ const MilesReceipt = ({
                 Your new miles boost
               </Typography>
             </Stack>
-            <Typography>{isUnlock ? 'Lower boost = lower miles boost' : 'Higher boost = more miles'}</Typography>
+            <Typography>This boost will be applied to all your miles earned</Typography>
           </div>
           {!isUnlock && <Barcode className={css.barcode} />}
           <IconButton className={css.closeButton} onClick={onClose}>

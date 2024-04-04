@@ -229,6 +229,7 @@
 
 .rightReceipt {
   width: 388px;
+  flex-shrink: 0;
 }
 
 .barcode {
