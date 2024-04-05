@@ -9,11 +9,11 @@ import { getRpcServiceUrl } from '@/utils/web3'
 import { WC_PROJECT_ID } from '@/config/constants'
 
 export const enum WALLET_KEYS {
-  WALLETCONNECT_V2 = 'WALLETCONNECT_V2',
+  WALLETCONNECT = 'WalletConnect',
 }
 
 const CGW_NAMES: { [key in WALLET_KEYS]: string } = {
-  [WALLET_KEYS.WALLETCONNECT_V2]: 'walletConnect_v2',
+  [WALLET_KEYS.WALLETCONNECT]: 'WalletConnect',
 }
 
 const walletConnectV2 = (chain: ChainInfo): WalletInit => {
@@ -31,7 +31,7 @@ const walletConnectV2 = (chain: ChainInfo): WalletInit => {
 }
 
 const WALLET_MODULES: { [key in WALLET_KEYS]: (chain: ChainInfo) => WalletInit } = {
-  [WALLET_KEYS.WALLETCONNECT_V2]: (chain) => walletConnectV2(chain),
+  [WALLET_KEYS.WALLETCONNECT]: (chain) => walletConnectV2(chain),
 }
 
 const getAllWallets = (chain: ChainInfo): WalletInit[] => {
