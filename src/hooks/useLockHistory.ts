@@ -1,7 +1,8 @@
 import { useAddress } from './useAddress'
 import useSWRInfinite from 'swr/infinite'
 import { useMemo } from 'react'
-import { CGW_BASE_URL, POLLING_INTERVAL } from '@/config/constants'
+import { useGatewayBaseUrl } from './useGatewayBaseUrl'
+import { POLLING_INTERVAL } from '@/config/constants'
 import { toCursorParam } from '@/utils/gateway'
 
 export type LockEvent = {
@@ -42,8 +43,11 @@ type LockingHistoryEventPage = {
   results: LockingHistoryEntry[]
 }
 
+const LIMIT = 100
+
 export const useLockHistory = () => {
   const address = useAddress()
+  const gatewayBaseUrl = useGatewayBaseUrl()
 
   const getKey = useMemo(
     () => (pageIndex: number, previousPageData: LockingHistoryEventPage) => {
@@ -53,14 +57,14 @@ export const useLockHistory = () => {
       }
       if (!previousPageData) {
         // Load first page
-        return `${CGW_BASE_URL}/v1/locking/${address}/history`
+        return `${gatewayBaseUrl}/v1/locking/${address}/history?${toCursorParam(LIMIT)}`
       }
       if (previousPageData && !previousPageData.next) return null // reached the end
 
       // Load next page
       return previousPageData.next
     },
-    [address],
+    [address, gatewayBaseUrl],
   )
 
   const { data, size, setSize } = useSWRInfinite(
@@ -81,9 +85,9 @@ export const useLockHistory = () => {
 
   // We need to load everything
   if (data && data.length > 0) {
-    const totalPages = Math.ceil(data[0].count / 100)
+    const totalPages = Math.ceil(data[0].count / LIMIT)
     if (totalPages > size) {
-      setSize(Math.ceil(data[0].count / 100))
+      setSize(Math.ceil(data[0].count / LIMIT))
     }
   }
 

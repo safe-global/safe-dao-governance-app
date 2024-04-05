@@ -56,6 +56,11 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
 
   const [isLocking, setIsLocking] = useState(false)
 
+  const onCloseReceipt = () => {
+    setAmount('0')
+    setReceiptOpen(false)
+  }
+
   const debouncedAmount = useDebounce(amount, 1000, '0')
   const cleanedAmount = useMemo(() => (debouncedAmount.trim() === '' ? '0' : debouncedAmount.trim()), [debouncedAmount])
 
@@ -75,9 +80,16 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
 
   const validateAmount = useCallback(
     (newAmount: string) => {
-      const parsed = parseUnits(newAmount, 18)
+      const numberAmount = Number(newAmount)
+      if (isNaN(numberAmount)) {
+        return 'The value must be a number'
+      }
+      const parsed = parseUnits(numberAmount.toString(), 18)
       if (parsed.gt(safeBalance ?? '0')) {
         return 'Amount exceeds balance'
+      }
+      if (parsed.lte(0)) {
+        return 'Amount must be greater than zero'
       }
     },
     [safeBalance],
@@ -85,9 +97,10 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
 
   const onChangeAmount = useCallback(
     (event: ChangeEvent<HTMLInputElement>) => {
-      const error = validateAmount(event.target.value || '0')
+      const newValue = event.target.value.replaceAll(',', '.')
+      const error = validateAmount(newValue || '0')
 
-      setAmount(event.target.value)
+      setAmount(newValue)
       setAmountError(error)
     },
     [validateAmount],
@@ -99,6 +112,8 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
     }
     setAmount(formatUnits(safeBalance, 18))
   }, [safeBalance])
+
+  const isMaxDisabled = BigNumber.from(0).gte(safeBalance ?? 0)
 
   const onLockTokens = async () => {
     if (!txSender) {
@@ -163,6 +178,9 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
                 <TextField
                   variant="outlined"
                   fullWidth
+                  onFocus={(event) => {
+                    event.target.select()
+                  }}
                   value={amount}
                   onChange={onChangeAmount}
                   helperText={amountError}
@@ -175,7 +193,7 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
                     ),
                     endAdornment: (
                       <InputAdornment position="end">
-                        <button onClick={onSetToMax} className={css.maxButton}>
+                        <button disabled={isMaxDisabled} onClick={onSetToMax} className={css.maxButton}>
                           Max
                         </button>
                       </InputAdornment>
@@ -210,8 +228,8 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
       </Stack>
       <MilesReceipt
         open={receiptOpen}
-        onClose={() => setReceiptOpen(false)}
-        amount={amount}
+        onClose={onCloseReceipt}
+        amount={formatAmount(amount, 0)}
         newFinalBoost={floorNumber(newBoostFunction({ x: SEASON2_START }), 2)}
       />
     </>

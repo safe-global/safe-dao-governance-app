@@ -41,58 +41,10 @@ export const useSafeTokenLockingAllowance = () => {
   })
 }
 
-type UserLockingInfos = {
-  nextUnlock: SingleUnlock | undefined
-  totalUnlockedAmount: BigNumber
-  lockedAmount: BigNumber
-}
-
 export type SingleUnlock = {
   unlockAmount: BigNumber
   unlockedAt: BigNumber
   isUnlocked: boolean
-}
-
-export const useSafeUserLockingInfos = () => {
-  const { data: userInfo } = useSafeTokenLockUserInfo()
-  const web3 = useWeb3()
-  const chainId = useChainId()
-  const address = useAddress()
-
-  return useSWR(
-    userInfo,
-    async (userInfo: [BigNumber, BigNumber, number, number] | undefined): Promise<UserLockingInfos | undefined> => {
-      if (!address || !web3) {
-        return undefined
-      }
-      const currentlyLocked = userInfo?.[0] ?? BigNumber.from(0)
-      const unlockedTotal = userInfo?.[1] ?? BigNumber.from(0)
-      const lockStartIdx = userInfo?.[2] ?? 0
-      const lockEndIdx = userInfo?.[3] ?? 0
-
-      let nextUnlock: SingleUnlock | undefined = undefined
-
-      if (unlockedTotal.gt(0) && lockEndIdx > lockStartIdx) {
-        // There is only a single unlock event
-        const [unlockAmount, unlockedAt] = (await fetchUnlockData(chainId, address, lockStartIdx, web3)) ?? [
-          BigNumber.from(0),
-          BigNumber.from(0),
-        ]
-
-        nextUnlock = {
-          unlockAmount,
-          unlockedAt,
-          isUnlocked: unlockedAt.mul(1000).lte(Date.now()),
-        }
-      }
-
-      return {
-        nextUnlock,
-        totalUnlockedAmount: unlockedTotal,
-        lockedAmount: currentlyLocked,
-      }
-    },
-  )
 }
 
 export const useSafeTokenLockUserInfo = () => {

@@ -17,6 +17,7 @@ import { LOCK_EVENTS } from '@/analytics/lockEvents'
 import { trackSafeAppEvent } from '@/utils/analytics'
 import MilesReceipt from '@/components/TokenLocking/MilesReceipt'
 import { useTxSender } from '@/hooks/useTxSender'
+import { formatAmount } from '@/utils/formatters'
 
 export const UnlockTokenWidget = ({
   lockHistory,
@@ -39,6 +40,11 @@ export const UnlockTokenWidget = ({
   const debouncedAmount = useDebounce(unlockAmount, 1000, '0')
   const cleanedAmount = useMemo(() => (debouncedAmount.trim() === '' ? '0' : debouncedAmount.trim()), [debouncedAmount])
 
+  const onCloseReceipt = () => {
+    setUnlockAmount('0')
+    setReceiptOpen(false)
+  }
+
   const currentBoostFunction = useMemo(() => getBoostFunction(todayInDays, 0, lockHistory), [todayInDays, lockHistory])
   const newBoostFunction = useMemo(
     () => getBoostFunction(todayInDays, -Number(cleanedAmount), lockHistory),
@@ -46,17 +52,29 @@ export const UnlockTokenWidget = ({
   )
 
   const onChangeUnlockAmount = (event: ChangeEvent<HTMLInputElement>) => {
-    const error = validateAmount(event.target.value || '0')
-    setUnlockAmount(event.target.value)
+    const newValue = event.target.value.replaceAll(',', '.')
+    const error = validateAmount(newValue || '0')
+    setUnlockAmount(newValue)
     setUnlockAmountError(error)
   }
 
-  const validateAmount = (newAmount: string) => {
-    const parsed = parseUnits(newAmount, 18)
-    if (parsed.gt(currentlyLocked ?? '0')) {
-      return 'Amount exceeds locked tokens'
-    }
-  }
+  const validateAmount = useCallback(
+    (newAmount: string) => {
+      const numberAmount = Number(newAmount)
+      if (isNaN(numberAmount)) {
+        return 'The value must be a number'
+      }
+      const parsed = parseUnits(numberAmount.toString(), 18)
+      if (parsed.gt(currentlyLocked ?? '0')) {
+        return 'Amount exceeds your locked tokens.'
+      }
+
+      if (parsed.lte(0)) {
+        return 'Amount must be greater than zero'
+      }
+    },
+    [currentlyLocked],
+  )
 
   const onSetToMax = useCallback(() => {
     if (!currentlyLocked) {
@@ -103,6 +121,9 @@ export const UnlockTokenWidget = ({
                 helperText={unlockAmountError ?? ' '}
                 error={Boolean(unlockAmountError)}
                 onChange={onChangeUnlockAmount}
+                onFocus={(event) => {
+                  event.target.select()
+                }}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start" sx={{ width: '24px', height: '24px' }}>
@@ -141,8 +162,8 @@ export const UnlockTokenWidget = ({
       </Grid>
       <MilesReceipt
         open={receiptOpen}
-        onClose={() => setReceiptOpen(false)}
-        amount={unlockAmount}
+        onClose={onCloseReceipt}
+        amount={formatAmount(unlockAmount, 0)}
         newFinalBoost={floorNumber(newBoostFunction({ x: SEASON2_START }), 2)}
         isUnlock
       />
