@@ -1,11 +1,5 @@
 import { Skeleton } from '@mui/material'
-import metamaskIcon from '@web3-onboard/injected-wallets/dist/icons/metamask'
-import coinbaseIcon from '@web3-onboard/coinbase/dist/icon'
-import keystoneIcon from '@web3-onboard/keystone/dist/icon'
 import walletConnectIcon from '@web3-onboard/walletconnect/dist/icon'
-import trezorIcon from '@web3-onboard/trezor/dist/icon'
-import ledgerIcon from '@web3-onboard/ledger/dist/icon'
-import tahoIcon from '@web3-onboard/taho/dist/icon'
 
 import { WALLET_KEYS } from '@/utils/onboard'
 
@@ -14,8 +8,8 @@ type Props = {
 }
 
 const WALLET_ICONS: Props = {
-  [WALLET_KEYS.WALLETCONNECT_V2]: walletConnectIcon,
-}
+  WALLETCONNECT: walletConnectIcon,
+} as const
 
 export const WalletIcon = ({ provider }: { provider: string }) => {
   const icon = WALLET_ICONS[provider.toUpperCase() as keyof typeof WALLET_ICONS]
