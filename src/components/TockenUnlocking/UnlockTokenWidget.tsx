@@ -90,11 +90,11 @@ export const UnlockTokenWidget = ({
       }}
     >
       <Grid container direction="row" spacing={2}>
-        <Grid item xs={8}>
+        <Grid item xs={12} md={8}>
           <BoostGraph lockedAmount={-Number(cleanedAmount)} pastLocks={lockHistory} isLock={false} />
 
-          <Grid item container gap={2} flexWrap="nowrap" xs={12} mb={1} alignItems="center">
-            <Grid item xs={9}>
+          <Grid item container spacing={2} xs={12} mb={1} alignItems="center">
+            <Grid item xs={12} md={8}>
               <Typography>Select amount to unlock</Typography>
               <TextField
                 variant="outlined"
@@ -121,7 +121,7 @@ export const UnlockTokenWidget = ({
               />
             </Grid>
 
-            <Grid item xs={4}>
+            <Grid item xs={12} md={4}>
               <Track {...LOCK_EVENTS.UNLOCK_BUTTON}>
                 <Button onClick={onUnlock} variant="contained" fullWidth disableElevation disabled={isDisabled}>
                   {isUnlocking ? <CircularProgress size={20} /> : 'Unlock'}
@@ -130,7 +130,7 @@ export const UnlockTokenWidget = ({
             </Grid>
           </Grid>
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={12} md={4}>
           <BoostBreakdown
             realizedBoost={currentBoostFunction({ x: todayInDays })}
             currentFinalBoost={currentBoostFunction({ x: SEASON2_START })}

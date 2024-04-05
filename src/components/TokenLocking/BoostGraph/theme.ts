@@ -1,6 +1,7 @@
+import { useMediaQuery } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { VictoryThemeDefinition } from 'victory'
-import { GRAPH_HEIGHT, GRAPH_PADDING, GRAPH_WIDTH } from './graphConstants'
+import { SMALL_SCREEN, BIG_SCREEN } from './graphConstants'
 
 const colors = ['#DDDEE0', '#525252', '#737373', '#969696', '#bdbdbd', '#d9d9d9', '#f0f0f0']
 const grey = '#A1A3A7'
@@ -16,14 +17,12 @@ const strokeLinejoin = 'round'
 
 // Put it all together...
 export const useVictoryTheme = (): VictoryThemeDefinition => {
-  // Layout
-  const baseProps = {
-    width: GRAPH_WIDTH,
-    height: GRAPH_HEIGHT,
-    padding: GRAPH_PADDING,
-    colorScale: colors,
-  }
   const muiTheme = useTheme()
+
+  const isSmallScreen = useMediaQuery(muiTheme.breakpoints.down('sm'))
+
+  // Layout
+  const baseProps = { ...(isSmallScreen ? SMALL_SCREEN : BIG_SCREEN), colorScale: colors }
   const fontColor = muiTheme.palette.text.secondary
 
   // Labels

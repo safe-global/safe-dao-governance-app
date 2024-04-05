@@ -215,7 +215,7 @@ export const Leaderboard = () => {
       </Box>
 
       <TableContainer component={Paper} sx={{ marginTop: -6 }}>
-        <StyledTable sx={{ minWidth: 700 }} aria-label="customized table">
+        <StyledTable aria-label="customized table">
           <TableHead>
             <TableRow>
               <StyledTableCell align="right"></StyledTableCell>

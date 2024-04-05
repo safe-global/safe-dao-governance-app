@@ -1,3 +1,3 @@
-export const GRAPH_HEIGHT = 280
-export const GRAPH_PADDING = 48
-export const GRAPH_WIDTH = 500
+export const BIG_SCREEN = { height: 280, padding: 48, width: 500 }
+
+export const SMALL_SCREEN = { height: 180, padding: 48, width: 375 }

@@ -7,7 +7,7 @@ import { ReactElement } from 'react'
 
 export const AccordionContainer = ({ children, title }: { children: ReactElement; title: string }): ReactElement => {
   const theme = useTheme()
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'))
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('lg'))
 
   if (!isSmallScreen) return <>{children}</>
 

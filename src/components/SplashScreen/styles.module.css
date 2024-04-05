@@ -1,6 +1,5 @@
 .milesReceipt {
   width: 90%;
-  height: 537px;
   display: flex;
   overflow: hidden;
 }
@@ -10,6 +9,8 @@
   background-color: #121312;
   border-radius: 20px;
   padding: 40px;
+  height: 537px;
+  width: 100%;
 }
 
 .leftReceipt {
@@ -26,11 +27,29 @@
   height: calc(100% - 40px);
 }
 
-.rightReceipt {
-  width: 388px;
-}
-
 .barcode {
   position: absolute;
   right: 10%;
+}
+
+@media (max-width: 899px) {
+  .milesReceipt {
+    width: 100%;
+  }
+
+  .leftReceipt,
+  .rightReceipt {
+    border-radius: 0px;
+  }
+  .barcode {
+    right: 0px;
+  }
+
+  .leftReceipt:after {
+    display: none;
+  }
+
+  .leftReceipt {
+    border-bottom: 1px dashed white;
+  }
 }
