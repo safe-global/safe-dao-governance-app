@@ -67,7 +67,7 @@ export const GovernanceAndClaiming = (): ReactElement => {
         <Typography variant="h2">Claim SAFE tokens and engage in governance</Typography>
       </Grid>
 
-      <Grid item xs={8}>
+      <Grid item xs={12} lg={8}>
         <Stack spacing={3}>
           {isClaimable && <ClaimOverview />}
 
@@ -75,14 +75,14 @@ export const GovernanceAndClaiming = (): ReactElement => {
             <Typography variant="h6" fontWeight={700}>
               Delegate your voting power
             </Typography>
-            <Grid item xs={8}>
+            <Grid item xs={12} lg={8}>
               <SelectedDelegate delegate={delegate || undefined} action={action} shortenAddress hint />
             </Grid>
           </PaperContainer>
         </Stack>
       </Grid>
 
-      <Grid item xs={4}>
+      <Grid item xs={12} lg={4}>
         <PaperContainer>
           <Box my={11} textAlign="center">
             <SafeToken alt="Safe Token logo" width={84} height={84} />

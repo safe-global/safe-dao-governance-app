@@ -1,4 +1,4 @@
-import { Link, Stack, Typography } from '@mui/material'
+import { Box, Link, Stack, Typography } from '@mui/material'
 
 import NextLink from 'next/link'
 import { AppRoutes } from '@/config/routes'
@@ -36,13 +36,13 @@ const TokenUnlocking = () => {
       </Link>
 
       <Typography variant="h1">Unlock / Withdraw</Typography>
-      <PaperContainer sx={{ width: '888px' }}>
+      <PaperContainer>
         <UnlockStats currentlyLocked={totalLocked} unlockedTotal={totalUnlocked} />
       </PaperContainer>
-      <PaperContainer sx={{ width: '888px' }}>
+      <PaperContainer>
         <UnlockTokenWidget currentlyLocked={totalLocked} lockHistory={relativeLockHistory} />
       </PaperContainer>
-      <PaperContainer sx={{ width: '888px' }}>
+      <PaperContainer>
         <WithdrawWidget totalWithdrawable={totalWithdrawable} nextUnlock={nextUnlock} />
       </PaperContainer>
     </Stack>

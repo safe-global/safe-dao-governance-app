@@ -58,36 +58,39 @@ export const WithdrawWidget = ({
             position: 'relative',
           }}
         >
-          <Stack direction="row" spacing={2} alignItems="center">
-            <SafeToken width={48} height={48} />
-            <Box>
-              <Typography color="text.secondary">Withdrawable</Typography>
+          <Grid container direction="row" spacing={2} alignItems="center" justifyContent="space-between">
+            <Grid item xs={12} sm={8} display="inline-flex" gap={1} alignItems="center">
+              <SafeToken width={48} height={48} />
+              <Box>
+                <Typography color="text.secondary">Withdrawable</Typography>
 
-              <Grid item display="flex" alignItems="center">
-                <Typography
-                  variant="h3"
-                  variantMapping={{
-                    h3: 'span',
-                  }}
-                  className={css.amountDisplay}
-                >
-                  <Odometer value={Number(formatUnits(totalWithdrawable ?? '0', 18))} decimals={2} /> SAFE
-                </Typography>
-              </Grid>
-            </Box>
-            <Box sx={{ ml: 'auto !important' }}>
+                <Grid item display="flex" alignItems="center">
+                  <Typography
+                    variant="h3"
+                    variantMapping={{
+                      h3: 'span',
+                    }}
+                    className={css.amountDisplay}
+                  >
+                    <Odometer value={Number(formatUnits(totalWithdrawable ?? '0', 18))} decimals={2} /> SAFE
+                  </Typography>
+                </Grid>
+              </Box>
+            </Grid>
+            <Grid item xs={12} md={4}>
               <Track {...LOCK_EVENTS.WITHDRAW_BUTTON}>
                 <Button
                   variant="contained"
                   color="primary"
                   onClick={onWithdraw}
+                  fullWidth
                   disabled={totalWithdrawable.eq(0) || isWithdrawing || !isTransactionPossible}
                 >
                   {isWithdrawing ? <CircularProgress size={20} /> : 'Withdraw'}
                 </Button>
               </Track>
-            </Box>
-          </Stack>
+            </Grid>
+          </Grid>
           {nextUnlock && (
             <Box className={css.nextWithdrawal}>
               <SvgIcon color="primary" component={ClockIcon} inheritViewBox fontSize="small" />

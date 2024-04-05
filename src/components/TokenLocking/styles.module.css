@@ -260,3 +260,16 @@
 .unlockGradient {
   background: radial-gradient(41.34% 41.34% at 50% 50%, #ff8061 0%, rgba(255, 128, 97, 0) 82.5%);
 }
+
+.lockingHeader {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+@media (max-width: 599px) {
+  .lockingHeader {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

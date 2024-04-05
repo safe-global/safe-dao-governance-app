@@ -141,10 +141,10 @@ export const BoostGraph = ({
               return 'Program start'
             }
             if (value === SEASON1_START) {
-              return 'Points activation'
+              return 'Season 1'
             }
 
-            return 'Getting rewards'
+            return 'Season 1 end'
           }}
           domain={DOMAIN}
           style={{
