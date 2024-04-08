@@ -25,27 +25,29 @@ const TokenUnlocking = () => {
   const { totalLocked, totalUnlocked, totalWithdrawable, nextUnlock } = useSummarizedLockHistory(lockHistory)
 
   return (
-    <Stack spacing={3}>
-      <Link
-        href={AppRoutes.activity}
-        component={NextLink}
-        sx={{ display: 'flex', alignItems: 'center', color: ({ palette }) => palette.primary.main }}
-      >
-        <ChevronLeft />
-        Back to main
-      </Link>
+    <Box maxWidth="888px">
+      <Stack spacing={3}>
+        <Link
+          href={AppRoutes.activity}
+          component={NextLink}
+          sx={{ display: 'flex', alignItems: 'center', color: ({ palette }) => palette.primary.main }}
+        >
+          <ChevronLeft />
+          Back to main
+        </Link>
 
-      <Typography variant="h1">Unlock / Withdraw</Typography>
-      <PaperContainer>
-        <UnlockStats currentlyLocked={totalLocked} unlockedTotal={totalUnlocked} />
-      </PaperContainer>
-      <PaperContainer>
-        <UnlockTokenWidget currentlyLocked={totalLocked} lockHistory={relativeLockHistory} />
-      </PaperContainer>
-      <PaperContainer>
-        <WithdrawWidget totalWithdrawable={totalWithdrawable} nextUnlock={nextUnlock} />
-      </PaperContainer>
-    </Stack>
+        <Typography variant="h1">Unlock / Withdraw</Typography>
+        <PaperContainer>
+          <UnlockStats currentlyLocked={totalLocked} unlockedTotal={totalUnlocked} />
+        </PaperContainer>
+        <PaperContainer>
+          <UnlockTokenWidget currentlyLocked={totalLocked} lockHistory={relativeLockHistory} />
+        </PaperContainer>
+        <PaperContainer>
+          <WithdrawWidget totalWithdrawable={totalWithdrawable} nextUnlock={nextUnlock} />
+        </PaperContainer>
+      </Stack>
+    </Box>
   )
 }
 

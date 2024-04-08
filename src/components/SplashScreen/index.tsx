@@ -71,7 +71,7 @@ export const SplashScreen = (): ReactElement => {
   }
 
   return (
-    <Box display="flex">
+    <Box display="flex" width="100%">
       <Grid container direction="row" className={css.milesReceipt}>
         <Grid item xs={12} md={8}>
           <Stack className={css.leftReceipt} justifyContent="space-between">
