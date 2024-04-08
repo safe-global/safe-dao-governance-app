@@ -1,20 +1,8 @@
-import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Divider,
-  Link,
-  Stack,
-  SvgIcon,
-  Typography,
-  useMediaQuery,
-} from '@mui/material'
+import { Divider, Link, SvgIcon, Typography } from '@mui/material'
 import css from './styles.module.css'
 import clsx from 'clsx'
-import ClockIcon from '@/public/images/clock-alt.svg'
 import { useChainId } from '@/hooks/useChainId'
 import { CHAIN_START_TIMESTAMPS, SEASON1_START, SEASON2_START } from '@/config/constants'
-import { ReactNode } from 'react'
 import Diamond from '@/public/images/diamond.png'
 import StarIcon from '@/public/images/star.svg'
 import Image from 'next/image'
@@ -24,14 +12,15 @@ import Asterix from '@/public/images/asterix.svg'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { AccordionContainer } from '@/components/AccordionContainer'
 
-import { useTheme } from '@mui/material/styles'
 import PaperContainer from '../PaperContainer'
+import { AppRoutes } from '@/config/routes'
+import NextLink from 'next/link'
+import { ReactNode } from 'react'
 
 const Step = ({
   active,
   title,
   description,
-  activationDate,
 }: {
   active: boolean
   title: ReactNode
@@ -46,18 +35,6 @@ const Step = ({
       <Typography variant="body2" color="text.secondary" mb={2}>
         {description}
       </Typography>
-
-      {activationDate && (
-        <Stack className={css.stepDate} direction="row" justifyContent="space-between" alignItems="center">
-          <Typography variant="overline" fontWeight="bold" color="text.secondary">
-            Starting
-          </Typography>
-          <Typography fontWeight="bold" display="flex" alignItems="center" gap={1}>
-            <SvgIcon component={ClockIcon} inheritViewBox fontSize="inherit" />
-            {activationDate}
-          </Typography>
-        </Stack>
-      )}
     </div>
   )
 }
@@ -72,7 +49,7 @@ export const ActivityRewardsInfo = () => {
 
   return (
     <AccordionContainer title="How the program works">
-      <PaperContainer sx={{ position: 'relative', overflow: 'hidden', height: '100%' }}>
+      <PaperContainer sx={{ position: 'relative', overflow: 'hidden' }}>
         <SvgIcon
           component={Asterix}
           inheritViewBox
@@ -137,24 +114,33 @@ export const ActivityRewardsInfo = () => {
           </Typography>
           <Typography textAlign="center">2.5M SAFE to be distributed</Typography>
 
-          <div className={css.diamondImage}>
-            <Image src={Diamond} alt="Diamond image" width={200} height={200} />
-          </div>
-
-          <Typography variant="h1" fontWeight={700} textAlign="center" mt={-3} mb={1} className={css.gradientText}>
-            Lottery
+          <Typography textAlign="center" color="text.secondary" mt={10} mb={1}>
+            More rewards
           </Typography>
-          <Typography textAlign="center" px="100px">
-            250k SAFE - 50k SAFE to be given to 5 Safe Miles participants
+          <Typography
+            sx={{
+              border: ({ palette }) => `1px solid ${palette.primary.main}`,
+              borderRadius: '6px',
+              width: 'fit-content',
+              margin: 'auto',
+              padding: 1,
+              textTransform: 'uppercase',
+              textAlign: 'center',
+            }}
+          >
+            Coming soon
           </Typography>
         </div>
 
         <Divider />
 
-        <Link href="#" sx={{ textAlign: 'center' }}>
+        <Link href="#" sx={{ textAlign: 'center', fontSize: '14px' }}>
           More info about Activity Miles
         </Link>
       </PaperContainer>
+      <Link href={AppRoutes.terms} component={NextLink} sx={{ textAlign: 'center' }}>
+        Terms and Conditions
+      </Link>
     </AccordionContainer>
   )
 }
