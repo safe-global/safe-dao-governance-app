@@ -14,7 +14,6 @@ import css from './styles.module.css'
 import SafeMiles from '@/public/images/safe-miles.svg'
 import { useIsSafeApp } from '@/hooks/useIsSafeApp'
 import Asterix from '@/public/images/asterix.svg'
-import { toDaysSinceStart } from '@/utils/date'
 import { isSafe } from '@/utils/wallet'
 
 const Step = ({ index, title, active }: { index: number; title: string; active: boolean }) => {
@@ -64,7 +63,8 @@ export const SplashScreen = (): ReactElement => {
         await onboard.setChain({ wallet: wallet.label, chainId: hexValue(parseInt(chainId)) })
       }
 
-      if (wallet && !(await isSafe(wallet))) {
+      // When using the standalone app, only allow Safe accounts to be connected
+      if (wallet && !isSafeApp && !(await isSafe(wallet))) {
         await onboard.disconnectWallet({ label: wallet.label })
         setError('Connected wallet must be a Safe')
         return
