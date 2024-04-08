@@ -173,7 +173,7 @@ export const BoostGraph = ({
         />
 
         <VictoryScatter
-          name="scatter-new"
+          name="scatter-points"
           style={{
             data: {
               fill: theme.palette.secondary.main,
@@ -185,10 +185,6 @@ export const BoostGraph = ({
               fill: theme.palette.text.primary,
             },
           }}
-          labels={[...pastLockPoints.map(() => ''), floorNumber(newBoostFunction({ x: now }), 2) + 'x']}
-          labelComponent={
-            <ArrowDownLabel backgroundColor={isLock ? theme.palette.primary.main : theme.palette.warning.main} />
-          }
           size={4}
           dataComponent={
             <ScatterDot
@@ -197,16 +193,12 @@ export const BoostGraph = ({
             />
           }
           domain={DOMAIN}
-          data={
-            pastLockPointsIncludeToday
-              ? pastLockPoints
-              : [...pastLockPoints, { x: now, y: newBoostFunction({ x: now }) }]
-          }
+          data={pastLockPoints}
           theme={victoryTheme}
         />
         <VictoryScatter
           animate
-          name="scatter-new"
+          name="scatter-today-future"
           style={{
             data: {
               fill: theme.palette.secondary.main,
@@ -218,7 +210,10 @@ export const BoostGraph = ({
               fill: theme.palette.text.primary,
             },
           }}
-          labels={[floorNumber(newBoostFunction({ x: SEASON2_START }), 2) + 'x']}
+          labels={[
+            floorNumber(newBoostFunction({ x: now }), 2) + 'x',
+            floorNumber(newBoostFunction({ x: SEASON2_START }), 2) + 'x',
+          ]}
           labelComponent={
             <ArrowDownLabel backgroundColor={isLock ? theme.palette.primary.main : theme.palette.warning.main} />
           }
@@ -230,7 +225,10 @@ export const BoostGraph = ({
             />
           }
           domain={DOMAIN}
-          data={[{ x: SEASON2_START, y: newBoostFunction({ x: SEASON2_START }) }]}
+          data={[
+            { x: now, y: newBoostFunction({ x: now }) },
+            { x: SEASON2_START, y: newBoostFunction({ x: SEASON2_START }) },
+          ]}
           theme={victoryTheme}
         />
       </VictoryChart>
