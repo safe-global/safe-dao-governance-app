@@ -37,12 +37,13 @@ import { BaseTransaction, useTxSender } from '@/hooks/useTxSender'
 import { useSafeTokenLockingAllowance } from '@/hooks/useSafeTokenBalance'
 import { AppRoutes } from '@/config/routes'
 import NextLink from 'next/link'
+import { useStartDate } from '@/hooks/useStartDates'
 
 export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | undefined }) => {
   const [receiptOpen, setReceiptOpen] = useState<boolean>(false)
   const chainId = useChainId()
   const txSender = useTxSender()
-  const startTime = CHAIN_START_TIMESTAMPS[chainId]
+  const { startTime } = useStartDate()
   const todayInDays = getCurrentDays(startTime)
   const { data: safeTokenAllowance, isLoading: isAllowanceLoading } = useSafeTokenLockingAllowance()
 
@@ -173,6 +174,11 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
             <BoostGraph lockedAmount={Number(cleanedAmount)} pastLocks={relativeLockHistory} isLock />
 
             <Grid container spacing={2} mb={1} alignItems="center">
+              {/* <Grid item xs={12} md={8}>
+                <TextField />
+                <TextField />
+                <TextField />
+              </Grid> */}
               <Grid item xs={12} md={8}>
                 <Typography mb={1}>Select amount to lock</Typography>
                 <TextField

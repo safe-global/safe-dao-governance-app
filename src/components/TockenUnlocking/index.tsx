@@ -11,13 +11,12 @@ import { useLockHistory } from '@/hooks/useLockHistory'
 import { ChevronLeft } from '@mui/icons-material'
 
 import { useMemo } from 'react'
-import { CHAIN_START_TIMESTAMPS } from '@/config/constants'
 import { useSummarizedLockHistory } from '@/hooks/useSummarizedLockHistory'
 import { WithdrawWidget } from './WithdrawWidget'
+import { useStartDate } from '@/hooks/useStartDates'
 
 const TokenUnlocking = () => {
-  const chainId = useChainId()
-  const startTime = CHAIN_START_TIMESTAMPS[chainId]
+  const { startTime } = useStartDate()
   const lockHistory = useLockHistory()
 
   const relativeLockHistory = useMemo(() => toRelativeLockHistory(lockHistory, startTime), [lockHistory, startTime])

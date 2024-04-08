@@ -26,6 +26,7 @@ import { AccordionContainer } from '@/components/AccordionContainer'
 
 import { useTheme } from '@mui/material/styles'
 import PaperContainer from '../PaperContainer'
+import { useStartDate } from '@/hooks/useStartDates'
 
 const Step = ({
   active,
@@ -67,7 +68,8 @@ export const ActivityRewardsInfo = () => {
   const ownRankResult = useOwnRank()
   const { data: ownRank } = ownRankResult
 
-  const daysSinceStart = toDaysSinceStart(Date.now(), CHAIN_START_TIMESTAMPS[chainId])
+  const { startTime } = useStartDate()
+  const daysSinceStart = toDaysSinceStart(Date.now(), startTime)
   const stepsActive = [daysSinceStart >= 0, daysSinceStart >= SEASON1_START, daysSinceStart >= SEASON2_START]
 
   return (

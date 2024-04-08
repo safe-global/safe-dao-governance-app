@@ -1,5 +1,4 @@
-import { CHAIN_START_TIMESTAMPS, SEASON2_START } from '@/config/constants'
-import { useChainId } from '@/hooks/useChainId'
+import { SEASON2_START } from '@/config/constants'
 import { floorNumber } from '@/utils/boost'
 import { getCurrentDays } from '@/utils/date'
 import { AccessTime } from '@mui/icons-material'
@@ -7,6 +6,7 @@ import { Box, LinearProgress, Stack, Tooltip, Typography } from '@mui/material'
 import { ReactElement, useMemo } from 'react'
 
 import { useTheme } from '@mui/material/styles'
+import { useStartDate } from '@/hooks/useStartDates'
 
 export const BoostMeter = ({
   isLock,
@@ -17,8 +17,8 @@ export const BoostMeter = ({
   isVisibleDifference: boolean
   prediction?: number
 }) => {
-  const chainId = useChainId()
-  const startTime = CHAIN_START_TIMESTAMPS[chainId]
+  const { startTime } = useStartDate()
+
   const now = useMemo(() => getCurrentDays(startTime), [startTime])
 
   const value = ((SEASON2_START - now) / SEASON2_START) * 100
