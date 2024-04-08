@@ -1,6 +1,7 @@
 .tabs {
   overflow: initial;
   margin-bottom: 24px;
+  align-self: flex-start;
 }
 
 /* Scroll buttons */
