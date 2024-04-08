@@ -70,7 +70,7 @@ export const SplashScreen = (): ReactElement => {
         return
       }
     } catch (error) {
-      setError('unknown error')
+      return
     } finally {
       setIsConnecting(false)
     }
