@@ -1,5 +1,5 @@
 import SafeToken from '@/public/images/token.svg'
-import { floorNumber, getBoostFunction } from '@/utils/boost'
+import { getBoostFunction } from '@/utils/boost'
 import css from './styles.module.css'
 import { Stack, Grid, Typography, TextField, InputAdornment, Button, CircularProgress } from '@mui/material'
 import { formatUnits, parseUnits } from 'ethers/lib/utils'
@@ -17,7 +17,6 @@ import { LOCK_EVENTS } from '@/analytics/lockEvents'
 import { trackSafeAppEvent } from '@/utils/analytics'
 import MilesReceipt from '@/components/TokenLocking/MilesReceipt'
 import { useTxSender } from '@/hooks/useTxSender'
-import { formatAmount } from '@/utils/formatters'
 
 export const UnlockTokenWidget = ({
   lockHistory,
@@ -27,7 +26,12 @@ export const UnlockTokenWidget = ({
   currentlyLocked: BigNumberish
 }) => {
   const [receiptOpen, setReceiptOpen] = useState<boolean>(false)
+  const [receiptInformation, setReceiptInformation] = useState<{ newFinalBoost: number; amount: string }>({
+    amount: '0',
+    newFinalBoost: 1,
+  })
   const [unlockAmount, setUnlockAmount] = useState('0')
+
   const [unlockAmountError, setUnlockAmountError] = useState<string>()
 
   const [isUnlocking, setIsUnlocking] = useState(false)
@@ -86,10 +90,12 @@ export const UnlockTokenWidget = ({
   const onUnlock = async () => {
     setIsUnlocking(true)
     const unlockTx = createUnlockTx(chainId, parseUnits(unlockAmount, 18))
-
+    const newFinalBoost = newBoostFunction({ x: SEASON2_START })
     try {
       await txSender?.sendTxs([unlockTx])
       trackSafeAppEvent(LOCK_EVENTS.UNLOCK_SUCCESS.action)
+      setReceiptInformation({ newFinalBoost, amount: unlockAmount })
+      setUnlockAmount('0')
       setReceiptOpen(true)
     } catch (err) {
       console.error(err)
@@ -163,8 +169,8 @@ export const UnlockTokenWidget = ({
       <MilesReceipt
         open={receiptOpen}
         onClose={onCloseReceipt}
-        amount={formatAmount(unlockAmount, 0)}
-        newFinalBoost={floorNumber(newBoostFunction({ x: SEASON2_START }), 2)}
+        amount={receiptInformation.amount}
+        newFinalBoost={receiptInformation.newFinalBoost}
         isUnlock
       />
     </Stack>
