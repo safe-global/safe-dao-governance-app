@@ -94,6 +94,10 @@ export const fetchLockedAmount = async (chainId: string, safeAddress: string, pr
 export const fetchLockingContractBalance = async (chainId: string, safeAddress: string, provider: JsonRpcProvider) => {
   const lockingAddress = CHAIN_SAFE_LOCKING_ADDRESS[chainId]
 
+  if (!lockingAddress) {
+    return '0'
+  }
+
   try {
     return await provider.call({
       to: lockingAddress,
