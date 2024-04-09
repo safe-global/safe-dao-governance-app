@@ -14,6 +14,7 @@ import css from './styles.module.css'
 import SafeMiles from '@/public/images/safe-miles.svg'
 import { useIsSafeApp } from '@/hooks/useIsSafeApp'
 import Asterix from '@/public/images/asterix.svg'
+import { isSafe } from '@/utils/wallet'
 
 const Step = ({ index, title, active }: { index: number; title: string; active: boolean }) => {
   return (
@@ -38,6 +39,7 @@ export const SplashScreen = (): ReactElement => {
   const router = useRouter()
 
   const [isConnecting, setIsConnecting] = useState(false)
+  const [error, setError] = useState<string>()
 
   const isSafeApp = useIsSafeApp()
   const wallet = useWallet()
@@ -48,6 +50,7 @@ export const SplashScreen = (): ReactElement => {
     if (!onboard) {
       return
     }
+    setError(undefined)
     setIsConnecting(true)
     try {
       const wallets = await onboard.connectWallet()
@@ -59,7 +62,14 @@ export const SplashScreen = (): ReactElement => {
       if (isWrongChain) {
         await onboard.setChain({ wallet: wallet.label, chainId: hexValue(parseInt(chainId)) })
       }
-    } catch {
+
+      // When using the standalone app, only allow Safe accounts to be connected
+      if (wallet && !isSafeApp && !(await isSafe(wallet))) {
+        await onboard.disconnectWallet({ label: wallet.label })
+        setError('Connected wallet must be a Safe')
+        return
+      }
+    } catch (error) {
       return
     } finally {
       setIsConnecting(false)
@@ -102,6 +112,11 @@ export const SplashScreen = (): ReactElement => {
                   <Button variant="contained" color="primary" onClick={onContinue}>
                     Continue
                   </Button>
+                )}
+                {error && (
+                  <Typography mt={1} color="error.main">
+                    {error}
+                  </Typography>
                 )}
               </Box>
             </Stack>
