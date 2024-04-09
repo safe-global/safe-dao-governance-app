@@ -2,6 +2,7 @@ import { CHAIN_START_TIMESTAMPS, SEASON1_START, SEASON2_START } from '@/config/c
 import { useChainId } from '@/hooks/useChainId'
 import { floorNumber, getBoostFunction } from '@/utils/boost'
 import { getCurrentDays } from '@/utils/date'
+import { formatAmount } from '@/utils/formatters'
 import { LockHistory } from '@/utils/lock'
 import { useTheme } from '@mui/material/styles'
 import { useMemo } from 'react'
@@ -36,7 +37,8 @@ export const BoostGraph = ({
   const newBoostFunction = useMemo(() => getBoostFunction(now, lockedAmount, pastLocks), [lockedAmount, now, pastLocks])
 
   const pastLockPoints = useMemo(() => generatePointsFromHistory(pastLocks, now), [pastLocks, now])
-  const pastLockPointsIncludeToday = pastLockPoints.some((p) => p.x === now)
+
+  const format = (value: number) => formatAmount(floorNumber(value, 2), 2)
 
   const currentBoostDataPoints = useMemo(
     () => [
@@ -211,10 +213,7 @@ export const BoostGraph = ({
               fill: theme.palette.text.primary,
             },
           }}
-          labels={[
-            floorNumber(newBoostFunction({ x: now }), 2) + 'x',
-            floorNumber(newBoostFunction({ x: SEASON2_START }), 2) + 'x',
-          ]}
+          labels={[format(newBoostFunction({ x: now })) + 'x', format(newBoostFunction({ x: SEASON2_START })) + 'x']}
           labelComponent={
             <ArrowDownLabel backgroundColor={isLock ? theme.palette.primary.main : theme.palette.warning.main} />
           }
