@@ -1,4 +1,4 @@
-import { Paper, TextField } from '@mui/material'
+import { Paper } from '@mui/material'
 import type { ReactElement } from 'react'
 
 import SafeLogo from '@/public/images/header-logo.svg'

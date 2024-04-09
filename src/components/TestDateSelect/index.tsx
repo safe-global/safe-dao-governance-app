@@ -30,18 +30,6 @@ export const TestDateSelect = (): ReactElement | null => {
         slotProps={{ textField: { size: 'small' } }}
         label="start date"
       />
-      {/* <DateTimePicker
-        value={new Date(season1Start)}
-        onChange={(value) => onDateSelect({ season1Start: value })}
-        slotProps={{ textField: { size: 'small' } }}
-        label="season 1"
-      />
-      <DateTimePicker
-        value={new Date(season2Start)}
-        onChange={(value) => onDateSelect({ season2Start: value })}
-        slotProps={{ textField: { size: 'small' } }}
-        label="season 2"
-      /> */}
     </LocalizationProvider>
   )
 }

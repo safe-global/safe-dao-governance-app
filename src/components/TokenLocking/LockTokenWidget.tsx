@@ -174,11 +174,6 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
             <BoostGraph lockedAmount={Number(cleanedAmount)} pastLocks={relativeLockHistory} isLock />
 
             <Grid container spacing={2} mb={1} alignItems="center">
-              {/* <Grid item xs={12} md={8}>
-                <TextField />
-                <TextField />
-                <TextField />
-              </Grid> */}
               <Grid item xs={12} md={8}>
                 <Typography mb={1}>Select amount to lock</Typography>
                 <TextField
