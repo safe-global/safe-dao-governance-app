@@ -223,6 +223,8 @@ const initTheme = () => {
         styleOverrides: {
           root: ({ theme }) => ({
             fontWeight: 700,
+            fontSize: '14px',
+            letterSpacing: '0.46px',
             color: theme.palette.text.primary,
             textDecorationColor: 'inherit',
             '&:hover': {

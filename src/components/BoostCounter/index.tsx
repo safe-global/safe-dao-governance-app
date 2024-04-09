@@ -80,9 +80,9 @@ const BoostCounter = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value])
 
-  const digit = floorNumber(currentNumber, 0)
-
-  const decimals = floorNumber(currentNumber, 2).toString().slice(2)
+  const digit = currentNumber.toString().slice(0, 1)
+  const localeSeparator = (1.1).toLocaleString().charAt(1)
+  const decimals = currentNumber.toString().slice(2).slice(0, 2)
 
   return (
     <Box display="inline-flex" gap="4px" alignItems="center">
@@ -98,7 +98,7 @@ const BoostCounter = ({
       >
         {digit}
       </Typography>
-      <Typography {...props}>{decimals !== '' ? `,${decimals}x` : 'x'}</Typography>
+      <Typography {...props}>{decimals !== '' ? `${localeSeparator}${decimals}x` : 'x'}</Typography>
     </Box>
   )
 }

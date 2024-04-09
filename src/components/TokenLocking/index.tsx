@@ -49,12 +49,6 @@ const TokenLocking = () => {
           </PaperContainer>
         </Stack>
       </Grid>
-
-      <Grid item xs={12}>
-        <Link href={AppRoutes.terms} component={NextLink} sx={{ float: 'right' }}>
-          Terms and Conditions
-        </Link>
-      </Grid>
     </Grid>
   )
 }

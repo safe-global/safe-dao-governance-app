@@ -7,7 +7,7 @@ import { BoostGraph } from '../TokenLocking/BoostGraph/BoostGraph'
 import { useDebounce } from '@/hooks/useDebounce'
 import { createUnlockTx, LockHistory } from '@/utils/lock'
 import { useState, useMemo, ChangeEvent, useCallback } from 'react'
-import { BigNumberish } from 'ethers'
+import { BigNumber, BigNumberish } from 'ethers'
 import { useChainId } from '@/hooks/useChainId'
 import { getCurrentDays } from '@/utils/date'
 import { CHAIN_START_TIMESTAMPS, SEASON2_START } from '@/config/constants'
@@ -81,7 +81,7 @@ export const UnlockTokenWidget = ({
   )
 
   const onSetToMax = useCallback(() => {
-    if (!currentlyLocked) {
+    if (!currentlyLocked || BigNumber.from(currentlyLocked).eq(0)) {
       return
     }
     setUnlockAmount(formatUnits(currentlyLocked, 18))
