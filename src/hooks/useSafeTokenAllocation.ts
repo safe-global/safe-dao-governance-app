@@ -15,7 +15,7 @@ import { Allocation, useAllocations } from '@/hooks/useAllocations'
 import { useChainId } from '@/hooks/useChainId'
 import { useAddress } from '@/hooks/useAddress'
 import { fetchTokenBalance } from '@/utils/safe-token'
-import { fetchLockingContractTotalBalance } from '@/utils/lock'
+import { fetchLockingContractBalance } from '@/utils/lock'
 
 export type Vesting = Allocation & {
   isExpired: boolean
@@ -114,7 +114,7 @@ export const _getVotingPower = async ({
   vestingData: Vesting[]
 }): Promise<BigNumber> => {
   const balance = await fetchTokenBalance(chainId, address, web3)
-  const lockingContractBalance = await fetchLockingContractTotalBalance(chainId, address, web3)
+  const lockingContractBalance = await fetchLockingContractBalance(chainId, address, web3)
 
   return computeVotingPower(vestingData, balance, lockingContractBalance)
 }

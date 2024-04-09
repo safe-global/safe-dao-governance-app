@@ -91,11 +91,7 @@ export const fetchLockedAmount = async (chainId: string, safeAddress: string, pr
  * @param provider
  * @returns total token balance
  */
-export const fetchLockingContractTotalBalance = async (
-  chainId: string,
-  safeAddress: string,
-  provider: JsonRpcProvider,
-) => {
+export const fetchLockingContractBalance = async (chainId: string, safeAddress: string, provider: JsonRpcProvider) => {
   const lockingAddress = CHAIN_SAFE_LOCKING_ADDRESS[chainId]
 
   try {
@@ -104,7 +100,7 @@ export const fetchLockingContractTotalBalance = async (
       data: safeLockingInterface.encodeFunctionData('getUserTokenBalance', [safeAddress]),
     })
   } catch (err) {
-    throw Error(`Error fetching Safe Token total balance:  ${err}`)
+    throw Error(`Error fetching Safe Token balance in locking contract:  ${err}`)
   }
 }
 
