@@ -206,7 +206,7 @@ export const Leaderboard = () => {
         <SvgIcon component={TitleStar} inheritViewBox sx={{ mr: '8px', mt: '4px' }} />
         <Box sx={{ flex: '1' }}>
           <Typography variant="h2" fontWeight={700} sx={{ mr: '8px', display: 'inline' }}>
-            Leaderboard
+            Locking Leaderboard
           </Typography>
           <Typography variant="subtitle1" fontSize="small" color="text.secondary" sx={{ my: '8px', fontSize: '14px' }}>
             Higher ranking means higher chances to get rewards.
