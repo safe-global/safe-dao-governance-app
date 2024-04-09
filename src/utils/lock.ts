@@ -9,6 +9,7 @@ const safeLockingInterface = new Interface([
   'function lock(uint96)',
   'function unlock(uint96)',
   'function getUser(address)',
+  'function getUserTokenBalance(address)',
   'function getUnlock(address,uint32)',
   'function withdraw(uint32)',
 ])
@@ -79,6 +80,31 @@ export const fetchLockedAmount = async (chainId: string, safeAddress: string, pr
   const decodedResult = defaultAbiCoder.decode(['uint96', 'uint96', 'uint32', 'uint32'], result)
   if (Array.isArray(decodedResult)) {
     return decodedResult as [BigNumber, BigNumber, number, number]
+  }
+}
+
+/**
+ * Returns total tokens in the locking contract including locked and unlocked amounts.
+ *
+ * @param chainId
+ * @param safeAddress
+ * @param provider
+ * @returns total token balance
+ */
+export const fetchLockingContractTotalBalance = async (
+  chainId: string,
+  safeAddress: string,
+  provider: JsonRpcProvider,
+) => {
+  const lockingAddress = CHAIN_SAFE_LOCKING_ADDRESS[chainId]
+
+  try {
+    return await provider.call({
+      to: lockingAddress,
+      data: safeLockingInterface.encodeFunctionData('getUserTokenBalance', [safeAddress]),
+    })
+  } catch (err) {
+    throw Error(`Error fetching Safe Token total balance:  ${err}`)
   }
 }
 
