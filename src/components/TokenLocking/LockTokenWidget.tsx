@@ -1,16 +1,5 @@
 import { formatAmount } from '@/utils/formatters'
-import {
-  Chip,
-  Typography,
-  Stack,
-  Grid,
-  TextField,
-  InputAdornment,
-  Button,
-  Box,
-  CircularProgress,
-  Link,
-} from '@mui/material'
+import { Typography, Stack, Grid, TextField, InputAdornment, Button, Box, CircularProgress, Link } from '@mui/material'
 import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward'
 import { formatUnits, parseUnits } from 'ethers/lib/utils'
 import SafeToken from '@/public/images/token.svg'
@@ -23,7 +12,7 @@ import { createApproveTx } from '@/utils/safe-token'
 import { useState, ChangeEvent, useMemo, useCallback } from 'react'
 import { BigNumber, BigNumberish } from 'ethers'
 import { useChainId } from '@/hooks/useChainId'
-import { floorNumber, getBoostFunction } from '@/utils/boost'
+import { getBoostFunction } from '@/utils/boost'
 import { useLockHistory } from '@/hooks/useLockHistory'
 import { useDebounce } from '@/hooks/useDebounce'
 import { CHAIN_START_TIMESTAMPS, SEASON2_START, UNLIMITED_APPROVAL_AMOUNT } from '@/config/constants'
@@ -56,8 +45,12 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
 
   const [isLocking, setIsLocking] = useState(false)
 
+  const [receiptInformation, setReceiptInformation] = useState<{ newFinalBoost: number; amount: string }>({
+    amount: '0',
+    newFinalBoost: 1,
+  })
+
   const onCloseReceipt = () => {
-    setAmount('0')
     setReceiptOpen(false)
   }
 
@@ -137,7 +130,10 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
           await txSender?.sendTxs([txs[i]])
         }
       }
+      const finalBoostAfterLocking = newBoostFunction({ x: SEASON2_START })
       trackSafeAppEvent(LOCK_EVENTS.LOCK_SUCCESS.action)
+      setReceiptInformation({ newFinalBoost: finalBoostAfterLocking, amount })
+      setAmount('0')
       setReceiptOpen(true)
     } catch (error) {
       console.error(error)
@@ -229,8 +225,8 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
       <MilesReceipt
         open={receiptOpen}
         onClose={onCloseReceipt}
-        amount={formatAmount(amount, 0)}
-        newFinalBoost={floorNumber(newBoostFunction({ x: SEASON2_START }), 2)}
+        amount={receiptInformation.amount}
+        newFinalBoost={receiptInformation.newFinalBoost}
       />
     </>
   )
