@@ -9,7 +9,7 @@ import { BoostGraph } from './BoostGraph/BoostGraph'
 import css from './styles.module.css'
 import { createLockTx, toRelativeLockHistory } from '@/utils/lock'
 import { createApproveTx } from '@/utils/safe-token'
-import { useState, ChangeEvent, useMemo, useCallback } from 'react'
+import { useState, ChangeEvent, useMemo, useCallback, useEffect } from 'react'
 import { BigNumber, BigNumberish } from 'ethers'
 import { useChainId } from '@/hooks/useChainId'
 import { getBoostFunction } from '@/utils/boost'
@@ -58,6 +58,12 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
 
   const debouncedAmount = useDebounce(amount, 1000, '0')
   const cleanedAmount = useMemo(() => (debouncedAmount.trim() === '' ? '0' : debouncedAmount.trim()), [debouncedAmount])
+
+  useEffect(() => {
+    if (debouncedAmount !== '0') {
+      trackSafeAppEvent(LOCK_EVENTS.CHANGE_LOCK_AMOUNT.action, LOCK_EVENTS.CHANGE_LOCK_AMOUNT.label)
+    }
+  }, [debouncedAmount])
 
   const currentBoostFunction = useMemo(
     () => getBoostFunction(todayInDays, 0, relativeLockHistory),

@@ -6,14 +6,14 @@ import { formatUnits, parseUnits } from 'ethers/lib/utils'
 import { BoostGraph } from '../TokenLocking/BoostGraph/BoostGraph'
 import { useDebounce } from '@/hooks/useDebounce'
 import { createUnlockTx, LockHistory } from '@/utils/lock'
-import { useState, useMemo, ChangeEvent, useCallback } from 'react'
+import { useState, useMemo, ChangeEvent, useCallback, useEffect } from 'react'
 import { BigNumber, BigNumberish } from 'ethers'
 import { useChainId } from '@/hooks/useChainId'
 import { getCurrentDays } from '@/utils/date'
 import { SEASON2_START } from '@/config/constants'
 import { BoostBreakdown } from '../TokenLocking/BoostBreakdown'
 import Track from '../Track'
-import { ANALYTICS_EVENTS } from '@/analytics/lockEvents'
+import { LOCK_EVENTS } from '@/analytics/lockEvents'
 import { trackSafeAppEvent } from '@/utils/analytics'
 import MilesReceipt from '@/components/TokenLocking/MilesReceipt'
 import { useTxSender } from '@/hooks/useTxSender'
@@ -45,6 +45,12 @@ export const UnlockTokenWidget = ({
 
   const debouncedAmount = useDebounce(unlockAmount, 1000, '0')
   const cleanedAmount = useMemo(() => (debouncedAmount.trim() === '' ? '0' : debouncedAmount.trim()), [debouncedAmount])
+
+  useEffect(() => {
+    if (debouncedAmount !== '0') {
+      trackSafeAppEvent(LOCK_EVENTS.CHANGE_UNLOCK_AMOUNT.action, LOCK_EVENTS.CHANGE_UNLOCK_AMOUNT.label)
+    }
+  }, [debouncedAmount])
 
   const onCloseReceipt = () => {
     setUnlockAmount('0')
@@ -95,7 +101,7 @@ export const UnlockTokenWidget = ({
     const newFinalBoost = newBoostFunction({ x: SEASON2_START })
     try {
       await txSender?.sendTxs([unlockTx])
-      trackSafeAppEvent(ANALYTICS_EVENTS.UNLOCK_SUCCESS.action)
+      trackSafeAppEvent(LOCK_EVENTS.UNLOCK_SUCCESS.action)
       setReceiptInformation({ newFinalBoost, amount: unlockAmount })
       setUnlockAmount('0')
       setReceiptOpen(true)
@@ -151,7 +157,7 @@ export const UnlockTokenWidget = ({
             </Grid>
 
             <Grid item xs={12} md={4}>
-              <Track {...ANALYTICS_EVENTS.UNLOCK_BUTTON}>
+              <Track {...LOCK_EVENTS.UNLOCK_BUTTON}>
                 <Button onClick={onUnlock} variant="contained" fullWidth disableElevation disabled={isDisabled}>
                   {isUnlocking ? <CircularProgress size={20} /> : 'Unlock'}
                 </Button>
