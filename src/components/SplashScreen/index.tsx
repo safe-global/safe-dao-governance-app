@@ -11,9 +11,11 @@ import { AppRoutes } from '@/config/routes'
 import Barcode from '@/public/images/barcode.svg'
 
 import css from './styles.module.css'
-import SafeMiles from '@/public/images/safe-miles.svg'
+import SafeExplorers from '@/public/images/safe-explorers.svg'
 import { useIsSafeApp } from '@/hooks/useIsSafeApp'
 import Asterix from '@/public/images/asterix.svg'
+import { localItem } from '@/services/storage/local'
+import { useIsomorphicLayoutEffect } from '@/hooks/useIsomorphicLayoutEffect'
 import { isSafe } from '@/utils/wallet'
 import { trackSafeAppEvent } from '@/utils/analytics'
 import { NAVIGATION_EVENTS } from '@/analytics/navigation'
@@ -32,6 +34,10 @@ const Step = ({ index, title, active }: { index: number; title: string; active: 
   )
 }
 
+// Check if new or returning user
+const ALREADY_VISITED = 'alreadyVisited'
+const alreadyVisitedStorage = localItem<boolean>(ALREADY_VISITED)
+
 /**
  * This page handles wallet connection and initial data loading.
  */
@@ -39,11 +45,11 @@ export const SplashScreen = (): ReactElement => {
   const onboard = useOnboard()
   const chainId = useChainId()
   const router = useRouter()
+  const isSafeApp = useIsSafeApp()
 
   const [isConnecting, setIsConnecting] = useState(false)
   const [error, setError] = useState<string>()
 
-  const isSafeApp = useIsSafeApp()
   const wallet = useWallet()
 
   const isDisconnected = !isSafeApp && !wallet
@@ -80,8 +86,18 @@ export const SplashScreen = (): ReactElement => {
 
   const onContinue = async () => {
     trackSafeAppEvent(NAVIGATION_EVENTS.OPEN_LOCKING.action, 'opening')
+    alreadyVisitedStorage.set(true)
     router.push(AppRoutes.activity)
   }
+
+  useIsomorphicLayoutEffect(() => {
+    const hasAlreadyVisited = alreadyVisitedStorage.get()
+    if (isSafeApp && hasAlreadyVisited) {
+      // We are a returning user and already connected
+      // We only skip this step for the Safe App as we have to connect a wallet in the standalone version
+      onContinue()
+    }
+  }, [isSafeApp])
 
   return (
     <Box display="flex" width="100%">
@@ -93,9 +109,9 @@ export const SplashScreen = (): ReactElement => {
               inheritViewBox
               sx={{ color: 'transparent', position: 'absolute', top: 0, right: 0, height: '208px', width: '208px' }}
             />
-            <SvgIcon component={SafeMiles} inheritViewBox sx={{ width: '154px', height: 'auto' }} />
+            <SvgIcon component={SafeExplorers} inheritViewBox sx={{ width: '282px', height: 'auto' }} />
             <Stack spacing={3} p={3}>
-              <Typography variant="h2" fontWeight="bold">
+              <Typography variant="h2" fontSize="44px" lineHeight="120%" fontWeight="bold">
                 Interact with Safe and get rewards
               </Typography>
               <Typography>Short intro text about the program.</Typography>
@@ -128,7 +144,7 @@ export const SplashScreen = (): ReactElement => {
         <Grid item xs={12} md={4}>
           <Stack className={css.rightReceipt} gap={3} justifyContent="center">
             <Typography variant="caption" textTransform="uppercase" letterSpacing="1px">
-              What is the Safe{'{'}Miles{'}'} program?
+              How it works
             </Typography>
             <Stack gap={1}>
               <Step index={0} title="Lock SAFE to boost your miles!" active={true} />
