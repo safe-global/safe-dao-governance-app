@@ -234,7 +234,10 @@
   height: 1000px;
   opacity: 0.3;
   z-index: 1;
-  left: 80px;
+  transform: translate(-50%, -50%);
+
+  top: 50%;
+  left: 50%;
   background: radial-gradient(41.34% 41.34% at 50% 50%, rgba(18, 255, 128, 0.6) 0%, rgba(18, 255, 128, 0) 82.5%);
   pointer-events: none;
 }
