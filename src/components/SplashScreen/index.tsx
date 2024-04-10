@@ -79,6 +79,7 @@ export const SplashScreen = (): ReactElement => {
       return
     } finally {
       setIsConnecting(false)
+      onContinue()
     }
   }
 
