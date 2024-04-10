@@ -1,6 +1,6 @@
 import { Button, IconButton, Modal, Stack, SvgIcon, Typography } from '@mui/material'
 import css from './styles.module.css'
-import SafeMiles from '@/public/images/safe-miles.svg'
+import SafeExplorers from '@/public/images/safe-explorers.svg'
 import Barcode from '@/public/images/barcode.svg'
 import { NorthRounded, SouthRounded } from '@mui/icons-material'
 import CloseIcon from '@mui/icons-material/Close'
@@ -26,7 +26,7 @@ const MilesReceipt = ({
       <div className={css.milesReceipt}>
         <div className={clsx(css.gradientBackground, { [css.unlockGradient]: isUnlock })} />
         <Stack className={css.leftReceipt}>
-          <SvgIcon component={SafeMiles} inheritViewBox sx={{ width: '154px', height: 'auto' }} />
+          <SvgIcon component={SafeExplorers} inheritViewBox sx={{ width: '282px', height: 'auto' }} />
           <Stack mt="auto">
             <Typography variant="h1" component="div" fontWeight="bold" mb={1}>
               {isUnlock ? 'Your tokens are unlocked' : 'Welcome on board'}
