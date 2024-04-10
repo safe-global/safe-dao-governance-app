@@ -1,4 +1,4 @@
-import { LOCK_EVENTS } from '@/analytics/lockEvents'
+import { ANALYTICS_EVENTS } from '@/analytics/lockEvents'
 import { Box, Typography, Grid, Paper, Stack, Button, CircularProgress, SvgIcon } from '@mui/material'
 import { formatUnits, parseUnits } from 'ethers/lib/utils'
 import { Odometer } from '../Odometer'
@@ -34,7 +34,7 @@ export const WithdrawWidget = ({
     const withdrawTx = createWithdrawTx(chainId)
     try {
       await txSender?.sendTxs([withdrawTx])
-      trackSafeAppEvent(LOCK_EVENTS.WITHDRAW_SUCCESS.action)
+      trackSafeAppEvent(ANALYTICS_EVENTS.WITHDRAW_SUCCESS.action)
     } catch (error) {
       console.error(error)
     }
@@ -78,7 +78,7 @@ export const WithdrawWidget = ({
               </Box>
             </Grid>
             <Grid item xs={12} md={4}>
-              <Track {...LOCK_EVENTS.WITHDRAW_BUTTON}>
+              <Track {...ANALYTICS_EVENTS.WITHDRAW_BUTTON}>
                 <Button
                   variant="contained"
                   color="primary"

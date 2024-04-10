@@ -15,7 +15,7 @@ import { useChainId } from '@/hooks/useChainId'
 import { getBoostFunction } from '@/utils/boost'
 import { useLockHistory } from '@/hooks/useLockHistory'
 import { useDebounce } from '@/hooks/useDebounce'
-import { CHAIN_START_TIMESTAMPS, SEASON2_START, UNLIMITED_APPROVAL_AMOUNT } from '@/config/constants'
+import { SEASON2_START, UNLIMITED_APPROVAL_AMOUNT } from '@/config/constants'
 import { getCurrentDays } from '@/utils/date'
 import { BoostBreakdown } from './BoostBreakdown'
 import Track from '../Track'
@@ -27,6 +27,7 @@ import { useSafeTokenLockingAllowance } from '@/hooks/useSafeTokenBalance'
 import { AppRoutes } from '@/config/routes'
 import NextLink from 'next/link'
 import { useStartDate } from '@/hooks/useStartDates'
+import { NAVIGATION_EVENTS } from '@/analytics/navigation'
 
 export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | undefined }) => {
   const [receiptOpen, setReceiptOpen] = useState<boolean>(false)
@@ -154,9 +155,11 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
             Lock tokens to boost your miles
           </Typography>
         </Box>
-        <Link href={AppRoutes.boost} component={NextLink}>
-          How does boost work?
-        </Link>
+        <Track {...NAVIGATION_EVENTS.OPEN_BOOST_INFO}>
+          <Link href={AppRoutes.boost} component={NextLink}>
+            How does boost work?
+          </Link>
+        </Track>
       </Box>
       <Stack
         spacing={3}

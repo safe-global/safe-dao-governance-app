@@ -15,6 +15,8 @@ import SafeMiles from '@/public/images/safe-miles.svg'
 import { useIsSafeApp } from '@/hooks/useIsSafeApp'
 import Asterix from '@/public/images/asterix.svg'
 import { isSafe } from '@/utils/wallet'
+import { trackSafeAppEvent } from '@/utils/analytics'
+import { NAVIGATION_EVENTS } from '@/analytics/navigation'
 
 const Step = ({ index, title, active }: { index: number; title: string; active: boolean }) => {
   return (
@@ -77,6 +79,7 @@ export const SplashScreen = (): ReactElement => {
   }
 
   const onContinue = async () => {
+    trackSafeAppEvent(NAVIGATION_EVENTS.OPEN_LOCKING.action, 'opening')
     router.push(AppRoutes.activity)
   }
 

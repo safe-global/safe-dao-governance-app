@@ -13,7 +13,7 @@ import { getCurrentDays } from '@/utils/date'
 import { SEASON2_START } from '@/config/constants'
 import { BoostBreakdown } from '../TokenLocking/BoostBreakdown'
 import Track from '../Track'
-import { LOCK_EVENTS } from '@/analytics/lockEvents'
+import { ANALYTICS_EVENTS } from '@/analytics/lockEvents'
 import { trackSafeAppEvent } from '@/utils/analytics'
 import MilesReceipt from '@/components/TokenLocking/MilesReceipt'
 import { useTxSender } from '@/hooks/useTxSender'
@@ -95,7 +95,7 @@ export const UnlockTokenWidget = ({
     const newFinalBoost = newBoostFunction({ x: SEASON2_START })
     try {
       await txSender?.sendTxs([unlockTx])
-      trackSafeAppEvent(LOCK_EVENTS.UNLOCK_SUCCESS.action)
+      trackSafeAppEvent(ANALYTICS_EVENTS.UNLOCK_SUCCESS.action)
       setReceiptInformation({ newFinalBoost, amount: unlockAmount })
       setUnlockAmount('0')
       setReceiptOpen(true)
@@ -151,7 +151,7 @@ export const UnlockTokenWidget = ({
             </Grid>
 
             <Grid item xs={12} md={4}>
-              <Track {...LOCK_EVENTS.UNLOCK_BUTTON}>
+              <Track {...ANALYTICS_EVENTS.UNLOCK_BUTTON}>
                 <Button onClick={onUnlock} variant="contained" fullWidth disableElevation disabled={isDisabled}>
                   {isUnlocking ? <CircularProgress size={20} /> : 'Unlock'}
                 </Button>

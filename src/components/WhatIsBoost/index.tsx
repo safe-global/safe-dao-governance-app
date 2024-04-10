@@ -9,18 +9,22 @@ import SafeLogo from '@/public/images/safe-logo-round.svg'
 import ClockIcon from '@/public/images/clock-alt.svg'
 import Image from 'next/image'
 import css from './styles.module.css'
+import { NAVIGATION_EVENTS } from '@/analytics/navigation'
+import Track from '../Track'
 
 const WhatIsBoost = () => {
   return (
     <Stack spacing={3}>
-      <Link
-        href={AppRoutes.activity}
-        component={NextLink}
-        sx={{ display: 'flex', alignItems: 'center', color: ({ palette }) => palette.primary.main }}
-      >
-        <ChevronLeft />
-        Back to main
-      </Link>
+      <Track {...NAVIGATION_EVENTS.OPEN_LOCKING} label="other page">
+        <Link
+          href={AppRoutes.activity}
+          component={NextLink}
+          sx={{ display: 'flex', alignItems: 'center', color: ({ palette }) => palette.primary.main }}
+        >
+          <ChevronLeft />
+          Back to main
+        </Link>
+      </Track>
 
       <Typography variant="h1">What is Boost and how does it work?</Typography>
 
