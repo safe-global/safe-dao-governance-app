@@ -200,36 +200,19 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 1000px;
-  height: 450px;
+  width: 90vw;
+  max-width: 585px;
   display: flex;
   overflow: hidden;
-}
-
-.leftReceipt,
-.rightReceipt {
   background-color: #121312;
   border-radius: 20px;
   padding: 40px;
 }
 
-.leftReceipt {
-  position: relative;
-  flex-grow: 1;
-}
-
-.leftReceipt:after {
-  content: '';
-  border-right: 1px dashed white;
-  position: absolute;
-  right: 0;
-  top: 20px;
-  height: calc(100% - 40px);
-}
-
-.rightReceipt {
-  width: 388px;
-  flex-shrink: 0;
+.topReceipt {
+  border-bottom: 1px dashed white;
+  padding: 40px;
+  margin: 0 -40px;
 }
 
 .barcode {
@@ -251,8 +234,7 @@
   height: 1000px;
   opacity: 0.3;
   z-index: 1;
-  top: -200px;
-  left: -100px;
+  left: 80px;
   background: radial-gradient(41.34% 41.34% at 50% 50%, rgba(18, 255, 128, 0.6) 0%, rgba(18, 255, 128, 0) 82.5%);
   pointer-events: none;
 }
