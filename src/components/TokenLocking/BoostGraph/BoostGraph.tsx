@@ -2,6 +2,7 @@ import { CHAIN_START_TIMESTAMPS, SEASON1_START, SEASON2_START } from '@/config/c
 import { useChainId } from '@/hooks/useChainId'
 import { floorNumber, getBoostFunction } from '@/utils/boost'
 import { getCurrentDays } from '@/utils/date'
+import { formatAmount } from '@/utils/formatters'
 import { LockHistory } from '@/utils/lock'
 import { useTheme } from '@mui/material/styles'
 import { useMemo } from 'react'
@@ -13,6 +14,7 @@ import { generatePointsFromHistory } from './helper'
 import { ScatterDot } from './ScatterDot'
 
 import { useVictoryTheme } from './theme'
+import { useStartDate } from '@/hooks/useStartDates'
 
 const DOMAIN: ForAxes<DomainTuple> = { x: [-5, SEASON2_START + 5], y: [0.8, 5.5] }
 
@@ -27,15 +29,16 @@ export const BoostGraph = ({
 }) => {
   const theme = useTheme()
   const victoryTheme = useVictoryTheme()
-  const chainId = useChainId()
-  const startTime = CHAIN_START_TIMESTAMPS[chainId]
+  const { startTime } = useStartDate()
+
   const now = useMemo(() => getCurrentDays(startTime), [startTime])
 
   const currentBoostFunction = useMemo(() => getBoostFunction(now, 0, pastLocks), [now, pastLocks])
   const newBoostFunction = useMemo(() => getBoostFunction(now, lockedAmount, pastLocks), [lockedAmount, now, pastLocks])
 
   const pastLockPoints = useMemo(() => generatePointsFromHistory(pastLocks, now), [pastLocks, now])
-  const pastLockPointsIncludeToday = pastLockPoints.some((p) => p.x === now)
+
+  const format = (value: number) => formatAmount(floorNumber(value, 2), 2)
 
   const currentBoostDataPoints = useMemo(
     () => [
@@ -173,7 +176,7 @@ export const BoostGraph = ({
         />
 
         <VictoryScatter
-          name="scatter-new"
+          name="scatter-points"
           style={{
             data: {
               fill: theme.palette.secondary.main,
@@ -185,10 +188,6 @@ export const BoostGraph = ({
               fill: theme.palette.text.primary,
             },
           }}
-          labels={[...pastLockPoints.map(() => ''), floorNumber(newBoostFunction({ x: now }), 2) + 'x']}
-          labelComponent={
-            <ArrowDownLabel backgroundColor={isLock ? theme.palette.primary.main : theme.palette.warning.main} />
-          }
           size={4}
           dataComponent={
             <ScatterDot
@@ -197,16 +196,12 @@ export const BoostGraph = ({
             />
           }
           domain={DOMAIN}
-          data={
-            pastLockPointsIncludeToday
-              ? pastLockPoints
-              : [...pastLockPoints, { x: now, y: newBoostFunction({ x: now }) }]
-          }
+          data={pastLockPoints}
           theme={victoryTheme}
         />
         <VictoryScatter
           animate
-          name="scatter-new"
+          name="scatter-today-future"
           style={{
             data: {
               fill: theme.palette.secondary.main,
@@ -218,7 +213,7 @@ export const BoostGraph = ({
               fill: theme.palette.text.primary,
             },
           }}
-          labels={[floorNumber(newBoostFunction({ x: SEASON2_START }), 2) + 'x']}
+          labels={[format(newBoostFunction({ x: now })) + 'x', format(newBoostFunction({ x: SEASON2_START })) + 'x']}
           labelComponent={
             <ArrowDownLabel backgroundColor={isLock ? theme.palette.primary.main : theme.palette.warning.main} />
           }
@@ -230,7 +225,10 @@ export const BoostGraph = ({
             />
           }
           domain={DOMAIN}
-          data={[{ x: SEASON2_START, y: newBoostFunction({ x: SEASON2_START }) }]}
+          data={[
+            { x: now, y: newBoostFunction({ x: now }) },
+            { x: SEASON2_START, y: newBoostFunction({ x: SEASON2_START }) },
+          ]}
           theme={victoryTheme}
         />
       </VictoryChart>

@@ -1,5 +1,5 @@
 import SafeToken from '@/public/images/token.svg'
-import { floorNumber, getBoostFunction } from '@/utils/boost'
+import { getBoostFunction } from '@/utils/boost'
 import css from './styles.module.css'
 import { Stack, Grid, Typography, TextField, InputAdornment, Button, CircularProgress } from '@mui/material'
 import { formatUnits, parseUnits } from 'ethers/lib/utils'
@@ -7,17 +7,17 @@ import { BoostGraph } from '../TokenLocking/BoostGraph/BoostGraph'
 import { useDebounce } from '@/hooks/useDebounce'
 import { createUnlockTx, LockHistory } from '@/utils/lock'
 import { useState, useMemo, ChangeEvent, useCallback } from 'react'
-import { BigNumberish } from 'ethers'
+import { BigNumber, BigNumberish } from 'ethers'
 import { useChainId } from '@/hooks/useChainId'
 import { getCurrentDays } from '@/utils/date'
-import { CHAIN_START_TIMESTAMPS, SEASON2_START } from '@/config/constants'
+import { SEASON2_START } from '@/config/constants'
 import { BoostBreakdown } from '../TokenLocking/BoostBreakdown'
 import Track from '../Track'
 import { LOCK_EVENTS } from '@/analytics/lockEvents'
 import { trackSafeAppEvent } from '@/utils/analytics'
 import MilesReceipt from '@/components/TokenLocking/MilesReceipt'
 import { useTxSender } from '@/hooks/useTxSender'
-import { formatAmount } from '@/utils/formatters'
+import { useStartDate } from '@/hooks/useStartDates'
 
 export const UnlockTokenWidget = ({
   lockHistory,
@@ -27,7 +27,12 @@ export const UnlockTokenWidget = ({
   currentlyLocked: BigNumberish
 }) => {
   const [receiptOpen, setReceiptOpen] = useState<boolean>(false)
+  const [receiptInformation, setReceiptInformation] = useState<{ newFinalBoost: number; amount: string }>({
+    amount: '0',
+    newFinalBoost: 1,
+  })
   const [unlockAmount, setUnlockAmount] = useState('0')
+
   const [unlockAmountError, setUnlockAmountError] = useState<string>()
 
   const [isUnlocking, setIsUnlocking] = useState(false)
@@ -35,7 +40,8 @@ export const UnlockTokenWidget = ({
   const chainId = useChainId()
   const txSender = useTxSender()
 
-  const todayInDays = getCurrentDays(CHAIN_START_TIMESTAMPS[chainId])
+  const { startTime } = useStartDate()
+  const todayInDays = getCurrentDays(startTime)
 
   const debouncedAmount = useDebounce(unlockAmount, 1000, '0')
   const cleanedAmount = useMemo(() => (debouncedAmount.trim() === '' ? '0' : debouncedAmount.trim()), [debouncedAmount])
@@ -77,7 +83,7 @@ export const UnlockTokenWidget = ({
   )
 
   const onSetToMax = useCallback(() => {
-    if (!currentlyLocked) {
+    if (!currentlyLocked || BigNumber.from(currentlyLocked).eq(0)) {
       return
     }
     setUnlockAmount(formatUnits(currentlyLocked, 18))
@@ -86,10 +92,12 @@ export const UnlockTokenWidget = ({
   const onUnlock = async () => {
     setIsUnlocking(true)
     const unlockTx = createUnlockTx(chainId, parseUnits(unlockAmount, 18))
-
+    const newFinalBoost = newBoostFunction({ x: SEASON2_START })
     try {
       await txSender?.sendTxs([unlockTx])
       trackSafeAppEvent(LOCK_EVENTS.UNLOCK_SUCCESS.action)
+      setReceiptInformation({ newFinalBoost, amount: unlockAmount })
+      setUnlockAmount('0')
       setReceiptOpen(true)
     } catch (err) {
       console.error(err)
@@ -163,8 +171,8 @@ export const UnlockTokenWidget = ({
       <MilesReceipt
         open={receiptOpen}
         onClose={onCloseReceipt}
-        amount={formatAmount(unlockAmount, 0)}
-        newFinalBoost={floorNumber(newBoostFunction({ x: SEASON2_START }), 2)}
+        amount={receiptInformation.amount}
+        newFinalBoost={receiptInformation.newFinalBoost}
         isUnlock
       />
     </Stack>

@@ -5,6 +5,8 @@ import Barcode from '@/public/images/barcode.svg'
 import { NorthRounded, SouthRounded } from '@mui/icons-material'
 import CloseIcon from '@mui/icons-material/Close'
 import clsx from 'clsx'
+import { formatAmount } from '@/utils/formatters'
+import { floorNumber } from '@/utils/boost'
 
 const MilesReceipt = ({
   open,
@@ -60,7 +62,7 @@ const MilesReceipt = ({
           <Stack direction="row" alignItems="baseline">
             <ArrowIcon color={isUnlock ? 'warning' : 'primary'} fontSize="small" />
             <Typography variant="h2" component="div" fontWeight="bold" color={isUnlock ? 'warning.main' : 'primary'}>
-              {amount}
+              {formatAmount(amount, 0)}
             </Typography>
             <Typography color="text.secondary" ml={1}>
               Tokens {isUnlock ? 'unlocked' : 'locked'}
@@ -71,7 +73,7 @@ const MilesReceipt = ({
             <Stack direction="row" alignItems="baseline">
               <ArrowIcon color={isUnlock ? 'warning' : 'primary'} fontSize="small" />
               <Typography variant="h2" component="div" fontWeight="bold" color={isUnlock ? 'warning.main' : 'primary'}>
-                {newFinalBoost}x
+                {formatAmount(floorNumber(newFinalBoost, 2), 2)}x
               </Typography>
               <Typography color="text.secondary" ml={1}>
                 Your new miles boost

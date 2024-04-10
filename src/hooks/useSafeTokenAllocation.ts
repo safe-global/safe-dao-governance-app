@@ -15,6 +15,7 @@ import { Allocation, useAllocations } from '@/hooks/useAllocations'
 import { useChainId } from '@/hooks/useChainId'
 import { useAddress } from '@/hooks/useAddress'
 import { fetchTokenBalance } from '@/utils/safe-token'
+import { fetchLockingContractBalance } from '@/utils/lock'
 
 export type Vesting = Allocation & {
   isExpired: boolean
@@ -85,14 +86,20 @@ export const _getVestingData = async (web3: JsonRpcProvider, allocations: Alloca
   return getValidVestingAllocation(vestingData)
 }
 
-const computeVotingPower = (validVestingData: Vesting[], balance: string): BigNumber => {
+const computeVotingPower = (
+  validVestingData: Vesting[],
+  balance: string,
+  lockingContractBalance: string,
+): BigNumber => {
   const tokensInVesting = validVestingData.reduce(
     (acc, data) => acc.add(data.amount).sub(data.amountClaimed),
     BigNumber.from(0),
   )
 
+  const totalBalance = BigNumber.from(balance).add(BigNumber.from(lockingContractBalance))
+
   // add balance
-  return tokensInVesting.add(BigNumber.from(balance))
+  return tokensInVesting.add(totalBalance)
 }
 
 export const _getVotingPower = async ({
@@ -107,8 +114,9 @@ export const _getVotingPower = async ({
   vestingData: Vesting[]
 }): Promise<BigNumber> => {
   const balance = await fetchTokenBalance(chainId, address, web3)
+  const lockingContractBalance = await fetchLockingContractBalance(chainId, address, web3)
 
-  return computeVotingPower(vestingData, balance)
+  return computeVotingPower(vestingData, balance, lockingContractBalance)
 }
 
 const getSafeTokenAllocation = async ({
