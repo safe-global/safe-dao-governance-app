@@ -14,6 +14,7 @@ import { generatePointsFromHistory } from './helper'
 import { ScatterDot } from './ScatterDot'
 
 import { useVictoryTheme } from './theme'
+import { useStartDate } from '@/hooks/useStartDates'
 
 const DOMAIN: ForAxes<DomainTuple> = { x: [-5, SEASON2_START + 5], y: [0.8, 5.5] }
 
@@ -28,8 +29,8 @@ export const BoostGraph = ({
 }) => {
   const theme = useTheme()
   const victoryTheme = useVictoryTheme()
-  const chainId = useChainId()
-  const startTime = CHAIN_START_TIMESTAMPS[chainId]
+  const { startTime } = useStartDate()
+
   const now = useMemo(() => getCurrentDays(startTime), [startTime])
 
   const currentBoostFunction = useMemo(() => getBoostFunction(now, 0, pastLocks), [now, pastLocks])

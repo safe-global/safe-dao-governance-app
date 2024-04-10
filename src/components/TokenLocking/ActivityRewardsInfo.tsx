@@ -9,10 +9,10 @@ import Image from 'next/image'
 import { useOwnRank } from '@/hooks/useLeaderboard'
 import { toDaysSinceStart } from '@/utils/date'
 import Asterix from '@/public/images/asterix.svg'
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { AccordionContainer } from '@/components/AccordionContainer'
 
 import PaperContainer from '../PaperContainer'
+import { useStartDate } from '@/hooks/useStartDates'
 import { AppRoutes } from '@/config/routes'
 import NextLink from 'next/link'
 import { ReactNode } from 'react'
@@ -44,7 +44,8 @@ export const ActivityRewardsInfo = () => {
   const ownRankResult = useOwnRank()
   const { data: ownRank } = ownRankResult
 
-  const daysSinceStart = toDaysSinceStart(Date.now(), CHAIN_START_TIMESTAMPS[chainId])
+  const { startTime } = useStartDate()
+  const daysSinceStart = toDaysSinceStart(Date.now(), startTime)
   const stepsActive = [daysSinceStart >= 0, daysSinceStart >= SEASON1_START, daysSinceStart >= SEASON2_START]
 
   return (

@@ -10,13 +10,14 @@ import { useState, useMemo, ChangeEvent, useCallback } from 'react'
 import { BigNumber, BigNumberish } from 'ethers'
 import { useChainId } from '@/hooks/useChainId'
 import { getCurrentDays } from '@/utils/date'
-import { CHAIN_START_TIMESTAMPS, SEASON2_START } from '@/config/constants'
+import { SEASON2_START } from '@/config/constants'
 import { BoostBreakdown } from '../TokenLocking/BoostBreakdown'
 import Track from '../Track'
 import { LOCK_EVENTS } from '@/analytics/lockEvents'
 import { trackSafeAppEvent } from '@/utils/analytics'
 import MilesReceipt from '@/components/TokenLocking/MilesReceipt'
 import { useTxSender } from '@/hooks/useTxSender'
+import { useStartDate } from '@/hooks/useStartDates'
 
 export const UnlockTokenWidget = ({
   lockHistory,
@@ -39,7 +40,8 @@ export const UnlockTokenWidget = ({
   const chainId = useChainId()
   const txSender = useTxSender()
 
-  const todayInDays = getCurrentDays(CHAIN_START_TIMESTAMPS[chainId])
+  const { startTime } = useStartDate()
+  const todayInDays = getCurrentDays(startTime)
 
   const debouncedAmount = useDebounce(unlockAmount, 1000, '0')
   const cleanedAmount = useMemo(() => (debouncedAmount.trim() === '' ? '0' : debouncedAmount.trim()), [debouncedAmount])

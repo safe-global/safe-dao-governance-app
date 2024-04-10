@@ -26,12 +26,13 @@ import { BaseTransaction, useTxSender } from '@/hooks/useTxSender'
 import { useSafeTokenLockingAllowance } from '@/hooks/useSafeTokenBalance'
 import { AppRoutes } from '@/config/routes'
 import NextLink from 'next/link'
+import { useStartDate } from '@/hooks/useStartDates'
 
 export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | undefined }) => {
   const [receiptOpen, setReceiptOpen] = useState<boolean>(false)
   const chainId = useChainId()
   const txSender = useTxSender()
-  const startTime = CHAIN_START_TIMESTAMPS[chainId]
+  const { startTime } = useStartDate()
   const todayInDays = getCurrentDays(startTime)
   const { data: safeTokenAllowance, isLoading: isAllowanceLoading } = useSafeTokenLockingAllowance()
 
