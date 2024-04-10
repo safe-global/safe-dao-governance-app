@@ -92,7 +92,7 @@ export const SplashScreen = (): ReactElement => {
             />
             <SvgIcon component={SafeMiles} inheritViewBox sx={{ width: '154px', height: 'auto' }} />
             <Stack spacing={3} p={3}>
-              <Typography variant="h2" fontWeight="bold">
+              <Typography variant="h2" fontWeight="bold" fontSize={44}>
                 Interact with Safe and get rewards
               </Typography>
               <Typography>Short intro text about the program.</Typography>
@@ -127,10 +127,10 @@ export const SplashScreen = (): ReactElement => {
             <Typography variant="caption" textTransform="uppercase" letterSpacing="1px">
               What is the Safe{'{'}Miles{'}'} program?
             </Typography>
-            <Stack gap={1}>
-              <Step index={0} title="Lock SAFE to boost your miles!" active={true} />
-              <Step index={1} title="Earn miles for activity" active={false} />
-              <Step index={2} title="Get rewards for earned miles" active={false} />
+            <Stack gap={3}>
+              <Step index={0} title="Lock SAFE to boost your points!" active={true} />
+              <Step index={1} title="Get activity points (eXP)" active={false} />
+              <Step index={2} title="Get rewards!" active={false} />
             </Stack>
             <Barcode className={css.barcode} />
           </Stack>
