@@ -1,5 +1,5 @@
 import { SEASON2_START } from '@/config/constants'
-import { floorNumber } from '@/utils/boost'
+import { floorNumber, getTimeFactor } from '@/utils/boost'
 import { getCurrentDays } from '@/utils/date'
 import { AccessTime } from '@mui/icons-material'
 import { Box, LinearProgress, Stack, Tooltip, Typography } from '@mui/material'
@@ -21,7 +21,11 @@ export const BoostMeter = ({
 
   const now = useMemo(() => getCurrentDays(startTime), [startTime])
 
-  const value = ((SEASON2_START - now) / SEASON2_START) * 100
+  const currentTimeFactor = getTimeFactor(now)
+  const maxTimeFactor = getTimeFactor(0)
+  const minTimeFactor = getTimeFactor(SEASON2_START)
+
+  const value = (100 * (currentTimeFactor - minTimeFactor)) / (maxTimeFactor - minTimeFactor)
 
   let boostMeterInfo: ReactElement | null = null
 
@@ -59,10 +63,8 @@ export const BoostMeter = ({
           padding: '2px',
           borderRadius: '8px',
           backgroundColor: ({ palette }) => palette.border.main,
-
           '& .MuiLinearProgress-bar': {
             borderRadius: '6px',
-
             transform: () => {
               return `translateY(${100 - value}%) !important`
             },

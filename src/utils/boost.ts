@@ -30,7 +30,7 @@ export const getTimeFactor = (days: number) => {
   }
 
   if (days <= 47) {
-    return 1 - 0.0106383 * days
+    return 1 - 0.010638 * days
   }
 
   if (days <= 158) {
