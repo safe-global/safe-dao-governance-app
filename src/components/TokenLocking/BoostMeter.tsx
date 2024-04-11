@@ -41,10 +41,10 @@ export const BoostMeter = ({
       )
     } else {
       boostMeterInfo =
-        value > 25 ? (
-          <Typography>The earlier you lock the higher the boost.</Typography>
-        ) : (
+        value < 50 ? (
           <Typography>Your last chance to get the early boost.</Typography>
+        ) : (
+          <Typography>The earlier you lock the higher the boost.</Typography>
         )
     }
   } else {
@@ -74,9 +74,9 @@ export const BoostMeter = ({
       <Box>
         <Tooltip
           title={
-            value < 25
-              ? 'Receive a bonus for locking early. Realise your last chance to get an early boost.'
-              : 'Receive a bonus for locking early. The boost meter is going down over time.'
+            value > 50
+              ? `Receive a bonus for early locking. Boost meter is going down over time.`
+              : `Receive a bonus for early locking. Realise your last chance to get an early boost.`
           }
         >
           <AccessTime fontSize="small" />
