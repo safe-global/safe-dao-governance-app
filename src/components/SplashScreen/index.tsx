@@ -77,6 +77,7 @@ export const SplashScreen = (): ReactElement => {
       }
       onContinue()
     } catch (error) {
+      setError('Wallet connection failed.')
       return
     } finally {
       setIsConnecting(false)
