@@ -75,11 +75,11 @@ export const SplashScreen = (): ReactElement => {
         setError('Connected wallet must be a Safe')
         return
       }
+      onContinue()
     } catch (error) {
       return
     } finally {
       setIsConnecting(false)
-      onContinue()
     }
   }
 
