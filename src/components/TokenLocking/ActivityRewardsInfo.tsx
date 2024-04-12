@@ -136,7 +136,7 @@ export const ActivityRewardsInfo = () => {
 
           <Divider />
 
-          <Link href="#" sx={{ textAlign: 'center', fontSize: '14px' }}>
+          <Link href={AppRoutes.activityProgram} sx={{ textAlign: 'center', fontSize: '14px' }}>
             More info about Activity Miles
           </Link>
         </PaperContainer>

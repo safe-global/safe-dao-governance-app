@@ -11,4 +11,5 @@ export const AppRoutes = {
   claim: '/claim',
   boost: '/boost',
   activity: '/activity',
+  activityProgram: '/activity-program',
 }
