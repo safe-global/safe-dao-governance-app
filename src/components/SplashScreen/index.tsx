@@ -113,7 +113,7 @@ export const SplashScreen = (): ReactElement => {
               <Typography variant="h2" fontSize="44px" lineHeight="120%" fontWeight="bold">
                 Interact with Safe and get rewards
               </Typography>
-              <Typography>Short intro text about the program.</Typography>
+              <Typography>Get your pass now! Lock your tokens and be active on Safe to get rewarded.</Typography>
               <Box>
                 {isDisconnected ? (
                   <Button variant="contained" color="primary" onClick={onConnect} disabled={isConnecting}>
