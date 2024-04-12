@@ -94,7 +94,7 @@ export const ActivityRewardsInfo = () => {
           <Divider />
 
           <Link href="#" sx={{ textAlign: 'center', fontSize: '14px' }}>
-            More info about Activity Miles
+            View my activities
           </Link>
         </PaperContainer>
       </Box>
