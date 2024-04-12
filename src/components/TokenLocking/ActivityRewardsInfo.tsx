@@ -2,10 +2,8 @@ import { Box, Divider, Link, SvgIcon, Typography } from '@mui/material'
 import css from './styles.module.css'
 import clsx from 'clsx'
 import { useChainId } from '@/hooks/useChainId'
-import { CHAIN_START_TIMESTAMPS, SEASON1_START, SEASON2_START } from '@/config/constants'
-import Diamond from '@/public/images/diamond.png'
+import { SEASON1_START, SEASON2_START } from '@/config/constants'
 import StarIcon from '@/public/images/star.svg'
-import Image from 'next/image'
 import { useOwnRank } from '@/hooks/useLeaderboard'
 import { toDaysSinceStart } from '@/utils/date'
 import Asterix from '@/public/images/asterix.svg'
@@ -13,8 +11,6 @@ import { AccordionContainer } from '@/components/AccordionContainer'
 
 import PaperContainer from '../PaperContainer'
 import { useStartDate } from '@/hooks/useStartDates'
-import { AppRoutes } from '@/config/routes'
-import NextLink from 'next/link'
 import { ReactNode } from 'react'
 
 const Step = ({ active, title, description }: { active: boolean; title?: ReactNode; description?: string }) => {
@@ -50,6 +46,7 @@ export const ActivityRewardsInfo = () => {
     <AccordionContainer title="How the program works">
       <Box display="flex" flexDirection="column">
         <PaperContainer sx={{ position: 'relative', overflow: 'hidden' }}>
+          <Box className={css.sidebarGradientBackground}></Box>
           <SvgIcon
             component={Asterix}
             inheritViewBox
