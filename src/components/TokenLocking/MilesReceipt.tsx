@@ -1,6 +1,6 @@
 import { Button, IconButton, Modal, Stack, SvgIcon, Typography } from '@mui/material'
 import css from './styles.module.css'
-import SafeExplorers from '@/public/images/safe-explorers.svg'
+import SafeExplorers from '@/public/images/safe-pass.svg'
 import Barcode from '@/public/images/barcode.svg'
 import { NorthRounded, SouthRounded } from '@mui/icons-material'
 import CloseIcon from '@mui/icons-material/Close'
