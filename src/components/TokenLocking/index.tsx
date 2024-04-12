@@ -47,6 +47,9 @@ const TokenLocking = () => {
           <PaperContainer>
             <Leaderboard />
           </PaperContainer>
+          <Link href={AppRoutes.terms} component={NextLink} m={2} sx={{ textAlign: 'center' }}>
+            Terms and Conditions
+          </Link>
         </Stack>
       </Grid>
     </Grid>

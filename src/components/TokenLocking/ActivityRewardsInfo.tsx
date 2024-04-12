@@ -97,9 +97,6 @@ export const ActivityRewardsInfo = () => {
             More info about Activity Miles
           </Link>
         </PaperContainer>
-        <Link href={AppRoutes.terms} component={NextLink} m={2} sx={{ textAlign: 'center' }}>
-          Terms and Conditions
-        </Link>
       </Box>
     </AccordionContainer>
   )
