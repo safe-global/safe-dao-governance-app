@@ -138,10 +138,11 @@
 }
 
 .comingSoon {
-  background-color: #12ff80;
+  background-color: #303033;
   border-radius: 4px;
-  color: #121312;
   padding: 4px 8px;
+  position: absolute;
+  margin-left: 8px;
 }
 
 .stepDate {
