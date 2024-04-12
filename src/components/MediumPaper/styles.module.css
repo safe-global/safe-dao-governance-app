@@ -1,0 +1,12 @@
+.mediumPaper {
+  width: 650px;
+  position: relative;
+  margin: auto;
+}
+
+@media (max-width: 600px) {
+  .mediumPaper {
+    height: 100%;
+    width: 100%;
+  }
+}

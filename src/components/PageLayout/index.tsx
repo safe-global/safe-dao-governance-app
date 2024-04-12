@@ -28,12 +28,7 @@ export const PageLayout = ({ children }: { children: ReactNode }): ReactElement 
 
       <BackgroundCircles />
 
-      <Box
-        pt={{ sm: 7, xs: undefined }}
-        pb={{ sm: 6, xs: undefined }}
-        sx={{ minHeight: '100vh', display: 'flex', alignItems: 'center' }}
-        component="main"
-      >
+      <Box pt={7} pb={6} sx={{ minHeight: '100vh', display: 'flex', alignItems: 'center' }} component="main">
         <Box className={css.container}>
           {showNavigation && (
             <NavTabs

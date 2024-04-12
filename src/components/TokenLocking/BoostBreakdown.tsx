@@ -52,7 +52,7 @@ export const BoostBreakdown = ({
   const isInitialState = realizedBoost === 1 && currentFinalBoost === 1 && newFinalBoost === 1
 
   return (
-    <Stack direction={{ xs: 'row', md: 'column' }} gap={2} height="100%">
+    <Stack direction={{ md: 'column' }} gap={2} height="100%">
       <Box className={`${css.boostInfoBox} ${css.bordered}`} p={3} gap={4} flex="1" height="100%" display="flex">
         <Stack direction="row" justifyContent="space-between" width="100%" alignItems="start">
           <span style={{ display: 'inline-flex' }}>

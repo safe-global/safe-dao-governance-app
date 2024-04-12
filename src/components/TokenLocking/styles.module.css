@@ -23,7 +23,6 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
-  align-items: center;
 }
 
 .bordered {
@@ -200,8 +199,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 1000px;
-  height: 450px;
+  width: 90%;
   display: flex;
   overflow: hidden;
 }
@@ -211,6 +209,8 @@
   background-color: #121312;
   border-radius: 20px;
   padding: 40px;
+  height: 537px;
+  width: 100%;
 }
 
 .leftReceipt {
@@ -227,22 +227,41 @@
   height: calc(100% - 40px);
 }
 
-.rightReceipt {
-  width: 388px;
-  flex-shrink: 0;
-}
-
 .barcode {
   position: absolute;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
+  right: 0px;
 }
 
 .closeButton {
   position: absolute;
-  top: 24px;
   right: 24px;
+  top: 24px;
+  z-index: 1;
+}
+
+@media (max-width: 899px) {
+  .milesReceipt {
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+  }
+
+  .leftReceipt,
+  .rightReceipt {
+    border-radius: 0px;
+  }
+  .barcode,
+  .closeButton {
+    right: 0px;
+  }
+
+  .leftReceipt:after {
+    display: none;
+  }
+
+  .leftReceipt {
+    border-bottom: 1px dashed white;
+  }
 }
 
 .gradientBackground {
