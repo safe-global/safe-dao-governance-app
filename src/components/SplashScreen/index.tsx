@@ -11,7 +11,7 @@ import { AppRoutes } from '@/config/routes'
 import Barcode from '@/public/images/barcode.svg'
 
 import css from './styles.module.css'
-import SafeExplorers from '@/public/images/safe-explorers.svg'
+import SafeExplorers from '@/public/images/safe-pass.svg'
 import { useIsSafeApp } from '@/hooks/useIsSafeApp'
 import Asterix from '@/public/images/asterix.svg'
 import { localItem } from '@/services/storage/local'
