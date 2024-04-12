@@ -20,10 +20,10 @@ import { ReactNode } from 'react'
 const Step = ({ active, title, description }: { active: boolean; title?: ReactNode; description?: string }) => {
   return (
     <div className={clsx(css.step, { [css.activeStep]: active })}>
-      <Typography variant="h4" fontWeight="bold" mb={1}>
+      <Typography variant="h4" fontWeight="bold" mb={1} pr={10}>
         {title}
         {!active && (
-          <Typography variant="caption" component="span" className={css.comingSoon}>
+          <Typography variant="caption" whiteSpace="nowrap" component="span" className={css.comingSoon}>
             Coming soon
           </Typography>
         )}
