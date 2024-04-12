@@ -75,8 +75,8 @@ export const BoostMeter = ({
         <Tooltip
           title={
             value > 50
-              ? `Receive a bonus for early locking. Boost meter is going down over time.`
-              : `Receive a bonus for early locking. Realise your last chance to get an early boost.`
+              ? 'Receive a bonus for early locking. Boost meter is going down over time.'
+              : 'Receive a bonus for early locking. Realise your last chance to get an early boost.'
           }
         >
           <AccessTime fontSize="small" />
