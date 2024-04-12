@@ -65,11 +65,13 @@ describe('boost', () => {
     })
 
     it('should use the correct function in pre season', () => {
-      expect(getTimeFactor(24)).toBe(1 - 0.0106383 * 24)
+      expect(getTimeFactor(24)).toBe(1 - 0.010638 * 24)
     })
 
-    it('should be < .5 on last day of pre season', () => {
-      expect(getTimeFactor(47)).toBeLessThan(0.5)
+    it('should decrease towards .5 at the start of season 1', () => {
+      expect(getTimeFactor(47)).toBeGreaterThan(0.5)
+      expect(getTimeFactor(48)).toBe(0.5)
+      expect(getTimeFactor(49)).toBeLessThan(0.5)
     })
 
     it('should be .5 on first day of season', () => {
