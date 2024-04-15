@@ -124,6 +124,25 @@ describe('boost', () => {
       })
     })
 
+    it('should compute for 100_000 tokens locked on day 0', () => {
+      const boostFunction = getBoostFunction(0, 100_000, [])
+      expect(boostFunction({ x: -1 })).toBe(1)
+      expect(boostFunction({ x: 0 })).toBeCloseTo(2)
+      expect(boostFunction({ x: 39 })).toBeCloseTo(2)
+      expect(boostFunction({ x: 40 })).toBeCloseTo(2)
+      expect(boostFunction({ x: 1000 })).toBeCloseTo(2)
+    })
+
+    it('should compute for 100_000 tokens locked on day 45', () => {
+      const boostFunction = getBoostFunction(45, 100_000, [])
+      expect(boostFunction({ x: -1 })).toBe(1)
+      expect(boostFunction({ x: 0 })).toBeCloseTo(1)
+      expect(boostFunction({ x: 44 })).toBeCloseTo(1)
+      // 1.0 * 0.86 + 1 = 1.86
+      expect(boostFunction({ x: 45 })).toBeCloseTo(1.86)
+      expect(boostFunction({ x: 1000 })).toBeCloseTo(1.86)
+    })
+
     it('should compute for 1000 tokens on day one and 1000 after 40 days', () => {
       const priorLock: LockHistory = {
         day: 0,

@@ -45,6 +45,7 @@ export const getBoostFunction =
   (d: { x: number }): number => {
     // Add new boost to history
     const newHistory: LockHistory[] = [...history, { amount: amountDiff, day: now }]
+
     // Filter out all entries that were made after the current day (x)
     const filteredHistory = newHistory.filter((entry) => entry.day <= d.x)
     const firstLock: LockHistory | undefined = filteredHistory[0]
@@ -59,7 +60,7 @@ export const getBoostFunction =
         // For the first lock we need to only consider the time factor of today so we divide by 1
         const relativeTimeFactor = i === 0 ? 1 : timeFactor_firstLock
         // handle lock event
-        const adjustedBoost = timeFactor_firstLock * getTokenBoost(lockedAmount) + 1
+        const adjustedBoost = relativeTimeFactor * getTokenBoost(lockedAmount) + 1
         const timeFactor_lock = getTimeFactor(currentEvent.day)
         currentBoost = currentBoost + (adjustedBoost - currentBoost) * (timeFactor_lock / relativeTimeFactor)
       } else {
