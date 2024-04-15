@@ -1,4 +1,3 @@
-import { getTime } from 'date-fns'
 import { LockHistory } from './lock'
 
 export const floorNumber = (num: number, digits: number) => {
@@ -13,7 +12,7 @@ export const getTokenBoost = (amountLocked: number) => {
   if (amountLocked <= 1_000) {
     return amountLocked * 0.000277778 - 0.0277778
   }
-  if (amountLocked < 10_000) {
+  if (amountLocked <= 10_000) {
     return amountLocked * 0.0000277778 + 0.222222
   }
   if (amountLocked < 100_000) {
@@ -46,11 +45,10 @@ export const getBoostFunction =
   (d: { x: number }): number => {
     // Add new boost to history
     const newHistory: LockHistory[] = [...history, { amount: amountDiff, day: now }]
-
     // Filter out all entries that were made after the current day (x)
     const filteredHistory = newHistory.filter((entry) => entry.day <= d.x)
     const firstLock: LockHistory | undefined = filteredHistory[0]
-    const timeFactor_firstLock = firstLock ? getTimeFactor(firstLock.day) : 1
+    let timeFactor_firstLock = firstLock ? getTimeFactor(firstLock.day) : 1
     let currentBoost = 1
     let lockedAmount = 0
     for (let i = 0; i < filteredHistory.length; i++) {
@@ -67,6 +65,7 @@ export const getBoostFunction =
       } else {
         // handle unlock
         currentBoost = getTokenBoost(lockedAmount) * getTimeFactor(currentEvent.day) + 1
+        timeFactor_firstLock = getTimeFactor(currentEvent.day)
       }
     }
 

@@ -16,7 +16,7 @@ import { ScatterDot } from './ScatterDot'
 import { useVictoryTheme } from './theme'
 import { useStartDate } from '@/hooks/useStartDates'
 
-const DOMAIN: ForAxes<DomainTuple> = { x: [-5, SEASON2_START + 5], y: [0.8, 2.2] }
+const DOMAIN: ForAxes<DomainTuple> = { x: [-5, SEASON2_START + 5], y: [0.8, 2.3] }
 
 export const BoostGraph = ({
   lockedAmount,
@@ -79,25 +79,6 @@ export const BoostGraph = ({
             },
           }}
           data={isLock ? projectedBoostDataPoints : currentBoostDataPoints}
-        />
-
-        <VictoryArea
-          interpolation="stepAfter"
-          domain={DOMAIN}
-          style={{
-            data: {
-              fill: theme.palette.background.paper,
-              strokeWidth: 2,
-            },
-          }}
-          data={
-            isLock
-              ? [
-                  { x: 0, y: 1 },
-                  { x: SEASON2_START, y: 1 },
-                ]
-              : projectedBoostDataPoints
-          }
         />
 
         <VictoryLine
@@ -207,7 +188,10 @@ export const BoostGraph = ({
               fill: theme.palette.text.primary,
             },
           }}
-          labels={[format(newBoostFunction({ x: now })) + 'x', format(newBoostFunction({ x: SEASON2_START })) + 'x']}
+          labels={[
+            format(currentBoostFunction({ x: now })) + 'x',
+            format(newBoostFunction({ x: SEASON2_START })) + 'x',
+          ]}
           labelComponent={
             <ArrowDownLabel backgroundColor={isLock ? theme.palette.primary.main : theme.palette.warning.main} />
           }
@@ -220,7 +204,7 @@ export const BoostGraph = ({
           }
           domain={DOMAIN}
           data={[
-            { x: now, y: newBoostFunction({ x: now }) },
+            { x: now, y: currentBoostFunction({ x: now }) },
             { x: SEASON2_START, y: newBoostFunction({ x: SEASON2_START }) },
           ]}
           theme={victoryTheme}

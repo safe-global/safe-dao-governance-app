@@ -38,7 +38,7 @@ export const BoostGradients = () => {
           <stop offset="0%" stop-color="rgba(0,0,0, 0)" />
           <stop offset="100%" stop-color={theme.palette.warning.dark}></stop>
         </linearGradient>
-        <linearGradient id="gain" x1="0" x2="0.5" y1="0" y2="1">
+        <linearGradient id="gain" x1="0" x2="0" y1="0" y2="1">
           <stop offset="0%" stop-color={theme.palette.primary.main}></stop>
           <stop offset="100%" stop-color="rgba(0,0,0, 0)" />
         </linearGradient>

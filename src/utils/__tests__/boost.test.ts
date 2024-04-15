@@ -1,4 +1,5 @@
 import { SEASON1_START, SEASON2_START } from '@/config/constants'
+import { getTime } from 'date-fns'
 import { floorNumber, getBoostFunction, getTimeFactor, getTokenBoost } from '../boost'
 import { LockHistory } from '../lock'
 
@@ -31,59 +32,47 @@ describe('boost', () => {
     })
 
     it('should use the correct function for amounts between 100 and 1000', () => {
-      expect(getTokenBoost(101)).toBe(101 / 900 - 1 / 9)
-      expect(getTokenBoost(500)).toBe(500 / 900 - 1 / 9)
-      expect(getTokenBoost(1000)).toBe(1)
+      expect(getTokenBoost(101)).toBe(101 * 0.000277778 - 0.0277778)
+      expect(getTokenBoost(500)).toBe(500 * 0.000277778 - 0.0277778)
+      expect(getTokenBoost(1000)).toBeCloseTo(0.25)
     })
 
     it('should use the correct function for amounts between 1000 and 10000', () => {
-      expect(getTokenBoost(1001)).toBe(1001 / 9000 + 8 / 9)
-      expect(getTokenBoost(5000)).toBe(5000 / 9000 + 8 / 9)
-      expect(getTokenBoost(10000)).toBe(2)
+      expect(getTokenBoost(1001)).toBe(1001 * 0.0000277778 + 0.222222)
+      expect(getTokenBoost(5000)).toBe(5000 * 0.0000277778 + 0.222222)
+      expect(getTokenBoost(10000)).toBe(0.5)
     })
 
-    it('should use the correct function for amounts between 100 and 1000', () => {
-      expect(getTokenBoost(10001)).toBe(10001 / 90000 + 17 / 9)
-      expect(getTokenBoost(50000)).toBe(50000 / 90000 + 17 / 9)
-      expect(getTokenBoost(100000)).toBe(100000 / 90000 + 17 / 9)
+    it('should use the correct function for amounts between 10001 and 100000', () => {
+      expect(getTokenBoost(10001)).toBe(10001 * 5.55556 * 10 ** -6 + 0.444444)
+      expect(getTokenBoost(50000)).toBe(50000 * 5.55556 * 10 ** -6 + 0.444444)
+      expect(getTokenBoost(100000)).toBe(1)
     })
 
-    it('should use the correct function for amounts between 100 and 1000', () => {
-      expect(getTokenBoost(100001)).toBe(100001 / 900000 + 26 / 9)
-      expect(getTokenBoost(500000)).toBe(500000 / 900000 + 26 / 9)
-      expect(getTokenBoost(1000000)).toBe(1000000 / 900000 + 26 / 9)
+    it('should be 1 for numbers above 100_000', () => {
+      expect(getTokenBoost(100001)).toBe(1)
     })
   })
 
   describe('getTimeFactor', () => {
-    it('should return 0 for negative days', () => {
-      expect(getTimeFactor(-1)).toBe(0)
+    it('should return 1 for negative days', () => {
+      expect(getTimeFactor(-1)).toBe(1)
     })
 
     it('should return 1 on first day', () => {
       expect(getTimeFactor(0)).toBe(1)
     })
 
-    it('should use the correct function in pre season', () => {
-      expect(getTimeFactor(24)).toBe(1 - 0.0106383 * 24)
+    it('should return 1 on first 28 days', () => {
+      expect(getTimeFactor(27)).toBe(1)
     })
 
-    it('should be < .5 on last day of pre season', () => {
-      expect(getTimeFactor(47)).toBeLessThan(0.5)
+    it('should use the correct function after 28 days', () => {
+      expect(getTimeFactor(30)).toBeCloseTo(1 - 3 / 133)
     })
 
-    it('should be .5 on first day of season', () => {
-      expect(getTimeFactor(48)).toBe(0.5)
-    })
-
-    it('should use the correct function during season', () => {
-      expect(getTimeFactor(50)).toBe(0.5 - 0.0045045 * 2)
-    })
-
-    it('should use the correct function for amounts between 1000 and 10000', () => {
-      expect(getTokenBoost(1001)).toBe(1001 / 9000 + 8 / 9)
-      expect(getTokenBoost(5000)).toBe(5000 / 9000 + 8 / 9)
-      expect(getTokenBoost(10000)).toBe(10000 / 9000 + 8 / 9)
+    it('it should be 0 after the season', () => {
+      expect(getTimeFactor(200)).toBe(0)
     })
   })
 
@@ -100,151 +89,82 @@ describe('boost', () => {
 
       it('should compute boost with 1000 tokens locked', () => {
         const boostFunction = getBoostFunction(0, 1000, [])
-        expect(boostFunction({ x: -1 })).toBe(1)
-        expect(boostFunction({ x: 0 })).toBe(1)
-        expect(boostFunction({ x: SEASON1_START })).toBe(1.5)
-        expect(boostFunction({ x: SEASON2_START })).toBe(2)
-        expect(boostFunction({ x: 1000 })).toBe(2)
+        expect(boostFunction({ x: -1 })).toBeCloseTo(1)
+        expect(boostFunction({ x: 0 })).toBeCloseTo(1.25)
+        expect(boostFunction({ x: SEASON1_START })).toBeCloseTo(1.25)
+        expect(boostFunction({ x: SEASON2_START })).toBeCloseTo(1.25)
+        expect(boostFunction({ x: 1000 })).toBeCloseTo(1.25)
       })
 
       it('should compute boost with 10000 tokens locked', () => {
         const boostFunction = getBoostFunction(0, 10000, [])
-        expect(boostFunction({ x: -1 })).toBe(1)
-        expect(boostFunction({ x: 0 })).toBe(1)
-        expect(boostFunction({ x: SEASON1_START })).toBe(2)
-        expect(boostFunction({ x: SEASON2_START })).toBe(3)
-        expect(boostFunction({ x: 1000 })).toBe(3)
+        expect(boostFunction({ x: -1 })).toBeCloseTo(1)
+        expect(boostFunction({ x: 0 })).toBeCloseTo(1.5)
+        expect(boostFunction({ x: SEASON1_START })).toBeCloseTo(1.5)
+        expect(boostFunction({ x: SEASON2_START })).toBeCloseTo(1.5)
+        expect(boostFunction({ x: 1000 })).toBeCloseTo(1.5)
       })
 
       it('should compute boost with 100000 tokens locked', () => {
         const boostFunction = getBoostFunction(0, 100000, [])
         expect(boostFunction({ x: -1 })).toBe(1)
-        expect(boostFunction({ x: 0 })).toBe(1)
-        expect(boostFunction({ x: SEASON1_START })).toBe(2.5)
-        expect(boostFunction({ x: SEASON2_START })).toBe(4)
-        expect(boostFunction({ x: 1000 })).toBe(4)
+        expect(boostFunction({ x: 0 })).toBe(2)
+        expect(boostFunction({ x: SEASON1_START })).toBe(2)
+        expect(boostFunction({ x: SEASON2_START })).toBe(2)
+        expect(boostFunction({ x: 1000 })).toBe(2)
       })
 
       it('should compute boost with 1000000 tokens locked', () => {
         const boostFunction = getBoostFunction(0, 1000000, [])
         expect(boostFunction({ x: -1 })).toBe(1)
-        expect(boostFunction({ x: 0 })).toBe(1)
-        expect(boostFunction({ x: SEASON1_START })).toBe(3)
-        expect(boostFunction({ x: SEASON2_START })).toBe(5)
-        expect(boostFunction({ x: 1000 })).toBe(5)
-      })
-    })
-
-    describe('on season start without prior locks', () => {
-      it('should always return 1.0 for amount 0', () => {
-        const boostFunction = getBoostFunction(SEASON1_START, 0, [])
-        expect(boostFunction({ x: -1 })).toBe(1)
-        expect(boostFunction({ x: 0 })).toBe(1)
-        expect(boostFunction({ x: SEASON1_START })).toBe(1)
-        expect(boostFunction({ x: SEASON2_START })).toBe(1)
-        expect(boostFunction({ x: 1000 })).toBe(1)
-      })
-
-      it('should compute boost with 1000 tokens locked', () => {
-        const boostFunction = getBoostFunction(SEASON1_START, 1000, [])
-        expect(boostFunction({ x: -1 })).toBe(1)
-        expect(boostFunction({ x: 0 })).toBe(1)
-        expect(boostFunction({ x: SEASON1_START })).toBe(1)
-        expect(boostFunction({ x: SEASON2_START })).toBe(1.5)
-        expect(boostFunction({ x: 1000 })).toBe(1.5)
-      })
-
-      it('should compute boost with 10000 tokens locked', () => {
-        const boostFunction = getBoostFunction(SEASON1_START, 10000, [])
-        expect(boostFunction({ x: -1 })).toBe(1)
-        expect(boostFunction({ x: 0 })).toBe(1)
-        expect(boostFunction({ x: SEASON1_START })).toBe(1)
+        expect(boostFunction({ x: 0 })).toBe(2)
+        expect(boostFunction({ x: SEASON1_START })).toBe(2)
         expect(boostFunction({ x: SEASON2_START })).toBe(2)
         expect(boostFunction({ x: 1000 })).toBe(2)
       })
-
-      it('should compute boost with 100000 tokens locked', () => {
-        const boostFunction = getBoostFunction(SEASON1_START, 100000, [])
-        expect(boostFunction({ x: -1 })).toBe(1)
-        expect(boostFunction({ x: 0 })).toBe(1)
-        expect(boostFunction({ x: SEASON1_START })).toBe(1)
-        expect(boostFunction({ x: SEASON2_START })).toBe(2.5)
-        expect(boostFunction({ x: 1000 })).toBe(2.5)
-      })
-
-      it('should compute boost with 1000000 tokens locked', () => {
-        const boostFunction = getBoostFunction(SEASON1_START, 1000000, [])
-        expect(boostFunction({ x: -1 })).toBe(1)
-        expect(boostFunction({ x: 0 })).toBe(1)
-        expect(boostFunction({ x: SEASON1_START })).toBe(1)
-        expect(boostFunction({ x: SEASON2_START })).toBe(3)
-        expect(boostFunction({ x: 1000 })).toBe(3)
-      })
     })
 
-    it('should compute for 1000 tokens on day one and 9000 on season start', () => {
+    it('should compute for 1000 tokens on day one and 1000 after 40 days', () => {
       const priorLock: LockHistory = {
         day: 0,
         amount: 1000,
       }
-      const boostFunction = getBoostFunction(SEASON1_START, 9000, [priorLock])
+      const boostFunction = getBoostFunction(40, 1000, [priorLock])
 
       expect(boostFunction({ x: -1 })).toBe(1)
-      expect(boostFunction({ x: 0 })).toBe(1)
-      expect(boostFunction({ x: SEASON1_START })).toBe(1.5)
-      expect(boostFunction({ x: SEASON2_START })).toBe(2.5)
-      expect(boostFunction({ x: 1000 })).toBe(2.5)
+      expect(boostFunction({ x: 0 })).toBeCloseTo(1.25)
+      expect(boostFunction({ x: 39 })).toBeCloseTo(1.25)
+      expect(boostFunction({ x: 40 })).toBeCloseTo(1.277)
+      expect(boostFunction({ x: 1000 })).toBeCloseTo(1.277)
     })
 
-    it('should compute for 1000 tokens on day one and 9000 on mid pre-season and 90000 on season start', () => {
+    it('should compute for 1000 tokens on day one and 1000 after 40 days and another 1000 after 80 days', () => {
       const priorLocks: LockHistory[] = [
         {
           day: 0,
           amount: 1000,
         },
         {
-          day: 24,
-          amount: 9000,
+          day: 40,
+          amount: 1000,
         },
         {
-          day: SEASON1_START,
-          amount: 90000,
+          day: 80,
+          amount: 1000,
         },
       ]
-      const boostFunction = getBoostFunction(SEASON1_START, 0, priorLocks)
+      const boostFunction = getBoostFunction(100, 0, priorLocks)
 
       expect(boostFunction({ x: -1 })).toBe(1)
-      expect(boostFunction({ x: 0 })).toBe(1)
-      expect(boostFunction({ x: SEASON1_START })).toBeCloseTo(1.75, 1)
-      expect(boostFunction({ x: SEASON2_START })).toBeCloseTo(3.25, 1)
-      expect(boostFunction({ x: 1000 })).toBeCloseTo(3.25, 1)
+      expect(boostFunction({ x: 0 })).toBeCloseTo(1.25)
+      expect(boostFunction({ x: 39 })).toBeCloseTo(1.25)
+      expect(boostFunction({ x: 40 })).toBeCloseTo(1.277)
+      expect(boostFunction({ x: 79 })).toBeCloseTo(1.277)
+      expect(boostFunction({ x: 80 })).toBeCloseTo(1.294)
+      expect(boostFunction({ x: 1000 })).toBeCloseTo(1.294)
     })
 
-    it('should merge locks and unlocks on the same day', () => {
-      const priorLocks: LockHistory[] = [
-        {
-          day: 0,
-          amount: 10000,
-        },
-        {
-          day: 0,
-          amount: -9000,
-        },
-        {
-          day: SEASON1_START,
-          amount: 9000,
-        },
-      ]
-      const boostFunction = getBoostFunction(SEASON1_START, 0, priorLocks)
-
-      expect(boostFunction({ x: -1 })).toBe(1)
-      expect(boostFunction({ x: 0 })).toBe(1)
-      expect(boostFunction({ x: SEASON1_START })).toBe(1.5)
-      expect(boostFunction({ x: SEASON2_START })).toBe(2.5)
-      expect(boostFunction({ x: 1000 })).toBe(2.5)
-    })
-
-    it('should be static if everything gets unlocked', () => {
+    it('should drop to 1 if everything gets unlocked', () => {
       const priorLocks: LockHistory[] = [
         {
           day: 0,
@@ -254,10 +174,38 @@ describe('boost', () => {
       const boostFunction = getBoostFunction(SEASON1_START, -10000, priorLocks)
 
       expect(boostFunction({ x: -1 })).toBe(1)
-      expect(boostFunction({ x: 0 })).toBe(1)
-      expect(boostFunction({ x: SEASON1_START })).toBe(2)
-      expect(boostFunction({ x: SEASON2_START })).toBe(2)
-      expect(boostFunction({ x: 1000 })).toBe(2)
+      expect(boostFunction({ x: 0 })).toBeCloseTo(1.5)
+      expect(boostFunction({ x: SEASON1_START })).toBe(1)
+      expect(boostFunction({ x: SEASON2_START })).toBe(1)
+      expect(boostFunction({ x: 1000 })).toBe(1)
+    })
+
+    it('should compute for 1000 tokens on day one and 1000 after 40 days and another 1000 after 80 days', () => {
+      const priorLocks: LockHistory[] = [
+        {
+          day: 0,
+          amount: 2000,
+        },
+        {
+          day: 39,
+          amount: -1000,
+        },
+        {
+          day: 79,
+          amount: 1000,
+        },
+      ]
+      const boostFunction = getBoostFunction(100, 0, priorLocks)
+
+      expect(boostFunction({ x: -1 })).toBe(1)
+      expect(boostFunction({ x: 0 })).toBeCloseTo(1.277)
+      expect(boostFunction({ x: 38 })).toBeCloseTo(1.277)
+      // 0.25 * 0.91 + 1
+      expect(boostFunction({ x: 39 })).toBeCloseTo(1.2275)
+      expect(boostFunction({ x: 78 })).toBeCloseTo(1.2275)
+      // 1.2275 + (1.253 - 1.2275) * (0.61 / 0.91)
+      expect(boostFunction({ x: 79 })).toBeCloseTo(1.2444)
+      expect(boostFunction({ x: 1000 })).toBeCloseTo(1.2444)
     })
   })
 })
