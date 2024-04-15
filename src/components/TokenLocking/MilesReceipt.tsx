@@ -31,7 +31,7 @@ const MilesReceipt = ({
           <SvgIcon component={SafeExplorers} inheritViewBox sx={{ width: '282px', height: 'auto' }} />
           <Stack mt="auto" className={css.topReceipt}>
             <Typography variant="h1" component="div" fontWeight="bold" mb={1} mt={7}>
-              {isUnlock ? 'Your tokens are unlocked' : 'Locking started...'}
+              {isUnlock ? 'Unclocking' : 'Locking'} started...
             </Typography>
             <Typography mb={4}>
               You successfully started {isUnlock ? 'unlocking' : 'locking'} {amount} SAFE. You successfully started{' '}
