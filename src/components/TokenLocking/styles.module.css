@@ -138,10 +138,11 @@
 }
 
 .comingSoon {
-  background-color: #12ff80;
+  background-color: #303033;
   border-radius: 4px;
-  color: #121312;
   padding: 4px 8px;
+  position: absolute;
+  margin-left: 8px;
 }
 
 .stepDate {
@@ -273,6 +274,18 @@
   top: -200px;
   left: -100px;
   background: radial-gradient(41.34% 41.34% at 50% 50%, rgba(18, 255, 128, 0.6) 0%, rgba(18, 255, 128, 0) 82.5%);
+  pointer-events: none;
+}
+
+.sidebarGradientBackground {
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  opacity: 0.3;
+  z-index: 1;
+  top: 700px;
+  left: 50px;
+  background: radial-gradient(41.34% 41.34% at 50% 50%, rgba(41, 182, 246, 0.5) 0%, rgba(18, 255, 128, 0) 82.5%);
   pointer-events: none;
 }
 
