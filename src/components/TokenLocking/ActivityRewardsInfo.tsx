@@ -1,7 +1,6 @@
 import { Box, Divider, Link, SvgIcon, Typography } from '@mui/material'
 import css from './styles.module.css'
 import clsx from 'clsx'
-import { useChainId } from '@/hooks/useChainId'
 import { SEASON1_START, SEASON2_START } from '@/config/constants'
 import StarIcon from '@/public/images/star.svg'
 import { useOwnRank } from '@/hooks/useLeaderboard'
@@ -34,7 +33,6 @@ const Step = ({ active, title, description }: { active: boolean; title?: ReactNo
 }
 
 export const ActivityRewardsInfo = () => {
-  const chainId = useChainId()
   const ownRankResult = useOwnRank()
   const { data: ownRank } = ownRankResult
 

@@ -6,7 +6,7 @@ export const trackSafeAppEvent = (action: string, label?: string) => {
       category: SAFE_APPS_ANALYTICS_CATEGORY,
       action,
       label,
-      safeAppName: 'Safe{Miles}',
+      safeAppName: 'Safe{Explorers}',
     },
     '*',
   )
