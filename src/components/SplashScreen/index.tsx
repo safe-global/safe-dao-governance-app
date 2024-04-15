@@ -17,6 +17,8 @@ import Asterix from '@/public/images/asterix.svg'
 import { localItem } from '@/services/storage/local'
 import { useIsomorphicLayoutEffect } from '@/hooks/useIsomorphicLayoutEffect'
 import { isSafe } from '@/utils/wallet'
+import { trackSafeAppEvent } from '@/utils/analytics'
+import { NAVIGATION_EVENTS } from '@/analytics/navigation'
 
 const Step = ({ index, title, active }: { index: number; title: string; active: boolean }) => {
   return (
@@ -85,6 +87,7 @@ export const SplashScreen = (): ReactElement => {
   }
 
   const onContinue = async () => {
+    trackSafeAppEvent(NAVIGATION_EVENTS.OPEN_LOCKING.action, 'opening')
     alreadyVisitedStorage.set(true)
     router.push(AppRoutes.activity)
   }

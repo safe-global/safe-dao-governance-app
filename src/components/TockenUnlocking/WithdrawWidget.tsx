@@ -1,6 +1,6 @@
 import { LOCK_EVENTS } from '@/analytics/lockEvents'
-import { Box, Typography, Grid, Paper, Stack, Button, CircularProgress, SvgIcon } from '@mui/material'
-import { formatUnits, parseUnits } from 'ethers/lib/utils'
+import { Box, Typography, Grid, Paper, Button, CircularProgress, SvgIcon } from '@mui/material'
+import { formatUnits } from 'ethers/lib/utils'
 import { Odometer } from '../Odometer'
 import Track from '../Track'
 import SafeToken from '@/public/images/token.svg'

@@ -11,4 +11,13 @@ export const NAVIGATION_EVENTS = {
   LEADERBOARD_SHOW_MORE: {
     action: 'Leaderboard show more',
   },
+  OPEN_TERMS: {
+    action: 'Open terms and conditions',
+  },
+  OPEN_BOOST_INFO: {
+    action: 'Open boost info',
+  },
+  OPEN_ACTIVITY_INFO: {
+    action: 'Open activity info',
+  },
 }

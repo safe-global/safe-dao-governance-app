@@ -1,8 +1,7 @@
 import { Box, Divider, Link, SvgIcon, Typography } from '@mui/material'
 import css from './styles.module.css'
 import clsx from 'clsx'
-import { useChainId } from '@/hooks/useChainId'
-import { CHAIN_START_TIMESTAMPS, SEASON1_START, SEASON2_START } from '@/config/constants'
+import { SEASON1_START, SEASON2_START } from '@/config/constants'
 import Diamond from '@/public/images/diamond.png'
 import StarIcon from '@/public/images/star.svg'
 import Image from 'next/image'
@@ -16,6 +15,8 @@ import { useStartDate } from '@/hooks/useStartDates'
 import { AppRoutes } from '@/config/routes'
 import NextLink from 'next/link'
 import { ReactNode } from 'react'
+import { NAVIGATION_EVENTS } from '@/analytics/navigation'
+import Track from '../Track'
 
 const Step = ({
   active,
@@ -40,7 +41,6 @@ const Step = ({
 }
 
 export const ActivityRewardsInfo = () => {
-  const chainId = useChainId()
   const ownRankResult = useOwnRank()
   const { data: ownRank } = ownRankResult
 
@@ -135,14 +135,17 @@ export const ActivityRewardsInfo = () => {
           </div>
 
           <Divider />
-
-          <Link href="#" sx={{ textAlign: 'center', fontSize: '14px' }}>
-            More info about Activity Miles
-          </Link>
+          <Track {...NAVIGATION_EVENTS.OPEN_ACTIVITY_INFO}>
+            <Link href="#" sx={{ textAlign: 'center', fontSize: '14px' }}>
+              More info about Activity Miles
+            </Link>
+          </Track>
         </PaperContainer>
-        <Link href={AppRoutes.terms} component={NextLink} m={2} sx={{ textAlign: 'center' }}>
-          Terms and Conditions
-        </Link>
+        <Track {...NAVIGATION_EVENTS.OPEN_TERMS}>
+          <Link href={AppRoutes.terms} component={NextLink} m={2} sx={{ textAlign: 'center' }}>
+            Terms and Conditions
+          </Link>
+        </Track>
       </Box>
     </AccordionContainer>
   )
