@@ -38,6 +38,8 @@ export const BoostGraph = ({
 
   const pastLockPoints = useMemo(() => generatePointsFromHistory(pastLocks, now), [pastLocks, now])
 
+  console.log(pastLockPoints)
+
   const format = (value: number) => formatAmount(floorNumber(value, 2), 2)
 
   const currentBoostDataPoints = useMemo(
@@ -67,6 +69,7 @@ export const BoostGraph = ({
       <BoostGradients />
       <VictoryChart theme={victoryTheme}>
         <VictoryArea
+          interpolation="stepAfter"
           animate
           domain={DOMAIN}
           style={{
@@ -79,6 +82,7 @@ export const BoostGraph = ({
         />
 
         <VictoryArea
+          interpolation="stepAfter"
           domain={DOMAIN}
           style={{
             data: {
@@ -97,17 +101,7 @@ export const BoostGraph = ({
         />
 
         <VictoryLine
-          domain={DOMAIN}
-          style={{
-            data: {
-              stroke: theme.palette.border.light,
-              strokeWidth: 2,
-            },
-          }}
-          data={currentBoostDataPoints}
-        />
-        <VictoryLine
-          interpolation="linear"
+          interpolation="stepAfter"
           animate
           style={{
             data: {
