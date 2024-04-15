@@ -9,13 +9,13 @@ import { BoostGraph } from './BoostGraph/BoostGraph'
 import css from './styles.module.css'
 import { createLockTx, toRelativeLockHistory } from '@/utils/lock'
 import { createApproveTx } from '@/utils/safe-token'
-import { useState, ChangeEvent, useMemo, useCallback } from 'react'
+import { useState, ChangeEvent, useMemo, useCallback, useEffect } from 'react'
 import { BigNumber, BigNumberish } from 'ethers'
 import { useChainId } from '@/hooks/useChainId'
 import { getBoostFunction } from '@/utils/boost'
 import { useLockHistory } from '@/hooks/useLockHistory'
 import { useDebounce } from '@/hooks/useDebounce'
-import { CHAIN_START_TIMESTAMPS, SEASON2_START, UNLIMITED_APPROVAL_AMOUNT } from '@/config/constants'
+import { SEASON2_START, UNLIMITED_APPROVAL_AMOUNT } from '@/config/constants'
 import { getCurrentDays } from '@/utils/date'
 import { BoostBreakdown } from './BoostBreakdown'
 import Track from '../Track'
@@ -27,6 +27,7 @@ import { useSafeTokenLockingAllowance } from '@/hooks/useSafeTokenBalance'
 import { AppRoutes } from '@/config/routes'
 import NextLink from 'next/link'
 import { useStartDate } from '@/hooks/useStartDates'
+import { NAVIGATION_EVENTS } from '@/analytics/navigation'
 
 export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | undefined }) => {
   const [receiptOpen, setReceiptOpen] = useState<boolean>(false)
@@ -57,6 +58,12 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
 
   const debouncedAmount = useDebounce(amount, 1000, '0')
   const cleanedAmount = useMemo(() => (debouncedAmount.trim() === '' ? '0' : debouncedAmount.trim()), [debouncedAmount])
+
+  useEffect(() => {
+    if (debouncedAmount !== '0') {
+      trackSafeAppEvent(LOCK_EVENTS.CHANGE_LOCK_AMOUNT.action, LOCK_EVENTS.CHANGE_LOCK_AMOUNT.label)
+    }
+  }, [debouncedAmount])
 
   const currentBoostFunction = useMemo(
     () => getBoostFunction(todayInDays, 0, relativeLockHistory),
@@ -154,9 +161,11 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
             Lock tokens to boost your miles
           </Typography>
         </Box>
-        <Link href={AppRoutes.boost} component={NextLink}>
-          How does boost work?
-        </Link>
+        <Track {...NAVIGATION_EVENTS.OPEN_BOOST_INFO}>
+          <Link href={AppRoutes.boost} component={NextLink}>
+            How does boost work?
+          </Link>
+        </Track>
       </Box>
       <Stack
         spacing={3}

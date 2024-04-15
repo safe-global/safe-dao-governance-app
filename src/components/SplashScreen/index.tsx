@@ -11,12 +11,14 @@ import { AppRoutes } from '@/config/routes'
 import Barcode from '@/public/images/barcode.svg'
 
 import css from './styles.module.css'
-import SafeExplorers from '@/public/images/safe-explorers.svg'
+import SafeExplorers from '@/public/images/safe-pass.svg'
 import { useIsSafeApp } from '@/hooks/useIsSafeApp'
 import Asterix from '@/public/images/asterix.svg'
 import { localItem } from '@/services/storage/local'
 import { useIsomorphicLayoutEffect } from '@/hooks/useIsomorphicLayoutEffect'
 import { isSafe } from '@/utils/wallet'
+import { trackSafeAppEvent } from '@/utils/analytics'
+import { NAVIGATION_EVENTS } from '@/analytics/navigation'
 
 const Step = ({ index, title, active }: { index: number; title: string; active: boolean }) => {
   return (
@@ -75,7 +77,9 @@ export const SplashScreen = (): ReactElement => {
         setError('Connected wallet must be a Safe')
         return
       }
+      onContinue()
     } catch (error) {
+      setError('Wallet connection failed.')
       return
     } finally {
       setIsConnecting(false)
@@ -83,6 +87,7 @@ export const SplashScreen = (): ReactElement => {
   }
 
   const onContinue = async () => {
+    trackSafeAppEvent(NAVIGATION_EVENTS.OPEN_LOCKING.action, 'opening')
     alreadyVisitedStorage.set(true)
     router.push(AppRoutes.activity)
   }
@@ -111,7 +116,7 @@ export const SplashScreen = (): ReactElement => {
               <Typography variant="h2" fontSize="44px" lineHeight="120%" fontWeight="bold">
                 Interact with Safe and get rewards
               </Typography>
-              <Typography>Short intro text about the program.</Typography>
+              <Typography>Get your pass now! Lock your tokens and be active on Safe to get rewarded.</Typography>
               <Box>
                 {isDisconnected ? (
                   <Button variant="contained" color="primary" onClick={onConnect} disabled={isConnecting}>

@@ -20,4 +20,12 @@ export const LOCK_EVENTS = {
     action: 'Transaction proposed',
     label: 'withdrawal',
   },
+  CHANGE_LOCK_AMOUNT: {
+    action: 'Change amount',
+    label: 'lock',
+  },
+  CHANGE_UNLOCK_AMOUNT: {
+    action: 'Change amount',
+    label: 'unlock',
+  },
 }

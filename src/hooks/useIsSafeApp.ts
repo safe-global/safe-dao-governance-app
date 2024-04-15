@@ -1,14 +1,6 @@
-import { useState } from 'react'
-
-import { useIsomorphicLayoutEffect } from '@/hooks/useIsomorphicLayoutEffect'
+import { useSafeAppsSDK } from '@safe-global/safe-apps-react-sdk'
 
 export const useIsSafeApp = (): boolean => {
-  const [isSafeApp, setIsSafeApp] = useState(true)
-
-  useIsomorphicLayoutEffect(() => {
-    const isIframe = typeof window !== 'undefined' && window.self !== window.top
-    setIsSafeApp(isIframe)
-  }, [setIsSafeApp])
-
-  return isSafeApp
+  const { connected } = useSafeAppsSDK()
+  return connected
 }

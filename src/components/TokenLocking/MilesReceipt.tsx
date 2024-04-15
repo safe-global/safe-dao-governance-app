@@ -1,6 +1,6 @@
 import { Button, IconButton, Modal, Stack, SvgIcon, Typography } from '@mui/material'
 import css from './styles.module.css'
-import SafeExplorers from '@/public/images/safe-explorers.svg'
+import SafePass from '@/public/images/safe-pass.svg'
 import { NorthRounded, SouthRounded } from '@mui/icons-material'
 import XIcon from '@mui/icons-material/X'
 import CloseIcon from '@mui/icons-material/Close'
@@ -24,11 +24,11 @@ const MilesReceipt = ({
   const ArrowIcon = isUnlock ? SouthRounded : NorthRounded
 
   return (
-    <Modal open={open} onClose={onClose} slotProps={{ backdrop: { sx: { backgroundColor: '#636669BF' } } }}>
+    <Modal open={true} onClose={onClose} slotProps={{ backdrop: { sx: { backgroundColor: '#636669BF' } } }}>
       <>
         <div className={clsx(css.gradientBackground, { [css.unlockGradient]: isUnlock })} />
         <Stack className={css.milesReceipt}>
-          <SvgIcon component={SafeExplorers} inheritViewBox sx={{ width: '282px', height: 'auto' }} />
+          <SvgIcon component={SafePass} inheritViewBox sx={{ width: '130px', height: 'auto' }} />
           <Stack mt="auto" className={css.topReceipt}>
             <Typography variant="h1" component="div" fontWeight="bold" mb={1} mt={7}>
               {isUnlock ? 'Unclocking' : 'Locking'} started...
