@@ -34,15 +34,11 @@ const MilesReceipt = ({
               {isUnlock ? 'Your tokens are unlocked' : 'Locking started...'}
             </Typography>
             <Typography mb={4}>
-              You {isUnlock ? 'unlocked' : 'successfully started locking'} {amount} SAFE.
-              {isUnlock ? (
-                ' Withdrawal will be available in 24h'
-              ) : (
-                <>
-                  <br />
-                  Once the transaction is signed and executed the changes will be reflected in this App.
-                </>
-              )}
+              You successfully started {isUnlock ? 'unlocking' : 'locking'} {amount} SAFE. You successfully started{' '}
+              {isUnlock ? 'unlocking' : 'locking'} {amount} SAFE. Once the transaction is signed and executed the
+              changes will be reflected in this App.
+              <br />
+              {isUnlock ? 'Withdrawal will be available in 24h' : ''}
             </Typography>
 
             {!isUnlock && (
@@ -84,7 +80,7 @@ const MilesReceipt = ({
                   {formatAmount(floorNumber(newFinalBoost, 2), 2)}x
                 </Typography>
                 <Typography color="text.secondary" ml={1}>
-                  Your new miles boost
+                  Your new final boost
                 </Typography>
               </Stack>
             </div>
