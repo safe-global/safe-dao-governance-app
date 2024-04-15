@@ -57,7 +57,7 @@ export const getBoostFunction =
       const currentEvent = filteredHistory[i]
       lockedAmount = lockedAmount + currentEvent.amount
 
-      if (currentEvent.amount > 0) {
+      if (currentEvent.amount >= 0) {
         // For the first lock we need to only consider the time factor of today so we divide by 1
         const relativeTimeFactor = i === 0 ? 1 : timeFactor_firstLock
         // handle lock event

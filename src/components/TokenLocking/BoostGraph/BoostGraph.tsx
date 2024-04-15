@@ -16,7 +16,7 @@ import { ScatterDot } from './ScatterDot'
 import { useVictoryTheme } from './theme'
 import { useStartDate } from '@/hooks/useStartDates'
 
-const DOMAIN: ForAxes<DomainTuple> = { x: [-5, SEASON2_START + 5], y: [0.8, 5.5] }
+const DOMAIN: ForAxes<DomainTuple> = { x: [-5, SEASON2_START + 5], y: [0.8, 2.2] }
 
 export const BoostGraph = ({
   lockedAmount,
@@ -121,8 +121,8 @@ export const BoostGraph = ({
         <VictoryAxis
           dependentAxis
           domain={DOMAIN}
-          tickValues={[1, 3, 5, 7]}
-          tickFormat={(d) => Number(d).toFixed(0) + 'x'}
+          tickValues={[1, 1.5, 2]}
+          tickFormat={(d) => Number(d).toFixed(1) + 'x'}
           theme={victoryTheme}
           style={{
             tickLabels: {
