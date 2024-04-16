@@ -81,6 +81,26 @@ export const BoostGraph = ({
           data={isLock ? projectedBoostDataPoints : currentBoostDataPoints}
         />
 
+        <VictoryArea
+          animate
+          interpolation="stepAfter"
+          domain={DOMAIN}
+          style={{
+            data: {
+              fill: theme.palette.background.paper,
+              strokeWidth: 2,
+            },
+          }}
+          data={
+            isLock
+              ? [
+                  { x: 0, y: 1 },
+                  { x: SEASON2_START, y: 1 },
+                ]
+              : projectedBoostDataPoints
+          }
+        />
+
         <VictoryLine
           interpolation="stepAfter"
           animate
