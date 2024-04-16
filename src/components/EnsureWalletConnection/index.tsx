@@ -17,5 +17,5 @@ export const EnsureWalletConnection = ({ children }: { children: ReactElement })
 
   const shouldRedirect = !web3 && isProviderRoute(router.pathname)
 
-  return shouldRedirect ? <Redirect url={AppRoutes.splash} /> : children
+  return shouldRedirect ? <Redirect url={AppRoutes.splash} query={{ next: router.pathname }} /> : children
 }

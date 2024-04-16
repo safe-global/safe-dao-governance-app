@@ -1,16 +1,24 @@
 import { useRouter } from 'next/router'
-import type { UrlObject } from 'url'
 
 import { useIsomorphicLayoutEffect } from '@/hooks/useIsomorphicLayoutEffect'
+import { ParsedUrlQueryInput } from 'querystring'
 
-export const Redirect = ({ url, replace }: { url: string | UrlObject; replace?: boolean }): null => {
+export const Redirect = ({
+  url,
+  replace,
+  query,
+}: {
+  url: string
+  replace?: boolean
+  query?: ParsedUrlQueryInput
+}): null => {
   const router = useRouter()
 
   useIsomorphicLayoutEffect(() => {
     if (replace) {
       router.replace(url)
     } else {
-      router.push(url)
+      router.push({ pathname: url, query })
     }
   }, [replace, router, url])
 

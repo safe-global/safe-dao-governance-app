@@ -17,8 +17,8 @@ export const TREZOR_EMAIL = 'support@safe.global'
 
 // Deployments
 export const DEPLOYMENT_URL = IS_PRODUCTION
-  ? 'https://governance.safe.global'
-  : 'https://safe-dao-governance.dev.5afe.dev/'
+  ? 'https://community.safe.global'
+  : 'https://token_locking--governance.review-react-br.5afe.dev'
 
 export const GATEWAY_URL = IS_PRODUCTION ? 'https://safe-client.safe.global' : 'https://safe-client.staging.5afe.dev'
 
