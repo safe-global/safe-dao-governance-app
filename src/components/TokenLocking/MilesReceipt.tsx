@@ -52,11 +52,7 @@ const MilesReceipt = ({
                 >
                   Share on <XIcon sx={{ ml: 1, fontSize: '20px' }} />
                 </ExternalLink>
-                <ExternalLink
-                  variant="button"
-                  icon={false}
-                  href={`https://twitter.com/intent/tweet?&text=${TWEET_CONTENT}`}
-                >
+                <ExternalLink variant="button" icon={false} href={`https://twitter.com/intent/safe`}>
                   Follow Safe on <XIcon sx={{ ml: 1, fontSize: '20px' }} />
                 </ExternalLink>
               </Stack>
