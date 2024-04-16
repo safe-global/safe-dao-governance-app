@@ -4,7 +4,7 @@ import { POLLING_INTERVAL } from '@/config/constants'
 import { toCursorParam } from '@/utils/gateway'
 import { useGatewayBaseUrl } from './useGatewayBaseUrl'
 
-type LeaderboardEntry = {
+export type LeaderboardEntry = {
   holder: string
   position: number
   lockedAmount: string
