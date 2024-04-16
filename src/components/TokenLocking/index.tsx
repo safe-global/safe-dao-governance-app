@@ -1,4 +1,4 @@
-import { Grid, Link, Stack, SvgIcon, Typography } from '@mui/material'
+import { Box, Grid, Link, Stack, SvgIcon, Typography } from '@mui/material'
 import { useSafeTokenBalance } from '@/hooks/useSafeTokenBalance'
 import NextLink from 'next/link'
 import { Leaderboard } from './Leaderboard'
@@ -47,7 +47,17 @@ const TokenLocking = () => {
           <PaperContainer>
             <Leaderboard />
           </PaperContainer>
-          <Link href={AppRoutes.terms} component={NextLink} m={2} sx={{ textAlign: 'center' }}>
+          <Box>
+            <Typography variant="overline" fontWeight="bold" color="text.secondary">
+              LEGAL DISCLAIMER
+            </Typography>
+            <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+              Please note that country restrictions may apply regarding the eligibility and application for the boost
+              and reward. This might mean that your boost might not be applied to certain reward types, e.g. token
+              rewards such as Safe.
+            </Typography>
+          </Box>
+          <Link href={AppRoutes.terms} component={NextLink} m={2}>
             Terms and Conditions
           </Link>
         </Stack>
