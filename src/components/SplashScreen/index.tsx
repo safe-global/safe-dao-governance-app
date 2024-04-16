@@ -11,7 +11,7 @@ import { AppRoutes } from '@/config/routes'
 import Barcode from '@/public/images/barcode.svg'
 
 import css from './styles.module.css'
-import SafeExplorers from '@/public/images/safe-pass.svg'
+import SafePass from '@/public/images/safe-pass.svg'
 import { useIsSafeApp } from '@/hooks/useIsSafeApp'
 import Asterix from '@/public/images/asterix.svg'
 import { localItem } from '@/services/storage/local'
@@ -111,7 +111,7 @@ export const SplashScreen = (): ReactElement => {
               inheritViewBox
               sx={{ color: 'transparent', position: 'absolute', top: 0, right: 0, height: '208px', width: '208px' }}
             />
-            <SvgIcon component={SafeExplorers} inheritViewBox sx={{ width: '282px', height: 'auto' }} />
+            <SvgIcon component={SafePass} inheritViewBox sx={{ width: '282px', height: 'auto' }} />
             <Stack spacing={3} p={3}>
               <Typography variant="h2" fontSize="44px" lineHeight="120%" fontWeight="bold">
                 Interact with Safe and get rewards

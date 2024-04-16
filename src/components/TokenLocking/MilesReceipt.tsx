@@ -1,6 +1,6 @@
 import { Box, Button, Grid, IconButton, Modal, Stack, SvgIcon, Typography } from '@mui/material'
 import css from './styles.module.css'
-import SafeExplorers from '@/public/images/safe-pass.svg'
+import SafePass from '@/public/images/safe-pass.svg'
 import Barcode from '@/public/images/barcode.svg'
 import { NorthRounded, SouthRounded } from '@mui/icons-material'
 import CloseIcon from '@mui/icons-material/Close'
@@ -31,7 +31,7 @@ const MilesReceipt = ({
 
           <Grid item xs={12} md={8}>
             <Stack className={css.leftReceipt}>
-              <SvgIcon component={SafeExplorers} inheritViewBox sx={{ width: '282px', height: 'auto' }} />
+              <SvgIcon component={SafePass} inheritViewBox sx={{ width: '282px', height: 'auto' }} />
               <Stack mt="auto">
                 <Typography variant="h1" component="div" fontWeight="bold" mb={1}>
                   {isUnlock ? 'Your tokens are unlocked' : 'Welcome on board'}
