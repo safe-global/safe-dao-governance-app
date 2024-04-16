@@ -7,6 +7,7 @@ import CloseIcon from '@mui/icons-material/Close'
 import clsx from 'clsx'
 import { formatAmount } from '@/utils/formatters'
 import { floorNumber } from '@/utils/boost'
+import { ExternalLink } from '@/components/ExternalLink'
 
 const TWEET_CONTENT =
   "I'm excited to be part of the new Safe%7BPass%7D rewards program with @Safe! Earning points for using the most trusted smart wallet AND joining the Safe community? Win-win!"
@@ -27,7 +28,7 @@ const MilesReceipt = ({
   const ArrowIcon = isUnlock ? SouthRounded : NorthRounded
 
   return (
-    <Modal open={open} onClose={onClose} slotProps={{ backdrop: { sx: { backgroundColor: '#636669BF' } } }}>
+    <Modal open={true} onClose={onClose} slotProps={{ backdrop: { sx: { backgroundColor: '#636669BF' } } }}>
       <>
         <div className={clsx(css.gradientBackground, { [css.unlockGradient]: isUnlock })} />
         <Stack className={css.milesReceipt}>
@@ -46,20 +47,20 @@ const MilesReceipt = ({
 
             {!isUnlock && (
               <Stack direction="row" gap={2} mb={2}>
-                <Button
-                  variant="outlined"
-                  href={`http://twitter.com/intent/tweet?&text=${TWEET_CONTENT}`}
-                  target="_blank"
+                <ExternalLink
+                  variant="button"
+                  icon={false}
+                  href={`https://twitter.com/intent/tweet?&text=${TWEET_CONTENT}`}
                 >
                   Share on <XIcon sx={{ ml: 1, fontSize: '20px' }} />
-                </Button>
-                <Button
-                  variant="outlined"
-                  href={`http://twitter.com/intent/tweet?&text=${TWEET_CONTENT}`}
-                  target="_blank"
+                </ExternalLink>
+                <ExternalLink
+                  variant="button"
+                  icon={false}
+                  href={`https://twitter.com/intent/tweet?&text=${TWEET_CONTENT}`}
                 >
                   Follow Safe on <XIcon sx={{ ml: 1, fontSize: '20px' }} />
-                </Button>
+                </ExternalLink>
               </Stack>
             )}
           </Stack>
