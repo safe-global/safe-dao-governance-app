@@ -28,7 +28,7 @@ const MilesReceipt = ({
   const ArrowIcon = isUnlock ? SouthRounded : NorthRounded
 
   return (
-    <Modal open={true} onClose={onClose} slotProps={{ backdrop: { sx: { backgroundColor: '#636669BF' } } }}>
+    <Modal open={open} onClose={onClose} slotProps={{ backdrop: { sx: { backgroundColor: '#636669BF' } } }}>
       <>
         <div className={clsx(css.gradientBackground, { [css.unlockGradient]: isUnlock })} />
         <Stack className={css.milesReceipt}>
@@ -38,11 +38,9 @@ const MilesReceipt = ({
               {isUnlock ? 'Unclocking' : 'Locking'} started...
             </Typography>
             <Typography mb={4}>
-              You successfully started {isUnlock ? 'unlocking' : 'locking'} {amount} SAFE. You successfully started{' '}
-              {isUnlock ? 'unlocking' : 'locking'} {amount} SAFE. Once the transaction is signed and executed the
-              changes will be reflected in this App.
-              <br />
-              {isUnlock ? 'Withdrawal will be available in 24h' : ''}
+              You successfully started {isUnlock ? 'unlocking' : 'locking'} {amount} SAFE. Once the transaction is
+              signed and executed the changes will be reflected in this App.
+              {isUnlock ? ' The tokens will be will be available to withdraw in 24h.' : ''}
             </Typography>
 
             {!isUnlock && (
