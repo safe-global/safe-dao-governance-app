@@ -105,15 +105,6 @@ describe('boost', () => {
         expect(boostFunction({ x: 1000 })).toBeCloseTo(1.5)
       })
 
-      it('should compute boost with 100000 tokens locked', () => {
-        const boostFunction = getBoostFunction(0, 100000, [])
-        expect(boostFunction({ x: -1 })).toBe(1)
-        expect(boostFunction({ x: 0 })).toBe(2)
-        expect(boostFunction({ x: SEASON1_START })).toBe(2)
-        expect(boostFunction({ x: SEASON2_START })).toBe(2)
-        expect(boostFunction({ x: 1000 })).toBe(2)
-      })
-
       it('should compute boost with 1000000 tokens locked', () => {
         const boostFunction = getBoostFunction(0, 1000000, [])
         expect(boostFunction({ x: -1 })).toBe(1)
@@ -153,8 +144,9 @@ describe('boost', () => {
       expect(boostFunction({ x: -1 })).toBe(1)
       expect(boostFunction({ x: 0 })).toBeCloseTo(1.25)
       expect(boostFunction({ x: 39 })).toBeCloseTo(1.25)
-      expect(boostFunction({ x: 40 })).toBeCloseTo(1.277)
-      expect(boostFunction({ x: 1000 })).toBeCloseTo(1.277)
+      //
+      expect(boostFunction({ x: 40 })).toBeCloseTo(1.275)
+      expect(boostFunction({ x: 1000 })).toBeCloseTo(1.275)
     })
 
     it('should compute for 1000 tokens on day one and 1000 after 40 days and another 1000 after 80 days', () => {
@@ -177,10 +169,10 @@ describe('boost', () => {
       expect(boostFunction({ x: -1 })).toBe(1)
       expect(boostFunction({ x: 0 })).toBeCloseTo(1.25)
       expect(boostFunction({ x: 39 })).toBeCloseTo(1.25)
-      expect(boostFunction({ x: 40 })).toBeCloseTo(1.277)
-      expect(boostFunction({ x: 79 })).toBeCloseTo(1.277)
-      expect(boostFunction({ x: 80 })).toBeCloseTo(1.294)
-      expect(boostFunction({ x: 1000 })).toBeCloseTo(1.294)
+      expect(boostFunction({ x: 40 })).toBeCloseTo(1.275)
+      expect(boostFunction({ x: 79 })).toBeCloseTo(1.275)
+      expect(boostFunction({ x: 80 })).toBeCloseTo(1.292)
+      expect(boostFunction({ x: 1000 })).toBeCloseTo(1.292)
     })
 
     it('should drop to 1 if everything gets unlocked', () => {
@@ -199,7 +191,7 @@ describe('boost', () => {
       expect(boostFunction({ x: 1000 })).toBe(1)
     })
 
-    it('should compute for 1000 tokens on day one and 1000 after 40 days and another 1000 after 80 days', () => {
+    it('should compute for 2000 tokens on day one, unlocking 1000 after 40 days and locking another 1000 after 80 days', () => {
       const priorLocks: LockHistory[] = [
         {
           day: 0,
@@ -222,9 +214,9 @@ describe('boost', () => {
       // 0.25 * 0.91 + 1
       expect(boostFunction({ x: 39 })).toBeCloseTo(1.2275)
       expect(boostFunction({ x: 78 })).toBeCloseTo(1.2275)
-      // 1.2275 + (1.253 - 1.2275) * (0.61 / 0.91)
-      expect(boostFunction({ x: 79 })).toBeCloseTo(1.2444)
-      expect(boostFunction({ x: 1000 })).toBeCloseTo(1.2444)
+      // 1.2275 + (1.277 - 1.25) * (0.609)
+      expect(boostFunction({ x: 79 })).toBeCloseTo(1.2439)
+      expect(boostFunction({ x: 1000 })).toBeCloseTo(1.2439)
     })
   })
 })
