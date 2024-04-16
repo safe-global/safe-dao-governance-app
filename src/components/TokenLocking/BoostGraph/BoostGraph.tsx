@@ -38,8 +38,6 @@ export const BoostGraph = ({
 
   const pastLockPoints = useMemo(() => generatePointsFromHistory(pastLocks, now), [pastLocks, now])
 
-  console.log(pastLockPoints)
-
   const format = (value: number) => formatAmount(floorNumber(value, 2), 2)
 
   const currentBoostDataPoints = useMemo(
