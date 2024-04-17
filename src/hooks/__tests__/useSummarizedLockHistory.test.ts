@@ -84,7 +84,7 @@ describe('useSummarizedLockHistory', () => {
     expect(result.current.totalLocked.eq(400)).toBeTruthy()
     expect(result.current.totalUnlocked.eq(600)).toBeTruthy()
     expect(result.current.totalWithdrawable.eq(0)).toBeTruthy()
-    expect(result.current.pendingUnlocks).toEqual([newestUnlock, expectedNextUnlock])
+    expect(result.current.pendingUnlocks).toEqual([expectedNextUnlock, newestUnlock])
   })
 
   it('should show withdrawable amount 24h after unlock', () => {

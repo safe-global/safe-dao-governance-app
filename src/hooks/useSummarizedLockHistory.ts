@@ -1,4 +1,4 @@
-import { isGreater24HoursDiff } from '@/utils/date'
+import { isGreaterThan24HoursDiff } from '@/utils/date'
 import { isUnlockEvent, isWithdrawEvent } from '@/utils/lock'
 import { BigNumber } from 'ethers'
 import { useMemo } from 'react'
@@ -52,14 +52,16 @@ export const useSummarizedLockHistory = (
     const withdrawableUnlocks = unlocks.filter(
       (unlock) =>
         !withdrawnIds.includes(unlock.unlockIndex) &&
-        isGreater24HoursDiff(Date.parse(unlock.executionDate), Date.now()),
+        isGreaterThan24HoursDiff(Date.parse(unlock.executionDate), Date.now()),
     )
     const totalWithdrawable = withdrawableUnlocks.reduce((prev, event) => prev.add(event.amount), BigNumber.from(0))
-    const pendingUnlocks = unlocks.filter(
-      (unlock) =>
-        !withdrawnIds.includes(unlock.unlockIndex) &&
-        !isGreater24HoursDiff(Date.parse(unlock.executionDate), Date.now()),
-    )
+    const pendingUnlocks = unlocks
+      .filter(
+        (unlock) =>
+          !withdrawnIds.includes(unlock.unlockIndex) &&
+          !isGreaterThan24HoursDiff(Date.parse(unlock.executionDate), Date.now()),
+      )
+      .reverse()
 
     return {
       totalWithdrawable,
