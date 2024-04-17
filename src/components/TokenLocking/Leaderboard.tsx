@@ -21,13 +21,15 @@ import FirstPlaceIcon from '@/public/images/leaderboard-first-place.svg'
 import SecondPlaceIcon from '@/public/images/leaderboard-second-place.svg'
 import ThirdPlaceIcon from '@/public/images/leaderboard-third-place.svg'
 import TitleStar from '@/public/images/leaderboard-title-star.svg'
-import { useGlobalLeaderboardPage, useOwnRank } from '@/hooks/useLeaderboard'
+import { type LeaderboardEntry, useGlobalLeaderboardPage, useOwnRank } from '@/hooks/useLeaderboard'
 import { formatAmount } from '@/utils/formatters'
 import { formatEther } from 'ethers/lib/utils'
 import { ReactElement, useState } from 'react'
 import { useEnsLookup } from '@/hooks/useEnsLookup'
 import Track from '../Track'
 import { NAVIGATION_EVENTS } from '@/analytics/navigation'
+
+const PAGE_SIZE = 10
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -118,21 +120,17 @@ const Ranking = ({ position }: { position: number }) => {
   )
 }
 
-const OwnRank = () => {
-  const ownRankResult = useOwnRank()
-
-  const { data: ownRank } = ownRankResult
-
-  if (ownRank) {
+const OwnEntry = ({ entry }: { entry: LeaderboardEntry | undefined }) => {
+  if (entry) {
     return (
-      <HighlightedTableRow key={ownRank.holder}>
+      <HighlightedTableRow key={entry.holder}>
         <StyledTableCell align="center">
-          <Ranking position={ownRank.position} />
+          <Ranking position={entry.position} />
         </StyledTableCell>
         <StyledTableCell align="left">
-          <LookupAddress address={ownRank.holder} />
+          <LookupAddress address={entry.holder} />
         </StyledTableCell>
-        <StyledTableCell align="left">{formatAmount(formatEther(ownRank.lockedAmount), 0)}</StyledTableCell>
+        <StyledTableCell align="left">{formatAmount(formatEther(entry.lockedAmount), 0)}</StyledTableCell>
       </HighlightedTableRow>
     )
   }
@@ -140,9 +138,16 @@ const OwnRank = () => {
   return null
 }
 
-const LeaderboardPage = ({ index, onLoadMore }: { index: number; onLoadMore?: () => void }): ReactElement => {
-  const LIMIT = 10
-  const leaderboardPage = useGlobalLeaderboardPage(LIMIT, index * LIMIT)
+const LeaderboardPage = ({
+  index,
+  onLoadMore,
+  ownEntry,
+}: {
+  index: number
+  onLoadMore?: () => void
+  ownEntry: LeaderboardEntry | undefined
+}): ReactElement => {
+  const leaderboardPage = useGlobalLeaderboardPage(PAGE_SIZE, index * PAGE_SIZE)
   const rows = leaderboardPage?.results ?? []
 
   if (leaderboardPage === undefined) {
@@ -164,20 +169,24 @@ const LeaderboardPage = ({ index, onLoadMore }: { index: number; onLoadMore?: ()
   }
   return (
     <>
-      {rows.map((row) => (
-        <StyledTableRow key={row.holder}>
-          <StyledTableCell align="center">
-            <Ranking position={row.position} />
-          </StyledTableCell>
-          <StyledTableCell align="left">
-            <LookupAddress address={row.holder} />
-          </StyledTableCell>
-          <StyledTableCell align="left">{formatAmount(formatEther(row.lockedAmount), 0)}</StyledTableCell>
-        </StyledTableRow>
-      ))}
+      {rows.map((row) => {
+        return row.holder === ownEntry?.holder ? (
+          <OwnEntry entry={ownEntry} />
+        ) : (
+          <StyledTableRow key={row.holder}>
+            <StyledTableCell align="center">
+              <Ranking position={row.position} />
+            </StyledTableCell>
+            <StyledTableCell align="left">
+              <LookupAddress address={row.holder} />
+            </StyledTableCell>
+            <StyledTableCell align="left">{formatAmount(formatEther(row.lockedAmount), 0)}</StyledTableCell>
+          </StyledTableRow>
+        )
+      })}
       {onLoadMore && leaderboardPage?.next && (
         <tr>
-          <td colSpan={3} style={{ textAlign: 'center' }}>
+          <td colSpan={3} style={{ textAlign: 'center', padding: '8px' }}>
             <Track {...NAVIGATION_EVENTS.LEADERBOARD_SHOW_MORE}>
               <Link
                 sx={{
@@ -199,6 +208,8 @@ const LeaderboardPage = ({ index, onLoadMore }: { index: number; onLoadMore?: ()
 
 export const Leaderboard = () => {
   const [pages, setPages] = useState(1)
+  const ownLeaderboardEntry = useOwnRank()
+  const { data: ownEntry } = ownLeaderboardEntry
 
   return (
     <Box>
@@ -231,12 +242,13 @@ export const Leaderboard = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            <OwnRank />
+            {ownEntry && ownEntry?.position > PAGE_SIZE && <OwnEntry entry={ownEntry} />}
             {Array.from(new Array(pages)).map((_, index) => (
               <LeaderboardPage
                 index={index}
                 key={index}
                 onLoadMore={index === pages - 1 ? () => setPages((prev) => prev + 1) : undefined}
+                ownEntry={ownEntry}
               />
             ))}
           </TableBody>
