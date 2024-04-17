@@ -36,7 +36,7 @@ const ProgramItem = ({ title, description, icon }: { title: string; description:
   )
 }
 
-const ActivityProgramList = () => {
+const Activities = () => {
   return (
     <Box maxWidth="888px">
       <Stack spacing={3}>
@@ -49,7 +49,7 @@ const ActivityProgramList = () => {
           Back to main
         </Link>
 
-        <Typography variant="h1">Activity Program List</Typography>
+        <Typography variant="h1">Eligible activities</Typography>
         <PaperContainer>
           <Stack alignItems="center" gap={2} pt={6}>
             <Image src={ChatBubble} alt="Chat bubble" />
@@ -112,4 +112,4 @@ const ActivityProgramList = () => {
   )
 }
 
-export default ActivityProgramList
+export default Activities

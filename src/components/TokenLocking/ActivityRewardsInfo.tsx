@@ -11,6 +11,8 @@ import { AccordionContainer } from '@/components/AccordionContainer'
 import PaperContainer from '../PaperContainer'
 import { useStartDate } from '@/hooks/useStartDates'
 import { ReactNode } from 'react'
+import { AppRoutes } from '@/config/routes'
+import { useRouter } from 'next/router'
 
 const Step = ({ active, title, description }: { active: boolean; title?: ReactNode; description?: string }) => {
   return (
@@ -35,6 +37,7 @@ const Step = ({ active, title, description }: { active: boolean; title?: ReactNo
 export const ActivityRewardsInfo = () => {
   const ownRankResult = useOwnRank()
   const { data: ownRank } = ownRankResult
+  const router = useRouter()
 
   const { startTime } = useStartDate()
   const daysSinceStart = toDaysSinceStart(Date.now(), startTime)
@@ -87,8 +90,7 @@ export const ActivityRewardsInfo = () => {
           </div>
 
           <Divider />
-
-          <Link href="AppRoutes.activityProgram" sx={{ textAlign: 'center', fontSize: '14px' }}>
+          <Link sx={{ textAlign: 'center', fontSize: '14px' }} onClick={() => router.push(AppRoutes.activityProgram)}>
             View eligible activities
           </Link>
         </PaperContainer>

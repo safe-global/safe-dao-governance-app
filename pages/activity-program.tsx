@@ -1,9 +1,9 @@
 import type { NextPage } from 'next'
 
-import ActivityProgramList from '@/components/ActivityProgramList'
+import Activities from '@/components/Activities'
 
 const ActivityProgramPage: NextPage = () => {
-  return <ActivityProgramList />
+  return <Activities />
 }
 
 export default ActivityProgramPage
