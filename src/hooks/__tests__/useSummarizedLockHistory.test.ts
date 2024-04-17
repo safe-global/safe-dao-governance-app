@@ -75,15 +75,16 @@ describe('useSummarizedLockHistory', () => {
   })
 
   it('should summarize lock and unlock events', () => {
+    const newestUnlock = createUnlock('200', '1')
     const expectedNextUnlock = createUnlock('400', '2', FAKE_1H_AGO)
     const { result } = renderHook(() =>
-      useSummarizedLockHistory([createLock('1000'), createUnlock('200', '1'), expectedNextUnlock]),
+      useSummarizedLockHistory([createLock('1000'), newestUnlock, expectedNextUnlock]),
     )
 
     expect(result.current.totalLocked.eq(400)).toBeTruthy()
     expect(result.current.totalUnlocked.eq(600)).toBeTruthy()
     expect(result.current.totalWithdrawable.eq(0)).toBeTruthy()
-    expect(result.current.pendingUnlocks).toEqual([expectedNextUnlock])
+    expect(result.current.pendingUnlocks).toEqual([newestUnlock, expectedNextUnlock])
   })
 
   it('should show withdrawable amount 24h after unlock', () => {
