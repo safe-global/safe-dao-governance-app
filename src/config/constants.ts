@@ -105,4 +105,4 @@ export const DISCORD_URL = 'https://chat.safe.global'
 export const UNLIMITED_APPROVAL_AMOUNT = BigNumber.from(2).pow(256).sub(1)
 
 export const SEASON2_START = 160
-export const SEASON1_START = 48
+export const SEASON1_START = 27
