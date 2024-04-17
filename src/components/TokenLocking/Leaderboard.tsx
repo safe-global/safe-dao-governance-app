@@ -170,7 +170,7 @@ const LeaderboardPage = ({
   return (
     <>
       {rows.map((row) => {
-        return row.position === ownEntry?.position ? (
+        return row.holder === ownEntry?.holder ? (
           <OwnEntry entry={ownEntry} />
         ) : (
           <StyledTableRow key={row.holder}>
