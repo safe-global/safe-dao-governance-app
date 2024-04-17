@@ -208,7 +208,12 @@ export const Leaderboard = () => {
           <Typography variant="h2" fontWeight={700} sx={{ mr: '8px', display: 'inline' }}>
             Locking Leaderboard
           </Typography>
-          <Typography variant="subtitle1" fontSize="small" color="text.secondary" sx={{ my: '8px', fontSize: '14px' }}>
+          <Typography
+            variant="subtitle1"
+            fontSize="small"
+            color="text.secondary"
+            sx={{ my: '8px', fontSize: '14px', maxWidth: '60%' }}
+          >
             Higher ranking means higher chances to get rewards.
           </Typography>
         </Box>

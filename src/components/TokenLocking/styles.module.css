@@ -1,17 +1,3 @@
-.singleTile {
-  position: absolute;
-  top: 0px;
-  right: 80px;
-  color: var(--mui-palette-secondary-main);
-}
-
-.doubleTile {
-  position: absolute;
-  bottom: 15px;
-  right: 0px;
-  color: var(--mui-palette-secondary-main);
-}
-
 .badge :global .MuiBadge-badge {
   right: 4px;
   bottom: 5px;
@@ -22,22 +8,11 @@
 .boostInfoBox {
   display: flex;
   flex-direction: column;
-  gap: 16px;
 }
 
 .bordered {
   border-radius: 6px;
   border: var(--mui-palette-border-light) 1px solid;
-}
-
-.boostBubble {
-  border-radius: 100%;
-  background-color: var(--mui-palette-background-light);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 86px;
-  height: 86px;
 }
 
 .amountDisplay {
@@ -250,6 +225,10 @@
 
   .leftReceipt {
     border-bottom: 1px dashed white;
+  }
+
+  .pageTitle {
+    margin: 16px;
   }
 }
 

@@ -1,6 +1,6 @@
 import { formatAmount } from '@/utils/formatters'
-import { Typography, Stack, Grid, TextField, InputAdornment, Button, Box, CircularProgress } from '@mui/material'
-import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward'
+import { Typography, Stack, Grid, TextField, InputAdornment, Button, Box, CircularProgress, Link } from '@mui/material'
+import NorthEastIcon from '@mui/icons-material/NorthEast'
 import { formatUnits, parseUnits } from 'ethers/lib/utils'
 import SafeToken from '@/public/images/token.svg'
 
@@ -155,7 +155,7 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
     <>
       <Box className={css.lockingHeader} gap={2}>
         <Box display="flex" flex="1" alignItems="center" flexDirection="row" gap={2}>
-          <ArrowOutwardIcon />
+          <NorthEastIcon color="primary" />
           <Typography variant="h4" fontWeight={700}>
             Lock tokens to boost your miles
           </Typography>

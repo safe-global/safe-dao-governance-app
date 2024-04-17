@@ -1,29 +1,6 @@
-.singleTile {
-  position: absolute;
-  top: 0px;
-  right: 80px;
-  color: var(--mui-palette-secondary-main);
-}
-
-.boostInfoBox {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
-  align-items: center;
-  justify-content: center;
-}
-
 .bordered {
   border-radius: 6px;
   border: var(--mui-palette-border-light) 1px solid;
-}
-
-.doubleTile {
-  position: absolute;
-  bottom: 15px;
-  right: 0px;
-  color: var(--mui-palette-secondary-main);
 }
 
 .badge :global .MuiBadge-badge {

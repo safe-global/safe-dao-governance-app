@@ -94,11 +94,14 @@ const BoostCounter = ({
           transform: `scale(${scale}) rotateZ(${isAnimating ? rotationRef.current : 0}deg)`,
           transition: 'transform 0.3s cubic-bezier(.1,1.5,.8,4)',
         }}
+        fontSize="44px"
         {...props}
       >
         {digit}
       </Typography>
-      <Typography {...props}>{decimals !== '' ? `${localeSeparator}${decimals}x` : 'x'}</Typography>
+      <Typography {...props} fontSize="44px">
+        {decimals !== '' ? `${localeSeparator}${decimals}x` : 'x'}
+      </Typography>
     </Box>
   )
 }
