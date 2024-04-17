@@ -11,12 +11,14 @@ import { AppRoutes } from '@/config/routes'
 import Barcode from '@/public/images/barcode.svg'
 
 import css from './styles.module.css'
-import SafeExplorers from '@/public/images/safe-explorers.svg'
+import SafePass from '@/public/images/safe-pass.svg'
 import { useIsSafeApp } from '@/hooks/useIsSafeApp'
 import Asterix from '@/public/images/asterix.svg'
 import { localItem } from '@/services/storage/local'
 import { useIsomorphicLayoutEffect } from '@/hooks/useIsomorphicLayoutEffect'
 import { isSafe } from '@/utils/wallet'
+import { trackSafeAppEvent } from '@/utils/analytics'
+import { NAVIGATION_EVENTS } from '@/analytics/navigation'
 
 const Step = ({ index, title, active }: { index: number; title: string; active: boolean }) => {
   return (
@@ -85,8 +87,10 @@ export const SplashScreen = (): ReactElement => {
   }
 
   const onContinue = async () => {
+    trackSafeAppEvent(NAVIGATION_EVENTS.OPEN_LOCKING.action, 'opening')
     alreadyVisitedStorage.set(true)
-    router.push(AppRoutes.activity)
+    const nextPage = router.query.next === AppRoutes.governance ? AppRoutes.governance : AppRoutes.activity
+    router.push(nextPage)
   }
 
   useIsomorphicLayoutEffect(() => {
@@ -108,12 +112,12 @@ export const SplashScreen = (): ReactElement => {
               inheritViewBox
               sx={{ color: 'transparent', position: 'absolute', top: 0, right: 0, height: '208px', width: '208px' }}
             />
-            <SvgIcon component={SafeExplorers} inheritViewBox sx={{ width: '282px', height: 'auto' }} />
+            <SvgIcon component={SafePass} inheritViewBox sx={{ width: '175px', height: 'auto' }} />
             <Stack spacing={3} p={3}>
               <Typography variant="h2" fontSize="44px" lineHeight="120%" fontWeight="bold">
                 Interact with Safe and get rewards
               </Typography>
-              <Typography>Short intro text about the program.</Typography>
+              <Typography>Get your pass now! Lock your tokens and be active on Safe to get rewarded.</Typography>
               <Box>
                 {isDisconnected ? (
                   <Button variant="contained" color="primary" onClick={onConnect} disabled={isConnecting}>
@@ -142,10 +146,10 @@ export const SplashScreen = (): ReactElement => {
         </Grid>
         <Grid item xs={12} md={4}>
           <Stack className={css.rightReceipt} gap={3} justifyContent="center">
-            <Typography variant="caption" textTransform="uppercase" letterSpacing="1px">
+            <Typography variant="caption" textTransform="uppercase" letterSpacing="1px" mt={12}>
               How it works
             </Typography>
-            <Stack gap={1}>
+            <Stack gap={3}>
               <Step index={0} title="Lock SAFE to boost your miles!" active={true} />
               <Step index={1} title="Earn miles for activity" active={false} />
               <Step index={2} title="Get rewards for earned miles" active={false} />

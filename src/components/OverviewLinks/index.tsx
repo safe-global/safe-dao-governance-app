@@ -30,9 +30,9 @@ const SafeDaoCard = () => {
         <Typography variant="h3" fontWeight={700} mt={5}>
           What is Safe DAO?
         </Typography>
-        <Link href={AppRoutes.safedao} component={NextLink} ref={linkRef}>
+        <ExternalLink ref={linkRef} href="https://gov.safe.global">
           Learn more
-        </Link>
+        </ExternalLink>
       </Box>
     </Paper>
   )

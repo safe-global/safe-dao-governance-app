@@ -65,17 +65,20 @@ const App = ({
 }): ReactElement => {
   const { pathname, query } = useRouter()
 
+  // Workaround for dark mode widgets
+  const isDarkMode = query.theme ? query.theme !== 'light' : true
+
   useEffect(() => {
     if (typeof document !== 'undefined') {
-      document.documentElement.setAttribute('data-theme', 'dark')
+      document.documentElement.setAttribute('data-theme', isDarkMode ? 'dark' : 'light')
     }
-  }, [])
+  }, [isDarkMode])
 
   const theme = useMemo(() => {
     // Extend the theme with the CssVarsProvider
-    return extendMuiTheme(initTheme())
+    return extendMuiTheme(initTheme(isDarkMode))
     // Widgets don't navigate, so we need not worry about the query changing
-  }, [])
+  }, [isDarkMode])
 
   const page = <Component {...pageProps} />
 

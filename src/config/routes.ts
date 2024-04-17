@@ -4,12 +4,10 @@ export const AppRoutes = {
   unlock: '/unlock',
   terms: '/terms',
   splash: '/splash',
-  safedao: '/safedao',
   index: '/',
   governance: '/governance',
   delegate: '/delegate',
   claim: '/claim',
-  boost: '/boost',
   activity: '/activity',
   activityProgram: '/activity-program',
 }

@@ -6,7 +6,7 @@ import { formatUnits, parseUnits } from 'ethers/lib/utils'
 import { BoostGraph } from '../TokenLocking/BoostGraph/BoostGraph'
 import { useDebounce } from '@/hooks/useDebounce'
 import { createUnlockTx, LockHistory } from '@/utils/lock'
-import { useState, useMemo, ChangeEvent, useCallback } from 'react'
+import { useState, useMemo, ChangeEvent, useCallback, useEffect } from 'react'
 import { BigNumber, BigNumberish } from 'ethers'
 import { useChainId } from '@/hooks/useChainId'
 import { getCurrentDays } from '@/utils/date'
@@ -45,6 +45,12 @@ export const UnlockTokenWidget = ({
 
   const debouncedAmount = useDebounce(unlockAmount, 1000, '0')
   const cleanedAmount = useMemo(() => (debouncedAmount.trim() === '' ? '0' : debouncedAmount.trim()), [debouncedAmount])
+
+  useEffect(() => {
+    if (debouncedAmount !== '0') {
+      trackSafeAppEvent(LOCK_EVENTS.CHANGE_UNLOCK_AMOUNT.action, LOCK_EVENTS.CHANGE_UNLOCK_AMOUNT.label)
+    }
+  }, [debouncedAmount])
 
   const onCloseReceipt = () => {
     setUnlockAmount('0')

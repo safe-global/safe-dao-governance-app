@@ -1,4 +1,4 @@
-import { Grid, Link, Stack, SvgIcon, Typography } from '@mui/material'
+import { Box, Grid, Link, Stack, SvgIcon, Typography } from '@mui/material'
 import { useSafeTokenBalance } from '@/hooks/useSafeTokenBalance'
 import NextLink from 'next/link'
 import { Leaderboard } from './Leaderboard'
@@ -21,10 +21,10 @@ const TokenLocking = () => {
 
   return (
     <Grid container spacing={3} direction="row-reverse">
-      <Grid item xs={12} mb={3} className={css.pageTitle}>
-        <Typography variant="h2">SAFE Activity Rewards</Typography>
+      <Grid item xs={12} mt={4} mb={1} className={css.pageTitle}>
+        <Typography variant="h2">{'Get rewards with Safe{Pass}'}</Typography>
       </Grid>
-      <Grid item xs={12} lg={4} className={css.activityRewards}>
+      <Grid item xs={12} lg={4}>
         <Stack spacing={3} justifyContent="stretch" height="100%">
           <ActivityRewardsInfo />
         </Stack>
@@ -47,6 +47,19 @@ const TokenLocking = () => {
           <PaperContainer>
             <Leaderboard />
           </PaperContainer>
+          <Box>
+            <Typography variant="overline" fontWeight="bold" color="text.secondary">
+              LEGAL DISCLAIMER
+            </Typography>
+            <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+              Please note that country restrictions may apply regarding the eligibility and application for the boost
+              and reward. This might mean that your boost might not be applied to certain reward types, e.g. token
+              rewards such as Safe.
+            </Typography>
+          </Box>
+          <Link href={AppRoutes.terms} component={NextLink} m={2}>
+            Terms and Conditions
+          </Link>
         </Stack>
       </Grid>
     </Grid>
