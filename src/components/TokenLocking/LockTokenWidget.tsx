@@ -1,5 +1,5 @@
 import { formatAmount } from '@/utils/formatters'
-import { Typography, Stack, Grid, TextField, InputAdornment, Button, Box, CircularProgress, Link } from '@mui/material'
+import { Typography, Stack, Grid, TextField, InputAdornment, Button, Box, CircularProgress } from '@mui/material'
 import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward'
 import { formatUnits, parseUnits } from 'ethers/lib/utils'
 import SafeToken from '@/public/images/token.svg'
@@ -15,7 +15,7 @@ import { useChainId } from '@/hooks/useChainId'
 import { getBoostFunction } from '@/utils/boost'
 import { useLockHistory } from '@/hooks/useLockHistory'
 import { useDebounce } from '@/hooks/useDebounce'
-import { SEASON2_START, UNLIMITED_APPROVAL_AMOUNT } from '@/config/constants'
+import { SAFE_PASS_HELP_ARTICLE_URL, SEASON2_START, UNLIMITED_APPROVAL_AMOUNT } from '@/config/constants'
 import { getCurrentDays } from '@/utils/date'
 import { BoostBreakdown } from './BoostBreakdown'
 import Track from '../Track'
@@ -24,10 +24,9 @@ import { trackSafeAppEvent } from '@/utils/analytics'
 import MilesReceipt from '@/components/TokenLocking/MilesReceipt'
 import { BaseTransaction, useTxSender } from '@/hooks/useTxSender'
 import { useSafeTokenLockingAllowance } from '@/hooks/useSafeTokenBalance'
-import { AppRoutes } from '@/config/routes'
-import NextLink from 'next/link'
 import { useStartDate } from '@/hooks/useStartDates'
 import { NAVIGATION_EVENTS } from '@/analytics/navigation'
+import { ExternalLink } from '../ExternalLink'
 
 export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | undefined }) => {
   const [receiptOpen, setReceiptOpen] = useState<boolean>(false)
@@ -162,9 +161,9 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
           </Typography>
         </Box>
         <Track {...NAVIGATION_EVENTS.OPEN_BOOST_INFO}>
-          <Link href={AppRoutes.boost} component={NextLink}>
-            How does boost work?
-          </Link>
+          <ExternalLink href={SAFE_PASS_HELP_ARTICLE_URL}>
+            What is Safe{'{'}Pass{'}'}?
+          </ExternalLink>
         </Track>
       </Box>
       <Stack

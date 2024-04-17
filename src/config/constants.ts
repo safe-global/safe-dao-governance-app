@@ -100,6 +100,8 @@ export const CHAIN_SNAPSHOT_URL: ChainConfig<string> = {
 export const SEP5_PROPOSAL_URL =
   'https://snapshot.org/#/safe.eth/proposal/0xb4765551b4814b592d02ce67de05527ac1d2b88a8c814c4346ecc0c947c9b941'
 
+export const SAFE_PASS_HELP_ARTICLE_URL = 'https://help.safe.global/en/articles/157043-what-is-safe-pass'
+
 export const DISCORD_URL = 'https://chat.safe.global'
 
 export const UNLIMITED_APPROVAL_AMOUNT = BigNumber.from(2).pow(256).sub(1)
