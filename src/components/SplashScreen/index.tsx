@@ -111,7 +111,7 @@ export const SplashScreen = (): ReactElement => {
               inheritViewBox
               sx={{ color: 'transparent', position: 'absolute', top: 0, right: 0, height: '208px', width: '208px' }}
             />
-            <SvgIcon component={SafePass} inheritViewBox sx={{ width: '282px', height: 'auto' }} />
+            <SvgIcon component={SafePass} inheritViewBox sx={{ width: '175px', height: 'auto' }} />
             <Stack spacing={3} p={3}>
               <Typography variant="h2" fontSize="44px" lineHeight="120%" fontWeight="bold">
                 Interact with Safe and get rewards
@@ -145,10 +145,10 @@ export const SplashScreen = (): ReactElement => {
         </Grid>
         <Grid item xs={12} md={4}>
           <Stack className={css.rightReceipt} gap={3} justifyContent="center">
-            <Typography variant="caption" textTransform="uppercase" letterSpacing="1px">
+            <Typography variant="caption" textTransform="uppercase" letterSpacing="1px" mt={12}>
               How it works
             </Typography>
-            <Stack gap={1}>
+            <Stack gap={3}>
               <Step index={0} title="Lock SAFE to boost your miles!" active={true} />
               <Step index={1} title="Earn miles for activity" active={false} />
               <Step index={2} title="Get rewards for earned miles" active={false} />
