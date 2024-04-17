@@ -5,7 +5,7 @@ export const getGovernanceAppSafeAppUrl = (chainId: string, address: string): st
 
   const shortName = CHAIN_SHORT_NAME[chainId]
   url.searchParams.append('safe', `${shortName}:${address}`)
-  url.searchParams.append('appUrl', DEPLOYMENT_URL)
+  url.searchParams.append('appUrl', `${DEPLOYMENT_URL}/governance`)
 
   return url.toString()
 }

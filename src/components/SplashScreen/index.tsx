@@ -89,7 +89,8 @@ export const SplashScreen = (): ReactElement => {
   const onContinue = async () => {
     trackSafeAppEvent(NAVIGATION_EVENTS.OPEN_LOCKING.action, 'opening')
     alreadyVisitedStorage.set(true)
-    router.push(AppRoutes.activity)
+    const nextPage = router.query.next === AppRoutes.governance ? AppRoutes.governance : AppRoutes.activity
+    router.push(nextPage)
   }
 
   useIsomorphicLayoutEffect(() => {
