@@ -12,11 +12,7 @@ export const AxisTopLabel = ({ startTime, ...props }: VictoryLabelProps & { star
 
   return (
     <>
-      <VictoryLabel
-        {...props}
-        dy={-8}
-        style={{ ...props.style, fontWeight: 700, letterSpacing: '1px', fontSize: '11px' }}
-      />
+      <VictoryLabel {...props} dy={-8} style={{ ...props.style, fontSize: '11px' }} />
       <VictoryLabel {...props} dy={16} text={dateLabel} />
     </>
   )

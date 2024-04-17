@@ -134,10 +134,10 @@ export const BoostGraph = ({
           tickValues={[0, SEASON1_START, SEASON2_START]}
           tickFormat={(value) => {
             if (value === 0) {
-              return 'Program start'
+              return 'Start'
             }
             if (value === SEASON1_START) {
-              return 'Season 1'
+              return 'Early boost end'
             }
 
             return 'Season 1 end'
