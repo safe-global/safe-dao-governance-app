@@ -1,14 +1,16 @@
 .buttonContainer {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   padding: 24px;
   gap: 8px;
   border-radius: 6px;
   border: var(--mui-palette-border-light) 1px solid;
 }
 
-@media (max-width: 899px) {
+@media (max-width: 600px) {
   .buttonContainer {
     flex-direction: column;
+    align-items: flex-start;
   }
 }

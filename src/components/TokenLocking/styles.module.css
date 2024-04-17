@@ -251,6 +251,10 @@
   .leftReceipt {
     border-bottom: 1px dashed white;
   }
+
+  .pageTitle {
+    margin: 16px;
+  }
 }
 
 .gradientBackground {
