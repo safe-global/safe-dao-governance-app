@@ -65,7 +65,7 @@ export const GovernanceAndClaiming = (): ReactElement => {
   }
   return (
     <Grid container spacing={3} direction="row">
-      <Grid item xs={12} className={css.pageTitle}>
+      <Grid item xs={12} mt={4} mb={1} className={css.pageTitle}>
         <Typography variant="h2">Claim SAFE tokens and engage in governance</Typography>
       </Grid>
 

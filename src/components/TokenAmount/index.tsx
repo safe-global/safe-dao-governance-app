@@ -16,7 +16,7 @@ export const TokenAmount = ({ loading, amount, label }: { loading: boolean; amou
         position: 'relative',
       }}
     >
-      <Stack direction="row" spacing={2} alignItems="center">
+      <Stack direction="row" spacing={2} alignItems="center" className={css.content}>
         <SafeToken width={48} height={48} />
         <Box>
           <Typography color="text.secondary">{label}</Typography>
