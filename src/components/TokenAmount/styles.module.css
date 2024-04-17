@@ -6,3 +6,7 @@
   align-items: center;
   z-index: 1;
 }
+
+.content svg {
+  margin-bottom: 6px;
+}
