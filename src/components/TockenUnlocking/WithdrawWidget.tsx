@@ -19,10 +19,10 @@ import { DAY_IN_MS, formatDate } from '@/utils/date'
 
 export const WithdrawWidget = ({
   totalWithdrawable,
-  nextUnlock,
+  pendingUnlocks,
 }: {
   totalWithdrawable: BigNumber
-  nextUnlock: UnlockEvent | undefined
+  pendingUnlocks: UnlockEvent[] | undefined
 }) => {
   const [isWithdrawing, setIsWithdrawing] = useState(false)
   const txSender = useTxSender()
@@ -91,15 +91,15 @@ export const WithdrawWidget = ({
               </Track>
             </Grid>
           </Grid>
-          {nextUnlock && (
-            <Box className={css.nextWithdrawal}>
+          {pendingUnlocks?.map((nextUnlock) => (
+            <Box key={`${nextUnlock.transactionHash}-${nextUnlock.logIndex}`} className={css.nextWithdrawal}>
               <SvgIcon color="primary" component={ClockIcon} inheritViewBox fontSize="small" />
-              <Typography>
-                {formatAmount(formatUnits(nextUnlock.amount, 18), 0)} SAFE will be withdrawable starting{' '}
-                {formatDate(new Date(Date.parse(nextUnlock.executionDate) + DAY_IN_MS))}.
+              <Typography display="inline-flex" gap={1}>
+                <Typography color="primary">{formatAmount(formatUnits(nextUnlock.amount, 18), 0)} SAFE </Typography>{' '}
+                will be withdrawable starting {formatDate(new Date(Date.parse(nextUnlock.executionDate) + DAY_IN_MS))}.
               </Typography>
             </Box>
-          )}
+          ))}
         </Paper>
       </Grid>
     </>

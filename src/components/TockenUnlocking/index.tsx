@@ -23,7 +23,7 @@ const TokenUnlocking = () => {
 
   const relativeLockHistory = useMemo(() => toRelativeLockHistory(lockHistory, startTime), [lockHistory, startTime])
 
-  const { totalLocked, totalUnlocked, totalWithdrawable, nextUnlock } = useSummarizedLockHistory(lockHistory)
+  const { totalLocked, totalUnlocked, totalWithdrawable, pendingUnlocks } = useSummarizedLockHistory(lockHistory)
 
   return (
     <Box maxWidth="888px">
@@ -47,7 +47,7 @@ const TokenUnlocking = () => {
           <UnlockTokenWidget currentlyLocked={totalLocked} lockHistory={relativeLockHistory} />
         </PaperContainer>
         <PaperContainer>
-          <WithdrawWidget totalWithdrawable={totalWithdrawable} nextUnlock={nextUnlock} />
+          <WithdrawWidget totalWithdrawable={totalWithdrawable} pendingUnlocks={pendingUnlocks} />
         </PaperContainer>
       </Stack>
     </Box>

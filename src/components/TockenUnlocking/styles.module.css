@@ -41,7 +41,7 @@
 
 .nextWithdrawal {
   border-radius: 6px;
-  border: 1px var(--mui-palette-primary-main) solid;
+  border: 1px var(--mui-palette-border-main) solid;
   color: var(--mui-palette-text-secondary);
   padding: 16px;
   display: flex;

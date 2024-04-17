@@ -60,7 +60,7 @@ describe('useSummarizedLockHistory', () => {
     expect(result.current.totalLocked.eq(0)).toBeTruthy()
     expect(result.current.totalUnlocked.eq(0)).toBeTruthy()
     expect(result.current.totalWithdrawable.eq(0)).toBeTruthy()
-    expect(result.current.nextUnlock).toBeUndefined()
+    expect(result.current.pendingUnlocks).toEqual([])
   })
 
   it('should add lock events', () => {
@@ -71,19 +71,20 @@ describe('useSummarizedLockHistory', () => {
     expect(result.current.totalLocked.eq(700)).toBeTruthy()
     expect(result.current.totalUnlocked.eq(0)).toBeTruthy()
     expect(result.current.totalWithdrawable.eq(0)).toBeTruthy()
-    expect(result.current.nextUnlock).toBeUndefined()
+    expect(result.current.pendingUnlocks).toEqual([])
   })
 
   it('should summarize lock and unlock events', () => {
+    const newestUnlock = createUnlock('200', '1')
     const expectedNextUnlock = createUnlock('400', '2', FAKE_1H_AGO)
     const { result } = renderHook(() =>
-      useSummarizedLockHistory([createLock('1000'), createUnlock('200', '1'), expectedNextUnlock]),
+      useSummarizedLockHistory([createLock('1000'), newestUnlock, expectedNextUnlock]),
     )
 
     expect(result.current.totalLocked.eq(400)).toBeTruthy()
     expect(result.current.totalUnlocked.eq(600)).toBeTruthy()
     expect(result.current.totalWithdrawable.eq(0)).toBeTruthy()
-    expect(result.current.nextUnlock).toEqual(expectedNextUnlock)
+    expect(result.current.pendingUnlocks).toEqual([expectedNextUnlock, newestUnlock])
   })
 
   it('should show withdrawable amount 24h after unlock', () => {
@@ -99,7 +100,7 @@ describe('useSummarizedLockHistory', () => {
     expect(result.current.totalLocked.eq(700)).toBeTruthy()
     expect(result.current.totalUnlocked.eq(300)).toBeTruthy()
     expect(result.current.totalWithdrawable.eq(200)).toBeTruthy()
-    expect(result.current.nextUnlock).toEqual(expectedNextUnlock)
+    expect(result.current.pendingUnlocks).toEqual([expectedNextUnlock])
   })
 
   it('should substract already withdrawn amounts from withdrawable amount', () => {
@@ -116,6 +117,6 @@ describe('useSummarizedLockHistory', () => {
     expect(result.current.totalLocked.eq(700)).toBeTruthy()
     expect(result.current.totalUnlocked.eq(100)).toBeTruthy()
     expect(result.current.totalWithdrawable.eq(0)).toBeTruthy()
-    expect(result.current.nextUnlock).toEqual(expectedNextUnlock)
+    expect(result.current.pendingUnlocks).toEqual([expectedNextUnlock])
   })
 })

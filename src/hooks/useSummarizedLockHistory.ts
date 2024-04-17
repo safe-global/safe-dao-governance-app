@@ -1,4 +1,4 @@
-import { isGreater24HoursDiff } from '@/utils/date'
+import { isGreaterThan24HoursDiff } from '@/utils/date'
 import { isUnlockEvent, isWithdrawEvent } from '@/utils/lock'
 import { BigNumber } from 'ethers'
 import { useMemo } from 'react'
@@ -10,7 +10,7 @@ export const useSummarizedLockHistory = (
   totalLocked: BigNumber
   totalUnlocked: BigNumber
   totalWithdrawable: BigNumber
-  nextUnlock: UnlockEvent | undefined
+  pendingUnlocks: UnlockEvent[] | undefined
 } => {
   const totalLocked = useMemo(
     () =>
@@ -42,7 +42,7 @@ export const useSummarizedLockHistory = (
       }, BigNumber.from(0)),
     [lockHistory],
   )
-  const { totalWithdrawable, nextUnlock } = useMemo(() => {
+  const { totalWithdrawable, pendingUnlocks } = useMemo(() => {
     const unlocks = lockHistory.filter((event) => isUnlockEvent(event)).map((event) => event as UnlockEvent)
     const withdrawnIds = lockHistory
       .filter((event) => isWithdrawEvent(event))
@@ -52,23 +52,22 @@ export const useSummarizedLockHistory = (
     const withdrawableUnlocks = unlocks.filter(
       (unlock) =>
         !withdrawnIds.includes(unlock.unlockIndex) &&
-        isGreater24HoursDiff(Date.parse(unlock.executionDate), Date.now()),
+        isGreaterThan24HoursDiff(Date.parse(unlock.executionDate), Date.now()),
     )
     const totalWithdrawable = withdrawableUnlocks.reduce((prev, event) => prev.add(event.amount), BigNumber.from(0))
-    const nextUnlock = unlocks
-      .filter((unlock) => !isGreater24HoursDiff(Date.parse(unlock.executionDate), Date.now()))
-      .reduce((prev: undefined | UnlockEvent, current) => {
-        // We look for the oldest unlock event that is not older than 24h
-        const currentExecDate = Date.parse(current.executionDate)
-        const prevExecDate = prev ? Date.parse(prev.executionDate) : undefined
-        return prevExecDate === undefined || currentExecDate < prevExecDate ? current : prev
-      }, undefined)
+    const pendingUnlocks = unlocks
+      .filter(
+        (unlock) =>
+          !withdrawnIds.includes(unlock.unlockIndex) &&
+          !isGreaterThan24HoursDiff(Date.parse(unlock.executionDate), Date.now()),
+      )
+      .reverse()
 
     return {
       totalWithdrawable,
-      nextUnlock,
+      pendingUnlocks,
     }
   }, [lockHistory])
 
-  return { totalLocked, totalUnlocked, totalWithdrawable, nextUnlock }
+  return { totalLocked, totalUnlocked, totalWithdrawable, pendingUnlocks }
 }
