@@ -92,7 +92,7 @@ export const WithdrawWidget = ({
             </Grid>
           </Grid>
           {pendingUnlocks?.map((nextUnlock) => (
-            <Box className={css.nextWithdrawal}>
+            <Box key={`${nextUnlock.transactionHash}-${nextUnlock.logIndex}`} className={css.nextWithdrawal}>
               <SvgIcon color="primary" component={ClockIcon} inheritViewBox fontSize="small" />
               <Typography display="inline-flex" gap={1}>
                 <Typography color="primary">{formatAmount(formatUnits(nextUnlock.amount, 18), 0)} SAFE </Typography>{' '}
