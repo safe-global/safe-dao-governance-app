@@ -94,9 +94,9 @@ export const WithdrawWidget = ({
           {pendingUnlocks?.map((nextUnlock) => (
             <Box className={css.nextWithdrawal}>
               <SvgIcon color="primary" component={ClockIcon} inheritViewBox fontSize="small" />
-              <Typography>
-                {formatAmount(formatUnits(nextUnlock.amount, 18), 0)} SAFE will be withdrawable starting{' '}
-                {formatDate(new Date(Date.parse(nextUnlock.executionDate) + DAY_IN_MS))}.
+              <Typography display="inline-flex" gap={1}>
+                <Typography color="primary">{formatAmount(formatUnits(nextUnlock.amount, 18), 0)} SAFE </Typography>{' '}
+                will be withdrawable starting {formatDate(new Date(Date.parse(nextUnlock.executionDate) + DAY_IN_MS))}.
               </Typography>
             </Box>
           ))}
