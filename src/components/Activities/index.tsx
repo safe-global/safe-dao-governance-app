@@ -60,7 +60,7 @@ const Activities = () => {
             <Typography width="80%" textAlign="center">
               With the{' '}
               <Typography fontWeight="bold" display="inline">
-                {'Safe {Pass} Program'}
+                {'Safe {Pass}'}
               </Typography>{' '}
               you can earn Points by using your Safe Account. Some activities are rewarded throughout the entire season,
               some activities are only rewarded temporarily.
