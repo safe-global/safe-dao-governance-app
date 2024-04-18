@@ -1,5 +1,4 @@
-import { SEASON2_START } from '@/config/constants'
-import { floorNumber } from '@/utils/boost'
+import { floorNumber, getTimeFactor } from '@/utils/boost'
 import { getCurrentDays } from '@/utils/date'
 import { AccessTime } from '@mui/icons-material'
 import { Box, LinearProgress, Stack, Tooltip, Typography } from '@mui/material'
@@ -21,7 +20,8 @@ export const BoostMeter = ({
 
   const now = useMemo(() => getCurrentDays(startTime), [startTime])
 
-  const value = ((SEASON2_START - now) / SEASON2_START) * 100
+  const currentTimeFactor = getTimeFactor(now)
+  const value = currentTimeFactor * 100
 
   let boostMeterInfo: ReactElement | null = null
 
@@ -59,10 +59,8 @@ export const BoostMeter = ({
           padding: '2px',
           borderRadius: '8px',
           backgroundColor: ({ palette }) => palette.border.main,
-
           '& .MuiLinearProgress-bar': {
             borderRadius: '6px',
-
             transform: () => {
               return `translateY(${100 - value}%) !important`
             },
@@ -72,9 +70,9 @@ export const BoostMeter = ({
       <Box>
         <Tooltip
           title={
-            value < 25
-              ? 'Receive a bonus for locking early. Realise your last chance to get an early boost.'
-              : 'Receive a bonus for locking early. The boost meter is going down over time.'
+            value > 50
+              ? 'Receive a bonus for early locking. Boost meter is going down over time.'
+              : 'Receive a bonus for early locking. Realise your last chance to get an early boost.'
           }
         >
           <AccessTime fontSize="small" />
