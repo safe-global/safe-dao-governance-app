@@ -1,7 +1,7 @@
 import { CHAIN_SAFE_LOCKING_ADDRESS } from '@/config/constants'
 import { BigNumber } from 'ethers'
 import type { JsonRpcProvider } from '@ethersproject/providers'
-import { defaultAbiCoder, formatUnits, Interface } from 'ethers/lib/utils'
+import { formatUnits, Interface } from 'ethers/lib/utils'
 import { LockingHistoryEntry, UnlockEvent, useLockHistory, WithdrawEvent } from '@/hooks/useLockHistory'
 import { toDaysSinceStart } from './date'
 
@@ -70,19 +70,6 @@ export const createWithdrawTx = (chainId: string) => {
   }
 }
 
-export const fetchLockedAmount = async (chainId: string, safeAddress: string, provider: JsonRpcProvider) => {
-  const lockingAddress = CHAIN_SAFE_LOCKING_ADDRESS[chainId]
-  const result = await provider.call({
-    to: lockingAddress,
-    data: safeLockingInterface.encodeFunctionData('getUser', [safeAddress]),
-  })
-
-  const decodedResult = defaultAbiCoder.decode(['uint96', 'uint96', 'uint32', 'uint32'], result)
-  if (Array.isArray(decodedResult)) {
-    return decodedResult as [BigNumber, BigNumber, number, number]
-  }
-}
-
 /**
  * Returns total tokens in the locking contract including locked and unlocked amounts.
  *
@@ -105,29 +92,5 @@ export const fetchLockingContractBalance = async (chainId: string, safeAddress: 
     })
   } catch (err) {
     throw Error(`Error fetching Safe Token balance in locking contract:  ${err}`)
-  }
-}
-
-/**
- * Receives the data for a specific Unlock.
- *
- * @param index index of the unlock
- * @returns Unlock data for index: [amount, unlockedAt (in seconds)] or undefined
- */
-export const fetchUnlockData = async (
-  chainId: string,
-  safeAddress: string,
-  index: number,
-  provider: JsonRpcProvider,
-): Promise<[BigNumber, BigNumber] | undefined> => {
-  const lockingAddress = CHAIN_SAFE_LOCKING_ADDRESS[chainId]
-  const result = await provider.call({
-    to: lockingAddress,
-    data: safeLockingInterface.encodeFunctionData('getUnlock', [safeAddress, index]),
-  })
-  const decodedResult = defaultAbiCoder.decode(['uint96', 'uint64'], result)
-
-  if (Array.isArray(decodedResult)) {
-    return decodedResult as [BigNumber, BigNumber]
   }
 }
