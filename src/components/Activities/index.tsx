@@ -60,7 +60,7 @@ const Activities = () => {
             <Typography width="80%" textAlign="center">
               With the{' '}
               <Typography fontWeight="bold" display="inline">
-                {'Safe {Pass} Program'}
+                {'Safe {Pass}'}
               </Typography>{' '}
               you can earn Points by using your Safe Account. Some activities are rewarded throughout the entire season,
               some activities are only rewarded temporarily.
@@ -72,7 +72,7 @@ const Activities = () => {
               <ActivityItem
                 icon={<UserIcon height="150px" alt="user icon" />}
                 title="Weekly user"
-                description="Transacting with your safe account on a weekly basis"
+                description="Transacting with your Safe Account on a weekly basis"
               />
               <ActivityItem
                 icon={<TransactionsVolumeIcon height="150px" alt="arrows pointing left and right" />}
@@ -87,7 +87,7 @@ const Activities = () => {
               <ActivityItem
                 icon={<AssetsStoredIcon height="150px" alt="overlapping boxes" />}
                 title="Assets stored"
-                description="The total assets value in your safe account"
+                description="The total assets value in your Safe Account"
               />
               <ActivityItem
                 icon={<Image src={EmptyActivityIcon} alt="Other activities placeholder" />}
