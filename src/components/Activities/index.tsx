@@ -11,7 +11,7 @@ import TransactionsVolumeIcon from '@/public/images/transactions-volume.svg'
 import TransactionsNumberIcon from '@/public/images/transactions-number.svg'
 import AssetsStoredIcon from '@/public/images/assets-stored.svg'
 import EmptyActivityIcon from '@/public/images/empty-activity.png'
-import ChatBubble from '@/public/images/chatbubble.png'
+import UserBustIcon from '@/public/images/user-bust.png'
 import Image from 'next/image'
 import { SAFE_PASS_HELP_ARTICLE_URL } from '@/config/constants'
 
@@ -53,7 +53,7 @@ const Activities = () => {
         <Typography variant="h1">Eligible activities</Typography>
         <PaperContainer>
           <Stack alignItems="center" gap={2} pt={6}>
-            <Image src={ChatBubble} alt="Chat bubble" />
+            <Image src={UserBustIcon} alt="User Bust" />
 
             <SvgIcon component={SafePass} inheritViewBox sx={{ width: '282px', height: 'auto', my: 2 }} />
 
@@ -82,7 +82,7 @@ const Activities = () => {
               <ActivityItem
                 icon={<TransactionsNumberIcon height="150px" alt="arrow pointing up with plus symbol" />}
                 title="No. of transactions"
-                description="The number of transactions made with your Safe Account"
+                description="The number of transactions made with your safe account"
               />
               <ActivityItem
                 icon={<AssetsStoredIcon height="150px" alt="overlapping boxes" />}
