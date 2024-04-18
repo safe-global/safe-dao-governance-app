@@ -89,9 +89,9 @@ export const ActivityRewardsInfo = () => {
             </Typography>
           </div>
           <Divider />
-          <NextLink style={{ textAlign: 'center', fontSize: '14px' }} href={AppRoutes.activityProgram}>
+          <Link href={AppRoutes.activityProgram} component={NextLink} sx={{ textAlign: 'center', fontSize: '14px' }}>
             View eligible activities
-          </NextLink>
+          </Link>
         </PaperContainer>
       </Box>
     </AccordionContainer>
