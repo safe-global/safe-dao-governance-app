@@ -6,12 +6,12 @@ import PaperContainer from '@/components//PaperContainer'
 import { ExternalLink } from '@/components/ExternalLink'
 import { ChevronLeft } from '@mui/icons-material'
 import SafePass from '@/public/images/safe-pass.svg'
-import UserIcon from '@/public/images/user.svg'
-import TransactionsVolumeIcon from '@/public/images/transactions-volume.svg'
-import TransactionsNumberIcon from '@/public/images/transactions-number.svg'
-import AssetsStoredIcon from '@/public/images/assets-stored.svg'
+import UserBustIcon from '@/public/images/user-bust.png'
+import WeeklyUser from '@/public/images/weekly-user.png'
+import TransactionsVolumeIcon from '@/public/images/transaction-volume.png'
+import TransactionsNumberIcon from '@/public/images/transaction-number.png'
+import AssetsStoredIcon from '@/public/images/assets-stored.png'
 import EmptyActivityIcon from '@/public/images/empty-activity.png'
-import UserBustIcon from '@/public/images/user-bust.svg'
 import Image from 'next/image'
 import { SAFE_PASS_HELP_ARTICLE_URL } from '@/config/constants'
 
@@ -53,7 +53,7 @@ const Activities = () => {
         <Typography variant="h1">Eligible activities</Typography>
         <PaperContainer>
           <Stack alignItems="center" gap={2} pt={6}>
-            <UserBustIcon height="200px" alt="User bust" />
+            <Image src={UserBustIcon} alt="User bust" />
             <SvgIcon component={SafePass} inheritViewBox sx={{ width: '282px', height: 'auto', my: 2 }} />
 
             <Typography width="80%" textAlign="center">
@@ -69,22 +69,22 @@ const Activities = () => {
 
             <Box display="flex" flexWrap="wrap" justifyContent="center">
               <ActivityItem
-                icon={<UserIcon height="150px" alt="user icon" />}
+                icon={<Image src={WeeklyUser} alt="user icon" />}
                 title="Weekly user"
                 description="Transacting with your Safe Account on a weekly basis"
               />
               <ActivityItem
-                icon={<TransactionsVolumeIcon height="150px" alt="arrows pointing left and right" />}
+                icon={<Image src={TransactionsVolumeIcon} alt="arrows pointing left and right" />}
                 title="Volume transacted"
                 description="Volume of your transactions"
               />
               <ActivityItem
-                icon={<TransactionsNumberIcon height="150px" alt="arrow pointing up with plus symbol" />}
+                icon={<Image src={TransactionsNumberIcon} alt="arrow pointing up with plus symbol" />}
                 title="No. of transactions"
                 description="The number of transactions made with your safe account"
               />
               <ActivityItem
-                icon={<AssetsStoredIcon height="150px" alt="overlapping boxes" />}
+                icon={<Image src={AssetsStoredIcon} alt="overlapping boxes" />}
                 title="Assets stored"
                 description="The total assets value in your Safe Account"
               />
