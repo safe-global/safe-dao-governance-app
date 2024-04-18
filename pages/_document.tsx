@@ -10,12 +10,14 @@ import createEmotionServer from '@emotion/server/create-instance'
 
 import { Favicons } from '@/components/Favicons'
 import { createEmotionCache } from '@/styles/emotion'
+import { IS_PRODUCTION } from '@/config/constants'
 
 export default class MyDocument extends Document {
   render() {
     return (
       <Html lang="en">
         <Head>
+          <meta name="robots" content={IS_PRODUCTION ? 'nofollow' : 'noindex,nofollow'} />
           <meta name="emotion-insertion-point" content="" />
           {(this.props as any).emotionStyleTags}
           <Favicons />
