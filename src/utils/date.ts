@@ -44,7 +44,7 @@ export const formatDay = (days: number, start: number) => {
 
 export const DAY_IN_MS = 1000 * 60 * 60 * 24
 
-export const isGreater24HoursDiff = (timestamp1: number, timestamp2: number) => {
+export const isGreaterThan24HoursDiff = (timestamp1: number, timestamp2: number) => {
   return Math.abs(timestamp1 - timestamp2) > DAY_IN_MS
 }
 

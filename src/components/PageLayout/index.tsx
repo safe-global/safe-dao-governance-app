@@ -28,30 +28,27 @@ export const PageLayout = ({ children }: { children: ReactNode }): ReactElement 
 
       <BackgroundCircles />
 
-      <Box
-        pt={{ sm: 7, xs: undefined }}
-        pb={{ sm: 6, xs: undefined }}
-        sx={{ minHeight: '100vh', display: 'flex', alignItems: 'center' }}
-        component="main"
-      >
+      <Box pt={7} pb={6} sx={{ minHeight: '100vh', display: 'flex', alignItems: 'center' }} component="main">
         <Box className={css.container}>
           {showNavigation && (
-            <NavTabs
-              tabs={[
-                {
-                  label: 'Activity App',
-                  href: AppRoutes.activity,
-                  event: NAVIGATION_EVENTS.OPEN_LOCKING,
-                },
-                {
-                  label: 'Governance / Claiming',
-                  href: AppRoutes.governance,
-                  event: NAVIGATION_EVENTS.OPEN_CLAIM,
-                },
-              ]}
-            />
+            <Box className={css.navigation}>
+              <NavTabs
+                tabs={[
+                  {
+                    label: 'Activity App',
+                    href: AppRoutes.activity,
+                    event: NAVIGATION_EVENTS.OPEN_LOCKING,
+                  },
+                  {
+                    label: 'Governance / Claiming',
+                    href: AppRoutes.governance,
+                    event: NAVIGATION_EVENTS.OPEN_CLAIM,
+                  },
+                ]}
+              />
+            </Box>
           )}
-          {children}
+          <Box className={css.pageContent}>{children}</Box>
         </Box>
       </Box>
     </>

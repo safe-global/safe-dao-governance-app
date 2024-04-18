@@ -20,6 +20,8 @@ import { useIsDelegationPending } from '@/hooks/usePendingDelegations'
 import ClaimOverview from '@/components/Claim'
 import PaperContainer from '@/components/PaperContainer'
 
+import css from './styles.module.css'
+
 export const GovernanceAndClaiming = (): ReactElement => {
   const router = useRouter()
   const isWrongChain = useIsWrongChain()
@@ -63,7 +65,7 @@ export const GovernanceAndClaiming = (): ReactElement => {
   }
   return (
     <Grid container spacing={3} direction="row">
-      <Grid item xs={12}>
+      <Grid item xs={12} mt={4} mb={1} className={css.pageTitle}>
         <Typography variant="h2">Claim SAFE tokens and engage in governance</Typography>
       </Grid>
 

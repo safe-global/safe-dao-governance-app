@@ -42,10 +42,10 @@ export const BoostMeter = ({
       )
     } else {
       boostMeterInfo =
-        value < 50 ? (
-          <Typography>Your last chance to get the early boost.</Typography>
+        value > 25 ? (
+          <Typography color="text.secondary">The earlier you lock the higher the boost.</Typography>
         ) : (
-          <Typography>The earlier you lock the higher the boost.</Typography>
+          <Typography color="text.secondary">Your last chance to get the early boost.</Typography>
         )
     }
   } else {
@@ -82,7 +82,7 @@ export const BoostMeter = ({
         >
           <AccessTime fontSize="small" />
         </Tooltip>
-        <Typography variant="subtitle2" fontWeight={700}>
+        <Typography variant="subtitle2" my={1} fontWeight={700}>
           Early boost meter
         </Typography>
         {boostMeterInfo}

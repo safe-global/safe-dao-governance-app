@@ -9,7 +9,7 @@ import EmptyBreakdown from '@/public/images/empty-breakdown.svg'
 import css from './styles.module.css'
 
 const BoostStrengthSignal = ({ boost, color }: { boost: number; color: 'primary' | 'warning' | undefined }) => {
-  const strength = Math.floor(boost / 1.25)
+  const strength = Math.floor((boost - 1) / 0.25)
 
   if (strength === 0) {
     return null
@@ -52,24 +52,19 @@ export const BoostBreakdown = ({
   const isInitialState = realizedBoost === 1 && currentFinalBoost === 1 && newFinalBoost === 1
 
   return (
-    <Stack direction={{ xs: 'row', md: 'column' }} gap={2} height="100%">
-      <Box className={`${css.boostInfoBox} ${css.bordered}`} p={3} gap={4} flex="1" height="100%" display="flex">
-        <Stack direction="row" justifyContent="space-between" width="100%" alignItems="start">
-          <span style={{ display: 'inline-flex' }}>
-            {!isInitialState && (
-              <>
-                <SignalCellularAlt color="border" fontSize="large" />
-                <BoostStrengthSignal
-                  boost={newFinalBoost}
-                  color={isVisibleDifference ? (isLock ? 'primary' : 'warning') : undefined}
-                />
-              </>
-            )}
-          </span>
-          <Typography variant="body2" color="text.secondary">
-            Realized boost {floorNumber(realizedBoost, 2)}x
-          </Typography>
-        </Stack>
+    <Stack direction={{ md: 'column' }} gap={2} height="100%">
+      <Box className={`${css.boostInfoBox} ${css.bordered}`} p={4} gap={4} flex="2" height="100%" display="flex">
+        <span style={{ display: 'inline-flex' }}>
+          {!isInitialState && (
+            <>
+              <SignalCellularAlt color="border" fontSize="large" />
+              <BoostStrengthSignal
+                boost={newFinalBoost}
+                color={isVisibleDifference ? (isLock ? 'primary' : 'warning') : undefined}
+              />
+            </>
+          )}
+        </span>
 
         {isInitialState ? (
           <Stack mt={4} spacing={4}>
@@ -79,7 +74,7 @@ export const BoostBreakdown = ({
             </Typography>
           </Stack>
         ) : (
-          <Stack direction="column" width="100%" alignItems="start" mt="auto" spacing={1}>
+          <Stack direction="column" width="100%" alignItems="start" mt="auto" spacing={2}>
             <BoostCounter
               value={newFinalBoost}
               variant="h2"
@@ -88,12 +83,12 @@ export const BoostBreakdown = ({
               direction={isVisibleDifference ? (isLock ? 'north' : 'south') : undefined}
             />
             <Typography variant="body2" color="text.secondary">
-              Expected final point boost
+              Your boost
             </Typography>
           </Stack>
         )}
       </Box>
-      <Box className={`${css.boostInfoBox} ${css.bordered}`} flex="1" p={2} gap={4} display="flex" width="100%">
+      <Box className={`${css.boostInfoBox} ${css.bordered}`} flex="0" p={4} gap={4} display="flex" width="100%">
         <Box>
           <BoostMeter isLock={isLock} isVisibleDifference={isVisibleDifference} prediction={boostPrediction} />
         </Box>

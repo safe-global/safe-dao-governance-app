@@ -1,7 +1,7 @@
 .tabs {
   overflow: initial;
-  margin-bottom: 24px;
   align-self: flex-start;
+  width: 100%;
 }
 
 /* Scroll buttons */
@@ -23,10 +23,6 @@
 
 .tabs :global .MuiTabScrollButton-root ~ .MuiTabs-scroller p {
   padding-bottom: 0;
-}
-
-.tabs :global .MuiTabs-scroller {
-  border-bottom: 1px solid #303033;
 }
 
 .tab {
