@@ -1,7 +1,7 @@
 import { CHAIN_SAFE_LOCKING_ADDRESS } from '@/config/constants'
 import { BigNumber } from 'ethers'
 import type { JsonRpcProvider } from '@ethersproject/providers'
-import { defaultAbiCoder, formatUnits, Interface, parseUnits } from 'ethers/lib/utils'
+import { defaultAbiCoder, formatUnits, Interface } from 'ethers/lib/utils'
 import { LockingHistoryEntry, UnlockEvent, useLockHistory, WithdrawEvent } from '@/hooks/useLockHistory'
 import { toDaysSinceStart } from './date'
 

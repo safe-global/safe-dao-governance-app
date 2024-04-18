@@ -1,10 +1,8 @@
-import NextLink from 'next/link'
-import { SvgIcon, Grid, Typography, Paper, Box, Link, Stack } from '@mui/material'
+import { SvgIcon, Typography, Paper, Box, Stack } from '@mui/material'
 import { useRef } from 'react'
 import type { ReactElement, SyntheticEvent } from 'react'
 
 import Hat from '@/public/images/hat.svg'
-import { AppRoutes } from '@/config/routes'
 import { FORUM_URL, CHAIN_SNAPSHOT_URL } from '@/config/constants'
 import { ExternalLink } from '@/components/ExternalLink'
 import { useChainId } from '@/hooks/useChainId'

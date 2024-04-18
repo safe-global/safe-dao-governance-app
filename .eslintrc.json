@@ -1,9 +1,10 @@
 {
   "extends": ["next/core-web-vitals", "prettier"],
-  "plugins": ["prettier", "@typescript-eslint"],
+  "plugins": ["unused-imports", "prettier", "@typescript-eslint"],
   "rules": {
     "@next/next/no-img-element": "off",
-    "no-constant-condition": "warn"
+    "no-constant-condition": "warn",
+    "unused-imports/no-unused-imports-ts": "error"
   },
   "ignorePatterns": ["node_modules/", ".next/", ".github/", "src/types/contracts"]
 }

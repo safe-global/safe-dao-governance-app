@@ -1,5 +1,4 @@
 import { SEASON1_START, SEASON2_START } from '@/config/constants'
-import { getTime } from 'date-fns'
 import { floorNumber, getBoostFunction, getTimeFactor, getTokenBoost } from '../boost'
 import { LockHistory } from '../lock'
 

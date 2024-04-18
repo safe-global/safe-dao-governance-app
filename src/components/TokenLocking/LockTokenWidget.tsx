@@ -1,5 +1,5 @@
 import { formatAmount } from '@/utils/formatters'
-import { Typography, Stack, Grid, TextField, InputAdornment, Button, Box, CircularProgress, Link } from '@mui/material'
+import { Typography, Stack, Grid, TextField, InputAdornment, Button, Box, CircularProgress } from '@mui/material'
 import NorthEastIcon from '@mui/icons-material/NorthEast'
 import { formatUnits, parseUnits } from 'ethers/lib/utils'
 import SafeToken from '@/public/images/token.svg'

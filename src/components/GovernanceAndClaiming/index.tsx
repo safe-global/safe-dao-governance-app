@@ -1,4 +1,4 @@
-import { Grid, Typography, Box, Button, CircularProgress, Stack, Paper, Link } from '@mui/material'
+import { Grid, Typography, Box, Button, CircularProgress, Stack } from '@mui/material'
 import { useRouter } from 'next/router'
 import { BigNumber } from 'ethers'
 import type { ReactElement } from 'react'

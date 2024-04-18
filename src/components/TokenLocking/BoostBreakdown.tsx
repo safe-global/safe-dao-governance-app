@@ -1,6 +1,6 @@
 import { floorNumber } from '@/utils/boost'
 import { SignalCellularAlt, SignalCellularAlt1Bar, SignalCellularAlt2Bar } from '@mui/icons-material'
-import { Stack, Typography, Box, SvgIcon } from '@mui/material'
+import { Stack, Typography, Box } from '@mui/material'
 import BoostCounter from '../BoostCounter'
 import { BoostMeter } from './BoostMeter'
 
