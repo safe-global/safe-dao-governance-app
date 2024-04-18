@@ -54,17 +54,20 @@ export const BoostBreakdown = ({
   return (
     <Stack direction={{ md: 'column' }} gap={2} height="100%">
       <Box className={`${css.boostInfoBox} ${css.bordered}`} p={4} gap={4} flex="2" height="100%" display="flex">
-        <span style={{ display: 'inline-flex' }}>
-          {!isInitialState && (
-            <>
-              <SignalCellularAlt color="border" fontSize="large" />
-              <BoostStrengthSignal
-                boost={newFinalBoost}
-                color={isVisibleDifference ? (isLock ? 'primary' : 'warning') : undefined}
-              />
-            </>
-          )}
-        </span>
+        <Box display="flex" flexDirection="row" justifyContent="space-between" alignItems="center">
+          <span style={{ display: 'inline-flex' }}>
+            {!isInitialState && (
+              <>
+                <SignalCellularAlt color="border" fontSize="large" />
+                <BoostStrengthSignal
+                  boost={newFinalBoost}
+                  color={isVisibleDifference ? (isLock ? 'primary' : 'warning') : undefined}
+                />
+              </>
+            )}
+          </span>
+          <Typography color="text.secondary">Current boost: {floorNumber(currentFinalBoost, 2)}x</Typography>
+        </Box>
 
         {isInitialState ? (
           <Stack mt={4} spacing={4}>

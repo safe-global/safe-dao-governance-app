@@ -1,5 +1,5 @@
 import { formatDay } from '@/utils/date'
-import { VictoryLabel, VictoryLabelProps } from 'victory'
+import { VictoryLabel, VictoryLabelProps, VictoryLabelStyleObject } from 'victory'
 
 export const AxisTopLabel = ({ startTime, ...props }: VictoryLabelProps & { startTime: number; datum?: number }) => {
   const days = props.datum
@@ -12,8 +12,8 @@ export const AxisTopLabel = ({ startTime, ...props }: VictoryLabelProps & { star
 
   return (
     <>
-      <VictoryLabel {...props} dy={-8} style={{ ...props.style, fontSize: '11px' }} />
-      <VictoryLabel {...props} dy={16} text={dateLabel} />
+      <VictoryLabel {...props} dy={0} style={{ fontSize: '11px' }} />
+      <VictoryLabel {...props} dy={16} text={dateLabel} style={{ fontSize: '11px', fill: '#FFF' }} />
     </>
   )
 }

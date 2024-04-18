@@ -35,6 +35,21 @@ export const ScatterDot = ({
           onMouseEnter={() => setHovered(true)}
           onMouseLeave={() => setHovered(false)}
         />
+        {hovered && props.datum.x !== SEASON2_START && (
+          <ArrowDownLabel
+            style={{
+              verticalAnchor: 'middle',
+              textAnchor: 'middle',
+              fontFamily: 'DM Sans',
+              fontSize: 14,
+              fill: theme.palette.text.primary,
+            }}
+            x={props.x}
+            y={props.y}
+            text={`${floorNumber(props.datum.y, 2)}x`}
+            backgroundColor={backgroundColor}
+          />
+        )}
       </>
     )
   }
@@ -60,7 +75,7 @@ export const ScatterDot = ({
             verticalAnchor: 'middle',
             textAnchor: 'middle',
             fontFamily: 'DM Sans',
-            fontSize: 16,
+            fontSize: 14,
             fill: theme.palette.text.primary,
           }}
           x={props.x}
