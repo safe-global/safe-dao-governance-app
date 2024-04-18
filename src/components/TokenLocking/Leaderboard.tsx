@@ -158,6 +158,7 @@ const LeaderboardPage = ({
 }): ReactElement => {
   const leaderboardPage = useGlobalLeaderboardPage(PAGE_SIZE, index * PAGE_SIZE)
   const rows = leaderboardPage?.results ?? []
+  const isLeaderboardEmpty = index === 0 && (!rows || rows.length === 0)
 
   if (leaderboardPage === undefined) {
     return (
@@ -172,6 +173,18 @@ const LeaderboardPage = ({
           <StyledTableCell align="left">
             <Skeleton />
           </StyledTableCell>
+        </StyledTableRow>
+      </>
+    )
+  }
+  if (isLeaderboardEmpty) {
+    return (
+      <>
+        <StyledTableRow>
+          <StyledTableCell colSpan={2}>
+            <Typography>No entries</Typography>
+          </StyledTableCell>
+          <StyledTableCell></StyledTableCell>
         </StyledTableRow>
       </>
     )
