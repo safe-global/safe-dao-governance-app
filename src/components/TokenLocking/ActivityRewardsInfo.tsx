@@ -71,12 +71,12 @@ export const ActivityRewardsInfo = () => {
             <Step
               active={stepsActive[0]}
               title="Lock SAFE to boost Points"
-              description="Lock your tokens early to increase your earning power. The earlier and more you lock, the bigger your points multiplier."
+              description="Lock your tokens early to increase your earning power. The earlier and more you lock, the bigger your points multiplier. Geographic & other limitations apply (see disclaimer below)v"
             />
             <Step
               active={stepsActive[1]}
               title="Get activity Points"
-              description="Earn Points by using your Safe Account. Your Points are multiplied by the boost you build until end of Season 1."
+              description="Earn Points by using your Safe Account. Your Points are multiplied by the realised boost."
             />
             <Step
               active={stepsActive[2]}

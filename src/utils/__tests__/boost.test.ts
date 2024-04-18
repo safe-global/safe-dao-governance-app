@@ -23,6 +23,11 @@ describe('boost', () => {
   })
 
   describe('getTokenBoost', () => {
+    it('should return 0 for NaN amount', () => {
+      expect(getTokenBoost(Number('*'))).toBe(0)
+      expect(getTokenBoost(Number('100-10'))).toBe(0)
+      expect(getTokenBoost(Number('100**10'))).toBe(0)
+    })
     it('should return 0 for amounts below 100', () => {
       expect(getTokenBoost(0)).toBe(0)
       expect(getTokenBoost(1)).toBe(0)
@@ -78,6 +83,14 @@ describe('boost', () => {
 
   describe('getBoostFunction', () => {
     describe('without prior locks on day 0', () => {
+      it('should always return 1.0 for amount NaN', () => {
+        const boostFunction = getBoostFunction(0, Number.NaN, [])
+        expect(boostFunction({ x: -1 })).toBe(1)
+        expect(boostFunction({ x: 0 })).toBe(1)
+        expect(boostFunction({ x: SEASON1_START })).toBe(1)
+        expect(boostFunction({ x: SEASON2_START })).toBe(1)
+        expect(boostFunction({ x: 1000 })).toBe(1)
+      })
       it('should always return 1.0 for amount 0', () => {
         const boostFunction = getBoostFunction(0, 0, [])
         expect(boostFunction({ x: -1 })).toBe(1)
@@ -132,6 +145,19 @@ describe('boost', () => {
       // 1.0 * 0.86 + 1 = 1.86
       expect(boostFunction({ x: 45 })).toBeCloseTo(1.86)
       expect(boostFunction({ x: 1000 })).toBeCloseTo(1.86)
+    })
+
+    it('should keep boost unchanged if NaN is the locked amount', () => {
+      const priorLock: LockHistory = {
+        day: 0,
+        amount: 1000,
+      }
+      const boostFunction = getBoostFunction(40, Number.NaN, [priorLock])
+
+      expect(boostFunction({ x: -1 })).toBe(1)
+      expect(boostFunction({ x: 0 })).toBeCloseTo(1.25)
+      expect(boostFunction({ x: 40 })).toBeCloseTo(1.25)
+      expect(boostFunction({ x: 1000 })).toBeCloseTo(1.25)
     })
 
     it('should compute for 1000 tokens on day one and 1000 after 40 days', () => {

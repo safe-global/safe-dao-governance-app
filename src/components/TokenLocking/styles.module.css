@@ -193,7 +193,11 @@
 
 .barcode {
   position: absolute;
-  right: 0px;
+  bottom: 0;
+  left: 50%;
+  z-index: 1;
+  transform: translate(-50%, 50%) rotate(90deg);
+  pointer-events: none;
 }
 
 .closeButton {
@@ -206,8 +210,6 @@
 @media (max-width: 899px) {
   .milesReceipt {
     width: 100%;
-    height: 100%;
-    overflow: auto;
   }
 
   .leftReceipt,

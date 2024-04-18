@@ -1,6 +1,7 @@
-import { Button, IconButton, Modal, Stack, SvgIcon, Typography } from '@mui/material'
+import { IconButton, Modal, Stack, SvgIcon, Typography } from '@mui/material'
 import css from './styles.module.css'
 import SafePass from '@/public/images/safe-pass.svg'
+import Barcode from '@/public/images/barcode.svg'
 import { NorthRounded, SouthRounded } from '@mui/icons-material'
 import XIcon from '@mui/icons-material/X'
 import CloseIcon from '@mui/icons-material/Close'
@@ -39,8 +40,10 @@ const MilesReceipt = ({
             </Typography>
             <Typography mb={4}>
               You successfully started {isUnlock ? 'unlocking' : 'locking'} {amount} SAFE. Once the transaction is
-              signed and executed the changes will be reflected in this App.
-              {isUnlock ? ' The tokens will be will be available to withdraw in 24h.' : ''}
+              signed and executed{' '}
+              {isUnlock
+                ? 'the tokens will be available to withdraw in 24 hours.'
+                : 'your tokens will be locked and you will get boosted.'}
             </Typography>
 
             {!isUnlock && (
@@ -60,7 +63,7 @@ const MilesReceipt = ({
           </Stack>
           <Stack gap={3} justifyContent="center" mt={6}>
             <Typography variant="h4" fontWeight="bold">
-              Your activity update
+              Your overview
             </Typography>
 
             <Stack direction="row" alignItems="baseline">
@@ -85,7 +88,7 @@ const MilesReceipt = ({
                   {formatAmount(floorNumber(newFinalBoost, 2), 2)}x
                 </Typography>
                 <Typography color="text.secondary" ml={1}>
-                  Your new final boost
+                  Your boost
                 </Typography>
               </Stack>
             </div>
@@ -93,6 +96,7 @@ const MilesReceipt = ({
               <CloseIcon fontSize="large" />
             </IconButton>
           </Stack>
+          <Barcode className={css.barcode} />
         </Stack>
       </>
     </Modal>

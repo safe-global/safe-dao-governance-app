@@ -6,7 +6,7 @@ export const floorNumber = (num: number, digits: number) => {
 }
 
 export const getTokenBoost = (amountLocked: number) => {
-  if (amountLocked <= 100) {
+  if (isNaN(amountLocked) || amountLocked <= 100) {
     return 0
   }
   if (amountLocked <= 1_000) {
@@ -44,7 +44,7 @@ export const getBoostFunction =
   (now: number, amountDiff: number, history: LockHistory[]) =>
   (d: { x: number }): number => {
     // Add new boost to history
-    const newHistory: LockHistory[] = [...history, { amount: amountDiff, day: now }]
+    const newHistory: LockHistory[] = [...history, { amount: isNaN(amountDiff) ? 0 : amountDiff, day: now }]
 
     // Filter out all entries that were made after the current day (x)
     const filteredHistory = newHistory.filter((entry) => entry.day <= d.x)
