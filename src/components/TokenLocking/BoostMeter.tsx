@@ -1,4 +1,3 @@
-import { SEASON2_START } from '@/config/constants'
 import { floorNumber, getTimeFactor } from '@/utils/boost'
 import { getCurrentDays } from '@/utils/date'
 import { AccessTime } from '@mui/icons-material'
@@ -22,9 +21,6 @@ export const BoostMeter = ({
   const now = useMemo(() => getCurrentDays(startTime), [startTime])
 
   const currentTimeFactor = getTimeFactor(now)
-  const maxTimeFactor = getTimeFactor(0)
-  const minTimeFactor = getTimeFactor(SEASON2_START)
-
   const value = currentTimeFactor * 100
 
   let boostMeterInfo: ReactElement | null = null

@@ -26,11 +26,7 @@ export const getTimeFactor = (days: number) => {
     return 1
   }
 
-  if (days <= 150) {
-    return 1 - (days - 27) / 133
-  }
-
-  return 0
+  return Math.max(0, 1 - (days - 27) / 133)
 }
 
 /**
