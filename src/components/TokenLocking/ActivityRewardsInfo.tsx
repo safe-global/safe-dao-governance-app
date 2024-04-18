@@ -7,6 +7,7 @@ import { useOwnRank } from '@/hooks/useLeaderboard'
 import { toDaysSinceStart } from '@/utils/date'
 import Asterix from '@/public/images/asterix.svg'
 import { AccordionContainer } from '@/components/AccordionContainer'
+import NextLink from 'next/link'
 
 import PaperContainer from '../PaperContainer'
 import { useStartDate } from '@/hooks/useStartDates'
@@ -53,7 +54,6 @@ export const ActivityRewardsInfo = () => {
             inheritViewBox
             sx={{ color: 'transparent', position: 'absolute', top: 0, right: 0, height: '208px', width: 'inherit' }}
           />
-
           <div className={css.steps}>
             {ownRank && (
               <>
@@ -88,14 +88,10 @@ export const ActivityRewardsInfo = () => {
               Repeat!
             </Typography>
           </div>
-
           <Divider />
-          <Link
-            sx={{ textAlign: 'center', fontSize: '14px', cursor: 'pointer' }}
-            onClick={() => router.push(AppRoutes.activityProgram)}
-          >
+          <NextLink style={{ textAlign: 'center', fontSize: '14px' }} href={AppRoutes.activityProgram}>
             View eligible activities
-          </Link>
+          </NextLink>
         </PaperContainer>
       </Box>
     </AccordionContainer>
