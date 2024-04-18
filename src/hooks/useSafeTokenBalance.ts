@@ -3,7 +3,7 @@ import { useChainId } from './useChainId'
 import { useWeb3 } from './useWeb3'
 import useSWR from 'swr'
 import { fetchTokenBalance, fetchTokenLockingAllowance } from '@/utils/safe-token'
-import { fetchLockedAmount, fetchUnlockData } from '@/utils/lock'
+import { fetchLockedAmount } from '@/utils/lock'
 import { BigNumber } from 'ethers'
 import { POLLING_INTERVAL } from '@/config/constants'
 

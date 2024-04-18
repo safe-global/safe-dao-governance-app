@@ -1,4 +1,3 @@
-import { FormControlLabel, Switch } from '@mui/material'
 import type { ReactElement } from 'react'
 
 import { IS_PRODUCTION } from '@/config/constants'

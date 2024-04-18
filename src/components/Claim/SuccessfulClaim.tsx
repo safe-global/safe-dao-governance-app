@@ -1,6 +1,5 @@
 import { Grid, Typography, Button } from '@mui/material'
 import type { ReactElement } from 'react'
-import { useSearchParams } from 'next/navigation'
 
 import SafeLogo from '@/public/images/safe-logo.svg'
 
