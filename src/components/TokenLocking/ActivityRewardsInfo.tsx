@@ -1,4 +1,4 @@
-import { Box, Divider, Link, SvgIcon, Typography } from '@mui/material'
+import { Box, Divider, Link, SvgIcon, Tooltip, Typography } from '@mui/material'
 import css from './styles.module.css'
 import clsx from 'clsx'
 import { SEASON1_START, SEASON2_START } from '@/config/constants'
@@ -14,6 +14,7 @@ import { useStartDate } from '@/hooks/useStartDates'
 import { ReactNode } from 'react'
 import { AppRoutes } from '@/config/routes'
 import { useRouter } from 'next/router'
+import { InfoOutlined } from '@mui/icons-material'
 
 const Step = ({ active, title, description }: { active: boolean; title?: ReactNode; description?: string }) => {
   return (
@@ -57,9 +58,18 @@ export const ActivityRewardsInfo = () => {
           <div className={css.steps}>
             {ownRank && (
               <>
-                <Typography variant="overline" fontWeight="bold" color="text.secondary" mb="6px">
-                  Your current ranking
-                </Typography>
+                <Box display="flex" alignItems="center" mb="6px">
+                  <Typography variant="overline" fontWeight="bold" color="text.secondary">
+                    Your current ranking
+                  </Typography>
+                  <Tooltip
+                    title="This ranking is based on your locked tokens and not on your earned boost."
+                    arrow
+                    placement="top"
+                  >
+                    <InfoOutlined sx={{ color: 'border.main', height: '16px', width: '16px', mb: '-2px', ml: 1 }} />
+                  </Tooltip>
+                </Box>
                 <Typography variant="h3" fontWeight="bold" display="flex" alignItems="center" gap={1}>
                   <SvgIcon component={StarIcon} inheritViewBox />#{ownRank.position}
                 </Typography>

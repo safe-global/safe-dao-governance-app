@@ -39,7 +39,7 @@ const MilesReceipt = ({
               {isUnlock ? 'Unclocking' : 'Locking'} started...
             </Typography>
             <Typography mb={4}>
-              You successfully started {isUnlock ? 'unlocking' : 'locking'} {amount} SAFE. Once the transaction is
+              You successfully started {isUnlock ? 'unlocking' : 'locking'} your SAFE tokens. Once the transaction is
               signed and executed{' '}
               {isUnlock
                 ? 'the tokens will be available to withdraw in 24 hours.'
@@ -54,9 +54,6 @@ const MilesReceipt = ({
                   href={`https://twitter.com/intent/tweet?&text=${TWEET_CONTENT}`}
                 >
                   Share on <XIcon sx={{ ml: 1, fontSize: '20px' }} />
-                </ExternalLink>
-                <ExternalLink variant="button" icon={false} href="https://twitter.com/safe">
-                  Follow Safe on <XIcon sx={{ ml: 1, fontSize: '20px' }} />
                 </ExternalLink>
               </Stack>
             )}
