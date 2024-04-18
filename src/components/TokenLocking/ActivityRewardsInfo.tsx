@@ -90,7 +90,10 @@ export const ActivityRewardsInfo = () => {
           </div>
 
           <Divider />
-          <Link sx={{ textAlign: 'center', fontSize: '14px' }} onClick={() => router.push(AppRoutes.activityProgram)}>
+          <Link
+            sx={{ textAlign: 'center', fontSize: '14px', cursor: 'pointer' }}
+            onClick={() => router.push(AppRoutes.activityProgram)}
+          >
             View eligible activities
           </Link>
         </PaperContainer>

@@ -13,8 +13,9 @@ import AssetsStoredIcon from '@/public/images/assets-stored.svg'
 import EmptyActivityIcon from '@/public/images/empty-activity.png'
 import ChatBubble from '@/public/images/chatbubble.png'
 import Image from 'next/image'
+import { SAFE_PASS_HELP_ARTICLE_URL } from '@/config/constants'
 
-const ProgramItem = ({ title, description, icon }: { title: string; description: ReactNode; icon: ReactNode }) => {
+const ActivityItem = ({ title, description, icon }: { title: string; description: ReactNode; icon: ReactNode }) => {
   return (
     <Box
       textAlign="center"
@@ -38,7 +39,7 @@ const ProgramItem = ({ title, description, icon }: { title: string; description:
 
 const Activities = () => {
   return (
-    <Box maxWidth="888px">
+    <Box maxWidth="888px" margin="auto">
       <Stack spacing={3}>
         <Link
           href={AppRoutes.activity}
@@ -65,30 +66,30 @@ const Activities = () => {
               some activities are only rewarded temporarily.
             </Typography>
 
-            <ExternalLink href="">Learn more</ExternalLink>
+            <ExternalLink href={SAFE_PASS_HELP_ARTICLE_URL}>Learn more</ExternalLink>
 
             <Box display="flex" flexWrap="wrap" justifyContent="center">
-              <ProgramItem
+              <ActivityItem
                 icon={<UserIcon height="150px" alt="user icon" />}
                 title="Weekly user"
                 description="Transacting with your safe account on a weekly basis"
               />
-              <ProgramItem
+              <ActivityItem
                 icon={<TransactionsVolumeIcon height="150px" alt="arrows pointing left and right" />}
                 title="Volume transacted"
                 description="Volume of your transactions"
               />
-              <ProgramItem
+              <ActivityItem
                 icon={<TransactionsNumberIcon height="150px" alt="arrow pointing up with plus symbol" />}
                 title="No. of transactions"
                 description="The number of transactions made with your safe account"
               />
-              <ProgramItem
+              <ActivityItem
                 icon={<AssetsStoredIcon height="150px" alt="overlapping boxes" />}
                 title="Assets stored"
                 description="The total assets value in your safe account"
               />
-              <ProgramItem
+              <ActivityItem
                 icon={<Image src={EmptyActivityIcon} alt="Other activities placeholder" />}
                 title="Other activities coming soon"
                 description={
