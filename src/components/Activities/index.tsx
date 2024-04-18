@@ -81,7 +81,7 @@ const Activities = () => {
               <ActivityItem
                 icon={<Image src={TransactionsNumberIcon} alt="arrow pointing up with plus symbol" />}
                 title="No. of transactions"
-                description="The number of transactions made with your safe account"
+                description="The number of transactions made with your Safe Account"
               />
               <ActivityItem
                 icon={<Image src={AssetsStoredIcon} alt="overlapping boxes" />}

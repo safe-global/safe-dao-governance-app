@@ -1,19 +1,15 @@
 import { Box, Divider, Link, SvgIcon, Typography } from '@mui/material'
 import css from './styles.module.css'
 import clsx from 'clsx'
-import { SEASON1_START, SEASON2_START } from '@/config/constants'
 import StarIcon from '@/public/images/star.svg'
 import { useOwnRank } from '@/hooks/useLeaderboard'
-import { toDaysSinceStart } from '@/utils/date'
 import Asterix from '@/public/images/asterix.svg'
 import { AccordionContainer } from '@/components/AccordionContainer'
 import NextLink from 'next/link'
 
 import PaperContainer from '../PaperContainer'
-import { useStartDate } from '@/hooks/useStartDates'
 import { ReactNode } from 'react'
 import { AppRoutes } from '@/config/routes'
-import { useRouter } from 'next/router'
 
 const Step = ({ active, title, description }: { active: boolean; title?: ReactNode; description?: string }) => {
   return (
@@ -38,11 +34,6 @@ const Step = ({ active, title, description }: { active: boolean; title?: ReactNo
 export const ActivityRewardsInfo = () => {
   const ownRankResult = useOwnRank()
   const { data: ownRank } = ownRankResult
-  const router = useRouter()
-
-  const { startTime } = useStartDate()
-  const daysSinceStart = toDaysSinceStart(Date.now(), startTime)
-  const stepsActive = [daysSinceStart >= 0, daysSinceStart >= SEASON1_START, daysSinceStart >= SEASON2_START, false]
 
   return (
     <AccordionContainer title="How the program works">
@@ -66,21 +57,21 @@ export const ActivityRewardsInfo = () => {
               </>
             )}
             <Typography variant="h1" fontWeight={700} mt="52px" mb="40px" maxWidth="60%" className={css.gradientText}>
-              Interact with Safe and get rewards
+              How does it work?
             </Typography>
             <Step
-              active={stepsActive[0]}
-              title="Lock SAFE to boost Points"
-              description="Lock your tokens early to increase your earning power. The earlier and more you lock, the bigger your points multiplier. Geographic & other limitations apply (see disclaimer below)v"
+              active={true}
+              title="Lock SAFE to boost points"
+              description="Lock your tokens early to increase your earning power. The earlier and more you lock, the bigger your points multiplier. Geographic & other limitations apply (see disclaimer below)."
             />
             <Step
-              active={stepsActive[1]}
-              title="Get activity Points"
-              description="Earn Points by using your Safe Account. Your Points are multiplied by the realised boost."
+              active={false}
+              title="Get activity points"
+              description="Earn points by using your Safe Account. Your points are multiplied by the boost."
             />
             <Step
-              active={stepsActive[2]}
-              title="Get rewards from your activity Points"
+              active={false}
+              title="Get rewards from your activity points"
               description="A higher ranking provides higher chances for rewards."
             />
             <Typography variant="h4" display="flex" fontWeight="bold" alignItems="center">
