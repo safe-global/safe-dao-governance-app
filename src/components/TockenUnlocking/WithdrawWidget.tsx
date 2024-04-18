@@ -44,10 +44,10 @@ export const WithdrawWidget = ({
 
   return (
     <>
-      <Typography variant="h4" fontWeight={700}>
-        Withdraw your tokens
+      <Typography variant="h4" fontWeight={700} fontSize="27px">
+        Withdraw
       </Typography>
-      <Typography>After unlocking tokens you need to wait 24h to be able to withdraw your tokens.</Typography>
+      <Typography>The unlocked tokens will be available to withdraw in 24 hours.</Typography>
 
       <Grid item xs={6}>
         <Paper

@@ -54,7 +54,9 @@ export const BoostMeter = ({
         )
     }
   } else {
-    boostMeterInfo = <Typography>You will stop accruing boost for unlocked SAFE.</Typography>
+    boostMeterInfo = (
+      <Typography color="text.secondary">You will stop getting the boost for unlocked tokens.</Typography>
+    )
   }
 
   return (
@@ -80,9 +82,9 @@ export const BoostMeter = ({
       <Box>
         <Tooltip
           title={
-            value > 50
-              ? 'Receive a bonus for early locking. Boost meter is going down over time.'
-              : 'Receive a bonus for early locking. Realise your last chance to get an early boost.'
+            value < 100
+              ? 'Receive a bonus for early locking. Boost meter decreases over time.'
+              : 'Receive a bonus for early locking. After May 20 the boost will decrease.'
           }
         >
           <AccessTime fontSize="small" />

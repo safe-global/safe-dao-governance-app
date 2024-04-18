@@ -13,7 +13,7 @@ import TransactionsNumberIcon from '@/public/images/transaction-number.png'
 import AssetsStoredIcon from '@/public/images/assets-stored.png'
 import EmptyActivityIcon from '@/public/images/empty-activity.png'
 import Image from 'next/image'
-import { SAFE_PASS_HELP_ARTICLE_URL } from '@/config/constants'
+import { SAFE_PASS_LANDING_PAGE } from '@/config/constants'
 
 const ActivityItem = ({ title, description, icon }: { title: string; description: ReactNode; icon: ReactNode }) => {
   return (
@@ -57,7 +57,7 @@ const Activities = () => {
             <SvgIcon component={SafePass} inheritViewBox sx={{ width: '282px', height: 'auto', my: 2 }} />
 
             <Typography width="80%" textAlign="center">
-              With the{' '}
+              With{' '}
               <Typography fontWeight="bold" display="inline">
                 {'Safe {Pass}'}
               </Typography>{' '}
@@ -65,7 +65,7 @@ const Activities = () => {
               some activities are only rewarded temporarily.
             </Typography>
 
-            <ExternalLink href={SAFE_PASS_HELP_ARTICLE_URL}>Learn more</ExternalLink>
+            <ExternalLink href={SAFE_PASS_LANDING_PAGE}>Learn more about {'Safe {Pass}'}</ExternalLink>
 
             <Box display="flex" flexWrap="wrap" justifyContent="center">
               <ActivityItem

@@ -1,7 +1,7 @@
 import SafeToken from '@/public/images/token.svg'
 import { getBoostFunction } from '@/utils/boost'
 import css from './styles.module.css'
-import { Stack, Grid, Typography, TextField, InputAdornment, Button, CircularProgress } from '@mui/material'
+import { Stack, Grid, Typography, TextField, InputAdornment, Button, CircularProgress, Box } from '@mui/material'
 import { formatUnits, parseUnits } from 'ethers/lib/utils'
 import { BoostGraph } from '../TokenLocking/BoostGraph/BoostGraph'
 import { useDebounce } from '@/hooks/useDebounce'
@@ -114,73 +114,85 @@ export const UnlockTokenWidget = ({
   const isDisabled = !txSender || Boolean(unlockAmountError) || isUnlocking || cleanedAmount === '0'
 
   return (
-    <Stack
-      spacing={3}
-      className={css.bordered}
-      sx={{
-        padding: 3,
-      }}
-    >
-      <Grid container direction="row" spacing={2}>
-        <Grid item xs={12} md={8}>
-          <BoostGraph lockedAmount={-Number(cleanedAmount)} pastLocks={lockHistory} isLock={false} />
+    <>
+      <Box display="flex" flex="1" alignItems="flex-start" flexDirection="column" gap={1}>
+        <Typography variant="h4" fontSize="27px" fontWeight={700}>
+          Unlock
+        </Typography>
+        <Typography variant="body1">
+          {isUnlocking
+            ? 'Unlocking tokens will result in reduced boost. Your unlocked tokens will be available in 24 hours.'
+            : ''}
+        </Typography>
+      </Box>
+      <Stack
+        spacing={3}
+        className={css.bordered}
+        sx={{
+          padding: 3,
+        }}
+      >
+        <Grid container direction="row" spacing={2}>
+          <Grid item xs={12} md={8}>
+            <BoostGraph lockedAmount={-Number(cleanedAmount)} pastLocks={lockHistory} isLock={false} />
 
-          <Grid item container spacing={2} xs={12} mb={1} alignItems="center">
-            <Grid item xs={12} md={8}>
-              <Typography>Select amount to unlock</Typography>
-              <TextField
-                variant="outlined"
-                fullWidth
-                value={unlockAmount}
-                helperText={unlockAmountError ?? ' '}
-                error={Boolean(unlockAmountError)}
-                onChange={onChangeUnlockAmount}
-                onFocus={(event) => {
-                  event.target.select()
-                }}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start" sx={{ width: '24px', height: '24px' }}>
-                      <SafeToken />
-                    </InputAdornment>
-                  ),
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <button onClick={onSetToMax} className={css.maxButton}>
-                        Max
-                      </button>
-                    </InputAdornment>
-                  ),
-                }}
-                className={css.input}
-              />
-            </Grid>
+            <Grid item container spacing={2} xs={12} mb={1} alignItems="center">
+              <Grid item xs={12} md={8}>
+                <Typography>Select amount to unlock</Typography>
+                <TextField
+                  variant="outlined"
+                  fullWidth
+                  value={unlockAmount}
+                  helperText={unlockAmountError ?? ' '}
+                  error={Boolean(unlockAmountError)}
+                  onChange={onChangeUnlockAmount}
+                  onFocus={(event) => {
+                    event.target.select()
+                  }}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start" sx={{ width: '24px', height: '24px' }}>
+                        <SafeToken />
+                      </InputAdornment>
+                    ),
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <button onClick={onSetToMax} className={css.maxButton}>
+                          Max
+                        </button>
+                      </InputAdornment>
+                    ),
+                  }}
+                  className={css.input}
+                />
+              </Grid>
 
-            <Grid item xs={12} md={4}>
-              <Track {...LOCK_EVENTS.UNLOCK_BUTTON}>
-                <Button onClick={onUnlock} variant="contained" fullWidth disableElevation disabled={isDisabled}>
-                  {isUnlocking ? <CircularProgress size={20} /> : 'Unlock'}
-                </Button>
-              </Track>
+              <Grid item xs={12} md={4}>
+                <Track {...LOCK_EVENTS.UNLOCK_BUTTON}>
+                  <Button onClick={onUnlock} variant="contained" fullWidth disableElevation disabled={isDisabled}>
+                    {isUnlocking ? <CircularProgress size={20} /> : 'Unlock'}
+                  </Button>
+                </Track>
+              </Grid>
             </Grid>
           </Grid>
+          <Grid item xs={12} md={4}>
+            <BoostBreakdown
+              realizedBoost={currentBoostFunction({ x: todayInDays })}
+              currentFinalBoost={currentBoostFunction({ x: SEASON2_START })}
+              newFinalBoost={newBoostFunction({ x: SEASON2_START })}
+              isLock={false}
+            />
+          </Grid>
         </Grid>
-        <Grid item xs={12} md={4}>
-          <BoostBreakdown
-            realizedBoost={currentBoostFunction({ x: todayInDays })}
-            currentFinalBoost={currentBoostFunction({ x: SEASON2_START })}
-            newFinalBoost={newBoostFunction({ x: SEASON2_START })}
-            isLock={false}
-          />
-        </Grid>
-      </Grid>
-      <MilesReceipt
-        open={receiptOpen}
-        onClose={onCloseReceipt}
-        amount={receiptInformation.amount}
-        newFinalBoost={receiptInformation.newFinalBoost}
-        isUnlock
-      />
-    </Stack>
+        <MilesReceipt
+          open={receiptOpen}
+          onClose={onCloseReceipt}
+          amount={receiptInformation.amount}
+          newFinalBoost={receiptInformation.newFinalBoost}
+          isUnlock
+        />
+      </Stack>
+    </>
   )
 }
