@@ -7,10 +7,13 @@ import { useOwnRank } from '@/hooks/useLeaderboard'
 import { toDaysSinceStart } from '@/utils/date'
 import Asterix from '@/public/images/asterix.svg'
 import { AccordionContainer } from '@/components/AccordionContainer'
+import NextLink from 'next/link'
 
 import PaperContainer from '../PaperContainer'
 import { useStartDate } from '@/hooks/useStartDates'
 import { ReactNode } from 'react'
+import { AppRoutes } from '@/config/routes'
+import { useRouter } from 'next/router'
 
 const Step = ({ active, title, description }: { active: boolean; title?: ReactNode; description?: string }) => {
   return (
@@ -35,6 +38,7 @@ const Step = ({ active, title, description }: { active: boolean; title?: ReactNo
 export const ActivityRewardsInfo = () => {
   const ownRankResult = useOwnRank()
   const { data: ownRank } = ownRankResult
+  const router = useRouter()
 
   const { startTime } = useStartDate()
   const daysSinceStart = toDaysSinceStart(Date.now(), startTime)
@@ -50,7 +54,6 @@ export const ActivityRewardsInfo = () => {
             inheritViewBox
             sx={{ color: 'transparent', position: 'absolute', top: 0, right: 0, height: '208px', width: 'inherit' }}
           />
-
           <div className={css.steps}>
             {ownRank && (
               <>
@@ -85,10 +88,8 @@ export const ActivityRewardsInfo = () => {
               Repeat!
             </Typography>
           </div>
-
           <Divider />
-
-          <Link href="#" sx={{ textAlign: 'center', fontSize: '14px' }}>
+          <Link href={AppRoutes.activityProgram} component={NextLink} sx={{ textAlign: 'center', fontSize: '14px' }}>
             View eligible activities
           </Link>
         </PaperContainer>
