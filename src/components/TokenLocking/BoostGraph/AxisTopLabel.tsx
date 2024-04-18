@@ -10,10 +10,12 @@ export const AxisTopLabel = ({ startTime, ...props }: VictoryLabelProps & { star
 
   const dateLabel = formatDay(days, startTime)
 
+  const style = props.style && !Array.isArray(props.style) ? props.style : {}
+
   return (
     <>
-      <VictoryLabel {...props} dy={-8} style={{ ...props.style, fontSize: '11px' }} />
-      <VictoryLabel {...props} dy={16} text={dateLabel} />
+      <VictoryLabel {...props} dy={0} style={{ ...style, fontSize: '11px' }} />
+      <VictoryLabel {...props} dy={16} text={dateLabel} style={{ ...style, fontSize: '11px', fill: '#FFF' }} />
     </>
   )
 }

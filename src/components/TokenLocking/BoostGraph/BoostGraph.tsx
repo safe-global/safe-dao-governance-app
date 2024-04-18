@@ -206,10 +206,7 @@ export const BoostGraph = ({
               fill: theme.palette.text.primary,
             },
           }}
-          labels={[
-            format(currentBoostFunction({ x: now })) + 'x',
-            format(newBoostFunction({ x: SEASON2_START })) + 'x',
-          ]}
+          labels={[format(newBoostFunction({ x: now })) + 'x', format(newBoostFunction({ x: SEASON2_START })) + 'x']}
           labelComponent={
             <ArrowDownLabel backgroundColor={isLock ? theme.palette.primary.main : theme.palette.warning.main} />
           }
@@ -222,7 +219,7 @@ export const BoostGraph = ({
           }
           domain={DOMAIN}
           data={[
-            { x: now, y: currentBoostFunction({ x: now }) },
+            { x: now, y: newBoostFunction({ x: now }) },
             { x: SEASON2_START, y: newBoostFunction({ x: SEASON2_START }) },
           ]}
           theme={victoryTheme}

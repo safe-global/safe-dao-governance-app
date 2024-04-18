@@ -6,8 +6,10 @@ export const generatePointsFromHistory = (pastLocks: LockHistory[], nowInDays: n
   // find each individual day
   const days = pastLocks.map((lock) => lock.day).filter((day, index, days) => days.indexOf(day) === index)
 
-  return days.map((day) => ({
-    x: day,
-    y: boostFunction({ x: day }),
-  }))
+  return days
+    .map((day) => ({
+      x: day,
+      y: boostFunction({ x: day }),
+    }))
+    .slice(0, -1)
 }
