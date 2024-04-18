@@ -35,12 +35,12 @@ export const PageLayout = ({ children }: { children: ReactNode }): ReactElement 
               <NavTabs
                 tabs={[
                   {
-                    label: 'Activity App',
+                    label: 'Activity & Rewards',
                     href: AppRoutes.activity,
                     event: NAVIGATION_EVENTS.OPEN_LOCKING,
                   },
                   {
-                    label: 'Governance / Claiming',
+                    label: 'Governance & Claiming',
                     href: AppRoutes.governance,
                     event: NAVIGATION_EVENTS.OPEN_CLAIM,
                   },

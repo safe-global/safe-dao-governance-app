@@ -154,16 +154,14 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
   return (
     <>
       <Box className={css.lockingHeader} gap={2}>
-        <Box display="flex" flex="1" alignItems="center" flexDirection="row" gap={2}>
+        <Box display="flex" flex="1" alignItems="end" flexDirection="row" gap={2}>
           <NorthEastIcon color="primary" />
           <Typography variant="h4" fontWeight={700}>
             Lock tokens to boost your miles
           </Typography>
         </Box>
         <Track {...NAVIGATION_EVENTS.OPEN_BOOST_INFO}>
-          <ExternalLink href={SAFE_PASS_HELP_ARTICLE_URL}>
-            What is Safe{'{'}Pass{'}'}?
-          </ExternalLink>
+          <ExternalLink href={SAFE_PASS_HELP_ARTICLE_URL}>More about the boost</ExternalLink>
         </Track>
       </Box>
       <Stack

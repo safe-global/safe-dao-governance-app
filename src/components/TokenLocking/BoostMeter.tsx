@@ -6,6 +6,7 @@ import { ReactElement, useMemo } from 'react'
 
 import { useTheme } from '@mui/material/styles'
 import { useStartDate } from '@/hooks/useStartDates'
+import { SEASON1_START } from '@/config/constants'
 
 export const BoostMeter = ({
   isLock,
@@ -20,6 +21,8 @@ export const BoostMeter = ({
 
   const now = useMemo(() => getCurrentDays(startTime), [startTime])
 
+  const fullBoostDaysLeft = SEASON1_START - now + 1
+
   const currentTimeFactor = getTimeFactor(now)
   const value = currentTimeFactor * 100
 
@@ -28,7 +31,14 @@ export const BoostMeter = ({
   const theme = useTheme()
 
   if (isLock) {
-    if (isVisibleDifference && prediction) {
+    if (fullBoostDaysLeft > 0) {
+      boostMeterInfo = (
+        <Typography color="text.secondary">
+          Lock within the next <span style={{ color: theme.palette.text.primary }}>{fullBoostDaysLeft} days </span>
+          to get the highest boost.
+        </Typography>
+      )
+    } else if (isVisibleDifference && prediction) {
       boostMeterInfo = (
         <Typography>
           If you lock in 10 days your boost will only be{' '}
