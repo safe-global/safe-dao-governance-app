@@ -73,7 +73,7 @@ export const BoostMeter = ({
         <Tooltip
           title={
             value < 100
-              ? 'Receive a bonus for early locking. Realise your last chance to get an early boost.'
+              ? 'Receive a bonus for early locking. Boost meter decreases over time.'
               : 'Receive a bonus for early locking. After May 20 the boost will decrease.'
           }
         >
