@@ -97,11 +97,6 @@ export const CHAIN_SNAPSHOT_URL: ChainConfig<string> = {
   [Chains.SEPOLIA]: `https://snapshot.org/#/${CHAIN_DELEGATE_ID[Chains.SEPOLIA]}`,
 }
 
-export const CHAIN_EXPLORER_URL: ChainConfig<string> = {
-  [Chains.MAINNET]: 'https://etherscan.io/address/',
-  [Chains.SEPOLIA]: 'https://sepolia.etherscan.io/address/',
-}
-
 export const SEP5_PROPOSAL_URL =
   'https://snapshot.org/#/safe.eth/proposal/0xb4765551b4814b592d02ce67de05527ac1d2b88a8c814c4346ecc0c947c9b941'
 
