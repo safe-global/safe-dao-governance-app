@@ -1,21 +1,42 @@
 .container {
-  width: 650px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.navigation {
+  width: 100%;
+  padding-left: 15vw;
+  padding-right: 15vw;
+  border-bottom: 1px solid #303033;
+}
+
+.pageContent {
+  width: 70vw;
   position: relative;
   margin: auto;
 }
 
-.tiles {
-  position: relative;
-  top: -200px;
+@media (max-width: 1600px) {
+  .pageContent {
+    width: 90vw;
+  }
+  .navigation {
+    padding-left: 5vw;
+    padding-right: 5vw;
+  }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 899px) {
   .container {
-    width: 100%;
     height: 100%;
+    width: 100%;
   }
-
-  .tiles {
-    display: none;
+  .pageContent {
+    width: 100%;
+  }
+  .navigation {
+    padding: 0;
   }
 }

@@ -235,8 +235,12 @@ describe('useSafeTokenAllocation', () => {
 
     it('return 0 if no balances / vestings exist', async () => {
       mockCall.mockImplementation((transaction: Deferrable<TransactionRequest>) => {
-        const sigHash = keccak256(toUtf8Bytes('balanceOf(address)')).slice(0, 10)
-        if (typeof transaction.data === 'string' && transaction.data.startsWith(sigHash)) {
+        const balanceOfSigHash = keccak256(toUtf8Bytes('balanceOf(address)')).slice(0, 10)
+        const getUserTokenBalanceSigHash = keccak256(toUtf8Bytes('getUserTokenBalance(address)')).slice(0, 10)
+        if (
+          typeof transaction.data === 'string' &&
+          (transaction.data.startsWith(balanceOfSigHash) || transaction.data.startsWith(getUserTokenBalanceSigHash))
+        ) {
           return Promise.resolve('0x0')
         }
         return Promise.resolve('0x')
@@ -251,10 +255,14 @@ describe('useSafeTokenAllocation', () => {
       expect(result?.toNumber()).toEqual(0)
     })
 
-    it('return balance if no vestings exists', async () => {
+    it('return total balance of tokens held and tokens in locking contract if no vestings exists', async () => {
       mockCall.mockImplementation((transaction: Deferrable<TransactionRequest>) => {
-        const sigHash = keccak256(toUtf8Bytes('balanceOf(address)')).slice(0, 10)
-        if (typeof transaction.data === 'string' && transaction.data.startsWith(sigHash)) {
+        const balanceOfSigHash = keccak256(toUtf8Bytes('balanceOf(address)')).slice(0, 10)
+        const getUserTokenBalanceSigHash = keccak256(toUtf8Bytes('getUserTokenBalance(address)')).slice(0, 10)
+        if (typeof transaction.data === 'string' && transaction.data.startsWith(balanceOfSigHash)) {
+          return Promise.resolve(parseEther('100').toHexString())
+        }
+        if (typeof transaction.data === 'string' && transaction.data.startsWith(getUserTokenBalanceSigHash)) {
           return Promise.resolve(parseEther('100').toHexString())
         }
         return Promise.resolve('0x')
@@ -266,7 +274,7 @@ describe('useSafeTokenAllocation', () => {
         web3: web3Provider,
         vestingData: [],
       })
-      expect(result?.eq(parseEther('100'))).toBeTruthy()
+      expect(result?.eq(parseEther('200'))).toBeTruthy()
     })
 
     it('include unredeemed allocations if deadline has not passed', async () => {
@@ -290,8 +298,12 @@ describe('useSafeTokenAllocation', () => {
 
       mockCall.mockImplementation((transaction: Deferrable<TransactionRequest>) => {
         const balanceOfSigHash = keccak256(toUtf8Bytes('balanceOf(address)')).slice(0, 10)
+        const getUserTokenBalanceSigHash = keccak256(toUtf8Bytes('getUserTokenBalance(address)')).slice(0, 10)
 
         if (typeof transaction.data === 'string' && transaction.data.startsWith(balanceOfSigHash)) {
+          return Promise.resolve(parseEther('0').toHexString())
+        }
+        if (typeof transaction.data === 'string' && transaction.data.startsWith(getUserTokenBalanceSigHash)) {
           return Promise.resolve(parseEther('0').toHexString())
         }
 
@@ -328,9 +340,13 @@ describe('useSafeTokenAllocation', () => {
 
       mockCall.mockImplementation((transaction: Deferrable<TransactionRequest>) => {
         const balanceOfSigHash = keccak256(toUtf8Bytes('balanceOf(address)')).slice(0, 10)
+        const getUserTokenBalanceSigHash = keccak256(toUtf8Bytes('getUserTokenBalance(address)')).slice(0, 10)
 
         if (typeof transaction.data === 'string' && transaction.data.startsWith(balanceOfSigHash)) {
           return Promise.resolve(BigNumber.from('2000').toHexString())
+        }
+        if (typeof transaction.data === 'string' && transaction.data.startsWith(getUserTokenBalanceSigHash)) {
+          return Promise.resolve(BigNumber.from('0').toHexString())
         }
 
         return Promise.resolve('0x')
@@ -366,8 +382,12 @@ describe('useSafeTokenAllocation', () => {
 
       mockCall.mockImplementation((transaction: Deferrable<TransactionRequest>) => {
         const balanceOfSigHash = keccak256(toUtf8Bytes('balanceOf(address)')).slice(0, 10)
+        const getUserTokenBalanceSigHash = keccak256(toUtf8Bytes('getUserTokenBalance(address)')).slice(0, 10)
 
         if (typeof transaction.data === 'string' && transaction.data.startsWith(balanceOfSigHash)) {
+          return Promise.resolve(BigNumber.from('0').toHexString())
+        }
+        if (typeof transaction.data === 'string' && transaction.data.startsWith(getUserTokenBalanceSigHash)) {
           return Promise.resolve(BigNumber.from('0').toHexString())
         }
 

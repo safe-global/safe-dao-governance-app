@@ -1,15 +1,23 @@
 import Head from 'next/head'
-import { Box, Paper } from '@mui/material'
-import type { ReactElement, ReactNode } from 'react'
+import { Box } from '@mui/material'
+import { ReactElement, ReactNode } from 'react'
 
 import manifestJson from '@/public/manifest.json'
-import { BottomCircle, TopCircle } from '@/components/BackgroundCircles'
+import { BackgroundCircles } from '@/components/BackgroundCircles'
 import { Header } from '@/components/Header'
-import { FloatingTiles } from '@/components/FloatingTiles'
 
 import css from './styles.module.css'
+import NavTabs from '../NavTabs'
+import { AppRoutes } from '@/config/routes'
+import { useRouter } from 'next/router'
+import { NAVIGATION_EVENTS } from '@/analytics/navigation'
+
+const RoutesWithNavigation = [AppRoutes.activity, AppRoutes.governance]
 
 export const PageLayout = ({ children }: { children: ReactNode }): ReactElement => {
+  const router = useRouter()
+  const showNavigation = RoutesWithNavigation.includes(router.route)
+
   return (
     <>
       <Head>
@@ -18,18 +26,30 @@ export const PageLayout = ({ children }: { children: ReactNode }): ReactElement 
 
       <Header />
 
-      <div className={css.tiles}>
-        <FloatingTiles tiles={50} />
-      </div>
+      <BackgroundCircles />
 
-      <Box py={{ sm: 6, xs: undefined }} component="main">
-        <Paper className={css.container}>
-          <BottomCircle />
-
-          {children}
-
-          <TopCircle />
-        </Paper>
+      <Box pt={7} pb={6} sx={{ minHeight: '100vh', display: 'flex', alignItems: 'center' }} component="main">
+        <Box className={css.container}>
+          {showNavigation && (
+            <Box className={css.navigation}>
+              <NavTabs
+                tabs={[
+                  {
+                    label: 'Activity & Rewards',
+                    href: AppRoutes.activity,
+                    event: NAVIGATION_EVENTS.OPEN_LOCKING,
+                  },
+                  {
+                    label: 'Governance & Claiming',
+                    href: AppRoutes.governance,
+                    event: NAVIGATION_EVENTS.OPEN_CLAIM,
+                  },
+                ]}
+              />
+            </Box>
+          )}
+          <Box className={css.pageContent}>{children}</Box>
+        </Box>
       </Box>
     </>
   )

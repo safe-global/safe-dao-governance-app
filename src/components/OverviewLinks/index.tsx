@@ -1,10 +1,8 @@
-import NextLink from 'next/link'
-import { SvgIcon, Grid, Typography, Paper, Box, Link } from '@mui/material'
+import { SvgIcon, Typography, Paper, Box, Stack } from '@mui/material'
 import { useRef } from 'react'
 import type { ReactElement, SyntheticEvent } from 'react'
 
 import Hat from '@/public/images/hat.svg'
-import { AppRoutes } from '@/config/routes'
 import { FORUM_URL, CHAIN_SNAPSHOT_URL } from '@/config/constants'
 import { ExternalLink } from '@/components/ExternalLink'
 import { useChainId } from '@/hooks/useChainId'
@@ -27,14 +25,12 @@ const SafeDaoCard = () => {
         <SvgIcon component={Hat} inheritViewBox color="info" />
       </div>
       <Box>
-        <Typography variant="h3" fontWeight={700}>
-          What is
-          <br />
-          Safe{`{DAO}`}?
+        <Typography variant="h3" fontWeight={700} mt={5}>
+          What is Safe DAO?
         </Typography>
-        <Link href={AppRoutes.safedao} component={NextLink} ref={linkRef}>
+        <ExternalLink ref={linkRef} href="https://gov.safe.global">
           Learn more
-        </Link>
+        </ExternalLink>
       </Box>
     </Paper>
   )
@@ -65,18 +61,10 @@ export const OverviewLinks = (): ReactElement => {
   const snapshotUrl = CHAIN_SNAPSHOT_URL[chainId]
 
   return (
-    <Grid container spacing={2}>
-      <Grid item xs={12} sm={6}>
-        <SafeDaoCard />
-      </Grid>
-      <Grid item xs container>
-        <Grid item xs={12} pb={{ sm: 1, xs: 2 }}>
-          <ExternalLinkCard href={FORUM_URL} header="Discuss" title="Safe{DAO} forum" />
-        </Grid>
-        <Grid item xs={12}>
-          <ExternalLinkCard href={snapshotUrl} header="Vote" title="Snapshot" />
-        </Grid>
-      </Grid>
-    </Grid>
+    <Stack spacing={2}>
+      <SafeDaoCard />
+      <ExternalLinkCard href={FORUM_URL} header="Discuss" title="Safe{DAO} forum" />
+      <ExternalLinkCard href={snapshotUrl} header="Vote" title="Snapshot" />
+    </Stack>
   )
 }
