@@ -1,17 +1,17 @@
-import { Box, Grid, Link, Stack, SvgIcon, Typography } from '@mui/material'
+import { Box, Grid, Stack, Typography } from '@mui/material'
 import { useSafeTokenBalance } from '@/hooks/useSafeTokenBalance'
-import NextLink from 'next/link'
 import { Leaderboard } from './Leaderboard'
 import { CurrentStats } from './CurrentStats'
 import { LockTokenWidget } from './LockTokenWidget'
 import { ActivityRewardsInfo } from './ActivityRewardsInfo'
 import { ActionNavigation } from './BoostGraph/ActionNavigation/ActionNavigation'
 import PaperContainer from '../PaperContainer'
-import { AppRoutes } from '@/config/routes'
 import { useSummarizedLockHistory } from '@/hooks/useSummarizedLockHistory'
 import { useLockHistory } from '@/hooks/useLockHistory'
 
 import css from './styles.module.css'
+import { ExternalLink } from '../ExternalLink'
+import { SAFE_TERMS_AND_CONDITIONS_URL } from '@/config/constants'
 
 const TokenLocking = () => {
   const { isLoading: safeBalanceLoading, data: safeBalance } = useSafeTokenBalance()
@@ -52,14 +52,15 @@ const TokenLocking = () => {
               LEGAL DISCLAIMER
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-              Please note that country restrictions may apply regarding the eligibility and application for the boost
-              and reward. This might mean that your boost might not be applied to certain reward types, e.g. token
-              rewards such as Safe.
+              Please note that residents in{' '}
+              <ExternalLink href={SAFE_TERMS_AND_CONDITIONS_URL}>certain jurisdictions</ExternalLink> (including the
+              United States) may not be eligible for the boost and reward. This means that your boost might not be
+              applied to certain reward types, e.g. token rewards such as Safe.
             </Typography>
           </Box>
-          <Link href={AppRoutes.terms} component={NextLink} m={2}>
+          <ExternalLink href={SAFE_TERMS_AND_CONDITIONS_URL} m={2}>
             Terms and Conditions
-          </Link>
+          </ExternalLink>
         </Stack>
       </Grid>
     </Grid>
