@@ -19,7 +19,7 @@ export const ActionNavigation = ({ disabled }: { disabled: boolean }) => {
     <Stack>
       <Box className={clsx(css.bordered, css.buttonContainer)}>
         <Typography variant="subtitle1" fontWeight={700}>
-          Remove SAFE from locking
+          Want to withdraw your tokens?
         </Typography>
         <Track {...NAVIGATION_EVENTS.OPEN_UNLOCKING}>
           <Button
