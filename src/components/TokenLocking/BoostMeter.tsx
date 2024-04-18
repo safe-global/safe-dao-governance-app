@@ -25,7 +25,6 @@ export const BoostMeter = ({
   const maxTimeFactor = getTimeFactor(0)
   const minTimeFactor = getTimeFactor(SEASON2_START)
 
-  // Boost meter values are between 10 and 90
   const value = ((currentTimeFactor - minTimeFactor) / (maxTimeFactor - minTimeFactor)) * 100
 
   let boostMeterInfo: ReactElement | null = null
