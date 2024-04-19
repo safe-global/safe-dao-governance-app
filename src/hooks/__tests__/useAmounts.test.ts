@@ -24,7 +24,7 @@ const createMockVesting = (
     amount: parseEther(amount.toString()).toString(),
     curve: 0,
     durationWeeks,
-    chainId: 4,
+    chainId: 11155111,
     contract: hexZeroPad('0x2', 20),
     tag: 'user',
     startDate: Math.floor(fakeNow.getTime() / 1000) - DESYNC_BUFFER + ONE_WEEK * vestingStartDiffInWeeks,

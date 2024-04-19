@@ -6,7 +6,9 @@ import { Redirect } from '../Redirect'
 import { useWeb3 } from '@/hooks/useWeb3'
 
 const isProviderRoute = (pathname: string) => {
-  return [AppRoutes.claim, AppRoutes.delegate].includes(pathname)
+  return [AppRoutes.claim, AppRoutes.delegate, AppRoutes.activity, AppRoutes.governance, AppRoutes.unlock].includes(
+    pathname,
+  )
 }
 
 export const EnsureWalletConnection = ({ children }: { children: ReactElement }): ReactElement => {
@@ -15,5 +17,5 @@ export const EnsureWalletConnection = ({ children }: { children: ReactElement })
 
   const shouldRedirect = !web3 && isProviderRoute(router.pathname)
 
-  return shouldRedirect ? <Redirect url={AppRoutes.index} /> : children
+  return shouldRedirect ? <Redirect url={AppRoutes.splash} query={{ next: router.pathname }} /> : children
 }

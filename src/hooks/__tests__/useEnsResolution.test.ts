@@ -1,7 +1,7 @@
 import { act } from '@testing-library/react'
 import { waitFor } from '@testing-library/react'
 import { JsonRpcProvider } from '@ethersproject/providers'
-import * as SafeAppsSdk from '@gnosis.pm/safe-apps-react-sdk'
+import * as SafeAppsSdk from '@safe-global/safe-apps-react-sdk'
 
 import { renderHook } from '@/tests/test-utils'
 import * as useWeb3 from '@/hooks/useWeb3'
@@ -10,10 +10,10 @@ import * as useWallet from '@/hooks/useWallet'
 import { useEnsResolution } from '@/hooks/useEnsResolution'
 import type { ChainInfo } from '@safe-global/safe-gateway-typescript-sdk'
 
-jest.mock('@gnosis.pm/safe-apps-react-sdk', () => {
+jest.mock('@safe-global/safe-apps-react-sdk', () => {
   return {
     __esModule: true,
-    ...jest.requireActual('@gnosis.pm/safe-apps-react-sdk'),
+    ...jest.requireActual('@safe-global/safe-apps-react-sdk'),
   }
 })
 
@@ -68,12 +68,12 @@ describe('useEnsResolution()', () => {
   })
 
   it('should accept EIP-3770 addresses with correct chain prefix', async () => {
-    const prefixedAddress = 'gor:0x1000000000000000000000000000000000000000'
+    const prefixedAddress = 'sep:0x1000000000000000000000000000000000000000'
 
     web3Provider.resolveName = jest.fn()
     jest.spyOn(useWeb3, 'useWeb3').mockImplementation(() => web3Provider)
 
-    jest.spyOn(useChain, 'useChain').mockImplementation(() => ({ chainId: '5', shortName: 'gor' } as ChainInfo))
+    jest.spyOn(useChain, 'useChain').mockImplementation(() => ({ chainId: '11155111', shortName: 'sep' } as ChainInfo))
 
     jest.useFakeTimers()
 
@@ -95,14 +95,14 @@ describe('useEnsResolution()', () => {
     web3Provider.resolveName = jest.fn()
     jest.spyOn(useWeb3, 'useWeb3').mockImplementation(() => web3Provider)
 
-    jest.spyOn(useChain, 'useChain').mockImplementation(() => ({ chainId: '5', shortName: 'gor' } as ChainInfo))
+    jest.spyOn(useChain, 'useChain').mockImplementation(() => ({ chainId: '11155111', shortName: 'sep' } as ChainInfo))
 
     jest.useFakeTimers()
 
     const { result } = renderHook(() => useEnsResolution(prefixedAddress))
 
     expect(result.current[0]).toBeUndefined()
-    expect(result.current[1]).toEqual('The chain prefix does not match that of the current chain (gor)')
+    expect(result.current[1]).toEqual('The chain prefix does not match that of the current chain (sep)')
     expect(result.current[2]).toBeFalsy()
     expect(web3Provider.resolveName).not.toHaveBeenCalled()
 

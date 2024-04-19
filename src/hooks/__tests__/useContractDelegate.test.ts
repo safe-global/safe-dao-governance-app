@@ -21,7 +21,7 @@ describe('_getContractDelegate()', () => {
         () =>
           ({
             _isSigner: true,
-            getChainId: jest.fn(() => Promise.resolve(5)),
+            getChainId: jest.fn(() => Promise.resolve(11155111)),
             getAddress: jest.fn(() => Promise.resolve(SAFE_ADDRESS)),
             call: mockCall,
           } as unknown as JsonRpcSigner),
@@ -42,7 +42,7 @@ describe('_getContractDelegate()', () => {
   })
 
   it('ignore the ZERO_ADDRESS as delegate', async () => {
-    const delegateIDInBytes = formatBytes32String(CHAIN_DELEGATE_ID['5'])
+    const delegateIDInBytes = formatBytes32String(CHAIN_DELEGATE_ID['11155111'])
 
     mockCall.mockImplementation((transaction) => {
       expect(transaction.to?.toString().toLowerCase()).toEqual(DELEGATE_REGISTRY_ADDRESS.toLowerCase())
@@ -54,14 +54,14 @@ describe('_getContractDelegate()', () => {
       return Promise.resolve(hexZeroPad(ZERO_ADDRESS, 32))
     })
 
-    const result = await _getContractDelegate('5', SAFE_ADDRESS, web3Provider)
+    const result = await _getContractDelegate('11155111', SAFE_ADDRESS, web3Provider)
 
     expect(mockCall).toBeCalledTimes(1)
     expect(result).toBe(null)
   })
 
   it('should encode the correct data and fetch the delegate on-chain once', async () => {
-    const delegateIDInBytes = formatBytes32String(CHAIN_DELEGATE_ID['5'])
+    const delegateIDInBytes = formatBytes32String(CHAIN_DELEGATE_ID['11155111'])
 
     const delegateAddress = hexZeroPad('0x1', 20)
 
@@ -75,7 +75,7 @@ describe('_getContractDelegate()', () => {
       return Promise.resolve(hexZeroPad(delegateAddress, 32))
     })
 
-    const result = await _getContractDelegate('5', SAFE_ADDRESS, web3Provider)
+    const result = await _getContractDelegate('11155111', SAFE_ADDRESS, web3Provider)
 
     expect(mockCall).toBeCalledTimes(1)
     expect(result).toEqual({ address: delegateAddress, ens: 'test.eth' })
