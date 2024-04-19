@@ -157,7 +157,7 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
         <Box display="flex" flex="1" alignItems="end" flexDirection="row" gap={2}>
           <NorthEastIcon color="primary" />
           <Typography variant="h4" fontWeight={700}>
-            Lock tokens to boost your miles
+            Lock tokens to boost your points
           </Typography>
         </Box>
         <Track {...NAVIGATION_EVENTS.OPEN_BOOST_INFO}>

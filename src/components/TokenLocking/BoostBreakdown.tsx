@@ -73,7 +73,7 @@ export const BoostBreakdown = ({
           <Stack mt={4} spacing={4}>
             <EmptyBreakdown />
             <Typography variant="body2" color="text.secondary">
-              Start locking tokens to build your points boost.
+              Start locking tokens to get your points boost.
             </Typography>
           </Stack>
         ) : (
