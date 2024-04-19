@@ -1,4 +1,3 @@
-import { formatAmount } from '@/utils/formatters'
 import { Typography, Stack, Grid, TextField, InputAdornment, Button, Box, CircularProgress } from '@mui/material'
 import NorthEastIcon from '@mui/icons-material/NorthEast'
 import { formatUnits, parseUnits } from 'ethers/lib/utils'
@@ -27,6 +26,7 @@ import { useSafeTokenLockingAllowance } from '@/hooks/useSafeTokenBalance'
 import { useStartDate } from '@/hooks/useStartDates'
 import { NAVIGATION_EVENTS } from '@/analytics/navigation'
 import { ExternalLink } from '../ExternalLink'
+import { formatAmount } from '@/utils/formatters'
 
 export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | undefined }) => {
   const [receiptOpen, setReceiptOpen] = useState<boolean>(false)
@@ -177,17 +177,17 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
 
             <Grid container spacing={2} mb={1} alignItems="center">
               <Grid item xs={12} md={8}>
-                <Typography mb={1}>Select amount to lock</Typography>
+                <Typography>Select amount to lock</Typography>
                 <TextField
                   variant="outlined"
                   fullWidth
+                  value={amount}
+                  helperText={amountError ?? ' '}
+                  error={Boolean(amountError)}
+                  onChange={onChangeAmount}
                   onFocus={(event) => {
                     event.target.select()
                   }}
-                  value={amount}
-                  onChange={onChangeAmount}
-                  helperText={amountError}
-                  error={!!amountError}
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start" sx={{ width: '24px', height: '24px' }}>
@@ -204,9 +204,6 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
                   }}
                   className={css.input}
                 />
-                <Typography variant="caption">
-                  Balance: {formatAmount(formatUnits(safeBalance ?? '0', 18), 2)}
-                </Typography>
               </Grid>
 
               <Grid item xs={12} md={4}>
@@ -217,6 +214,7 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
                 </Track>
               </Grid>
             </Grid>
+            <Typography variant="caption">Balance: {formatAmount(formatUnits(safeBalance ?? '0', 18), 2)}</Typography>
           </Grid>
           <Grid item xs={12} md={4}>
             <BoostBreakdown
