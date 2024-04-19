@@ -10,8 +10,7 @@ import { formatAmount } from '@/utils/formatters'
 import { floorNumber } from '@/utils/boost'
 import { ExternalLink } from '@/components/ExternalLink'
 
-const TWEET_CONTENT =
-  "I'm excited to be part of the new Safe%7BPass%7D rewards program with @Safe! Earning points for using the most trusted smart wallet AND joining the Safe community? Win-win!"
+const TWEET_CONTENT = 'Just got my @Safe%7BPass%7D to join the smart account revolution!'
 
 const MilesReceipt = ({
   open,
