@@ -177,7 +177,7 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
 
             <Grid container spacing={2} mb={1} alignItems="center">
               <Grid item xs={12} md={8}>
-                <Typography>Select amount to unlock</Typography>
+                <Typography>Select amount to lock</Typography>
                 <TextField
                   variant="outlined"
                   fullWidth
