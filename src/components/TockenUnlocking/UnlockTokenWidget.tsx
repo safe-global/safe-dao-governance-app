@@ -163,7 +163,6 @@ export const UnlockTokenWidget = ({
                       </InputAdornment>
                     ),
                   }}
-                  className={css.input}
                 />
               </Grid>
 
