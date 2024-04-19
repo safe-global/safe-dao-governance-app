@@ -39,8 +39,8 @@ const MilesReceipt = ({
               {isUnlock ? 'Unclocking' : 'Locking'} started...
             </Typography>
             <Typography mb={4}>
-              You successfully started {isUnlock ? 'unlocking' : 'locking'} your SAFE tokens. Once the transaction is
-              signed and executed{' '}
+              You successfully started {isUnlock ? 'unlocking' : 'locking'} your SAFE tokens. <br />
+              Once the transaction is signed and executed{' '}
               {isUnlock
                 ? 'the tokens will be available to withdraw in 24 hours.'
                 : 'your tokens will be locked and you will get boosted.'}

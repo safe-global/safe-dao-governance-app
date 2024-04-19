@@ -120,9 +120,7 @@ export const UnlockTokenWidget = ({
           Unlock
         </Typography>
         <Typography variant="body1">
-          {isUnlocking
-            ? 'Unlocking tokens will result in reduced boost. Your unlocked tokens will be available in 24 hours.'
-            : ''}
+          Unlocking tokens will result in reduced boost. Your unlocked tokens will be available in 24 hours.
         </Typography>
       </Box>
       <Stack
