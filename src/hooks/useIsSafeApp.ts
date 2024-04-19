@@ -7,9 +7,7 @@ export const useIsSafeApp = (): boolean => {
 
   useEffect(() => {
     const isApp = connected || (typeof window !== 'undefined' && window.self !== window.top)
-    if (isApp !== isSafeApp) {
-      setIsSafeApp(isApp)
-    }
+    setIsSafeApp(isApp)
   }, [connected])
   return isSafeApp
 }
