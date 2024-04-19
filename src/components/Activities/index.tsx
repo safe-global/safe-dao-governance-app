@@ -93,9 +93,9 @@ const Activities = () => {
                 title="Other activities coming soon"
                 description={
                   <>
-                    To stay updated follow us on{' '}
+                    To stay updated{' '}
                     <ExternalLink icon={false} href="https://twitter.com/safe">
-                      X
+                      follow us on X
                     </ExternalLink>{' '}
                     and{' '}
                     <ExternalLink icon={false} href="https://warpcast.com/safe">
