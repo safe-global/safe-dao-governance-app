@@ -226,7 +226,7 @@ const ClaimOverview = (): ReactElement => {
                   fullWidth
                   value={amount}
                   error={!!amountError}
-                  helperText={amountError}
+                  helperText={amountError ?? ' '}
                   onChange={onChangeAmount}
                   InputProps={{
                     startAdornment: (
