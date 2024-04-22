@@ -71,7 +71,7 @@ const TokenLocking = () => {
               DOES NOT GRANT YOU ANY CONTRACTUAL CLAIM TO RECEIVE REWARDS.
             </Typography>
           </Box>
-          <ExternalLink href={SAFE_TERMS_AND_CONDITIONS_URL} m={2} px={{ xs: 4, md: 0 }}>
+          <ExternalLink href={SAFE_TERMS_AND_CONDITIONS_URL} px={{ xs: 4, md: 0 }}>
             Terms and Conditions
           </ExternalLink>
         </Stack>
