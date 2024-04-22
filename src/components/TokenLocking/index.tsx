@@ -59,8 +59,10 @@ const TokenLocking = () => {
               <ExternalLink href={SAFE_TERMS_AND_CONDITIONS_URL}>certain jurisdictions</ExternalLink> (including the
               United States) may not be eligible for the boost and reward. This means that your boost might not be
               applied to certain reward types, e.g. token rewards such as Safe and you might not be eligible to receive
-              a certain type of rewards. PLEASE NOTE THAT LOCKING YOUR SAFE TOKEN WITHOUT ACTIVELY PARTICIPATING IN
-              ACTIVITIES DOES NOT QUALIFY YOU TO POTENTIALLY RECEIVE REWARDS.
+              certain types of rewards.
+              <br />
+              PLEASE NOTE THAT LOCKING YOUR SAFE TOKEN WITHOUT ACTIVELY PARTICIPATING IN ACTIVITIES DOES NOT QUALIFY YOU
+              TO POTENTIALLY RECEIVE REWARDS.
               <br />
               <b>
                 Please note that participating in the Safe{'{'}Pass{'}'} Program, collecting points and completing
