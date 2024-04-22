@@ -60,13 +60,13 @@ const Activities = () => {
             <Typography width="80%" textAlign="center">
               With{' '}
               <Typography fontWeight="bold" display="inline">
-                {'Safe {Pass}'}
+                {'Safe{Pass}'}
               </Typography>{' '}
-              you can earn Points by using your Safe Account. Some activities are rewarded throughout the entire season,
+              you can earn points by using your Safe Account. Some activities are rewarded throughout the entire season,
               some activities are only rewarded temporarily.
             </Typography>
 
-            <ExternalLink href={SAFE_PASS_LANDING_PAGE}>Learn more about {'Safe {Pass}'}</ExternalLink>
+            <ExternalLink href={SAFE_PASS_LANDING_PAGE}>Learn more about {'Safe{Pass}'}</ExternalLink>
 
             <Box display="flex" flexWrap="wrap" justifyContent="center">
               <ActivityItem
@@ -104,7 +104,7 @@ const Activities = () => {
                 description={
                   <>
                     To stay updated{' '}
-                    <ExternalLink icon={false} href="https://twitter.com/safe">
+                    <ExternalLink icon={false} href="https://twitter.com/intent/user?screen_name=safe">
                       follow us on X
                     </ExternalLink>{' '}
                     and{' '}
