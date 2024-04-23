@@ -12,7 +12,7 @@ import { AppRoutes } from '@/config/routes'
 import { useRouter } from 'next/router'
 import { NAVIGATION_EVENTS } from '@/analytics/navigation'
 
-const RoutesWithNavigation = [AppRoutes.activity, AppRoutes.governance]
+const RoutesWithNavigation = [AppRoutes.index, AppRoutes.activity, AppRoutes.governance]
 
 export const PageLayout = ({ children }: { children: ReactNode }): ReactElement => {
   const router = useRouter()

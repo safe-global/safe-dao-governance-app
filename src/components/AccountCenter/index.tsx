@@ -11,24 +11,18 @@ import { useChain } from '@/hooks/useChain'
 import { WalletInfo, UNKNOWN_CHAIN_NAME } from '@/components/WalletInfo'
 import { EthHashInfo } from '@/components/EthHashInfo'
 import type { ConnectedWallet } from '@/hooks/useWallet'
-import { useIsSafeApp } from '@/hooks/useIsSafeApp'
-import { AppRoutes } from '@/config/routes'
-import { useRouter } from 'next/router'
 
 import css from './styles.module.css'
 
 const Popper = ({ wallet }: { wallet: ConnectedWallet }): ReactElement => {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null)
   const onboard = useOnboard()
-  const router = useRouter()
-  const isSafeApp = useIsSafeApp()
 
   const chain = useChain()
   const connectedChain = chain?.chainId === wallet.chainId ? chain : undefined
 
   const handleDisconnect = () => {
     onboard?.disconnectWallet({ label: wallet.label })
-    if (!isSafeApp) router.push({ pathname: AppRoutes.splash })
   }
 
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
@@ -108,6 +102,8 @@ const Popper = ({ wallet }: { wallet: ConnectedWallet }): ReactElement => {
 
 export const AccountCenter = (): ReactElement | null => {
   const wallet = useWallet()
+
+  console.log('Wallet', wallet)
 
   if (!wallet) {
     return null
