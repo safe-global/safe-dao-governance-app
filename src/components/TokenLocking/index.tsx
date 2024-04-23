@@ -56,7 +56,7 @@ const TokenLocking = () => {
             <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
               Please note that residents in{' '}
               <ExternalLink href={SAFE_TERMS_AND_CONDITIONS_URL}>certain jurisdictions</ExternalLink> (including the
-              United States) may not be eligible for the boost and reward. This means that your boost might not be
+              United States) may not be eligible for the boost and rewards. This means that your boost might not be
               applied to certain reward types, e.g. token rewards such as Safe, and you might not be eligible to receive
               certain types of rewards.
               <br />
