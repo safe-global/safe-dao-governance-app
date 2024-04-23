@@ -2,13 +2,18 @@ import { useRouter } from 'next/router'
 import type { ReactElement } from 'react'
 
 import { AppRoutes } from '@/config/routes'
-import { Redirect } from '../Redirect'
 import { useWeb3 } from '@/hooks/useWeb3'
+import { SplashScreen } from '../SplashScreen'
 
 const isProviderRoute = (pathname: string) => {
-  return [AppRoutes.claim, AppRoutes.delegate, AppRoutes.activity, AppRoutes.governance, AppRoutes.unlock].includes(
-    pathname,
-  )
+  return [
+    AppRoutes.claim,
+    AppRoutes.delegate,
+    AppRoutes.activity,
+    AppRoutes.index,
+    AppRoutes.governance,
+    AppRoutes.unlock,
+  ].includes(pathname)
 }
 
 export const EnsureWalletConnection = ({ children }: { children: ReactElement }): ReactElement => {
@@ -17,5 +22,5 @@ export const EnsureWalletConnection = ({ children }: { children: ReactElement })
 
   const shouldRedirect = !web3 && isProviderRoute(router.pathname)
 
-  return shouldRedirect ? <Redirect url={AppRoutes.splash} query={{ next: router.pathname }} /> : children
+  return shouldRedirect ? <SplashScreen /> : children
 }

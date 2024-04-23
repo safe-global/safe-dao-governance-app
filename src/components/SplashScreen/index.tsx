@@ -5,20 +5,14 @@ import { ReactElement, useState } from 'react'
 import { useOnboard } from '@/hooks/useOnboard'
 
 import { useChainId } from '@/hooks/useChainId'
-import { getConnectedWallet, useWallet } from '@/hooks/useWallet'
-import { useRouter } from 'next/router'
-import { AppRoutes } from '@/config/routes'
+import { getConnectedWallet } from '@/hooks/useWallet'
 import Barcode from '@/public/images/barcode.svg'
 
 import css from './styles.module.css'
 import SafePass from '@/public/images/safe-pass.svg'
 import { useIsSafeApp } from '@/hooks/useIsSafeApp'
 import Asterix from '@/public/images/asterix.svg'
-import { localItem } from '@/services/storage/local'
-import { useIsomorphicLayoutEffect } from '@/hooks/useIsomorphicLayoutEffect'
 import { isSafe } from '@/utils/wallet'
-import { trackSafeAppEvent } from '@/utils/analytics'
-import { NAVIGATION_EVENTS } from '@/analytics/navigation'
 
 const Step = ({ index, title, active }: { index: number; title: string; active: boolean }) => {
   return (
@@ -34,25 +28,16 @@ const Step = ({ index, title, active }: { index: number; title: string; active: 
   )
 }
 
-// Check if new or returning user
-const ALREADY_VISITED = 'alreadyVisited'
-const alreadyVisitedStorage = localItem<boolean>(ALREADY_VISITED)
-
 /**
  * This page handles wallet connection and initial data loading.
  */
 export const SplashScreen = (): ReactElement => {
   const onboard = useOnboard()
   const chainId = useChainId()
-  const router = useRouter()
   const isSafeApp = useIsSafeApp()
 
   const [isConnecting, setIsConnecting] = useState(false)
   const [error, setError] = useState<string>()
-
-  const wallet = useWallet()
-
-  const isDisconnected = !isSafeApp && !wallet
 
   const onConnect = async () => {
     if (!onboard) {
@@ -77,7 +62,6 @@ export const SplashScreen = (): ReactElement => {
         setError('Connected wallet must be a Safe')
         return
       }
-      onContinue()
     } catch (error) {
       setError('Wallet connection failed.')
       return
@@ -85,22 +69,6 @@ export const SplashScreen = (): ReactElement => {
       setIsConnecting(false)
     }
   }
-
-  const onContinue = async () => {
-    trackSafeAppEvent(NAVIGATION_EVENTS.OPEN_LOCKING.action, 'opening')
-    alreadyVisitedStorage.set(true)
-    const nextPage = router.query.next === AppRoutes.governance ? AppRoutes.governance : AppRoutes.activity
-    router.push(nextPage)
-  }
-
-  useIsomorphicLayoutEffect(() => {
-    const hasAlreadyVisited = alreadyVisitedStorage.get()
-    if (isSafeApp && hasAlreadyVisited) {
-      // We are a returning user and already connected
-      // We only skip this step for the Safe App as we have to connect a wallet in the standalone version
-      onContinue()
-    }
-  }, [isSafeApp])
 
   return (
     <Box display="flex" width="100%">
@@ -119,22 +87,17 @@ export const SplashScreen = (): ReactElement => {
               </Typography>
               <Typography>Get your pass now! Lock your tokens and be active on Safe to get rewarded.</Typography>
               <Box>
-                {isDisconnected ? (
-                  <Button variant="contained" color="primary" onClick={onConnect} disabled={isConnecting}>
-                    {isConnecting ? (
-                      <Box display="flex" alignItems="center" flexDirection="row" gap={1}>
-                        <Typography>Connecting</Typography>
-                        <CircularProgress size={12} />
-                      </Box>
-                    ) : (
-                      'Connect wallet'
-                    )}
-                  </Button>
-                ) : (
-                  <Button variant="contained" color="primary" onClick={onContinue}>
-                    Continue
-                  </Button>
-                )}
+                <Button variant="contained" color="primary" onClick={onConnect} disabled={isConnecting}>
+                  {isConnecting ? (
+                    <Box display="flex" alignItems="center" flexDirection="row" gap={1}>
+                      <Typography>Connecting</Typography>
+                      <CircularProgress size={12} />
+                    </Box>
+                  ) : (
+                    'Connect wallet'
+                  )}
+                </Button>
+
                 {error && (
                   <Typography mt={1} color="error.main">
                     {error}

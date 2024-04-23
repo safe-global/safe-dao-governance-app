@@ -26,5 +26,7 @@ export const useInitWeb3 = (): void => {
       web3Store.setStore(createWeb3Provider(wallet.provider))
       return
     }
+
+    web3Store.setStore(undefined)
   }, [isSafeApp, sdk, wallet?.provider])
 }

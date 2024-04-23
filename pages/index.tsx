@@ -1,9 +1,9 @@
 import type { NextPage } from 'next'
 
-import { SplashScreen } from '@/components/SplashScreen'
+import TokenLocking from '@/components/TokenLocking'
 
 const IndexPage: NextPage = () => {
-  return <SplashScreen />
+  return <TokenLocking />
 }
 
 export default IndexPage
