@@ -5,8 +5,7 @@ import { ReactElement, useState } from 'react'
 import { useOnboard } from '@/hooks/useOnboard'
 
 import { useChainId } from '@/hooks/useChainId'
-import { getConnectedWallet, useWallet } from '@/hooks/useWallet'
-import { useRouter } from 'next/router'
+import { getConnectedWallet } from '@/hooks/useWallet'
 import Barcode from '@/public/images/barcode.svg'
 
 import css from './styles.module.css'
@@ -35,15 +34,10 @@ const Step = ({ index, title, active }: { index: number; title: string; active: 
 export const SplashScreen = (): ReactElement => {
   const onboard = useOnboard()
   const chainId = useChainId()
-  const router = useRouter()
   const isSafeApp = useIsSafeApp()
 
   const [isConnecting, setIsConnecting] = useState(false)
   const [error, setError] = useState<string>()
-
-  const wallet = useWallet()
-
-  const isDisconnected = !isSafeApp && !wallet
 
   const onConnect = async () => {
     if (!onboard) {
