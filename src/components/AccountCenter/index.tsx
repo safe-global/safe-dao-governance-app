@@ -103,8 +103,6 @@ const Popper = ({ wallet }: { wallet: ConnectedWallet }): ReactElement => {
 export const AccountCenter = (): ReactElement | null => {
   const wallet = useWallet()
 
-  console.log('Wallet', wallet)
-
   if (!wallet) {
     return null
   }
