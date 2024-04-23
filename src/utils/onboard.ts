@@ -58,7 +58,7 @@ export const createOnboard = (chainConfigs: ChainInfo[], currentChain: ChainInfo
     },
     appMetadata: {
       name: manifestJson.name,
-      icon: '/images/app-logo.svg',
+      icon: location.origin + '/images/app-logo.svg',
       description: `Please select a wallet to connect to ${manifestJson.name}`,
     },
     connect: {
