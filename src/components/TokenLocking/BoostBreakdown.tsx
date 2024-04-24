@@ -54,7 +54,7 @@ export const BoostBreakdown = ({
   return (
     <Stack direction={{ md: 'column' }} gap={2} height="100%">
       <Box className={`${css.boostInfoBox} ${css.bordered}`} p={4} gap={4} flex="2" height="100%" display="flex">
-        <Box display="flex" flexDirection="row" justifyContent="space-between" alignItems="center">
+        <Box display="flex" flexDirection="row" justifyContent="space-between" alignItems="center" gap={2}>
           <span style={{ display: 'inline-flex' }}>
             {!isInitialState && (
               <>

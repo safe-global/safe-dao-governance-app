@@ -26,5 +26,10 @@ export const useInitWeb3 = (): void => {
       web3Store.setStore(createWeb3Provider(wallet.provider))
       return
     }
+
+    // A Safe app can not disconnect
+    if (!isSafeApp) {
+      web3Store.setStore(undefined)
+    }
   }, [isSafeApp, sdk, wallet?.provider])
 }

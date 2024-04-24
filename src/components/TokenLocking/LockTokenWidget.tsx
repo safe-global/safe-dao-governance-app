@@ -113,7 +113,15 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
     setAmount(formatUnits(safeBalance, 18))
   }, [safeBalance])
 
-  const isMaxDisabled = BigNumber.from(0).gte(safeBalance ?? 0)
+  let isMaxDisabled = true
+  try {
+    isMaxDisabled = BigNumber.from(0).gte(safeBalance ?? 0)
+  } catch { }
+
+  let balanceString = '0'
+  try {
+    balanceString = formatAmount(formatUnits(safeBalance ?? '0', 18), 2)
+  } catch { }
 
   const onLockTokens = async () => {
     if (!txSender) {
@@ -214,7 +222,7 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
                 </Track>
               </Grid>
             </Grid>
-            <Typography variant="caption">Balance: {formatAmount(formatUnits(safeBalance ?? '0', 18), 2)}</Typography>
+            <Typography variant="caption">Balance: {balanceString}</Typography>
           </Grid>
           <Grid item xs={12} md={4}>
             <BoostBreakdown

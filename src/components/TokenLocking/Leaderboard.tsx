@@ -29,7 +29,7 @@ import { useEnsLookup } from '@/hooks/useEnsLookup'
 import Track from '../Track'
 import { NAVIGATION_EVENTS } from '@/analytics/navigation'
 import { useChainId } from '@/hooks/useChainId'
-import { CHAIN_EXPLORER_URL } from '@/config/constants'
+import { CHAIN_SHORT_NAME, SAFE_URL } from '@/config/constants'
 import { ExternalLink } from '../ExternalLink'
 
 const PAGE_SIZE = 10
@@ -99,14 +99,16 @@ const LookupAddress = ({ address }: { address: string }) => {
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'))
   const displayAddress = isSmallScreen ? shortenAddress(address) : address
   const chainId = useChainId()
-  const explorerURL = CHAIN_EXPLORER_URL[chainId]
+  const shortName = CHAIN_SHORT_NAME[chainId]
 
   return (
     <>
       <Box display="flex" flexDirection="row" gap={2} alignItems="center">
         <Identicon size={32} address={address}></Identicon>
-        {explorerURL ? (
-          <ExternalLink href={`${explorerURL}${address}`}>{name ? name : displayAddress}</ExternalLink>
+        {shortName ? (
+          <ExternalLink href={`${SAFE_URL}/home?safe=${shortName}:${address}`}>
+            {name ? name : displayAddress}
+          </ExternalLink>
         ) : (
           <Typography>{name ? name : displayAddress}</Typography>
         )}

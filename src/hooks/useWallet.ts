@@ -11,6 +11,7 @@ export type ConnectedWallet = {
   address: string
   ens?: string
   provider: EIP1193Provider
+  icon: string
 }
 
 // Get the most recently connected wallet address
@@ -35,6 +36,7 @@ export const getConnectedWallet = (wallets: WalletState[]): ConnectedWallet | nu
     ens: account.ens?.name,
     chainId: Number(primaryWallet.chains[0].id).toString(10),
     provider: primaryWallet.provider,
+    icon: primaryWallet.icon,
   }
 }
 
