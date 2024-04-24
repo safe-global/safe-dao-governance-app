@@ -1,3 +1,4 @@
+import injectedWalletModule from '@web3-onboard/injected-wallets'
 import walletConnect from '@web3-onboard/walletconnect'
 import type { WalletInit } from '@web3-onboard/common/dist/types.d'
 import { hexValue } from '@ethersproject/bytes'
@@ -9,10 +10,12 @@ import { getRpcServiceUrl } from '@/utils/web3'
 import { WC_PROJECT_ID } from '@/config/constants'
 
 export const enum WALLET_KEYS {
+  INJECTED = 'detectedwallet',
   WALLETCONNECT = 'WalletConnect',
 }
 
 const CGW_NAMES: { [key in WALLET_KEYS]: string } = {
+  [WALLET_KEYS.INJECTED]: 'detectedwallet',
   [WALLET_KEYS.WALLETCONNECT]: 'WalletConnect',
 }
 
@@ -32,6 +35,7 @@ const walletConnectV2 = (chain: ChainInfo): WalletInit => {
 }
 
 const WALLET_MODULES: { [key in WALLET_KEYS]: (chain: ChainInfo) => WalletInit } = {
+  [WALLET_KEYS.INJECTED]: () => injectedWalletModule(),
   [WALLET_KEYS.WALLETCONNECT]: (chain) => walletConnectV2(chain),
 }
 

@@ -9,19 +9,18 @@ import type { ConnectedWallet } from '@/hooks/useWallet'
 
 import css from './styles.module.css'
 
-export const UNKNOWN_CHAIN_NAME = 'Unknown'
-
 export const WalletInfo = ({ wallet, chain }: { wallet: ConnectedWallet; chain?: ChainInfo }): ReactElement => {
   return (
     <Box className={css.container}>
       <Box className={css.imageContainer}>
         <Suspense>
-          <WalletIcon provider={wallet.label} />
+          <WalletIcon icon={wallet.icon} />
         </Suspense>
       </Box>
       <Box>
         <Typography variant="caption" component="div" className={css.walletDetails}>
-          {wallet.label} @ {chain?.chainName ?? UNKNOWN_CHAIN_NAME}
+          {wallet.label}
+          {chain?.chainName ? ` @ ${chain.chainName}` : ''}
         </Typography>
         <Typography variant="caption" fontWeight="bold">
           {wallet.ens ? (

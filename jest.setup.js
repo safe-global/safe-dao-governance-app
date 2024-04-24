@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom/extend-expect'
 
 jest.mock('@web3-onboard/walletconnect', () => jest.fn())
-jest.mock('@web3-onboard/walletconnect/dist/icon', () => '')
+jest.mock('@web3-onboard/injected-wallets', () => jest.fn())
 
 const mockOnboardState = {
   chains: [],
