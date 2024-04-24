@@ -17,7 +17,6 @@ import { useInitWeb3 } from '@/hooks/useWeb3'
 import initTheme from '@/styles/theme'
 import { useDelegatesFile } from '@/hooks/useDelegatesFile'
 import { useChain } from '@/hooks/useChain'
-import { PageLayout } from '@/components/PageLayout'
 import { useIsTokenPaused } from '@/hooks/useIsTokenPaused'
 import { useInitWallet } from '@/hooks/useWallet'
 import { EnsureWalletConnection } from '@/components/EnsureWalletConnection'
@@ -90,13 +89,7 @@ const App = ({
         <SafeProvider>
           <InitApp />
 
-          {isDashboard(pathname) ? (
-            page
-          ) : (
-            <PageLayout>
-              <EnsureWalletConnection>{page}</EnsureWalletConnection>
-            </PageLayout>
-          )}
+          {isDashboard(pathname) ? page : <EnsureWalletConnection>{page}</EnsureWalletConnection>}
         </SafeProvider>
       </CssVarsProvider>
     </CacheProvider>
