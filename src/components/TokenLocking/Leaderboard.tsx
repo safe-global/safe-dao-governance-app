@@ -105,7 +105,7 @@ const LookupAddress = ({ address }: { address: string }) => {
     <>
       <Box display="flex" flexDirection="row" gap={2} alignItems="center">
         <Identicon size={32} address={address}></Identicon>
-        {SAFE_URL ? (
+        {shortName ? (
           <ExternalLink href={`${SAFE_URL}/home?safe=${shortName}:${address}`}>
             {name ? name : displayAddress}
           </ExternalLink>
