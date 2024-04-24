@@ -6,6 +6,7 @@ import { useWallet } from '@/hooks/useWallet'
 import { useIsSafeApp } from '@/hooks/useIsSafeApp'
 import { ExternalStore } from '@/services/ExternalStore'
 import { createSafeProvider, createWeb3Provider } from '@/utils/web3'
+import { isSafe } from '@/utils/wallet'
 
 const web3Store = new ExternalStore<JsonRpcProvider>()
 
@@ -27,6 +28,9 @@ export const useInitWeb3 = (): void => {
       return
     }
 
-    web3Store.setStore(undefined)
+    // A Safe app can not disconnect
+    if (!isSafeApp) {
+      web3Store.setStore(undefined)
+    }
   }, [isSafeApp, sdk, wallet?.provider])
 }
