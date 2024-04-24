@@ -8,11 +8,13 @@ import { useWallet } from '@/hooks/useWallet'
 import { useOnboard } from '@/hooks/useOnboard'
 import { Identicon } from '@/components/Identicon'
 import { useChain } from '@/hooks/useChain'
-import { WalletInfo, UNKNOWN_CHAIN_NAME } from '@/components/WalletInfo'
+import { WalletInfo } from '@/components/WalletInfo'
 import { EthHashInfo } from '@/components/EthHashInfo'
 import type { ConnectedWallet } from '@/hooks/useWallet'
 
 import css from './styles.module.css'
+
+const UNKNOWN_CHAIN_NAME = 'Unknown network'
 
 const Popper = ({ wallet }: { wallet: ConnectedWallet }): ReactElement => {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null)
