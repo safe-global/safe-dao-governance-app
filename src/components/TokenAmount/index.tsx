@@ -7,6 +7,12 @@ import css from './styles.module.css'
 import { BigNumberish } from 'ethers'
 
 export const TokenAmount = ({ loading, amount, label }: { loading: boolean; amount: BigNumberish; label: string }) => {
+  let odometerValue = 0
+  try {
+    odometerValue = Number(formatUnits(amount ?? '0', 18))
+  } catch (e) {
+    console.error(e)
+  }
   return (
     <Paper
       sx={{
@@ -33,7 +39,7 @@ export const TokenAmount = ({ loading, amount, label }: { loading: boolean; amou
                 <Skeleton />
               ) : (
                 <>
-                  <Odometer value={Number(formatUnits(amount ?? '0', 18))} decimals={0} /> SAFE
+                  <Odometer value={odometerValue} decimals={0} /> SAFE
                 </>
               )}
             </Typography>
