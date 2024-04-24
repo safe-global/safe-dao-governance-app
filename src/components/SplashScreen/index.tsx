@@ -60,6 +60,7 @@ export const SplashScreen = (): ReactElement => {
       if (wallet && !isSafeApp && !(await isSafe(wallet))) {
         await onboard.disconnectWallet({ label: wallet.label })
         setError('Connected wallet must be a Safe')
+        alert('Connected wallet is not a Safe Account. Please connect a Safe Account.')
         return
       }
     } catch (error) {
