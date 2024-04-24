@@ -116,16 +116,12 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
   let isMaxDisabled = true
   try {
     isMaxDisabled = BigNumber.from(0).gte(safeBalance ?? 0)
-  } catch (error) {
-    console.error(error)
-  }
+  } catch { }
 
   let balanceString = '0'
   try {
     balanceString = formatAmount(formatUnits(safeBalance ?? '0', 18), 2)
-  } catch (error) {
-    console.error(error)
-  }
+  } catch { }
 
   const onLockTokens = async () => {
     if (!txSender) {

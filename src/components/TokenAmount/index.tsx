@@ -10,9 +10,8 @@ export const TokenAmount = ({ loading, amount, label }: { loading: boolean; amou
   let odometerValue = 0
   try {
     odometerValue = Number(formatUnits(amount ?? '0', 18))
-  } catch (e) {
-    console.error(e)
-  }
+  } catch { }
+
   return (
     <Paper
       sx={{
