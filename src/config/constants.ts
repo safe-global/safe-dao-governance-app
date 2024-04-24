@@ -11,7 +11,7 @@ export const POLLING_INTERVAL = 15_000
 
 // Wallets
 export const WC_BRIDGE = process.env.NEXT_PUBLIC_WC_BRIDGE || 'https://bridge.walletconnect.org'
-export const WC_PROJECT_ID = process.env.NEXT_PUBLIC_WC_PROJECT_ID || ''
+export const WC_PROJECT_ID = process.env.NEXT_PUBLIC_WC_PROJECT_ID || 'safe'
 export const TREZOR_APP_URL = 'app.safe.global'
 export const TREZOR_EMAIL = 'support@safe.global'
 

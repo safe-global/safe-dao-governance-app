@@ -16,7 +16,7 @@ export const WalletInfo = ({ wallet, chain }: { wallet: ConnectedWallet; chain?:
     <Box className={css.container}>
       <Box className={css.imageContainer}>
         <Suspense>
-          <WalletIcon provider={wallet.label} />
+          <WalletIcon icon={wallet.icon} />
         </Suspense>
       </Box>
       <Box>
