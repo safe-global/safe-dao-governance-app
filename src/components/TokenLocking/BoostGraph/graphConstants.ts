@@ -1,3 +1,3 @@
-export const BIG_SCREEN = { height: 280, padding: 52, width: 524 }
+export const BIG_SCREEN = { height: 289, padding: 0, width: 524 }
 
-export const SMALL_SCREEN = { height: 180, padding: 52, width: 476 }
+export const SMALL_SCREEN = { height: 250, padding: 0, width: 476 }

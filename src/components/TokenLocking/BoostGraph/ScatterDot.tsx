@@ -3,7 +3,6 @@ import { useTheme } from '@mui/material/styles'
 import { useState } from 'react'
 import { ArrowDownLabel } from './ArrowDownLabel'
 import { floorNumber } from '@/utils/boost'
-import { SEASON2_START } from '@/config/constants'
 
 /**
  * Draws different circles based on the date
@@ -30,12 +29,12 @@ export const ScatterDot = ({
         <circle
           cx={props.x}
           cy={props.y}
-          r={22}
+          r={18}
           fill="transparent"
           onMouseEnter={() => setHovered(true)}
           onMouseLeave={() => setHovered(false)}
         />
-        {hovered && props.datum.x !== SEASON2_START && (
+        {hovered && (
           <ArrowDownLabel
             style={{
               verticalAnchor: 'middle',
@@ -64,12 +63,12 @@ export const ScatterDot = ({
       <circle
         cx={props.x}
         cy={props.y}
-        r={10}
+        r={6}
         fill="transparent"
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
       />
-      {hovered && props.datum.x !== SEASON2_START && (
+      {hovered && (
         <ArrowDownLabel
           style={{
             verticalAnchor: 'middle',

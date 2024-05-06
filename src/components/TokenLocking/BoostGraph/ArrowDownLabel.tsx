@@ -6,6 +6,7 @@ export const ArrowDownLabel = ({ backgroundColor, ...props }: VictoryLabelProps 
   if (props.x === undefined || props.y === undefined || props.text === '') {
     return null
   }
+  console.log(props)
   return (
     <>
       <rect
