@@ -1,7 +1,6 @@
 import { SEASON1_START, SEASON2_START } from '@/config/constants'
-import { floorNumber, getBoostFunction } from '@/utils/boost'
+import { getBoostFunction } from '@/utils/boost'
 import { getCurrentDays } from '@/utils/date'
-import { formatAmount } from '@/utils/formatters'
 import { LockHistory } from '@/utils/lock'
 import { useTheme } from '@mui/material/styles'
 import { useMemo } from 'react'
