@@ -14,8 +14,8 @@ export const AxisTopLabel = ({ startTime, ...props }: VictoryLabelProps & { star
 
   return (
     <>
-      <VictoryLabel {...props} dy={0} style={{ ...style, fontSize: '11px' }} />
-      <VictoryLabel {...props} dy={16} text={dateLabel} style={{ ...style, fontSize: '11px', fill: '#FFF' }} />
+      <VictoryLabel {...props} dy={0} style={{ ...style, fontSize: '12px' }} />
+      <VictoryLabel {...props} dy={16} text={dateLabel} style={{ ...style, fontSize: '12px', fill: '#FFF' }} />
     </>
   )
 }

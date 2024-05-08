@@ -116,12 +116,12 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
   let isMaxDisabled = true
   try {
     isMaxDisabled = BigNumber.from(0).gte(safeBalance ?? 0)
-  } catch { }
+  } catch {}
 
   let balanceString = '0'
   try {
     balanceString = formatAmount(formatUnits(safeBalance ?? '0', 18), 2)
-  } catch { }
+  } catch {}
 
   const onLockTokens = async () => {
     if (!txSender) {
@@ -183,7 +183,7 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
           <Grid item xs={12} md={8}>
             <BoostGraph lockedAmount={Number(cleanedAmount)} pastLocks={relativeLockHistory} isLock />
 
-            <Grid container spacing={2} mb={1} alignItems="center">
+            <Grid container spacing={2} mb={1} mt={2} alignItems="center">
               <Grid item xs={12} md={8}>
                 <Typography>Select amount to lock</Typography>
                 <TextField
