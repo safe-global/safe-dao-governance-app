@@ -216,6 +216,21 @@ describe('boost', () => {
       expect(boostFunction({ x: 1000 })).toBe(1)
     })
 
+    it('should not decrease the boost if locked amount is > 100k after unlocking', () => {
+      const priorLocks: LockHistory[] = [
+        {
+          day: 0,
+          amount: 200_000,
+        },
+      ]
+      const boostFunction = getBoostFunction(39, -100_000, priorLocks)
+
+      expect(boostFunction({ x: -1 })).toBe(1)
+      expect(boostFunction({ x: 0 })).toBeCloseTo(2)
+      expect(boostFunction({ x: 39 })).toBe(2)
+      expect(boostFunction({ x: 1000 })).toBe(2)
+    })
+
     it('should compute for 2000 tokens on day one, unlocking 1000 after 40 days and locking another 1000 after 80 days', () => {
       const priorLocks: LockHistory[] = [
         {
