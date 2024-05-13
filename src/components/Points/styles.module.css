@@ -1,0 +1,11 @@
+@media (max-width: 899px) {
+  .pageTitle {
+    margin: 16px;
+  }
+}
+
+.gradientText {
+  background: linear-gradient(225deg, #5fddff 12.5%, #12ff80 88.07%);
+  background-clip: text;
+  color: transparent;
+}

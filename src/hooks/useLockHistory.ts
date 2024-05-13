@@ -57,7 +57,7 @@ export const useLockHistory = () => {
       }
       if (!previousPageData) {
         // Load first page
-        return `${gatewayBaseUrl}/v1/locking/${address}/history?${toCursorParam(LIMIT)}`
+        return `${gatewayBaseUrl}/v1/community/locking/${address}/history?${toCursorParam(LIMIT)}`
       }
       if (previousPageData && !previousPageData.next) return null // reached the end
 

@@ -1,7 +1,7 @@
 import { floorNumber } from '@/utils/boost'
 import { SignalCellularAlt, SignalCellularAlt1Bar, SignalCellularAlt2Bar } from '@mui/icons-material'
 import { Stack, Typography, Box } from '@mui/material'
-import BoostCounter from '../BoostCounter'
+import NumberCounter from '../BoostCounter'
 import { BoostMeter } from './BoostMeter'
 
 import EmptyBreakdown from '@/public/images/empty-breakdown.svg'
@@ -85,7 +85,7 @@ export const BoostBreakdown = ({
           </Stack>
         ) : (
           <Stack direction="column" width="100%" alignItems="start" mt="auto" spacing={2}>
-            <BoostCounter
+            <NumberCounter
               value={newFinalBoost}
               variant="h2"
               fontWeight={700}

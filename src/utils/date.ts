@@ -54,7 +54,7 @@ export const toDaysSinceStart = (timestamp: number, start: number) => {
 
 export const getCurrentDays = (startTime: number) => toDaysSinceStart(Date.now(), startTime)
 
-export const formatDate = (date: Date) => {
+export const formatDatetime = (date: Date) => {
   const options: Intl.DateTimeFormatOptions = {
     year: 'numeric',
     month: 'long',
@@ -64,4 +64,13 @@ export const formatDate = (date: Date) => {
   }
 
   return `${date.toLocaleString(undefined, options)}h`
+}
+
+export const formatDate = (date: Date) => {
+  const options: Intl.DateTimeFormatOptions = {
+    month: 'short',
+    day: '2-digit',
+  }
+
+  return `${date.toLocaleString(undefined, options)}`
 }

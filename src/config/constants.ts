@@ -115,3 +115,8 @@ export const UNLIMITED_APPROVAL_AMOUNT = BigNumber.from(2).pow(256).sub(1)
 
 export const SEASON2_START = 160
 export const SEASON1_START = 27
+
+export const GLOBAL_CAMPAIGN_IDS: ChainConfig<string> = {
+  [Chains.SEPOLIA]: 'fa9f462b-8e8c-4122-aa41-2464e919b721',
+  [Chains.MAINNET]: 'fa9f462b-8e8c-4122-aa41-2464e919b721',
+}
