@@ -249,14 +249,14 @@ export const CampaignLeaderboard = ({ campaign }: { campaign?: Campaign }) => {
         </Box>
       </Box>
 
-      <TableContainer component={Paper} sx={{ marginTop: -6 }}>
+      <TableContainer component={Paper}>
         <StyledTable aria-label="customized table">
           <TableHead>
             <TableRow>
               <StyledTableCell align="right"></StyledTableCell>
               <StyledTableCell align="right"></StyledTableCell>
               <StyledTableCell align="left">
-                <Typography color="text.secondary">Points</Typography>
+                <Typography color="text.secondary">Points gained</Typography>
               </StyledTableCell>
             </TableRow>
           </TableHead>
