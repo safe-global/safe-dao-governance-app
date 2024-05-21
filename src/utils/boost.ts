@@ -24,11 +24,11 @@ export const getTokenBoost = (amountLocked: number) => {
 }
 
 export const getTimeFactor = (days: number) => {
-  if (days <= 27) {
+  if (days <= 33) {
     return 1
   }
 
-  return Math.max(0, 1 - (days - 27) / 133)
+  return Math.max(0, 1 - (days - 33) / 127)
 }
 
 /**

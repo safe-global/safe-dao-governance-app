@@ -149,8 +149,7 @@ export const BoostGraph = ({
           theme={victoryTheme}
         />
         <VictoryAxis
-          orientation="top"
-          axisValue={2.1}
+          axisValue={0.9}
           tickValues={[now]}
           tickFormat={(value) => {
             if (value === now) {
