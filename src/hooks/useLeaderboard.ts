@@ -16,8 +16,8 @@ export type CampaignLeaderboardEntry = {
   holder: string
   position: number
   boost: string
-  points: string
-  boostedPoints: string
+  totalPoints: number
+  totalBoostedPoints: number
 }
 
 export const useOwnLockingRank = () => {

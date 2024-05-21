@@ -7,7 +7,8 @@ import { Divider, Skeleton, Stack, Typography } from '@mui/material'
 import Box from '@mui/material/Box'
 import { useEffect, useMemo, useState } from 'react'
 import PointsCounter from '../PointsCounter'
-
+import Barcode from '@/public/images/horizontal_barcode.svg'
+import css from './styles.module.css'
 const HiddenValue = () => (
   <Typography minWidth="80px">
     <Skeleton />
@@ -19,11 +20,11 @@ export const ActivityPointsFeed = ({ campaign }: { campaign?: Campaign }) => {
 
   const data = useMemo(() => {
     return {
-      activityPoints: ownEntry?.points,
-      boostedPoints: ownEntry?.boostedPoints,
-      totalPoints: ownEntry?.boostedPoints,
+      activityPoints: ownEntry?.totalPoints,
+      boostedPoints: ownEntry ? ownEntry.totalBoostedPoints - ownEntry.totalPoints : 0,
+      totalPoints: ownEntry?.totalBoostedPoints,
     }
-  }, [ownEntry?.boostedPoints, ownEntry?.points])
+  }, [ownEntry])
 
   const [showBoostPoints, setShowBoostPoints] = useState(false)
   const [showTotalPoints, setShowTotalPoints] = useState(false)
@@ -61,6 +62,7 @@ export const ActivityPointsFeed = ({ campaign }: { campaign?: Campaign }) => {
           display: 'flex',
           flexDirection: 'column',
           gap: 2,
+          position: 'relative',
         }}
       >
         <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
@@ -77,6 +79,7 @@ export const ActivityPointsFeed = ({ campaign }: { campaign?: Campaign }) => {
           <HiddenValue />
         </Stack>
         <HiddenValue />
+        <Barcode className={css.barcode} />
       </Box>
     )
   }
@@ -91,6 +94,7 @@ export const ActivityPointsFeed = ({ campaign }: { campaign?: Campaign }) => {
         display: 'flex',
         flexDirection: 'column',
         gap: 2,
+        position: 'relative',
       }}
     >
       <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
@@ -123,6 +127,7 @@ export const ActivityPointsFeed = ({ campaign }: { campaign?: Campaign }) => {
       <Typography mt={6} alignSelf="center" color="text.secondary">
         Last updated {formatDatetime(new Date(campaign.lastUpdated))}
       </Typography>
+      <Barcode className={css.barcode} />
     </Box>
   )
 }

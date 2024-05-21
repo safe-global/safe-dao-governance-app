@@ -31,6 +31,7 @@ import { useChainId } from '@/hooks/useChainId'
 import { CHAIN_SHORT_NAME, SAFE_URL } from '@/config/constants'
 import { ExternalLink } from '../ExternalLink'
 import { Campaign } from '@/hooks/useCampaigns'
+import { floorNumber } from '@/utils/boost'
 
 const PAGE_SIZE = 10
 
@@ -141,7 +142,7 @@ const OwnEntry = ({ entry }: { entry: CampaignLeaderboardEntry | undefined }) =>
         <StyledTableCell align="left">
           <LookupAddress address={entry.holder} />
         </StyledTableCell>
-        <StyledTableCell align="left">{formatAmount(entry.points, 0)}</StyledTableCell>
+        <StyledTableCell align="left">{floorNumber(entry.totalBoostedPoints, 0)}</StyledTableCell>
       </HighlightedTableRow>
     )
   }
@@ -206,7 +207,7 @@ const LeaderboardPage = ({
             <StyledTableCell align="left">
               <LookupAddress address={row.holder} />
             </StyledTableCell>
-            <StyledTableCell align="left">{formatAmount(row.points, 0)}</StyledTableCell>
+            <StyledTableCell align="left">{floorNumber(row.totalBoostedPoints, 0)}</StyledTableCell>
           </StyledTableRow>
         )
       })}

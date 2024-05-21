@@ -9,3 +9,12 @@
   background-clip: text;
   color: transparent;
 }
+
+.barcode {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  z-index: 1;
+  transform: translate(-50%);
+  pointer-events: none;
+}
