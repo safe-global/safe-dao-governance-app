@@ -67,12 +67,12 @@ describe('boost', () => {
       expect(getTimeFactor(0)).toBe(1)
     })
 
-    it('should return 1 on first 28 days', () => {
-      expect(getTimeFactor(27)).toBe(1)
+    it('should return 1 on first 34 days', () => {
+      expect(getTimeFactor(33)).toBe(1)
     })
 
-    it('should use the correct function after 28 days', () => {
-      expect(getTimeFactor(30)).toBeCloseTo(1 - 3 / 133)
+    it('should use the correct function after 34 days', () => {
+      expect(getTimeFactor(34)).toBeCloseTo(1 - 1 / 127)
     })
 
     it('it should be 0 after the season', () => {
@@ -142,8 +142,8 @@ describe('boost', () => {
       expect(boostFunction({ x: 0 })).toBeCloseTo(1)
       expect(boostFunction({ x: 44 })).toBeCloseTo(1)
       // 1.0 * 0.86 + 1 = 1.86
-      expect(boostFunction({ x: 45 })).toBeCloseTo(1.86)
-      expect(boostFunction({ x: 1000 })).toBeCloseTo(1.86)
+      expect(boostFunction({ x: 45 })).toBeCloseTo(1.905)
+      expect(boostFunction({ x: 1000 })).toBeCloseTo(1.905)
     })
 
     it('should keep boost unchanged if NaN is the locked amount', () => {
@@ -252,11 +252,11 @@ describe('boost', () => {
       expect(boostFunction({ x: 0 })).toBeCloseTo(1.277)
       expect(boostFunction({ x: 38 })).toBeCloseTo(1.277)
       // 0.25 * 0.91 + 1
-      expect(boostFunction({ x: 39 })).toBeCloseTo(1.2275)
-      expect(boostFunction({ x: 78 })).toBeCloseTo(1.2275)
+      expect(boostFunction({ x: 39 })).toBeCloseTo(1.238)
+      expect(boostFunction({ x: 78 })).toBeCloseTo(1.238)
       // 1.2275 + (1.277 - 1.25) * (0.609)
-      expect(boostFunction({ x: 79 })).toBeCloseTo(1.2439)
-      expect(boostFunction({ x: 1000 })).toBeCloseTo(1.2439)
+      expect(boostFunction({ x: 79 })).toBeCloseTo(1.255)
+      expect(boostFunction({ x: 1000 })).toBeCloseTo(1.255)
     })
   })
 })
