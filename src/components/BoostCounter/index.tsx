@@ -19,7 +19,6 @@ const digitRotations: Record<number, number> = {
 const BoostCounter = ({
   value,
   direction,
-
   ...props
 }: TypographyProps & { value: number; direction?: 'north' | 'south' }) => {
   const [isAnimating, setIsAnimating] = useState(false)
