@@ -7,10 +7,14 @@ import NeonStart from '@/public/images/neon-star.svg'
 import { ActivityList } from './ActivityList'
 import { Campaign } from '@/hooks/useCampaigns'
 import { formatDate } from '@/utils/date'
+import { useGlobalCampaignId } from '@/hooks/useGlobalCampaignId'
 
 export const CampaignInfo = ({ campaign }: { campaign: Campaign | undefined }) => {
   const startDateFormatted = formatDate(new Date(campaign?.startDate ?? '0'))
   const endDateFormatted = formatDate(new Date(campaign?.endDate ?? '0'))
+
+  const globalCampaignId = useGlobalCampaignId()
+  const isGlobal = campaign?.resourceId === globalCampaignId
 
   if (!campaign) {
     return (
@@ -63,9 +67,11 @@ export const CampaignInfo = ({ campaign }: { campaign: Campaign | undefined }) =
       <Typography variant="h1" fontWeight={700} maxWidth="80%" className={css.gradientText}>
         {campaign?.name}
       </Typography>
-      <Typography mt={-2}>
-        {startDateFormatted} - {endDateFormatted}
-      </Typography>
+      {!isGlobal && (
+        <Typography mt={-2}>
+          {startDateFormatted} - {endDateFormatted}
+        </Typography>
+      )}
       <Typography mt={-1} variant="body2" color="text.secondary">
         {campaign.description}
       </Typography>
