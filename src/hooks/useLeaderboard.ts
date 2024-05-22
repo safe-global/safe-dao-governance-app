@@ -25,7 +25,7 @@ export const useOwnLockingRank = () => {
   const gatewayBaseUrl = useGatewayBaseUrl()
 
   return useSWR(
-    address ? `${gatewayBaseUrl}/v1/community/locking/leaderboard/${address}` : null,
+    address ? `${gatewayBaseUrl}/v1/community/locking/${address}/rank` : null,
     async (url: string | null) => {
       if (!url) {
         return undefined
