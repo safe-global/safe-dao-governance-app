@@ -18,8 +18,6 @@ const HiddenValue = () => (
 export const ActivityPointsFeed = ({ campaign }: { campaign?: Campaign }) => {
   const { data: ownEntry, isLoading } = useOwnCampaignRank(campaign?.resourceId)
 
-  console.log(ownEntry, isLoading)
-
   const data = useMemo(() => {
     return {
       activityPoints: ownEntry?.totalPoints ?? 0,
