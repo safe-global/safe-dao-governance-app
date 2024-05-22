@@ -31,6 +31,7 @@ import { CHAIN_SHORT_NAME, SAFE_URL } from '@/config/constants'
 import { ExternalLink } from '../ExternalLink'
 import { Campaign } from '@/hooks/useCampaigns'
 import { floorNumber } from '@/utils/boost'
+import { useGlobalCampaignId } from '@/hooks/useGlobalCampaignId'
 
 const PAGE_SIZE = 10
 
@@ -236,7 +237,9 @@ export const CampaignLeaderboard = ({ campaign }: { campaign?: Campaign }) => {
   const [pages, setPages] = useState(1)
   const { data: ownEntry } = useOwnCampaignRank(campaign?.resourceId)
 
-  const isGlobal = campaign?.resourceId === 'global'
+  const globalCampaignId = useGlobalCampaignId()
+
+  const isGlobal = campaign?.resourceId === globalCampaignId
 
   return (
     <Box key={campaign?.resourceId}>

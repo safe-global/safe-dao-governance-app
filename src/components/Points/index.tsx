@@ -2,7 +2,8 @@ import { GLOBAL_CAMPAIGN_IDS } from '@/config/constants'
 import { useCampaignInfo, useCampaignPage } from '@/hooks/useCampaigns'
 import { useChainId } from '@/hooks/useChainId'
 import { Grid, Typography, Stack, Box } from '@mui/material'
-import { useState } from 'react'
+import { chain } from 'lodash'
+import { useEffect, useState } from 'react'
 import { ExternalLink } from '../ExternalLink'
 import PaperContainer from '../PaperContainer'
 import SafePassDisclaimer from '../SafePassDisclaimer'
@@ -26,6 +27,10 @@ const Points = () => {
   const campaigns = campaignPage?.results ?? []
 
   const [selectedTab, setSelectedTab] = useState(0)
+
+  useEffect(() => {
+    setSelectedCampaignId(GLOBAL_CAMPAIGN_IDS[chainId])
+  }, [chainId])
 
   const onTabChange = (index: number) => {
     setSelectedTab(index)
