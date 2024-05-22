@@ -1,5 +1,7 @@
 import { LockHistory } from './lock'
 
+const MAX_AMOUNT = 100_000
+
 export const floorNumber = (num: number, digits: number) => {
   const decimal = Math.pow(10, digits)
   return Math.floor(num * decimal) / decimal
@@ -22,11 +24,11 @@ export const getTokenBoost = (amountLocked: number) => {
 }
 
 export const getTimeFactor = (days: number) => {
-  if (days <= 27) {
+  if (days <= 33) {
     return 1
   }
 
-  return Math.max(0, 1 - (days - 27) / 133)
+  return Math.max(0, 1 - (days - 33) / 127)
 }
 
 /**
@@ -59,7 +61,9 @@ export const getBoostFunction =
         currentBoost = currentBoost + boostGain * timeFactorLock
       } else {
         // handle unlock
-        currentBoost = getTokenBoost(lockedAmount) * getTimeFactor(currentEvent.day) + 1
+        if (lockedAmount < MAX_AMOUNT) {
+          currentBoost = getTokenBoost(lockedAmount) * getTimeFactor(currentEvent.day) + 1
+        }
       }
     }
 

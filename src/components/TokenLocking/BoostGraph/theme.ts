@@ -9,7 +9,7 @@ const grey = '#A1A3A7'
 // Typography
 const sansSerif = "'DM Sans'"
 const letterSpacing = 'normal'
-const fontSize = '12px'
+const fontSize = '14px'
 
 // Strokes
 const strokeLinecap = 'round'

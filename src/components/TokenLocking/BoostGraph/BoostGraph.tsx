@@ -1,12 +1,10 @@
 import { SEASON1_START, SEASON2_START } from '@/config/constants'
-import { floorNumber, getBoostFunction } from '@/utils/boost'
+import { getBoostFunction } from '@/utils/boost'
 import { getCurrentDays } from '@/utils/date'
-import { formatAmount } from '@/utils/formatters'
 import { LockHistory } from '@/utils/lock'
 import { useTheme } from '@mui/material/styles'
 import { useMemo } from 'react'
 import { VictoryAxis, VictoryChart, VictoryLine, VictoryScatter, DomainTuple, ForAxes, VictoryArea } from 'victory'
-import { ArrowDownLabel } from './ArrowDownLabel'
 import { AxisTopLabel } from './AxisTopLabel'
 import { BoostGradients } from './BoostGradients'
 import { generatePointsFromHistory } from './helper'
@@ -15,7 +13,7 @@ import { ScatterDot } from './ScatterDot'
 import { useVictoryTheme } from './theme'
 import { useStartDate } from '@/hooks/useStartDates'
 
-const DOMAIN: ForAxes<DomainTuple> = { x: [-5, SEASON2_START + 5], y: [0.8, 2.3] }
+const DOMAIN: ForAxes<DomainTuple> = { x: [-12, SEASON2_START + 15], y: [0.8, 2.275] }
 
 export const BoostGraph = ({
   lockedAmount,
@@ -36,8 +34,6 @@ export const BoostGraph = ({
   const newBoostFunction = useMemo(() => getBoostFunction(now, lockedAmount, pastLocks), [lockedAmount, now, pastLocks])
 
   const pastLockPoints = useMemo(() => generatePointsFromHistory(pastLocks, now), [pastLocks, now])
-
-  const format = (value: number) => formatAmount(floorNumber(value, 2), 2)
 
   const currentBoostDataPoints = useMemo(
     () => [
@@ -119,17 +115,19 @@ export const BoostGraph = ({
         <VictoryAxis
           dependentAxis
           domain={DOMAIN}
+          axisValue={0}
           tickValues={[1, 1.5, 2]}
           tickFormat={(d) => Number(d).toFixed(1) + 'x'}
           theme={victoryTheme}
           style={{
             tickLabels: {
-              padding: 16,
+              padding: 0,
             },
           }}
         />
         <VictoryAxis
           orientation="top"
+          axisValue={2.1}
           tickValues={[0, SEASON1_START, SEASON2_START]}
           tickFormat={(value) => {
             if (value === 0) {
@@ -151,6 +149,7 @@ export const BoostGraph = ({
           theme={victoryTheme}
         />
         <VictoryAxis
+          axisValue={0.9}
           tickValues={[now]}
           tickFormat={(value) => {
             if (value === now) {
@@ -205,10 +204,6 @@ export const BoostGraph = ({
               fill: theme.palette.text.primary,
             },
           }}
-          labels={[format(newBoostFunction({ x: now })) + 'x', format(newBoostFunction({ x: SEASON2_START })) + 'x']}
-          labelComponent={
-            <ArrowDownLabel backgroundColor={isLock ? theme.palette.primary.main : theme.palette.warning.main} />
-          }
           size={4}
           dataComponent={
             <ScatterDot
