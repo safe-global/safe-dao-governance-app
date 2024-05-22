@@ -12,7 +12,7 @@ import { AppRoutes } from '@/config/routes'
 import { useRouter } from 'next/router'
 import { NAVIGATION_EVENTS } from '@/analytics/navigation'
 
-const RoutesWithNavigation = [AppRoutes.index, AppRoutes.activity, AppRoutes.governance]
+const RoutesWithNavigation = [AppRoutes.index, AppRoutes.points, AppRoutes.activity, AppRoutes.governance]
 
 export const PageLayout = ({
   children,
@@ -34,14 +34,19 @@ export const PageLayout = ({
 
       <BackgroundCircles />
 
-      <Box pt={7} pb={6} sx={{ minHeight: '100vh', display: 'flex', alignItems: 'center' }} component="main">
+      <Box pt={7} pb={6} sx={{ minHeight: '100vh' }} component="main">
         <Box className={css.container}>
           {showNavigation && (
             <Box className={css.navigation}>
               <NavTabs
                 tabs={[
                   {
-                    label: 'Activity & Rewards',
+                    label: 'Activities & Points',
+                    href: AppRoutes.points,
+                    event: NAVIGATION_EVENTS.OPEN_POINTS,
+                  },
+                  {
+                    label: 'Locking',
                     href: AppRoutes.activity,
                     event: NAVIGATION_EVENTS.OPEN_LOCKING,
                   },

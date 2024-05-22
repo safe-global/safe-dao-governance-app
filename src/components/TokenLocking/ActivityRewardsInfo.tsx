@@ -2,7 +2,7 @@ import { Box, Divider, Link, SvgIcon, Tooltip, Typography } from '@mui/material'
 import css from './styles.module.css'
 import clsx from 'clsx'
 import StarIcon from '@/public/images/star.svg'
-import { useOwnRank } from '@/hooks/useLeaderboard'
+import { useOwnLockingRank } from '@/hooks/useLeaderboard'
 import Asterix from '@/public/images/asterix.svg'
 import { AccordionContainer } from '@/components/AccordionContainer'
 import NextLink from 'next/link'
@@ -33,7 +33,7 @@ const Step = ({ active, title, description }: { active: boolean; title?: ReactNo
 }
 
 export const ActivityRewardsInfo = () => {
-  const ownRankResult = useOwnRank()
+  const ownRankResult = useOwnLockingRank()
   const { data: ownRank } = ownRankResult
 
   return (

@@ -21,13 +21,7 @@ import FirstPlaceIcon from '@/public/images/leaderboard-first-place.svg'
 import SecondPlaceIcon from '@/public/images/leaderboard-second-place.svg'
 import ThirdPlaceIcon from '@/public/images/leaderboard-third-place.svg'
 import TitleStar from '@/public/images/leaderboard-title-star.svg'
-import {
-  type LockingLeaderboardEntry,
-  useGlobalLockingLeaderboardPage,
-  useOwnLockingRank,
-} from '@/hooks/useLeaderboard'
-import { formatAmount } from '@/utils/formatters'
-import { formatEther } from 'ethers/lib/utils'
+import { CampaignLeaderboardEntry, useGlobalCampaignLeaderboardPage, useOwnCampaignRank } from '@/hooks/useLeaderboard'
 import { ReactElement, useState } from 'react'
 import { useEnsLookup } from '@/hooks/useEnsLookup'
 import Track from '../Track'
@@ -35,6 +29,9 @@ import { NAVIGATION_EVENTS } from '@/analytics/navigation'
 import { useChainId } from '@/hooks/useChainId'
 import { CHAIN_SHORT_NAME, SAFE_URL } from '@/config/constants'
 import { ExternalLink } from '../ExternalLink'
+import { Campaign } from '@/hooks/useCampaigns'
+import { floorNumber } from '@/utils/boost'
+import { useGlobalCampaignId } from '@/hooks/useGlobalCampaignId'
 
 const PAGE_SIZE = 10
 
@@ -135,7 +132,7 @@ const Ranking = ({ position }: { position: number }) => {
   )
 }
 
-const OwnEntry = ({ entry }: { entry: LockingLeaderboardEntry | undefined }) => {
+const OwnEntry = ({ entry }: { entry: CampaignLeaderboardEntry | undefined }) => {
   if (entry) {
     return (
       <HighlightedTableRow key={entry.holder}>
@@ -145,7 +142,7 @@ const OwnEntry = ({ entry }: { entry: LockingLeaderboardEntry | undefined }) => 
         <StyledTableCell align="left">
           <LookupAddress address={entry.holder} />
         </StyledTableCell>
-        <StyledTableCell align="left">{formatAmount(formatEther(entry.lockedAmount), 0)}</StyledTableCell>
+        <StyledTableCell align="left">{floorNumber(entry.totalBoostedPoints, 0)}</StyledTableCell>
       </HighlightedTableRow>
     )
   }
@@ -155,14 +152,16 @@ const OwnEntry = ({ entry }: { entry: LockingLeaderboardEntry | undefined }) => 
 
 const LeaderboardPage = ({
   index,
+  resourceId,
   onLoadMore,
   ownEntry,
 }: {
   index: number
+  resourceId: string | undefined
   onLoadMore?: () => void
-  ownEntry: LockingLeaderboardEntry | undefined
+  ownEntry: CampaignLeaderboardEntry | undefined
 }): ReactElement => {
-  const leaderboardPage = useGlobalLockingLeaderboardPage(PAGE_SIZE, index * PAGE_SIZE)
+  const leaderboardPage = useGlobalCampaignLeaderboardPage(resourceId, PAGE_SIZE, index * PAGE_SIZE)
   const rows = leaderboardPage?.results ?? []
   const isLeaderboardEmpty = index === 0 && (!rows || rows.length === 0)
 
@@ -208,7 +207,7 @@ const LeaderboardPage = ({
             <StyledTableCell align="left">
               <LookupAddress address={row.holder} />
             </StyledTableCell>
-            <StyledTableCell align="left">{formatAmount(formatEther(row.lockedAmount), 0)}</StyledTableCell>
+            <StyledTableCell align="left">{floorNumber(row.totalBoostedPoints, 0)}</StyledTableCell>
           </StyledTableRow>
         )
       })}
@@ -234,38 +233,33 @@ const LeaderboardPage = ({
   )
 }
 
-export const Leaderboard = () => {
+export const CampaignLeaderboard = ({ campaign }: { campaign?: Campaign }) => {
   const [pages, setPages] = useState(1)
-  const ownLeaderboardEntry = useOwnLockingRank()
-  const { data: ownEntry } = ownLeaderboardEntry
+  const { data: ownEntry } = useOwnCampaignRank(campaign?.resourceId)
+
+  const globalCampaignId = useGlobalCampaignId()
+
+  const isGlobal = campaign?.resourceId === globalCampaignId
 
   return (
-    <Box>
+    <Box key={campaign?.resourceId}>
       <Box sx={{ display: 'flex' }}>
         <SvgIcon component={TitleStar} inheritViewBox sx={{ mr: '8px', mt: '4px' }} />
         <Box sx={{ flex: '1' }}>
           <Typography variant="h2" fontWeight={700} sx={{ mr: '8px', display: 'inline' }}>
-            Locking Leaderboard
-          </Typography>
-          <Typography
-            variant="subtitle1"
-            fontSize="small"
-            color="text.secondary"
-            sx={{ my: '8px', fontSize: '14px', maxWidth: '60%' }}
-          >
-            Higher ranking means higher chances to get rewards.
+            {isGlobal ? 'Global' : campaign?.name} leaderboard
           </Typography>
         </Box>
       </Box>
 
-      <TableContainer component={Paper} sx={{ marginTop: -6 }}>
+      <TableContainer component={Paper}>
         <StyledTable aria-label="customized table">
           <TableHead>
             <TableRow>
               <StyledTableCell align="right"></StyledTableCell>
               <StyledTableCell align="right"></StyledTableCell>
               <StyledTableCell align="left">
-                <Typography color="text.secondary">Tokens Locked</Typography>
+                <Typography color="text.secondary">Points gained</Typography>
               </StyledTableCell>
             </TableRow>
           </TableHead>
@@ -274,6 +268,7 @@ export const Leaderboard = () => {
             {Array.from(new Array(pages)).map((_, index) => (
               <LeaderboardPage
                 index={index}
+                resourceId={campaign?.resourceId}
                 key={index}
                 onLoadMore={index === pages - 1 ? () => setPages((prev) => prev + 1) : undefined}
                 ownEntry={ownEntry}
