@@ -115,7 +115,7 @@ export const SplashScreen = (): ReactElement => {
             </Typography>
             <Stack gap={3}>
               <Step index={0} title="Lock SAFE to boost your points!" active={true} />
-              <Step index={1} title="Earn points for activity" active={false} />
+              <Step index={1} title="Earn points for activity" active={true} />
               <Step index={2} title="Get rewards for earned points" active={false} />
             </Stack>
             <Barcode className={css.barcode} />
