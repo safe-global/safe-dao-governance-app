@@ -1,9 +1,9 @@
 import type { NextPage } from 'next'
 
-import TokenLocking from '@/components/TokenLocking'
+import PointsPage from './points'
 
 const IndexPage: NextPage = () => {
-  return <TokenLocking />
+  return <PointsPage />
 }
 
 export default IndexPage

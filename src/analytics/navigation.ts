@@ -20,4 +20,7 @@ export const NAVIGATION_EVENTS = {
   OPEN_ACTIVITY_INFO: {
     action: 'Open activity info',
   },
+  OPEN_POINTS: {
+    action: 'Open points page',
+  },
 }

@@ -15,7 +15,7 @@ import { useTxSender } from '@/hooks/useTxSender'
 import { useChainId } from '@/hooks/useChainId'
 import { UnlockEvent } from '@/hooks/useLockHistory'
 import { formatAmount } from '@/utils/formatters'
-import { DAY_IN_MS, formatDate } from '@/utils/date'
+import { DAY_IN_MS, formatDatetime } from '@/utils/date'
 
 export const WithdrawWidget = ({
   totalWithdrawable,
@@ -96,7 +96,8 @@ export const WithdrawWidget = ({
               <SvgIcon color="primary" component={ClockIcon} inheritViewBox fontSize="small" />
               <Typography display="inline-flex" gap={1}>
                 <Typography color="primary">{formatAmount(formatUnits(nextUnlock.amount, 18), 0)} SAFE </Typography>{' '}
-                will be withdrawable starting {formatDate(new Date(Date.parse(nextUnlock.executionDate) + DAY_IN_MS))}.
+                will be withdrawable starting{' '}
+                {formatDatetime(new Date(Date.parse(nextUnlock.executionDate) + DAY_IN_MS))}.
               </Typography>
             </Box>
           ))}
