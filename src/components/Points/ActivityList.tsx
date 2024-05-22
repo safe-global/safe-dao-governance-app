@@ -11,6 +11,7 @@ export const ActivityList = ({ campaign }: { campaign?: Campaign }) => {
           <Stack
             direction="row"
             alignItems="center"
+            justifyContent="center"
             spacing={1}
             sx={{
               border: ({ palette }) => `1px solid ${palette.border.light}`,
