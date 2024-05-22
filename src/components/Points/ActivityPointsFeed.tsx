@@ -16,13 +16,15 @@ const HiddenValue = () => (
 )
 
 export const ActivityPointsFeed = ({ campaign }: { campaign?: Campaign }) => {
-  const ownEntry = useOwnCampaignRank(campaign?.resourceId)
+  const { data: ownEntry, isLoading } = useOwnCampaignRank(campaign?.resourceId)
+
+  console.log(ownEntry, isLoading)
 
   const data = useMemo(() => {
     return {
-      activityPoints: ownEntry?.totalPoints,
+      activityPoints: ownEntry?.totalPoints ?? 0,
       boostedPoints: ownEntry ? ownEntry.totalBoostedPoints - ownEntry.totalPoints : 0,
-      totalPoints: ownEntry?.totalBoostedPoints,
+      totalPoints: ownEntry?.totalBoostedPoints ?? 0,
     }
   }, [ownEntry])
 
@@ -30,7 +32,7 @@ export const ActivityPointsFeed = ({ campaign }: { campaign?: Campaign }) => {
   const [showTotalPoints, setShowTotalPoints] = useState(false)
 
   useEffect(() => {
-    if (ownEntry !== undefined) {
+    if (ownEntry !== undefined || !isLoading) {
       const showBoostPointsTimeout = setTimeout(() => setShowBoostPoints(true), 1000)
       const showTotalPointsTimeout = setTimeout(() => setShowTotalPoints(true), 2000)
 
@@ -39,7 +41,7 @@ export const ActivityPointsFeed = ({ campaign }: { campaign?: Campaign }) => {
         clearTimeout(showTotalPointsTimeout)
       }
     }
-  }, [ownEntry])
+  }, [ownEntry, isLoading])
 
   const chainId = useChainId()
 
@@ -51,7 +53,7 @@ export const ActivityPointsFeed = ({ campaign }: { campaign?: Campaign }) => {
     return null
   }
 
-  if (!ownEntry) {
+  if (isLoading) {
     return (
       <Box
         key={campaign?.resourceId}

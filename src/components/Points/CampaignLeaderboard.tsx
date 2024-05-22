@@ -234,7 +234,7 @@ const LeaderboardPage = ({
 
 export const CampaignLeaderboard = ({ campaign }: { campaign?: Campaign }) => {
   const [pages, setPages] = useState(1)
-  const ownEntry = useOwnCampaignRank(campaign?.resourceId)
+  const { data: ownEntry } = useOwnCampaignRank(campaign?.resourceId)
 
   const isGlobal = campaign?.resourceId === 'global'
 

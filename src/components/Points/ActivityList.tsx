@@ -10,24 +10,18 @@ export const ActivityList = ({ campaign }: { campaign?: Campaign }) => {
         <Grid key={activity.name} item xs={12}>
           <Stack
             direction="row"
+            alignItems="center"
             spacing={1}
-            justifyContent="space-between"
             sx={{
               border: ({ palette }) => `1px solid ${palette.border.light}`,
               padding: 2,
               borderRadius: '6px',
             }}
           >
-            <Typography display="flex" flexDirection="row" gap={1} alignItems="center">
-              {activity.name}
-              <Tooltip title={activity.description}>
-                <InfoOutlined fontSize="small" color="border" />
-              </Tooltip>
-            </Typography>
-
-            <Typography>
-              <b>up to {activity.maxPoints}</b> Points
-            </Typography>
+            <Typography>{activity.name}</Typography>
+            <Tooltip title={activity.description}>
+              <InfoOutlined fontSize="small" color="border" />
+            </Tooltip>
           </Stack>
         </Grid>
       ))}

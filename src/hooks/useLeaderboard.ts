@@ -79,17 +79,23 @@ export const useOwnCampaignRank = (resourceId: string | undefined) => {
     return `${gatewayBaseUrl}/v1/community/campaigns/${resourceId}/leaderboard/${address}`
   }
 
-  const { data } = useSWR(getKey(resourceId), async (url: string) => {
-    return await fetch(url).then((resp) => {
-      if (resp.ok) {
-        return resp.json() as Promise<CampaignLeaderboardEntry>
-      } else {
-        throw new Error('Error fetching leaderboard.')
-      }
-    })
-  })
+  const { data, isLoading } = useSWR(
+    getKey(resourceId),
+    async (url: string) => {
+      return await fetch(url).then((resp) => {
+        if (resp.ok) {
+          return resp.json() as Promise<CampaignLeaderboardEntry>
+        } else {
+          throw new Error('Error fetching leaderboard.')
+        }
+      })
+    },
+    {
+      errorRetryCount: 1,
+    },
+  )
 
-  return data
+  return { data, isLoading }
 }
 
 export const useGlobalCampaignLeaderboardPage = (resourceId: string | undefined, limit: number, offset?: number) => {
