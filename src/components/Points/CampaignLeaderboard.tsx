@@ -247,7 +247,7 @@ export const CampaignLeaderboard = ({ campaign }: { campaign?: Campaign }) => {
         <SvgIcon component={TitleStar} inheritViewBox sx={{ mr: '8px', mt: '4px' }} />
         <Box sx={{ flex: '1' }}>
           <Typography variant="h2" fontWeight={700} sx={{ mr: '8px', display: 'inline' }}>
-            {isGlobal ? 'Global' : campaign?.name} Leaderboard
+            {isGlobal ? 'Global' : campaign?.name} leaderboard
           </Typography>
         </Box>
       </Box>
