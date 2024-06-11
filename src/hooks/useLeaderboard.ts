@@ -72,7 +72,7 @@ export const useOwnCampaignRank = (resourceId: string | undefined) => {
   const gatewayBaseUrl = useGatewayBaseUrl()
 
   const getKey = (resourceId: string | undefined) => {
-    if (!resourceId) {
+    if (!resourceId || !address) {
       return null
     }
     // Load next page
