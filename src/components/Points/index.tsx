@@ -1,7 +1,7 @@
 import { GLOBAL_CAMPAIGN_IDS } from '@/config/constants'
 import { useCampaignInfo, useCampaignPage } from '@/hooks/useCampaigns'
 import { useChainId } from '@/hooks/useChainId'
-import { Grid, Typography, Stack, Box, SvgIcon } from '@mui/material'
+import { Grid, Typography, Stack, Box, SvgIcon, Divider } from '@mui/material'
 import { useEffect, useMemo, useState } from 'react'
 import { ExternalLink } from '../ExternalLink'
 import PaperContainer from '../PaperContainer'
@@ -73,7 +73,8 @@ const Points = () => {
                 </Typography>
               </Stack>
             </Stack>
-            <Stack direction={{ lg: 'row', md: 'column' }} spacing={4} mt={9}>
+            <Divider sx={{ mt: 4 }} />
+            <Stack direction={{ lg: 'row', md: 'column' }} spacing={4} mt={5}>
               <CampaignTabs onChange={onTabChange} selectedTabIdx={selectedTab} />
               <Box width="100%">
                 <Stack
