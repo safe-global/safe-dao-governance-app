@@ -1,8 +1,8 @@
 import { GLOBAL_CAMPAIGN_IDS } from '@/config/constants'
 import { useCampaignInfo, useCampaignPage } from '@/hooks/useCampaigns'
 import { useChainId } from '@/hooks/useChainId'
-import { Grid, Typography, Stack, Box } from '@mui/material'
-import { useEffect, useState } from 'react'
+import { Grid, Typography, Stack, Box, SvgIcon } from '@mui/material'
+import { useEffect, useMemo, useState } from 'react'
 import { ExternalLink } from '../ExternalLink'
 import PaperContainer from '../PaperContainer'
 import SafePassDisclaimer from '../SafePassDisclaimer'
@@ -11,7 +11,9 @@ import { CampaignInfo } from './CampaignInfo'
 import { CampaignLeaderboard } from './CampaignLeaderboard'
 import { CampaignSelector } from './CampaignSelector'
 import CampaignTabs from './CampaignTabs'
+import StarIcon from '@/public/images/leaderboard-title-star.svg'
 import css from './styles.module.css'
+import { TotalPoints } from './TotalPoints'
 
 const Points = () => {
   const campaignPage = useCampaignPage(20)
@@ -41,6 +43,11 @@ const Points = () => {
     }
   }
 
+  const isGlobalCampaign = useMemo(
+    () => globalCampaign?.resourceId === selectedCampaignId,
+    [globalCampaign?.resourceId, selectedCampaignId],
+  )
+
   return (
     <Grid container spacing={3} direction="row">
       <Grid item xs={12} mt={4} mb={1} className={css.pageTitle} display="flex" flexDirection="row" alignItems="center">
@@ -53,7 +60,20 @@ const Points = () => {
       <Grid item xs={12} lg={8}>
         <Stack spacing={3}>
           <PaperContainer>
-            <Stack direction={{ lg: 'row', md: 'column' }} spacing={3}>
+            <Stack direction="row" spacing={2}>
+              <SvgIcon component={StarIcon} inheritViewBox sx={{ width: '27px', height: '27px' }} />
+              <Stack spacing={1}>
+                <Typography variant="h5" fontWeight={700} fontSize="24px">
+                  Points activity feed
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Earn points by engaging with Safe and our campaign partners. Depending on the campaign, you&apos;ll be
+                  rewarded for various activities suggested by our partners. You can also earn points for Regular Safe
+                  Activities.
+                </Typography>
+              </Stack>
+            </Stack>
+            <Stack direction={{ lg: 'row', md: 'column' }} spacing={4} mt={9}>
               <CampaignTabs onChange={onTabChange} selectedTabIdx={selectedTab} />
               <Box width="100%">
                 <Stack
@@ -65,10 +85,9 @@ const Points = () => {
                   minHeight="60px"
                 >
                   <Box width="100%">
-                    <Typography variant="h5" fontWeight={700}>
-                      Points activity feed
+                    <Typography variant="h6" fontWeight={700} fontSize="20px">
+                      {isGlobalCampaign ? 'Global' : campaign?.name}
                     </Typography>
-                    <Typography variant="subtitle2">Your points are updated weekly.</Typography>
                   </Box>
                   {selectedTab > 0 && (
                     <CampaignSelector
@@ -89,6 +108,7 @@ const Points = () => {
       </Grid>
       <Grid item xs={12} lg={4}>
         <Stack spacing={3} justifyContent="stretch" height="100%">
+          <TotalPoints />
           <CampaignInfo campaign={campaign} />
         </Stack>
       </Grid>

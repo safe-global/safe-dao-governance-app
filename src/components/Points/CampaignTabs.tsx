@@ -6,13 +6,37 @@ import { useTheme } from '@mui/material/styles'
 
 const CAMPAIGN_TABS = [
   {
-    label: 'Global',
+    label: (
+      <Typography display="flex" flexDirection="row" gap={1} alignItems="center" fontWeight={700}>
+        <Box
+          sx={{
+            borderRadius: '100%',
+            backgroundColor: ({ palette }) => palette.primary.main,
+            minWidth: '6px',
+            minHeight: '6px',
+            flexShrink: 0,
+            marginRight: 1,
+          }}
+        />
+        Global
+      </Typography>
+    ),
     disabled: false,
   },
   {
     label: (
-      <Typography display="flex" flexDirection="row" gap={1} alignItems="center">
-        Campaigns <Chip variant="outlined" sx={{ borderRadius: '4px' }} label="soon" />
+      <Typography display="flex" flexDirection="row" gap={1} alignItems="center" fontWeight={700}>
+        <Box
+          sx={{
+            borderRadius: '100%',
+            backgroundColor: ({ palette }) => palette.text.disabled,
+            minWidth: '6px',
+            minHeight: '6px',
+            flexShrink: 0,
+            marginRight: 1,
+          }}
+        />
+        Campaigns <Chip variant="outlined" sx={{ borderRadius: '16px' }} label="soon" />
       </Typography>
     ),
     disabled: true,
@@ -29,11 +53,15 @@ const CampaignTabs = ({ onChange, selectedTabIdx }: { onChange: (tab: number) =>
         variant="scrollable"
         value={selectedTabIdx}
         aria-label="Vertical tabs example"
-        sx={{ borderRight: 1, borderColor: 'divider' }}
+        sx={{ border: 1, borderColor: 'divider', borderRadius: '6px' }}
         onChange={(_, value) => onChange(value)}
       >
         {CAMPAIGN_TABS.map((tab, tabIdx) => (
-          <Tab key={tabIdx} {...tab} />
+          <Tab
+            sx={{ textTransform: 'none', fontWeight: 700, textAlign: 'left', alignItems: 'start' }}
+            key={tabIdx}
+            {...tab}
+          />
         ))}
       </Tabs>
     </Box>
