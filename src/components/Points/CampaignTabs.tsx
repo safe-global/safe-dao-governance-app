@@ -1,8 +1,8 @@
-import * as React from 'react'
 import Tabs from '@mui/material/Tabs'
 import Tab from '@mui/material/Tab'
 import { Box, Chip, Typography, useMediaQuery } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
+import css from './styles.module.css'
 
 const CAMPAIGN_TABS = [
   {
@@ -36,7 +36,7 @@ const CAMPAIGN_TABS = [
             marginRight: 1,
           }}
         />
-        Campaigns <Chip variant="outlined" sx={{ borderRadius: '16px' }} label="soon" />
+        Campaigns <Chip variant="outlined" className={css.comingSoon} label="soon" />
       </Typography>
     ),
     disabled: true,

@@ -18,3 +18,12 @@
   transform: translate(-50%);
   pointer-events: none;
 }
+
+.comingSoon {
+  background-color: #303033;
+  border-radius: 4px;
+  padding: 4px 8px;
+  margin-left: 8px;
+  border: none;
+  font-weight: 400;
+}
