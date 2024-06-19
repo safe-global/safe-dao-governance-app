@@ -1,7 +1,7 @@
 import { GLOBAL_CAMPAIGN_IDS } from '@/config/constants'
 import { useCampaignInfo, useCampaignPage } from '@/hooks/useCampaigns'
 import { useChainId } from '@/hooks/useChainId'
-import { Grid, Typography, Stack, Box, SvgIcon, Divider } from '@mui/material'
+import { Grid, Typography, Stack, Box, SvgIcon, Divider, useMediaQuery } from '@mui/material'
 import { useEffect, useMemo, useState } from 'react'
 import { ExternalLink } from '../ExternalLink'
 import PaperContainer from '../PaperContainer'
@@ -14,6 +14,7 @@ import CampaignTabs from './CampaignTabs'
 import StarIcon from '@/public/images/leaderboard-title-star.svg'
 import css from './styles.module.css'
 import { TotalPoints } from './TotalPoints'
+import { useTheme } from '@mui/material/styles'
 
 const Points = () => {
   const campaignPage = useCampaignPage(20)
@@ -47,6 +48,8 @@ const Points = () => {
     () => globalCampaign?.resourceId === selectedCampaignId,
     [globalCampaign?.resourceId, selectedCampaignId],
   )
+  const theme = useTheme()
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('lg'))
 
   return (
     <Grid container spacing={3} direction="row">
@@ -59,22 +62,26 @@ const Points = () => {
 
       <Grid item xs={12} lg={8}>
         <Stack spacing={3}>
+          {isSmallScreen && <TotalPoints />}
           <PaperContainer>
             <Stack direction="row" spacing={2}>
-              <SvgIcon component={StarIcon} inheritViewBox sx={{ width: '27px', height: '27px' }} />
+              {!isSmallScreen && <SvgIcon component={StarIcon} inheritViewBox sx={{ width: '27px', height: '27px' }} />}
               <Stack spacing={1}>
                 <Typography variant="h5" fontWeight={700} fontSize="24px">
                   Points activity feed
                 </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Earn points by engaging with Safe and our campaign partners. Depending on the campaign, you&apos;ll be
-                  rewarded for various activities suggested by our partners. You can also earn points for Regular Safe
-                  Activities.
-                </Typography>
+
+                {!isSmallScreen && (
+                  <Typography variant="body2" color="text.secondary">
+                    Earn points by engaging with Safe and our campaign partners. Depending on the campaign, you&apos;ll
+                    be rewarded for various activities suggested by our partners. You can also earn points for Regular
+                    Safe Activities.
+                  </Typography>
+                )}
               </Stack>
             </Stack>
-            <Divider sx={{ mt: 4 }} />
-            <Stack direction={{ lg: 'row', md: 'column' }} spacing={4} mt={5}>
+            <Divider />
+            <Stack direction={{ lg: 'row', md: 'column' }} spacing={4}>
               <CampaignTabs onChange={onTabChange} selectedTabIdx={selectedTab} />
               <Box width="100%">
                 <Stack
@@ -109,7 +116,7 @@ const Points = () => {
       </Grid>
       <Grid item xs={12} lg={4}>
         <Stack spacing={3} justifyContent="stretch" height="100%">
-          <TotalPoints />
+          {!isSmallScreen && <TotalPoints />}
           <CampaignInfo campaign={campaign} />
         </Stack>
       </Grid>

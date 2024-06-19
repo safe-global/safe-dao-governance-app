@@ -1,6 +1,6 @@
 import Tabs from '@mui/material/Tabs'
 import Tab from '@mui/material/Tab'
-import { Box, Chip, Typography, useMediaQuery } from '@mui/material'
+import { Box, Chip, Typography } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import css from './styles.module.css'
 
@@ -45,11 +45,10 @@ const CAMPAIGN_TABS = [
 
 const CampaignTabs = ({ onChange, selectedTabIdx }: { onChange: (tab: number) => void; selectedTabIdx: number }) => {
   const theme = useTheme()
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down('lg'))
   return (
     <Box padding="8px 0px">
       <Tabs
-        orientation={isSmallScreen ? 'horizontal' : 'vertical'}
+        orientation="vertical"
         variant="scrollable"
         value={selectedTabIdx}
         aria-label="Vertical tabs example"

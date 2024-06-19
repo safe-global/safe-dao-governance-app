@@ -35,6 +35,19 @@ const HiddenValue = () => (
   </Typography>
 )
 
+const DataWrapper = ({ children }: { children: ReactNode }) => {
+  return (
+    <Stack
+      direction={{ xs: 'column', lg: 'row' }}
+      justifyContent="space-between"
+      alignItems={{ xs: 'start', lg: 'center' }}
+      spacing={2}
+    >
+      {children}
+    </Stack>
+  )
+}
+
 export const ActivityPointsFeed = ({ campaign }: { campaign?: Campaign }) => {
   const { data: ownEntry, isLoading } = useOwnCampaignRank(campaign?.resourceId)
   const { data: latestUpdate, isLoading: isLatestUpdateLoading } = useLatestCampaignUpdate(campaign?.resourceId)
@@ -80,34 +93,34 @@ export const ActivityPointsFeed = ({ campaign }: { campaign?: Campaign }) => {
     return (
       <>
         <BorderedBox key={campaign?.resourceId}>
-          <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
+          <DataWrapper>
             <Typography color="text.secondary">Last drop</Typography>
             <HiddenValue />
-          </Stack>
+          </DataWrapper>
           <Divider
             sx={{
               marginRight: '-32px',
               marginLeft: '-32px',
             }}
           />
-          <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
+          <DataWrapper>
             <Typography color="text.secondary">Activity points</Typography>
             <HiddenValue />
-          </Stack>
-          <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
+          </DataWrapper>
+          <DataWrapper>
             <Typography color="text.secondary">Boost points</Typography>
             <HiddenValue />
-          </Stack>
+          </DataWrapper>
           <Divider />
-          <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
+          <DataWrapper>
             <Typography color="text.secondary">{!isGlobal && 'Campaign'} Week total</Typography>
             <HiddenValue />
-          </Stack>
+          </DataWrapper>
           <Divider />
-          <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
+          <DataWrapper>
             <Typography color="text.secondary">{!isGlobal && 'Campaign'} Overall</Typography>
             <HiddenValue />
-          </Stack>
+          </DataWrapper>
           <Typography mt={6} alignSelf="center" color="text.secondary">
             Your points are updated weekly.
           </Typography>
@@ -115,10 +128,10 @@ export const ActivityPointsFeed = ({ campaign }: { campaign?: Campaign }) => {
         </BorderedBox>
         {!isGlobal && (
           <BorderedBox>
-            <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
+            <DataWrapper>
               <Typography color="text.secondary">Campaign total</Typography>
               <HiddenValue />
-            </Stack>
+            </DataWrapper>
           </BorderedBox>
         )}
       </>
@@ -128,23 +141,27 @@ export const ActivityPointsFeed = ({ campaign }: { campaign?: Campaign }) => {
   return (
     <>
       <BorderedBox key={campaign?.resourceId}>
-        <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
+        <DataWrapper>
           <Typography color="text.secondary">Last drop</Typography>
-          <Typography color="text.secondary">{formatDate(new Date(campaign.lastUpdated))}</Typography>
-        </Stack>
+          {latestUpdate && (
+            <Typography color="text.secondary">
+              {formatDate(new Date(latestUpdate.startDate))} - {formatDate(new Date(latestUpdate.endDate))}
+            </Typography>
+          )}
+        </DataWrapper>
         <Divider
           sx={{
             marginRight: '-32px',
             marginLeft: '-32px',
           }}
         />
-        <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
+        <DataWrapper>
           <Typography color="text.secondary">Activity points</Typography>
           <PointsCounter value={Number(data.activityPoints)} fontWeight={700}>
             points
           </PointsCounter>
-        </Stack>
-        <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
+        </DataWrapper>
+        <DataWrapper>
           <Typography color="text.secondary">Boost points</Typography>
           {showBoostPoints ? (
             <PointsCounter value={Number(data.boostedPoints)} fontWeight={700}>
@@ -153,9 +170,9 @@ export const ActivityPointsFeed = ({ campaign }: { campaign?: Campaign }) => {
           ) : (
             <HiddenValue />
           )}
-        </Stack>
+        </DataWrapper>
         <Divider />
-        <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
+        <DataWrapper>
           <Typography>{!isGlobal && 'Campaign'} Week total</Typography>
           {showTotalPoints ? (
             <PointsCounter value={Number(data.totalPoints)} fontWeight={700}>
@@ -164,7 +181,7 @@ export const ActivityPointsFeed = ({ campaign }: { campaign?: Campaign }) => {
           ) : (
             <HiddenValue />
           )}
-        </Stack>
+        </DataWrapper>
         <Typography mt={6} alignSelf="center" color="text.secondary">
           Your points are updated weekly.
         </Typography>
@@ -173,7 +190,7 @@ export const ActivityPointsFeed = ({ campaign }: { campaign?: Campaign }) => {
 
       {!isGlobal && (
         <BorderedBox>
-          <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
+          <DataWrapper>
             <Typography color="text.secondary">Campaign total</Typography>
             {showOverallPoints ? (
               <PointsCounter value={Number(data.overallPoints)} fontWeight={700}>
@@ -182,7 +199,7 @@ export const ActivityPointsFeed = ({ campaign }: { campaign?: Campaign }) => {
             ) : (
               <HiddenValue />
             )}
-          </Stack>
+          </DataWrapper>
         </BorderedBox>
       )}
     </>
