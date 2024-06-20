@@ -1,6 +1,6 @@
 import Tabs from '@mui/material/Tabs'
 import Tab from '@mui/material/Tab'
-import { Box, Chip, Typography } from '@mui/material'
+import { Box, Chip, Tooltip, Typography } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import css from './styles.module.css'
 
@@ -8,16 +8,18 @@ const CAMPAIGN_TABS = [
   {
     label: (
       <Typography display="flex" flexDirection="row" gap={1} alignItems="center" fontWeight={700}>
-        <Box
-          sx={{
-            borderRadius: '100%',
-            backgroundColor: ({ palette }) => palette.primary.main,
-            minWidth: '6px',
-            minHeight: '6px',
-            flexShrink: 0,
-            marginRight: 1,
-          }}
-        />
+        <Tooltip title="This campaign is active now" arrow>
+          <Box
+            sx={{
+              borderRadius: '100%',
+              backgroundColor: ({ palette }) => palette.primary.main,
+              minWidth: '6px',
+              minHeight: '6px',
+              flexShrink: 0,
+              marginRight: 1,
+            }}
+          />
+        </Tooltip>
         Global
       </Typography>
     ),
