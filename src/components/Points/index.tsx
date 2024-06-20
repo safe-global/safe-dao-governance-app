@@ -74,8 +74,8 @@ const Points = () => {
                 {!isSmallScreen && (
                   <Typography variant="body2" color="text.secondary">
                     Earn points by engaging with Safe and our campaign partners. Depending on the campaign, you&apos;ll
-                    be rewarded for various activities suggested by our partners. You can also earn points for Regular
-                    Safe Activities.
+                    be rewarded for various activities suggested by our partners. You can also earn points for regular
+                    Safe activities.
                   </Typography>
                 )}
               </Stack>

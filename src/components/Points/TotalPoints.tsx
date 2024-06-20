@@ -27,7 +27,7 @@ export const TotalPoints = () => {
         )}
         <Box display="flex" flexDirection="row" gap={1} alignItems="center">
           <Typography color="text.secondary">Your total points</Typography>
-          <Tooltip title="All points collected form capaigns and regular Safe activities" arrow>
+          <Tooltip title="All points collected form campaigns and regular Safe activities" arrow>
             <InfoOutlined fontSize="small" sx={{ color: ({ palette }) => palette.text.secondary }} />
           </Tooltip>
         </Box>

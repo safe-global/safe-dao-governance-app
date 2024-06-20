@@ -66,16 +66,17 @@ export const ActivityPointsFeed = ({ campaign }: { campaign?: Campaign }) => {
   const [showOverallPoints, setShowOverallPoints] = useState(false)
 
   useEffect(() => {
-    if (ownEntry !== undefined || !isLoading || !isLatestUpdateLoading) {
-      const showBoostPointsTimeout = setTimeout(() => setShowBoostPoints(true), 1000)
-      const showTotalPointsTimeout = setTimeout(() => setShowTotalPoints(true), 2000)
-      const showOverallPointsTimeout = setTimeout(() => setShowOverallPoints(true), 3000)
+    if (ownEntry === undefined || isLoading || isLatestUpdateLoading) {
+      return
+    }
+    const showBoostPointsTimeout = setTimeout(() => setShowBoostPoints(true), 1000)
+    const showTotalPointsTimeout = setTimeout(() => setShowTotalPoints(true), 2000)
+    const showOverallPointsTimeout = setTimeout(() => setShowOverallPoints(true), 3000)
 
-      return () => {
-        clearTimeout(showBoostPointsTimeout)
-        clearTimeout(showTotalPointsTimeout)
-        clearTimeout(showOverallPointsTimeout)
-      }
+    return () => {
+      clearTimeout(showBoostPointsTimeout)
+      clearTimeout(showTotalPointsTimeout)
+      clearTimeout(showOverallPointsTimeout)
     }
   }, [ownEntry, isLoading, isLatestUpdateLoading])
 
