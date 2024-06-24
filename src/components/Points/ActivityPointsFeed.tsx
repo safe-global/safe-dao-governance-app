@@ -184,7 +184,7 @@ export const ActivityPointsFeed = ({ campaign }: { campaign?: Campaign }) => {
           )}
         </DataWrapper>
         <Typography mt={6} alignSelf="center" color="text.secondary">
-          Your points are updated weekly.
+          Points are updated weekly.
         </Typography>
         <Typography mt={-2} alignSelf="center" color="text.secondary">
           Last update: {formatDate(new Date(campaign.lastUpdated))}
