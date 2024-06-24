@@ -66,7 +66,7 @@ export const ActivityPointsFeed = ({ campaign }: { campaign?: Campaign }) => {
   const [showOverallPoints, setShowOverallPoints] = useState(false)
 
   useEffect(() => {
-    if (ownEntry === undefined || isLoading || isLatestUpdateLoading) {
+    if (isLoading || isLatestUpdateLoading) {
       return
     }
     const showBoostPointsTimeout = setTimeout(() => setShowBoostPoints(true), 1000)
