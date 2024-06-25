@@ -2,44 +2,83 @@ import { GLOBAL_CAMPAIGN_IDS } from '@/config/constants'
 import { Campaign } from '@/hooks/useCampaigns'
 import { useChainId } from '@/hooks/useChainId'
 import { useOwnCampaignRank } from '@/hooks/useLeaderboard'
-import { formatDatetime } from '@/utils/date'
+import { formatDate } from '@/utils/date'
 import { Divider, Skeleton, Stack, Typography } from '@mui/material'
 import Box from '@mui/material/Box'
-import { useEffect, useMemo, useState } from 'react'
+import { ReactNode, useEffect, useMemo, useState } from 'react'
 import PointsCounter from '../PointsCounter'
 import Barcode from '@/public/images/horizontal_barcode.svg'
 import css from './styles.module.css'
+import { useLatestCampaignUpdate } from '@/hooks/useLatestCampaignUpdate'
+
+const BorderedBox = ({ children }: { children: ReactNode }) => {
+  return (
+    <Box
+      sx={{
+        border: ({ palette }) => `1px solid ${palette.border.light}`,
+        borderRadius: '6px',
+        p: '24px 32px',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 2,
+        position: 'relative',
+      }}
+    >
+      {children}
+    </Box>
+  )
+}
+
 const HiddenValue = () => (
   <Typography minWidth="80px">
     <Skeleton />
   </Typography>
 )
 
+const DataWrapper = ({ children }: { children: ReactNode }) => {
+  return (
+    <Stack
+      direction={{ xs: 'column', lg: 'row' }}
+      justifyContent="space-between"
+      alignItems={{ xs: 'start', lg: 'center' }}
+      spacing={2}
+    >
+      {children}
+    </Stack>
+  )
+}
+
 export const ActivityPointsFeed = ({ campaign }: { campaign?: Campaign }) => {
   const { data: ownEntry, isLoading } = useOwnCampaignRank(campaign?.resourceId)
+  const { data: latestUpdate, isLoading: isLatestUpdateLoading } = useLatestCampaignUpdate(campaign?.resourceId)
 
   const data = useMemo(() => {
     return {
-      activityPoints: ownEntry?.totalPoints ?? 0,
-      boostedPoints: ownEntry ? ownEntry.totalBoostedPoints - ownEntry.totalPoints : 0,
-      totalPoints: ownEntry?.totalBoostedPoints ?? 0,
+      activityPoints: latestUpdate?.totalPoints ?? 0,
+      boostedPoints: latestUpdate ? latestUpdate.totalBoostedPoints - latestUpdate.totalPoints : 0,
+      totalPoints: latestUpdate?.totalBoostedPoints ?? 0,
+      overallPoints: ownEntry?.totalBoostedPoints ?? 0,
     }
-  }, [ownEntry])
+  }, [latestUpdate, ownEntry])
 
   const [showBoostPoints, setShowBoostPoints] = useState(false)
   const [showTotalPoints, setShowTotalPoints] = useState(false)
+  const [showOverallPoints, setShowOverallPoints] = useState(false)
 
   useEffect(() => {
-    if (ownEntry !== undefined || !isLoading) {
-      const showBoostPointsTimeout = setTimeout(() => setShowBoostPoints(true), 1000)
-      const showTotalPointsTimeout = setTimeout(() => setShowTotalPoints(true), 2000)
-
-      return () => {
-        clearTimeout(showBoostPointsTimeout)
-        clearTimeout(showTotalPointsTimeout)
-      }
+    if (isLoading || isLatestUpdateLoading) {
+      return
     }
-  }, [ownEntry, isLoading])
+    const showBoostPointsTimeout = setTimeout(() => setShowBoostPoints(true), 1000)
+    const showTotalPointsTimeout = setTimeout(() => setShowTotalPoints(true), 2000)
+    const showOverallPointsTimeout = setTimeout(() => setShowOverallPoints(true), 3000)
+
+    return () => {
+      clearTimeout(showBoostPointsTimeout)
+      clearTimeout(showTotalPointsTimeout)
+      clearTimeout(showOverallPointsTimeout)
+    }
+  }, [ownEntry, isLoading, isLatestUpdateLoading])
 
   const chainId = useChainId()
 
@@ -53,81 +92,120 @@ export const ActivityPointsFeed = ({ campaign }: { campaign?: Campaign }) => {
 
   if (isLoading) {
     return (
-      <Box
-        key={campaign?.resourceId}
-        sx={{
-          border: ({ palette }) => `1px solid ${palette.border.light}`,
-          borderRadius: '6px',
-          p: '24px 32px',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 2,
-          position: 'relative',
-        }}
-      >
-        <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
-          <Typography color="text.secondary">Activity points</Typography>
-          <HiddenValue />
-        </Stack>
-        <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
-          <Typography color="text.secondary">Boost points</Typography>
-          <HiddenValue />
-        </Stack>
-        <Divider />
-        <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
-          <Typography color="text.secondary">{!isGlobal && 'Campaign'} Total</Typography>
-          <HiddenValue />
-        </Stack>
-        <HiddenValue />
-        <Barcode className={css.barcode} />
-      </Box>
+      <>
+        <BorderedBox key={campaign?.resourceId}>
+          <DataWrapper>
+            <Typography color="text.secondary">Last drop</Typography>
+            <HiddenValue />
+          </DataWrapper>
+          <Divider
+            sx={{
+              marginRight: '-32px',
+              marginLeft: '-32px',
+            }}
+          />
+          <DataWrapper>
+            <Typography color="text.secondary">Activity points</Typography>
+            <HiddenValue />
+          </DataWrapper>
+          <DataWrapper>
+            <Typography color="text.secondary">Boost points</Typography>
+            <HiddenValue />
+          </DataWrapper>
+          <Divider />
+          <DataWrapper>
+            <Typography color="text.secondary">{!isGlobal && 'Campaign'} Week total</Typography>
+            <HiddenValue />
+          </DataWrapper>
+          <Divider />
+          <DataWrapper>
+            <Typography color="text.secondary">{!isGlobal && 'Campaign'} Overall</Typography>
+            <HiddenValue />
+          </DataWrapper>
+          <Typography mt={6} alignSelf="center" color="text.secondary">
+            Your points are updated weekly.
+          </Typography>
+          <Barcode className={css.barcode} />
+        </BorderedBox>
+        {!isGlobal && (
+          <BorderedBox>
+            <DataWrapper>
+              <Typography color="text.secondary">Campaign total</Typography>
+              <HiddenValue />
+            </DataWrapper>
+          </BorderedBox>
+        )}
+      </>
     )
   }
 
   return (
-    <Box
-      key={campaign?.resourceId}
-      sx={{
-        border: ({ palette }) => `1px solid ${palette.border.light}`,
-        borderRadius: '6px',
-        p: '24px 32px',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 2,
-        position: 'relative',
-      }}
-    >
-      <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
-        <Typography color="text.secondary">Activity points</Typography>
-        <PointsCounter value={Number(data.activityPoints)} fontWeight={700}>
-          points
-        </PointsCounter>
-      </Stack>
-      <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
-        <Typography color="text.secondary">Boost points</Typography>
-        {showBoostPoints ? (
-          <PointsCounter value={Number(data.boostedPoints)} fontWeight={700}>
+    <>
+      <BorderedBox key={campaign?.resourceId}>
+        <DataWrapper>
+          <Typography color="text.secondary">Your last drop</Typography>
+          {latestUpdate && (
+            <Typography color="text.secondary">
+              {formatDate(new Date(latestUpdate.startDate))} - {formatDate(new Date(latestUpdate.endDate))}
+            </Typography>
+          )}
+        </DataWrapper>
+        <Divider
+          sx={{
+            marginRight: '-32px',
+            marginLeft: '-32px',
+          }}
+        />
+        <DataWrapper>
+          <Typography color="text.secondary">Activity points</Typography>
+          <PointsCounter value={Number(data.activityPoints)} fontWeight={700}>
             points
           </PointsCounter>
-        ) : (
-          <HiddenValue />
-        )}
-      </Stack>
-      <Divider />
-      <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
-        <Typography color="text.secondary">{!isGlobal && 'Campaign'} Total</Typography>
-        {showTotalPoints ? (
-          <PointsCounter value={Number(data.totalPoints)} fontWeight={700} fontSize="27px" color="primary">
-            points
-          </PointsCounter>
-        ) : (
-          <HiddenValue />
-        )}
-      </Stack>
-      <Typography mt={6} alignSelf="center" color="text.secondary">
-        Last updated {formatDatetime(new Date(campaign.lastUpdated))}
-      </Typography>
-      <Barcode className={css.barcode} />
-    </Box>
+        </DataWrapper>
+        <DataWrapper>
+          <Typography color="text.secondary">Boost points</Typography>
+          {showBoostPoints ? (
+            <PointsCounter value={Number(data.boostedPoints)} fontWeight={700}>
+              points
+            </PointsCounter>
+          ) : (
+            <HiddenValue />
+          )}
+        </DataWrapper>
+        <Divider />
+        <DataWrapper>
+          <Typography>{!isGlobal && 'Campaign'} Week total</Typography>
+          {showTotalPoints ? (
+            <PointsCounter value={Number(data.totalPoints)} fontWeight={700}>
+              points
+            </PointsCounter>
+          ) : (
+            <HiddenValue />
+          )}
+        </DataWrapper>
+        <Typography mt={6} alignSelf="center" color="text.secondary">
+          Points are updated weekly.
+        </Typography>
+        <Typography mt={-2} alignSelf="center" color="text.secondary">
+          Last update: {formatDate(new Date(campaign.lastUpdated))}
+        </Typography>
+        <Barcode className={css.barcode} />
+      </BorderedBox>
+
+      {!isGlobal && (
+        <BorderedBox>
+          <DataWrapper>
+            <Typography color="text.secondary">Campaign total</Typography>
+            {showOverallPoints ? (
+              <PointsCounter value={Number(data.overallPoints)} fontWeight={700}>
+                points
+              </PointsCounter>
+            ) : (
+              <HiddenValue />
+            )}
+          </DataWrapper>
+        </BorderedBox>
+      )}
+    </>
   )
 }
