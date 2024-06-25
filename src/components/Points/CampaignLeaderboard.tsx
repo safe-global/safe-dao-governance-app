@@ -246,12 +246,7 @@ export const CampaignLeaderboard = ({ campaign }: { campaign?: Campaign }) => {
     <Box key={campaign?.resourceId}>
       <Stack direction="row" width="100%" justifyContent="space-between">
         <Stack spacing={1}>
-          <Typography
-            sx={{ fontFeatureSettings: `'clig' off, 'liga' off` }}
-            fontSize="16px"
-            lineHeight="22px"
-            letterSpacing="0.15px"
-          >
+          <Typography fontSize="16px" lineHeight="22px" letterSpacing="0.15px">
             Leaderboard
           </Typography>
           <Typography variant="h3" fontWeight={700} fontSize="32px">
