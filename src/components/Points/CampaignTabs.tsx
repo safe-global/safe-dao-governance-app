@@ -101,6 +101,9 @@ const CampaignTabs = ({
               alignItems: 'start',
               marginLeft: tabIdx > 0 ? 2.5 : undefined,
               borderLeft: ({ palette }) => (tabIdx > 0 ? `1px solid ${palette.border.light}` : undefined),
+              '&.Mui-selected': {
+                backgroundColor: ({ palette }) => palette.background.light,
+              },
             }}
             key={tabIdx}
             {...tab}
