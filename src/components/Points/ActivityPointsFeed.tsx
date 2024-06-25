@@ -95,7 +95,7 @@ export const ActivityPointsFeed = ({ campaign }: { campaign?: Campaign }) => {
       <>
         <BorderedBox key={campaign?.resourceId}>
           <DataWrapper>
-            <Typography color="text.secondary">Last drop</Typography>
+            <Typography color="text.secondary">Your last drop</Typography>
             <HiddenValue />
           </DataWrapper>
           <Divider
