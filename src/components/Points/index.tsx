@@ -78,7 +78,7 @@ const Points = () => {
                     </Typography>
                     {isGlobalCampaign && (
                       <Typography variant="body2" color="text.secondary">
-                        At this view you can see a total of points from all currently active campaigns and Regular Safe
+                        In this view you can see the points total from all currently active campaigns and regular Safe
                         Activities.
                       </Typography>
                     )}
