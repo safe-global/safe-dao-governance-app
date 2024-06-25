@@ -89,7 +89,7 @@ const CampaignTabs = ({
         variant="scrollable"
         value={selectedCampaignId}
         aria-label="Vertical tabs example"
-        sx={{ border: 1, borderColor: 'divider', borderRadius: '6px', pt: 2, pb: 2 }}
+        sx={{ border: 1, borderColor: 'divider', borderRadius: '6px', pt: 2, pb: 2, minWidth: '286px' }}
         onChange={(_, value) => onChange(value)}
       >
         {campaignTabs.map((tab, tabIdx) => (

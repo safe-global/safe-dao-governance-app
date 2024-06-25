@@ -50,7 +50,7 @@ const Points = () => {
         <Stack spacing={3}>
           {isSmallScreen && <TotalPoints />}
           <PaperContainer>
-            <Stack direction="row" spacing={2}>
+            <Stack direction="row" spacing={2} mb={2}>
               {!isSmallScreen && <SvgIcon component={StarIcon} inheritViewBox sx={{ width: '27px', height: '27px' }} />}
               <Stack spacing={1}>
                 <Typography variant="h5" fontWeight={700} fontSize="24px">
@@ -82,6 +82,12 @@ const Points = () => {
                     <Typography variant="h6" fontWeight={700} fontSize="20px">
                       {isGlobalCampaign ? 'Global' : campaign?.name}
                     </Typography>
+                    {isGlobalCampaign && (
+                      <Typography variant="body2" color="text.secondary">
+                        At this view you can see a total of points from all currently active campaigns and Regular Safe
+                        Activities.
+                      </Typography>
+                    )}
                   </Box>
                 </Stack>
                 <ActivityPointsFeed campaign={campaign} />

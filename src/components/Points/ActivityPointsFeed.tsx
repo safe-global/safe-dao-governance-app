@@ -99,7 +99,7 @@ export const ActivityPointsFeed = ({ campaign }: { campaign?: Campaign }) => {
   }
 
   return (
-    <Box>
+    <Stack spacing={2}>
       <BorderedBox key={campaign?.resourceId}>
         <DataWrapper>
           <Typography color="text.secondary">Your last drop</Typography>
@@ -165,6 +165,6 @@ export const ActivityPointsFeed = ({ campaign }: { campaign?: Campaign }) => {
           </DataWrapper>
         </BorderedBox>
       )}
-    </Box>
+    </Stack>
   )
 }

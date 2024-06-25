@@ -263,7 +263,15 @@ export const CampaignLeaderboard = ({ campaign }: { campaign?: Campaign }) => {
               : 'See whats your standing in this campaign. Compete for the presents from the campaign partner.'}
           </Typography>
         </Stack>
-        <SvgIcon component={TitleStar} inheritViewBox sx={{ width: '40px', height: '40px' }} />
+        <Stack direction="row" spacing={1}>
+          {isGlobal && (
+            <>
+              <SvgIcon component={TitleStar} inheritViewBox sx={{ width: '40px', height: '40px' }} />
+              <SvgIcon component={TitleStar} inheritViewBox sx={{ width: '40px', height: '40px' }} />
+            </>
+          )}
+          <SvgIcon component={TitleStar} inheritViewBox sx={{ width: '40px', height: '40px' }} />
+        </Stack>
       </Stack>
 
       <TableContainer component={Paper}>
