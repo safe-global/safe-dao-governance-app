@@ -3,6 +3,7 @@ import {
   Link,
   Paper,
   Skeleton,
+  Stack,
   SvgIcon,
   Table,
   TableBody,
@@ -243,14 +244,27 @@ export const CampaignLeaderboard = ({ campaign }: { campaign?: Campaign }) => {
 
   return (
     <Box key={campaign?.resourceId}>
-      <Box sx={{ display: 'flex' }}>
-        <SvgIcon component={TitleStar} inheritViewBox sx={{ mr: '8px', mt: '4px' }} />
-        <Box sx={{ flex: '1' }}>
-          <Typography variant="h2" fontWeight={700} sx={{ mr: '8px', display: 'inline' }}>
-            {isGlobal ? 'Global' : campaign?.name} leaderboard
+      <Stack direction="row" width="100%" justifyContent="space-between">
+        <Stack spacing={1}>
+          <Typography
+            sx={{ fontFeatureSettings: `'clig' off, 'liga' off` }}
+            fontSize="16px"
+            lineHeight="22px"
+            letterSpacing="0.15px"
+          >
+            Leaderboard
           </Typography>
-        </Box>
-      </Box>
+          <Typography variant="h3" fontWeight={700} fontSize="32px">
+            {isGlobal ? 'Global' : campaign?.name} standings
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            {isGlobal
+              ? 'In this leaderboard compete in overall standing in Partner Campaigns and Regular Safe activities.'
+              : 'See whats your standing in this campaign. Compete for the presents from the campaign partner.'}
+          </Typography>
+        </Stack>
+        <SvgIcon component={TitleStar} inheritViewBox sx={{ width: '40px', height: '40px' }} />
+      </Stack>
 
       <TableContainer component={Paper}>
         <StyledTable aria-label="customized table">

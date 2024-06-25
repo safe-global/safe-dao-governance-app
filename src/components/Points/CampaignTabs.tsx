@@ -1,7 +1,6 @@
 import Tabs from '@mui/material/Tabs'
 import Tab from '@mui/material/Tab'
 import { Box, Chip, Tooltip, Typography } from '@mui/material'
-import { useTheme } from '@mui/material/styles'
 import css from './styles.module.css'
 import { Campaign, useCampaignPage } from '@/hooks/useCampaigns'
 import { ReactNode, useMemo } from 'react'
@@ -83,7 +82,6 @@ const CampaignTabs = ({
     ...dynamicTabs,
   ]
 
-  const theme = useTheme()
   return (
     <Box padding="8px 0px">
       <Tabs
@@ -91,12 +89,19 @@ const CampaignTabs = ({
         variant="scrollable"
         value={selectedCampaignId}
         aria-label="Vertical tabs example"
-        sx={{ border: 1, borderColor: 'divider', borderRadius: '6px' }}
+        sx={{ border: 1, borderColor: 'divider', borderRadius: '6px', pt: 2, pb: 2 }}
         onChange={(_, value) => onChange(value)}
       >
         {campaignTabs.map((tab, tabIdx) => (
           <Tab
-            sx={{ textTransform: 'none', fontWeight: 700, textAlign: 'left', alignItems: 'start' }}
+            sx={{
+              textTransform: 'none',
+              fontWeight: 700,
+              textAlign: 'left',
+              alignItems: 'start',
+              marginLeft: tabIdx > 0 ? 2.5 : undefined,
+              borderLeft: ({ palette }) => (tabIdx > 0 ? `1px solid ${palette.border.light}` : undefined),
+            }}
             key={tabIdx}
             {...tab}
           />
