@@ -19,16 +19,10 @@ import { useGlobalCampaignId } from '@/hooks/useGlobalCampaignId'
 const Points = () => {
   const campaignPage = useCampaignPage(20)
 
-  const chainId = useChainId()
-
   const globalCampaignId = useGlobalCampaignId()
 
-  const [selectedCampaignId, setSelectedCampaignId] = useState<string>(GLOBAL_CAMPAIGN_IDS[chainId])
+  const [selectedCampaignId, setSelectedCampaignId] = useState<string>(globalCampaignId)
   const campaign = campaignPage?.results.find((c) => c.resourceId === selectedCampaignId)
-
-  useEffect(() => {
-    setSelectedCampaignId(GLOBAL_CAMPAIGN_IDS[chainId])
-  }, [chainId])
 
   const isGlobalCampaign = useMemo(
     () => globalCampaignId === selectedCampaignId,
