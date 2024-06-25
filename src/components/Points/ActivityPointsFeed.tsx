@@ -48,11 +48,18 @@ const DataWrapper = ({ children }: { children: ReactNode }) => {
   )
 }
 
+type FeeData = {
+  activityPoints: number
+  boostedPoints: number
+  totalPoints: number
+  overallPoints: number
+}
+
 export const ActivityPointsFeed = ({ campaign }: { campaign?: Campaign }) => {
   const { data: ownEntry, isLoading } = useOwnCampaignRank(campaign?.resourceId)
   const { data: latestUpdate, isLoading: isLatestUpdateLoading } = useLatestCampaignUpdate(campaign?.resourceId)
 
-  const data = useMemo(() => {
+  const data: FeeData = useMemo(() => {
     return {
       activityPoints: latestUpdate?.totalPoints ?? 0,
       boostedPoints: latestUpdate ? latestUpdate.totalBoostedPoints - latestUpdate.totalPoints : 0,
@@ -65,8 +72,9 @@ export const ActivityPointsFeed = ({ campaign }: { campaign?: Campaign }) => {
   const [showTotalPoints, setShowTotalPoints] = useState(false)
   const [showOverallPoints, setShowOverallPoints] = useState(false)
 
+  const isDataLoading = isLoading || isLatestUpdateLoading
   useEffect(() => {
-    if (isLoading || isLatestUpdateLoading) {
+    if (isDataLoading) {
       return
     }
     const showBoostPointsTimeout = setTimeout(() => setShowBoostPoints(true), 1000)
@@ -78,7 +86,7 @@ export const ActivityPointsFeed = ({ campaign }: { campaign?: Campaign }) => {
       clearTimeout(showTotalPointsTimeout)
       clearTimeout(showOverallPointsTimeout)
     }
-  }, [ownEntry, isLoading, isLatestUpdateLoading])
+  }, [ownEntry, isDataLoading])
 
   const chainId = useChainId()
 
@@ -90,57 +98,8 @@ export const ActivityPointsFeed = ({ campaign }: { campaign?: Campaign }) => {
     return null
   }
 
-  if (isLoading) {
-    return (
-      <>
-        <BorderedBox key={campaign?.resourceId}>
-          <DataWrapper>
-            <Typography color="text.secondary">Your last drop</Typography>
-            <HiddenValue />
-          </DataWrapper>
-          <Divider
-            sx={{
-              marginRight: '-32px',
-              marginLeft: '-32px',
-            }}
-          />
-          <DataWrapper>
-            <Typography color="text.secondary">Activity points</Typography>
-            <HiddenValue />
-          </DataWrapper>
-          <DataWrapper>
-            <Typography color="text.secondary">Boost points</Typography>
-            <HiddenValue />
-          </DataWrapper>
-          <Divider />
-          <DataWrapper>
-            <Typography color="text.secondary">{!isGlobal && 'Campaign'} Week total</Typography>
-            <HiddenValue />
-          </DataWrapper>
-          <Divider />
-          <DataWrapper>
-            <Typography color="text.secondary">{!isGlobal && 'Campaign'} Overall</Typography>
-            <HiddenValue />
-          </DataWrapper>
-          <Typography mt={6} alignSelf="center" color="text.secondary">
-            Your points are updated weekly.
-          </Typography>
-          <Barcode className={css.barcode} />
-        </BorderedBox>
-        {!isGlobal && (
-          <BorderedBox>
-            <DataWrapper>
-              <Typography color="text.secondary">Campaign total</Typography>
-              <HiddenValue />
-            </DataWrapper>
-          </BorderedBox>
-        )}
-      </>
-    )
-  }
-
   return (
-    <>
+    <Box>
       <BorderedBox key={campaign?.resourceId}>
         <DataWrapper>
           <Typography color="text.secondary">Your last drop</Typography>
@@ -164,7 +123,7 @@ export const ActivityPointsFeed = ({ campaign }: { campaign?: Campaign }) => {
         </DataWrapper>
         <DataWrapper>
           <Typography color="text.secondary">Boost points</Typography>
-          {showBoostPoints ? (
+          {!isDataLoading && showBoostPoints ? (
             <PointsCounter value={Number(data.boostedPoints)} fontWeight={700}>
               points
             </PointsCounter>
@@ -175,7 +134,7 @@ export const ActivityPointsFeed = ({ campaign }: { campaign?: Campaign }) => {
         <Divider />
         <DataWrapper>
           <Typography>{!isGlobal && 'Campaign'} Week total</Typography>
-          {showTotalPoints ? (
+          {!isDataLoading && showTotalPoints ? (
             <PointsCounter value={Number(data.totalPoints)} fontWeight={700}>
               points
             </PointsCounter>
@@ -184,10 +143,10 @@ export const ActivityPointsFeed = ({ campaign }: { campaign?: Campaign }) => {
           )}
         </DataWrapper>
         <Typography mt={6} alignSelf="center" color="text.secondary">
-          Points are updated weekly.
+          {isGlobal && 'Points are updated weekly.'}
         </Typography>
         <Typography mt={-2} alignSelf="center" color="text.secondary">
-          Last update: {formatDate(new Date(campaign.lastUpdated))}
+          {!isDataLoading ? <>Last update: {formatDate(new Date(campaign.lastUpdated))}</> : <HiddenValue />}
         </Typography>
         <Barcode className={css.barcode} />
       </BorderedBox>
@@ -196,7 +155,7 @@ export const ActivityPointsFeed = ({ campaign }: { campaign?: Campaign }) => {
         <BorderedBox>
           <DataWrapper>
             <Typography color="text.secondary">Campaign total</Typography>
-            {showOverallPoints ? (
+            {!isDataLoading && showOverallPoints ? (
               <PointsCounter value={Number(data.overallPoints)} fontWeight={700}>
                 points
               </PointsCounter>
@@ -206,6 +165,6 @@ export const ActivityPointsFeed = ({ campaign }: { campaign?: Campaign }) => {
           </DataWrapper>
         </BorderedBox>
       )}
-    </>
+    </Box>
   )
 }

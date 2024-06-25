@@ -62,7 +62,7 @@ const CampaignTabs = ({
     {
       label: (
         <Typography display="flex" flexDirection="row" gap={1} alignItems="center" fontWeight={700}>
-          <Tooltip title="This campaign is active now" arrow>
+          <Tooltip title="This campaign is active" arrow>
             <Box
               sx={{
                 borderRadius: '100%',
