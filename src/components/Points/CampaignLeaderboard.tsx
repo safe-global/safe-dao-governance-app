@@ -254,8 +254,8 @@ export const CampaignLeaderboard = ({ campaign }: { campaign?: Campaign }) => {
           </Typography>
           <Typography variant="body2" color="text.secondary">
             {isGlobal
-              ? 'Compete in overall standings for Partner campaigns and regular Safe activities in this leaderboard.'
-              : 'See whats your standing in this campaign. Compete for presents from the campaign partner.'}
+              ? 'Participate in Partner campaigns and regular Safe activities to score in this leaderboard.'
+              : 'Your standing in this campaign. Participate for rewards from the campaign partner.'}
           </Typography>
         </Stack>
         <Stack direction="row" spacing={1}>
