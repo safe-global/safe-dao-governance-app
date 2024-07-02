@@ -1,14 +1,43 @@
 import Tabs from '@mui/material/Tabs'
 import Tab from '@mui/material/Tab'
-import { Box, Chip, Tooltip, Typography } from '@mui/material'
-import { useTheme } from '@mui/material/styles'
-import css from './styles.module.css'
+import { Box, Button, Tooltip, Typography } from '@mui/material'
+import { useCampaignsPaginated } from '@/hooks/useCampaigns'
+import { ReactNode, useMemo } from 'react'
+import { useGlobalCampaignId } from '@/hooks/useGlobalCampaignId'
+import { CampaignTitle } from './CampaignTitle'
 
-const CAMPAIGN_TABS = [
-  {
+type CampaignTabProps = {
+  label: ReactNode
+  disabled: boolean
+  value: string
+}
+
+const CampaignTabs = ({
+  onChange,
+  selectedCampaignId,
+}: {
+  onChange: (campaignId: string) => void
+  selectedCampaignId: string
+}) => {
+  const { data: campaigns, loadMore, hasMore } = useCampaignsPaginated()
+
+  const globalCampaign = useGlobalCampaignId()
+
+  const dynamicTabs = useMemo(
+    () =>
+      campaigns
+        ?.filter((campaign) => campaign.resourceId !== globalCampaign)
+        .map((campaign) => ({
+          label: <CampaignTitle key={campaign.resourceId} campaign={campaign} />,
+          value: campaign.resourceId,
+        })) ?? [],
+    [campaigns, globalCampaign],
+  )
+
+  const globalTab: CampaignTabProps = {
     label: (
       <Typography display="flex" flexDirection="row" gap={1} alignItems="center" fontWeight={700}>
-        <Tooltip title="This campaign is active now" arrow>
+        <Tooltip title="This campaign is active" arrow>
           <Box
             sx={{
               borderRadius: '100%',
@@ -24,46 +53,51 @@ const CAMPAIGN_TABS = [
       </Typography>
     ),
     disabled: false,
-  },
-  {
-    label: (
-      <Typography display="flex" flexDirection="row" gap={1} alignItems="center" fontWeight={700}>
-        <Box
-          sx={{
-            borderRadius: '100%',
-            backgroundColor: ({ palette }) => palette.text.disabled,
-            minWidth: '6px',
-            minHeight: '6px',
-            flexShrink: 0,
-            marginRight: 1,
-          }}
-        />
-        Campaigns <Chip variant="outlined" className={css.comingSoon} label="soon" />
-      </Typography>
-    ),
-    disabled: true,
-  },
-] as const
+    value: globalCampaign,
+  }
 
-const CampaignTabs = ({ onChange, selectedTabIdx }: { onChange: (tab: number) => void; selectedTabIdx: number }) => {
-  const theme = useTheme()
   return (
     <Box padding="8px 0px">
       <Tabs
         orientation="vertical"
         variant="scrollable"
-        value={selectedTabIdx}
+        value={selectedCampaignId}
         aria-label="Vertical tabs example"
-        sx={{ border: 1, borderColor: 'divider', borderRadius: '6px' }}
+        sx={{ border: 1, borderColor: 'divider', borderRadius: '6px', pt: 2, pb: 2, minWidth: '286px' }}
         onChange={(_, value) => onChange(value)}
       >
-        {CAMPAIGN_TABS.map((tab, tabIdx) => (
+        <Tab
+          sx={{
+            textTransform: 'none',
+            fontWeight: 700,
+            textAlign: 'left',
+            alignItems: 'start',
+            '&.Mui-selected': {
+              backgroundColor: ({ palette }) => palette.background.light,
+            },
+          }}
+          {...globalTab}
+        />
+
+        {dynamicTabs.map((tab) => (
           <Tab
-            sx={{ textTransform: 'none', fontWeight: 700, textAlign: 'left', alignItems: 'start' }}
-            key={tabIdx}
+            sx={{
+              textTransform: 'none',
+              fontWeight: 700,
+              textAlign: 'left',
+              alignItems: 'start',
+              marginLeft: 2.5,
+              borderLeft: ({ palette }) => `1px solid ${palette.border.light}`,
+              '&.Mui-selected': {
+                backgroundColor: ({ palette }) => palette.background.light,
+              },
+            }}
+            key={tab.value}
             {...tab}
+            value={tab.value}
           />
         ))}
+        {hasMore && <Button onClick={loadMore}>Load more</Button>}
       </Tabs>
     </Box>
   )

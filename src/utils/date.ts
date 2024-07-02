@@ -66,9 +66,9 @@ export const formatDatetime = (date: Date) => {
   return `${date.toLocaleString(undefined, options)}h`
 }
 
-export const formatDate = (date: Date) => {
+export const formatDate = (date: Date, long = false) => {
   const options: Intl.DateTimeFormatOptions = {
-    month: 'short',
+    month: long ? 'long' : 'short',
     day: '2-digit',
   }
 

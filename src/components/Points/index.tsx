@@ -1,52 +1,29 @@
-import { GLOBAL_CAMPAIGN_IDS } from '@/config/constants'
-import { useCampaignInfo, useCampaignPage } from '@/hooks/useCampaigns'
-import { useChainId } from '@/hooks/useChainId'
+import { useCampaignInfo } from '@/hooks/useCampaigns'
 import { Grid, Typography, Stack, Box, SvgIcon, Divider, useMediaQuery } from '@mui/material'
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { ExternalLink } from '../ExternalLink'
 import PaperContainer from '../PaperContainer'
 import SafePassDisclaimer from '../SafePassDisclaimer'
 import { ActivityPointsFeed } from './ActivityPointsFeed'
 import { CampaignInfo } from './CampaignInfo'
 import { CampaignLeaderboard } from './CampaignLeaderboard'
-import { CampaignSelector } from './CampaignSelector'
 import CampaignTabs from './CampaignTabs'
 import StarIcon from '@/public/images/leaderboard-title-star.svg'
 import css from './styles.module.css'
 import { TotalPoints } from './TotalPoints'
 import { useTheme } from '@mui/material/styles'
+import { useGlobalCampaignId } from '@/hooks/useGlobalCampaignId'
+import { CampaignTitle } from './CampaignTitle'
 
 const Points = () => {
-  const campaignPage = useCampaignPage(20)
+  const globalCampaignId = useGlobalCampaignId()
 
-  const chainId = useChainId()
-
-  const globalCampaign = useCampaignInfo(GLOBAL_CAMPAIGN_IDS[chainId])
-
-  const [selectedCampaignId, setSelectedCampaignId] = useState<string>(GLOBAL_CAMPAIGN_IDS[chainId])
-  const campaign = campaignPage?.results.find((c) => c.resourceId === selectedCampaignId)
-
-  const campaigns = campaignPage?.results ?? []
-
-  const [selectedTab, setSelectedTab] = useState(0)
-
-  useEffect(() => {
-    setSelectedCampaignId(GLOBAL_CAMPAIGN_IDS[chainId])
-  }, [chainId])
-
-  const onTabChange = (index: number) => {
-    setSelectedTab(index)
-    if (index === 1) {
-      setSelectedCampaignId(campaignPage?.results[1]?.resourceId ?? '')
-    }
-    if (index === 0) {
-      setSelectedCampaignId(globalCampaign?.resourceId ?? '')
-    }
-  }
+  const [selectedCampaignId, setSelectedCampaignId] = useState<string>(globalCampaignId)
+  const campaign = useCampaignInfo(selectedCampaignId)
 
   const isGlobalCampaign = useMemo(
-    () => globalCampaign?.resourceId === selectedCampaignId,
-    [globalCampaign?.resourceId, selectedCampaignId],
+    () => globalCampaignId === selectedCampaignId,
+    [globalCampaignId, selectedCampaignId],
   )
   const theme = useTheme()
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('lg'))
@@ -64,7 +41,7 @@ const Points = () => {
         <Stack spacing={3}>
           {isSmallScreen && <TotalPoints />}
           <PaperContainer>
-            <Stack direction="row" spacing={2}>
+            <Stack direction="row" spacing={2} mb={2}>
               {!isSmallScreen && <SvgIcon component={StarIcon} inheritViewBox sx={{ width: '27px', height: '27px' }} />}
               <Stack spacing={1}>
                 <Typography variant="h5" fontWeight={700} fontSize="24px">
@@ -82,7 +59,7 @@ const Points = () => {
             </Stack>
             <Divider />
             <Stack direction={{ lg: 'row', md: 'column' }} spacing={4}>
-              <CampaignTabs onChange={onTabChange} selectedTabIdx={selectedTab} />
+              <CampaignTabs onChange={setSelectedCampaignId} selectedCampaignId={selectedCampaignId} />
               <Box width="100%">
                 <Stack
                   direction="row"
@@ -93,17 +70,14 @@ const Points = () => {
                   minHeight="60px"
                 >
                   <Box width="100%">
-                    <Typography variant="h6" fontWeight={700} fontSize="20px">
-                      {isGlobalCampaign ? 'Global' : campaign?.name}
-                    </Typography>
+                    {campaign && <CampaignTitle variant="h6" fontWeight={700} fontSize="20px" campaign={campaign} />}
+                    {isGlobalCampaign && (
+                      <Typography variant="body2" color="text.secondary">
+                        In this view you can see the points total from all currently active campaigns and regular Safe
+                        activities.
+                      </Typography>
+                    )}
                   </Box>
-                  {selectedTab > 0 && (
-                    <CampaignSelector
-                      selectedCampaignId={selectedCampaignId}
-                      campaigns={campaigns.slice(1)}
-                      setSelectedCampaignId={setSelectedCampaignId}
-                    />
-                  )}
                 </Stack>
                 <ActivityPointsFeed campaign={campaign} />
               </Box>

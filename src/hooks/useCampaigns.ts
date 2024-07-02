@@ -1,6 +1,9 @@
 import { PaginatedResult, useGatewayBaseUrl } from './useGatewayBaseUrl'
 import useSWR from 'swr'
+import useSWRInfinite from 'swr/infinite'
+
 import { toCursorParam } from '@/utils/gateway'
+import { useCallback, useMemo } from 'react'
 
 export type Campaign = {
   resourceId: string
@@ -17,15 +20,25 @@ export type Campaign = {
   }[]
 }
 
-export const useCampaignPage = (limit: number, offset?: number) => {
+const PAGE_SIZE = 5
+
+export const useCampaignsPaginated = () => {
   const gatewayBaseUrl = useGatewayBaseUrl()
 
-  const getKey = (limit: number, offset?: number) => {
+  const getKey = (pageIndex: number, previousPageData: PaginatedResult<Campaign>) => {
+    if (!previousPageData) {
+      // First load
+      return `${gatewayBaseUrl}/v1/community/campaigns?${toCursorParam(PAGE_SIZE)}`
+    }
+
+    // reached the end
+    if (previousPageData && !previousPageData.next) return null
+
     // Load next page
-    return `${gatewayBaseUrl}/v1/community/campaigns?${toCursorParam(limit, offset)}`
+    return previousPageData.next
   }
 
-  const { data } = useSWR(getKey(limit, offset), async (url: string) => {
+  const { data, setSize, size } = useSWRInfinite(getKey, async (url: string) => {
     return await fetch(url).then((resp) => {
       if (resp.ok) {
         return resp.json() as Promise<PaginatedResult<Campaign>>
@@ -35,7 +48,15 @@ export const useCampaignPage = (limit: number, offset?: number) => {
     })
   })
 
-  return data
+  const flatData = useMemo(() => data?.flatMap((part) => part.results), [data])
+  const loadMore = useCallback(() => setSize((prev) => prev + PAGE_SIZE), [setSize])
+  const hasMore = useMemo(() => (data?.[0]?.count ?? 0) > size, [data, size])
+
+  return {
+    data: flatData,
+    loadMore,
+    hasMore,
+  }
 }
 
 export const useCampaignInfo = (resourceId: string) => {
