@@ -2,7 +2,7 @@ import Tabs from '@mui/material/Tabs'
 import Tab from '@mui/material/Tab'
 import { Box, Button, Tooltip, Typography } from '@mui/material'
 import { useCampaignsPaginated } from '@/hooks/useCampaigns'
-import { ReactNode, useMemo, useState } from 'react'
+import { ReactNode, useMemo } from 'react'
 import { useGlobalCampaignId } from '@/hooks/useGlobalCampaignId'
 import { CampaignTitle } from './CampaignTitle'
 
