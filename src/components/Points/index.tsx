@@ -1,4 +1,4 @@
-import { useCampaignPage } from '@/hooks/useCampaigns'
+import { useCampaignInfo } from '@/hooks/useCampaigns'
 import { Grid, Typography, Stack, Box, SvgIcon, Divider, useMediaQuery } from '@mui/material'
 import { useMemo, useState } from 'react'
 import { ExternalLink } from '../ExternalLink'
@@ -13,14 +13,13 @@ import css from './styles.module.css'
 import { TotalPoints } from './TotalPoints'
 import { useTheme } from '@mui/material/styles'
 import { useGlobalCampaignId } from '@/hooks/useGlobalCampaignId'
+import { CampaignTitle } from './CampaignTitle'
 
 const Points = () => {
-  const campaignPage = useCampaignPage(20)
-
   const globalCampaignId = useGlobalCampaignId()
 
   const [selectedCampaignId, setSelectedCampaignId] = useState<string>(globalCampaignId)
-  const campaign = campaignPage?.results.find((c) => c.resourceId === selectedCampaignId)
+  const campaign = useCampaignInfo(selectedCampaignId)
 
   const isGlobalCampaign = useMemo(
     () => globalCampaignId === selectedCampaignId,
@@ -71,9 +70,7 @@ const Points = () => {
                   minHeight="60px"
                 >
                   <Box width="100%">
-                    <Typography variant="h6" fontWeight={700} fontSize="20px">
-                      {isGlobalCampaign ? 'Global' : campaign?.name}
-                    </Typography>
+                    {campaign && <CampaignTitle variant="h6" fontWeight={700} fontSize="20px" campaign={campaign} />}
                     {isGlobalCampaign && (
                       <Typography variant="body2" color="text.secondary">
                         In this view you can see the points total from all currently active campaigns and regular Safe
