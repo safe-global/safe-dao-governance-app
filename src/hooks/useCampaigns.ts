@@ -20,7 +20,7 @@ export type Campaign = {
   }[]
 }
 
-const PAGE_SIZE = 5
+const PAGE_SIZE = 2
 
 export const useCampaignsPaginated = () => {
   const gatewayBaseUrl = useGatewayBaseUrl()
@@ -49,8 +49,8 @@ export const useCampaignsPaginated = () => {
   })
 
   const flatData = useMemo(() => data?.flatMap((part) => part.results), [data])
-  const loadMore = useCallback(() => setSize((prev) => prev + PAGE_SIZE), [setSize])
-  const hasMore = useMemo(() => (data?.[0]?.count ?? 0) > size, [data, size])
+  const loadMore = useCallback(() => setSize((prev) => prev + 1), [setSize])
+  const hasMore = useMemo(() => (data?.[0]?.count ?? 0) > size * PAGE_SIZE, [data, size])
 
   return {
     data: flatData,
