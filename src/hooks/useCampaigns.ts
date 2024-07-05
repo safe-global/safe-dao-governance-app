@@ -20,7 +20,7 @@ export type Campaign = {
   }[]
 }
 
-const PAGE_SIZE = 2
+const PAGE_SIZE = 5
 
 export const useCampaignsPaginated = () => {
   const gatewayBaseUrl = useGatewayBaseUrl()
