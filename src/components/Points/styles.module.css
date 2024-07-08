@@ -19,35 +19,26 @@
   pointer-events: none;
 }
 
-.chipSoon {
-  background-color: #696669;
+.chipSoon,
+.chipActive,
+.chipFinished {
   color: var(--mui-palette-background-paper);
   border-radius: 4px;
-  padding: 4px 8px;
+  height: 24px;
   margin-left: 8px;
   border: none;
   font-weight: 400;
   cursor: pointer;
+}
+
+.chipSoon {
+  background-color: #696669;
 }
 
 .chipFinished {
   background-color: #a1a3a7;
-  color: var(--mui-palette-background-paper);
-  border-radius: 4px;
-  padding: 4px 8px;
-  margin-left: 8px;
-  border: none;
-  font-weight: 400;
-  cursor: pointer;
 }
 
 .chipActive {
   background-color: var(--mui-palette-primary-main);
-  color: var(--mui-palette-background-paper);
-  border-radius: 4px;
-  padding: 4px 8px;
-  margin-left: 8px;
-  border: none;
-  font-weight: 400;
-  cursor: pointer;
 }
