@@ -51,3 +51,12 @@
   font-weight: 400;
   cursor: pointer;
 }
+
+.progressBar :global .MuiLinearProgress-bar {
+  background: linear-gradient(-90deg, #10ff84, #5fddff);
+  border-radius: 8px;
+}
+
+.progressBar {
+  background: none;
+}

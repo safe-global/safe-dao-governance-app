@@ -14,6 +14,7 @@ import { TotalPoints } from './TotalPoints'
 import { useTheme } from '@mui/material/styles'
 import { useGlobalCampaignId } from '@/hooks/useGlobalCampaignId'
 import { CampaignTitle } from './CampaignTitle'
+import { CampaignPromo } from './CampaignPromo'
 
 const Points = () => {
   const globalCampaignId = useGlobalCampaignId()
@@ -37,7 +38,7 @@ const Points = () => {
         </ExternalLink>
       </Grid>
 
-      <Grid item xs={12} lg={8}>
+      <Grid item xs={12} lg={7}>
         <Stack spacing={3}>
           {isSmallScreen && <TotalPoints />}
           <PaperContainer>
@@ -88,9 +89,10 @@ const Points = () => {
           </PaperContainer>
         </Stack>
       </Grid>
-      <Grid item xs={12} lg={4}>
+      <Grid item xs={12} lg={5}>
         <Stack spacing={3} justifyContent="stretch" height="100%">
           {!isSmallScreen && <TotalPoints />}
+          <CampaignPromo />
           <CampaignInfo campaign={campaign} />
         </Stack>
       </Grid>
