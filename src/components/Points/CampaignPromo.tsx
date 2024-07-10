@@ -4,15 +4,38 @@ import MorhoIcon from '@/public/images/morpho.svg'
 import SpotlightIcon from '@/public/images/spotlight.svg'
 
 import css from './styles.module.css'
-import { Campaign } from '@/hooks/useCampaigns'
+import { MORPHO_CAMPAIGN_IDS } from '@/config/constants'
+import { useChainId } from '@/hooks/useChainId'
+import { useCampaignInfo } from '@/hooks/useCampaigns'
+import { getRelativeTime } from '@/utils/date'
 
-export const CampaignPromo = ({ campaign }: { campaign?: Campaign }) => {
+export const CampaignPromo = () => {
+  const chainId = useChainId()
+  const morphoCampaignId = MORPHO_CAMPAIGN_IDS[chainId]
+
+  const morphoCampaign = useCampaignInfo(morphoCampaignId)
+
+  if (!morphoCampaign) {
+    return null
+  }
+
+  const hasStarted = new Date(morphoCampaign.startDate).getTime() <= Date.now()
+  const hasEnded = new Date(morphoCampaign.endDate).getTime() <= Date.now()
+
+  const progress =
+    Math.max(Date.now() - new Date(morphoCampaign.startDate).getTime(), 0) /
+    (new Date(morphoCampaign.endDate).getTime() - new Date(morphoCampaign.startDate).getTime())
+
+  if (hasEnded) {
+    return null
+  }
+
   return (
     <PaperContainer sx={{ overflow: 'hidden' }}>
       <LinearProgress
         className={css.progressBar}
         variant="determinate"
-        value={60}
+        value={progress}
         sx={{
           mt: '-40px',
           ml: '-32px',
@@ -21,7 +44,11 @@ export const CampaignPromo = ({ campaign }: { campaign?: Campaign }) => {
       />
       <Stack alignItems="center">
         <Typography variant="body2" color="text.secondary" mb={2}>
-          Ends in 2 weeks
+          {morphoCampaign
+            ? !hasStarted
+              ? `Starts in ${getRelativeTime(new Date(morphoCampaign.startDate))}`
+              : `Ends in ${getRelativeTime(new Date(morphoCampaign.endDate))}`
+            : null}
         </Typography>
         <Box position="relative">
           <SvgIcon
@@ -73,6 +100,9 @@ export const CampaignPromo = ({ campaign }: { campaign?: Campaign }) => {
           </Button>
           <Typography>or</Typography>
           <Button
+            href="https://app.morpho.org/"
+            rel="noopener noreferrer"
+            target="_blank"
             variant="outlined"
             size="small"
             sx={{
