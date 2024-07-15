@@ -1,4 +1,4 @@
-import { Box, Button, LinearProgress, Stack, SvgIcon, Typography } from '@mui/material'
+import { Box, LinearProgress, Stack, SvgIcon, Typography } from '@mui/material'
 import PaperContainer from '../PaperContainer'
 import MorhoIcon from '@/public/images/morpho.svg'
 import SpotlightIcon from '@/public/images/spotlight.svg'
@@ -11,6 +11,7 @@ import { getRelativeTime } from '@/utils/date'
 import { getSafeAppUrl } from '@/utils/safe-apps'
 import { useAddress } from '@/hooks/useAddress'
 import { useMemo } from 'react'
+import { ExternalLink } from '../ExternalLink'
 
 export const CampaignPromo = () => {
   const chainId = useChainId()
@@ -55,8 +56,8 @@ export const CampaignPromo = () => {
         <Typography variant="body2" color="text.secondary" mb={2}>
           {morphoCampaign
             ? !hasStarted
-              ? `Starts in ${getRelativeTime(new Date(morphoCampaign.startDate))}`
-              : `Ends in ${getRelativeTime(new Date(morphoCampaign.endDate))}`
+              ? `Starts ${getRelativeTime(new Date(morphoCampaign.startDate))}`
+              : `Ends ${getRelativeTime(new Date(morphoCampaign.endDate))}`
             : null}
         </Typography>
         <Box position="relative">
@@ -104,23 +105,14 @@ export const CampaignPromo = () => {
           Learn more and participate in campaign:
         </Typography>
         <Stack direction="row" alignItems="center" spacing={2} mt={2}>
-          <Button
-            variant="outlined"
-            size="small"
-            color="primary"
-            href={safeAppUrl}
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            Open Safe App
-          </Button>
+          <ExternalLink variant="button" color="primary" href={safeAppUrl} target="_blank">
+            Safe App
+          </ExternalLink>
           <Typography>or</Typography>
-          <Button
+          <ExternalLink
             href="https://app.morpho.org/"
-            rel="noopener noreferrer"
             target="_blank"
-            variant="outlined"
-            size="small"
+            variant="button"
             sx={{
               color: '#2470FF',
               '&:hover': {
@@ -128,8 +120,8 @@ export const CampaignPromo = () => {
               },
             }}
           >
-            Go to Morpho
-          </Button>
+            Morpho
+          </ExternalLink>
         </Stack>
       </Stack>
     </PaperContainer>
