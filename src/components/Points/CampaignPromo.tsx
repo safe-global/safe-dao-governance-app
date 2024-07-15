@@ -8,12 +8,21 @@ import { MORPHO_CAMPAIGN_IDS } from '@/config/constants'
 import { useChainId } from '@/hooks/useChainId'
 import { useCampaignInfo } from '@/hooks/useCampaigns'
 import { getRelativeTime } from '@/utils/date'
+import { getSafeAppUrl } from '@/utils/safe-apps'
+import { useAddress } from '@/hooks/useAddress'
+import { useMemo } from 'react'
 
 export const CampaignPromo = () => {
   const chainId = useChainId()
+  const address = useAddress()
   const morphoCampaignId = MORPHO_CAMPAIGN_IDS[chainId]
 
   const morphoCampaign = useCampaignInfo(morphoCampaignId)
+
+  const safeAppUrl = useMemo(
+    () => (address ? getSafeAppUrl(chainId, address, 'https://safe-app.morpho.org/') : ''),
+    [chainId, address],
+  )
 
   if (!morphoCampaign) {
     return null
@@ -95,7 +104,14 @@ export const CampaignPromo = () => {
           Learn more and participate in campaign:
         </Typography>
         <Stack direction="row" alignItems="center" spacing={2} mt={2}>
-          <Button variant="outlined" size="small" color="primary">
+          <Button
+            variant="outlined"
+            size="small"
+            color="primary"
+            href={safeAppUrl}
+            rel="noopener noreferrer"
+            target="_blank"
+          >
             Open Safe App
           </Button>
           <Typography>or</Typography>
