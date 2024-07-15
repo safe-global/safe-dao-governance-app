@@ -20,7 +20,7 @@ export const CampaignTitle = ({ campaign, ...props }: TypographyProps & { campai
   )
 
   return (
-    <Typography display="flex" flexDirection="row" gap={1} alignItems="center" fontWeight={700} {...props}>
+    <Typography display="flex" flexDirection="row" width="100%" gap={1} alignItems="center" fontWeight={700} {...props}>
       <Tooltip title={`This campaign is ${isActive ? 'active' : 'inactive'}`} arrow>
         <Box
           sx={{
