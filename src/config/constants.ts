@@ -120,3 +120,8 @@ export const GLOBAL_CAMPAIGN_IDS: ChainConfig<string> = {
   [Chains.SEPOLIA]: 'fa9f462b-8e8c-4122-aa41-2464e919b721',
   [Chains.MAINNET]: '9ed78b8b-178d-4e25-9ef2-1517865991ee',
 }
+
+export const MORPHO_CAMPAIGN_IDS: ChainConfig<string> = {
+  [Chains.SEPOLIA]: '0317a716-2818-4cc2-8571-71208996650e',
+  [Chains.MAINNET]: 'a19a5503-b65a-42a0-bc6a-8e68144d2afa',
+}

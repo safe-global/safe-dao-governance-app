@@ -15,7 +15,7 @@ export const ExternalLink = forwardRef<
   return (
     <>
       {variant === 'button' ? (
-        <Button rel="noopener noreferrer" variant="outlined" href={href} target="_blank">
+        <Button rel="noopener noreferrer" variant="outlined" href={href} target="_blank" sx={props.sx}>
           {children}
           {icon && <LinkIcon style={styles} />}
         </Button>
