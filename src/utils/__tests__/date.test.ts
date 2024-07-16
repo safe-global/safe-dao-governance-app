@@ -1,5 +1,5 @@
 import { Chains, CHAIN_START_TIMESTAMPS } from '@/config/constants'
-import { formatDay, timeRemaining } from '../date'
+import { formatDay, getRelativeTime, timeRemaining } from '../date'
 
 describe('date', () => {
   let now = 0
@@ -85,6 +85,20 @@ describe('date', () => {
 
     it('should work for future months', () => {
       expect(formatDay(30, CHAIN_START_TIMESTAMPS[Chains.MAINNET])).toEqual('May 23')
+    })
+  })
+
+  describe('getRelativeTime', () => {
+    it('should diff to current time with only start date provided', () => {
+      // Fake now is 01-01-2024
+      expect(getRelativeTime(new Date('2024-01-15T01:00:00.000Z'))).toBe('in 2 weeks')
+      expect(getRelativeTime(new Date('2024-01-08T01:00:00.000Z'))).toBe('in 1 week')
+      expect(getRelativeTime(new Date('2024-01-02T01:00:00.000Z'))).toBe('in 1 day')
+      expect(getRelativeTime(new Date('2024-01-01T01:00:00.000Z'))).toBe('in 1 hour')
+      expect(getRelativeTime(new Date('2024-01-01T00:01:00.000Z'))).toBe('in 1 minute')
+      expect(getRelativeTime(new Date('2024-01-01T00:00:59.000Z'))).toBe('in 59 seconds')
+      expect(getRelativeTime(new Date('2023-12-31T23:59:59.000Z'))).toBe('1 second ago')
+      expect(getRelativeTime(new Date('2023-12-31T23:59:00.000Z'))).toBe('1 minute ago')
     })
   })
 })

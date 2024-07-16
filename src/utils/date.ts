@@ -74,3 +74,27 @@ export const formatDate = (date: Date, long = false) => {
 
   return `${date.toLocaleString(undefined, options)}`
 }
+
+type UnitType = 'week' | 'day' | 'hour' | 'minute' | 'second'
+// in miliseconds
+const units: Record<UnitType, number> = {
+  week: 7 * 24 * 60 * 60 * 1000,
+  day: 24 * 60 * 60 * 1000,
+  hour: 60 * 60 * 1000,
+  minute: 60 * 1000,
+  second: 1000,
+}
+
+var rtf = new Intl.RelativeTimeFormat('en', { numeric: 'always' })
+
+export const getRelativeTime = (d1: Date, d2 = new Date()) => {
+  var elapsed = d1.getTime() - d2.getTime()
+
+  // "Math.abs" accounts for both "past" & "future" scenarios
+  for (const unit in units) {
+    const unitNumber = units[unit as UnitType]
+    if (Math.abs(elapsed) >= unitNumber || unit == 'second') {
+      return rtf.format(Math.round(elapsed / unitNumber), unit as UnitType)
+    }
+  }
+}
