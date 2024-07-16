@@ -22,6 +22,7 @@ import FirstPlaceIcon from '@/public/images/leaderboard-first-place.svg'
 import SecondPlaceIcon from '@/public/images/leaderboard-second-place.svg'
 import ThirdPlaceIcon from '@/public/images/leaderboard-third-place.svg'
 import TitleStar from '@/public/images/leaderboard-title-star.svg'
+import FlashIcon from '@/public/images/flash.svg'
 import { CampaignLeaderboardEntry, useGlobalCampaignLeaderboardPage, useOwnCampaignRank } from '@/hooks/useLeaderboard'
 import { ReactElement, useState } from 'react'
 import { useEnsLookup } from '@/hooks/useEnsLookup'
@@ -187,10 +188,17 @@ const LeaderboardPage = ({
     return (
       <>
         <StyledTableRow>
-          <StyledTableCell colSpan={2}>
-            <Typography>No entries</Typography>
+          <StyledTableCell colSpan={3}>
+            <Stack spacing={2} alignItems="center" justifyItems="center" mt={10}>
+              <FlashIcon />
+              <Typography variant="subtitle1" textAlign="center">
+                Be active to earn your points.
+              </Typography>
+              <Typography variant="body2" color="text.secondary" textAlign="center">
+                Check back to see how you scored compared to others when the campaign ends.
+              </Typography>
+            </Stack>
           </StyledTableCell>
-          <StyledTableCell></StyledTableCell>
         </StyledTableRow>
       </>
     )

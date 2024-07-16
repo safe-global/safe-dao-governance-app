@@ -71,7 +71,16 @@ const Points = () => {
                   minHeight="60px"
                 >
                   <Box width="100%">
-                    {campaign && <CampaignTitle variant="h6" fontWeight={700} fontSize="20px" campaign={campaign} />}
+                    {campaign && (
+                      <CampaignTitle
+                        variant="h5"
+                        fontWeight={700}
+                        fontSize="24px"
+                        campaign={campaign}
+                        showDates
+                        suppressStatusDot
+                      />
+                    )}
                     {isGlobalCampaign && (
                       <Typography variant="body2" color="text.secondary">
                         In this view you can see the points total from all currently active campaigns and regular Safe
