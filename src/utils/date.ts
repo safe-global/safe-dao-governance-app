@@ -85,7 +85,7 @@ const units: Record<UnitType, number> = {
   second: 1000,
 }
 
-var rtf = new Intl.RelativeTimeFormat('en', { numeric: 'auto' })
+var rtf = new Intl.RelativeTimeFormat('en', { numeric: 'always' })
 
 export const getRelativeTime = (d1: Date, d2 = new Date()) => {
   var elapsed = d1.getTime() - d2.getTime()
@@ -93,7 +93,7 @@ export const getRelativeTime = (d1: Date, d2 = new Date()) => {
   // "Math.abs" accounts for both "past" & "future" scenarios
   for (const unit in units) {
     const unitNumber = units[unit as UnitType]
-    if (Math.abs(elapsed) > unitNumber || unit == 'second') {
+    if (Math.abs(elapsed) >= unitNumber || unit == 'second') {
       return rtf.format(Math.round(elapsed / unitNumber), unit as UnitType)
     }
   }
