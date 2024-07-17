@@ -36,7 +36,7 @@ export const useLatestCampaignUpdate = (resourceId: string | undefined) => {
       })
     },
     {
-      errorRetryCount: 1,
+      errorRetryCount: 0,
     },
   )
 

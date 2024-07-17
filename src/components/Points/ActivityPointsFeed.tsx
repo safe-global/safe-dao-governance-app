@@ -3,11 +3,12 @@ import { Campaign } from '@/hooks/useCampaigns'
 import { useChainId } from '@/hooks/useChainId'
 import { useOwnCampaignRank } from '@/hooks/useLeaderboard'
 import { formatDate } from '@/utils/date'
-import { Divider, Skeleton, Stack, Typography } from '@mui/material'
+import { CircularProgress, Divider, Skeleton, Stack, Typography } from '@mui/material'
 import Box from '@mui/material/Box'
 import { ReactNode, useEffect, useMemo, useState } from 'react'
 import PointsCounter from '../PointsCounter'
 import Barcode from '@/public/images/horizontal_barcode.svg'
+import EmptyPlaceholder from '@/public/images/empty-breakdown.svg'
 import css from './styles.module.css'
 import { useLatestCampaignUpdate } from '@/hooks/useLatestCampaignUpdate'
 
@@ -55,6 +56,29 @@ type FeeData = {
   overallPoints: number
 }
 
+const EmptyFeed = () => {
+  return (
+    <Stack spacing={2} width="100%" alignItems="center" justifyContent="center">
+      <EmptyPlaceholder />
+      <Typography variant="subtitle1" color="text.secondary" textAlign="center">
+        Campaigns usually drop points after they are finished. <br />
+        Check back later!
+      </Typography>
+    </Stack>
+  )
+}
+
+const FeedLoading = () => {
+  return (
+    <Stack spacing={2} width="100%" alignItems="center" justifyContent="center">
+      <CircularProgress />
+      <Typography variant="subtitle1" color="text.secondary" textAlign="center">
+        Loading
+      </Typography>
+    </Stack>
+  )
+}
+
 export const ActivityPointsFeed = ({ campaign }: { campaign?: Campaign }) => {
   const { data: ownEntry, isLoading } = useOwnCampaignRank(campaign?.resourceId)
   const { data: latestUpdate, isLoading: isLatestUpdateLoading } = useLatestCampaignUpdate(campaign?.resourceId)
@@ -94,8 +118,18 @@ export const ActivityPointsFeed = ({ campaign }: { campaign?: Campaign }) => {
 
   const isGlobal = campaign?.resourceId === globalCampaignId
 
+  const noDataAvailable = !isGlobal && !latestUpdate
+
   if (!campaign) {
     return null
+  }
+
+  if (isDataLoading) {
+    return <FeedLoading />
+  }
+
+  if (noDataAvailable) {
+    return <EmptyFeed />
   }
 
   return (
