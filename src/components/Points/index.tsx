@@ -33,9 +33,9 @@ const Points = () => {
     <Grid container spacing={3} direction="row">
       <Grid item xs={12} mt={4} mb={1} className={css.pageTitle} display="flex" flexDirection="row" alignItems="center">
         <Typography variant="h2">{'Get rewards with Safe{Pass}'}</Typography>
-        <ExternalLink href="https://safe.global/pass" ml="auto">
-          {'What is Safe{Pass}'}
-        </ExternalLink>
+        <Box ml="auto">
+          <ExternalLink href="https://safe.global/pass">{'What is Safe{Pass}'}</ExternalLink>
+        </Box>
       </Grid>
 
       <Grid item xs={12} lg={8}>

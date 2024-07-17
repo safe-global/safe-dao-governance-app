@@ -1,4 +1,4 @@
-import { Grid, Stack, Typography } from '@mui/material'
+import { Box, Grid, Stack, Typography } from '@mui/material'
 import { useSafeTokenBalance } from '@/hooks/useSafeTokenBalance'
 import { Leaderboard } from './Leaderboard'
 import { CurrentStats } from './CurrentStats'
@@ -23,9 +23,9 @@ const TokenLocking = () => {
     <Grid container spacing={3} direction="row-reverse">
       <Grid item xs={12} mt={4} mb={1} className={css.pageTitle} display="flex" flexDirection="row" alignItems="center">
         <Typography variant="h2">{'Get rewards with Safe{Pass}'}</Typography>
-        <ExternalLink href="https://safe.global/pass" ml="auto">
-          {'What is Safe{Pass}'}
-        </ExternalLink>
+        <Box ml="auto">
+          <ExternalLink href="https://safe.global/pass">{'What is Safe{Pass}'}</ExternalLink>
+        </Box>
       </Grid>
       <Grid item xs={12} lg={4}>
         <Stack spacing={3} justifyContent="stretch" height="100%">
