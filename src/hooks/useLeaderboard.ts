@@ -91,7 +91,7 @@ export const useOwnCampaignRank = (resourceId: string | undefined) => {
       })
     },
     {
-      errorRetryCount: 1,
+      errorRetryCount: 0,
     },
   )
 
