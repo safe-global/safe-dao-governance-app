@@ -24,7 +24,6 @@ import MilesReceipt from '@/components/TokenLocking/MilesReceipt'
 import { BaseTransaction, useTxSender } from '@/hooks/useTxSender'
 import { useSafeTokenLockingAllowance } from '@/hooks/useSafeTokenBalance'
 import { useStartDate } from '@/hooks/useStartDates'
-import { NAVIGATION_EVENTS } from '@/analytics/navigation'
 import { ExternalLink } from '../ExternalLink'
 import { formatAmount } from '@/utils/formatters'
 
@@ -168,9 +167,7 @@ export const LockTokenWidget = ({ safeBalance }: { safeBalance: BigNumberish | u
             Lock tokens to boost your points
           </Typography>
         </Box>
-        <Track {...NAVIGATION_EVENTS.OPEN_BOOST_INFO}>
-          <ExternalLink href={SAFE_PASS_HELP_ARTICLE_URL}>More about the boost</ExternalLink>
-        </Track>
+        <ExternalLink href={SAFE_PASS_HELP_ARTICLE_URL}>More about the boost</ExternalLink>
       </Box>
       <Stack
         spacing={3}
