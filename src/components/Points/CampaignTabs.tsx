@@ -2,9 +2,11 @@ import Tabs from '@mui/material/Tabs'
 import Tab from '@mui/material/Tab'
 import { Box, Button, Tooltip, Typography } from '@mui/material'
 import { useCampaignsPaginated } from '@/hooks/useCampaigns'
-import { ReactNode, useMemo } from 'react'
+import { ReactNode, SyntheticEvent, useCallback, useMemo } from 'react'
 import { useGlobalCampaignId } from '@/hooks/useGlobalCampaignId'
 import { CampaignTitle } from './CampaignTitle'
+import { NAVIGATION_EVENTS } from '@/analytics/navigation'
+import { trackSafeAppEvent } from '@/utils/analytics'
 
 type CampaignTabProps = {
   label: ReactNode
@@ -56,6 +58,14 @@ const CampaignTabs = ({
     value: globalCampaign,
   }
 
+  const handleChange = useCallback(
+    (_: SyntheticEvent, value: any) => {
+      trackSafeAppEvent(NAVIGATION_EVENTS.OPEN_CAMPAIGN.action, value)
+      onChange(value)
+    },
+    [onChange],
+  )
+
   return (
     <Box padding="8px 0px">
       <Tabs
@@ -64,7 +74,7 @@ const CampaignTabs = ({
         value={selectedCampaignId}
         aria-label="Vertical tabs example"
         sx={{ border: 1, borderColor: 'divider', borderRadius: '6px', pt: 2, pb: 2, minWidth: '286px' }}
-        onChange={(_, value) => onChange(value)}
+        onChange={handleChange}
       >
         <Tab
           sx={{
