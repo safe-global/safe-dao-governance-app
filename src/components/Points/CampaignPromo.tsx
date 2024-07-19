@@ -102,7 +102,7 @@ export const CampaignPromo = () => {
         </Typography>
         <Typography variant="body2">& Safe points</Typography>
         <Typography variant="body2" color="text.secondary" mt={5}>
-          Learn more and participate in campaign:
+          <ExternalLink href="https://dub.sh/morphocampaign">Learn more</ExternalLink> and participate in campaign:
         </Typography>
         <Stack direction="row" alignItems="center" spacing={2} mt={2}>
           <ExternalLink variant="button" color="primary" href={safeAppUrl} target="_blank">
