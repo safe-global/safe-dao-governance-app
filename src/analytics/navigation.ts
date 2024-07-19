@@ -23,4 +23,10 @@ export const NAVIGATION_EVENTS = {
   OPEN_POINTS: {
     action: 'Open points page',
   },
+  OPEN_CAMPAIGN: {
+    action: 'Open campaign',
+  },
+  OPEN_EXTERNAL_LINK: {
+    action: 'Open external link',
+  },
 }
