@@ -15,7 +15,6 @@ import { useTheme } from '@mui/material/styles'
 import { useGlobalCampaignId } from '@/hooks/useGlobalCampaignId'
 import { CampaignTitle } from './CampaignTitle'
 import { CampaignPromo } from './CampaignPromo'
-import { CampaignDisclaimer } from './CampaignDisclaimer'
 
 const Points = () => {
   const globalCampaignId = useGlobalCampaignId()
@@ -104,7 +103,6 @@ const Points = () => {
           {!isSmallScreen && <TotalPoints />}
           <CampaignPromo />
           <CampaignInfo campaign={campaign} />
-          <CampaignDisclaimer />
         </Stack>
       </Grid>
       <Grid item xs={12}>
