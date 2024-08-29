@@ -33,17 +33,17 @@ export const DisclaimerLink = ({
               Safe{'{'}Pass{'}'}Partner third party app.{' '}
             </b>{' '}
             <br />
-            By accessing this third party applications provided by a partner of Safe
+            By accessing third party applications provided by a partner of Safe
             {'{'}Pass{'}'} Program (&quot;Partner&quot; and/or &quot;Safe{'{'}Pass{'}'}Partner&quot;) you acknowledge
-            and agree that Safe Ecosystem Foundation and/or Safe{'{'}Wallet{'}'} do not own, control, maintain or audit
+            and agree that Safe Ecosystem Foundation and/or Safe{'{'}Wallet{'}'} do not own, control, maintain, or audit
             these third party applications of Partner and that Safe Ecosystem Foundation and/or Safe{'{'}Wallet{'}'} may
             not be held liable for any loss you may incur in connection with your interaction with the Safe{'{'}Pass
             {'}'}Partner third party applications and/or programs and we may not be held liable for any and all legal,
-            regulatory and/or material defects related to the rewards and/or the reward programs provided by Safe{'{'}
+            regulatory, and/or material defects related to the rewards and/or the reward programs provided by Safe{'{'}
             Pass{'}'}
             Partner. <br />
             <br />
-            Safe{'{'}Pass{'}'}Partner are solely responsible for ensuring that their rewards and/or partner reward
+            Safe{'{'}Pass{'}'}Partners are solely responsible for ensuring that their rewards and/or partner reward
             programs are operated in accordance with applicable laws and regulations and in accordance with their
             respective terms as published by Partner, including when such rewards are granted for your use of Partner
             services via your Safe Account, or when listed on our website and/or announced on our social media and the
