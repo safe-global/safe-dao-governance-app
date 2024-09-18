@@ -1,7 +1,7 @@
 import { BigNumber } from 'ethers'
 import { formatEther } from 'ethers/lib/utils'
 import { useSafeAppsSDK } from '@safe-global/safe-apps-react-sdk'
-import { Box, Button, Typography, Link, Skeleton, Card, IconButton, Grid, Tooltip } from '@mui/material'
+import { Box, Button, Typography, Link, Skeleton, Card, IconButton, Grid } from '@mui/material'
 import ModeEditOutlinedIcon from '@mui/icons-material/ModeEditOutlined'
 import CheckSharpIcon from '@mui/icons-material/CheckSharp'
 import { useState } from 'react'
@@ -10,15 +10,12 @@ import type { ReactElement } from 'react'
 
 import { ExternalLink } from '@/components/ExternalLink'
 import SafeToken from '@/public/images/token.svg'
-import { DISCORD_URL, FORUM_URL, SEP5_EXPIRATION_DATE } from '@/config/constants'
+import { DISCORD_URL, FORUM_URL } from '@/config/constants'
 import { getGovernanceAppSafeAppUrl } from '@/utils/safe-apps'
 import { useDelegate } from '@/hooks/useDelegate'
 import { useSafeTokenAllocation } from '@/hooks/useSafeTokenAllocation'
 import { SelectedDelegate } from '@/components/SelectedDelegate'
 import { formatAmount } from '@/utils/formatters'
-import { Sep5DeadlineChip } from '@/components/Sep5DeadlineChip'
-import { TypographyChip } from '@/components/TypographyChip'
-import { canRedeemSep5Airdrop } from '@/utils/airdrop'
 
 import css from './styles.module.css'
 
@@ -82,7 +79,6 @@ const VotingPowerWidget = (): ReactElement => {
   const { safe } = useSafeAppsSDK()
   const delegate = useDelegate()
   const { data: allocation } = useSafeTokenAllocation()
-  const canRedeemSep5 = canRedeemSep5Airdrop(allocation)
 
   const totalClaimed = allocation?.vestingData.reduce((acc, { amountClaimed }) => {
     return acc.add(amountClaimed)
@@ -96,23 +92,6 @@ const VotingPowerWidget = (): ReactElement => {
 
   return (
     <Grid container p={1} height={1}>
-      {canRedeemSep5 && (
-        <Grid item xs={12} display="flex" justifyContent="space-between" mb="auto">
-          <TypographyChip fontWeight={700} px={1}>
-            New allocation
-          </TypographyChip>
-
-          <Tooltip
-            title={`You qualify for a new SAFE allocation! Ensure you execute at least one claim before ${SEP5_EXPIRATION_DATE}`}
-            arrow
-            placement="top"
-          >
-            <span>
-              <Sep5DeadlineChip px={1} />
-            </span>
-          </Tooltip>
-        </Grid>
-      )}
       <Grid item xs={12} display="flex" flexDirection="column" alignItems="center" mt={4}>
         <Typography variant="subtitle2" color="primary.light" textAlign="center">
           Your voting power
@@ -164,7 +143,6 @@ const VotingPowerWidget = (): ReactElement => {
 
 export const ClaimingWidget = (): ReactElement => {
   const { data: allocation, isLoading } = useSafeTokenAllocation()
-  const canRedeemSep5 = canRedeemSep5Airdrop(allocation)
 
   if (isLoading) {
     return (
@@ -186,7 +164,6 @@ export const ClaimingWidget = (): ReactElement => {
       sx={{
         minWidth: WIDGET_WIDTH,
         maxWidth: WIDGET_WIDTH,
-        border: canRedeemSep5 ? ({ palette }) => `1px solid ${palette.primary.main}` : undefined,
       }}
     >
       <>{allocation?.votingPower.eq(0) ? <CtaWidget /> : <VotingPowerWidget />}</>
