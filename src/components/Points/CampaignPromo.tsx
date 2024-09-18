@@ -68,7 +68,11 @@ export const CampaignPromo = () => {
         {promotedCampaign.iconUrl ? (
           <Box position="relative">
             {promotedCampaign.iconUrl && (
-              <img alt={'Campaign icon'} src={promotedCampaign.iconUrl} style={{ maxWidth: '250px' }} />
+              <img
+                alt={'Campaign icon'}
+                src={promotedCampaign.iconUrl}
+                style={{ maxWidth: '176px', maxHeight: '80px' }}
+              />
             )}
           </Box>
         ) : (
@@ -80,10 +84,16 @@ export const CampaignPromo = () => {
         <Typography mt={5} variant="overline" color="text.secondary">
           Prize pool
         </Typography>
-        <Typography mt={1} variant="h4" fontSize="27px" fontWeight={700}>
-          {promotedCampaign.rewardValue && formatAmount(Number(promotedCampaign.rewardValue), 0)}{' '}
-          <span style={{ color: '#2470FF' }}>{promotedCampaign.rewardText}</span>
-        </Typography>
+        {promotedCampaign.rewardValue ? (
+          <Typography mt={1} variant="h4" fontSize="27px" fontWeight={700}>
+            {formatAmount(Number(promotedCampaign.rewardValue), 0)}{' '}
+            <span style={{ color: '#2470FF' }}>{promotedCampaign.rewardText}</span>
+          </Typography>
+        ) : (
+          <Typography mt={1} variant="h4" fontSize="27px" fontWeight={700}>
+            {promotedCampaign.rewardText}
+          </Typography>
+        )}
         <Typography variant="body2">& Safe points</Typography>
         <Typography variant="body2" color="text.secondary" mt={5}>
           Participate in campaign:
