@@ -71,7 +71,7 @@ export const CampaignPromo = () => {
               <img
                 alt={'Campaign icon'}
                 src={promotedCampaign.iconUrl}
-                style={{ maxWidth: '176px', maxHeight: '80px' }}
+                style={{ maxWidth: '176px', maxHeight: '80px', borderRadius: '8px' }}
               />
             )}
           </Box>
@@ -80,21 +80,24 @@ export const CampaignPromo = () => {
             {promotedCampaign.name}
           </Typography>
         )}
+        <Box className={css.prizePoolBox}>
+          <Typography variant="overline" color="text.secondary" fontWeight={700}>
+            Prize pool
+          </Typography>
+          {promotedCampaign.rewardValue ? (
+            <Typography mt={1} variant="h4" fontSize="27px" fontWeight={700}>
+              {formatAmount(Number(promotedCampaign.rewardValue), 0)}{' '}
+              <span style={{ color: '#817EE9' }}>{promotedCampaign.rewardText}</span>
+            </Typography>
+          ) : (
+            <Typography mt={1} variant="h4" fontSize="27px" fontWeight={700}>
+              {promotedCampaign.rewardText}
+            </Typography>
+          )}
 
-        <Typography mt={5} variant="overline" color="text.secondary">
-          Prize pool
-        </Typography>
-        {promotedCampaign.rewardValue ? (
-          <Typography mt={1} variant="h4" fontSize="27px" fontWeight={700}>
-            {formatAmount(Number(promotedCampaign.rewardValue), 0)}{' '}
-            <span style={{ color: '#2470FF' }}>{promotedCampaign.rewardText}</span>
-          </Typography>
-        ) : (
-          <Typography mt={1} variant="h4" fontSize="27px" fontWeight={700}>
-            {promotedCampaign.rewardText}
-          </Typography>
-        )}
-        <Typography variant="body2">& Safe points</Typography>
+          <Typography variant="body2">& Safe points</Typography>
+        </Box>
+
         <Typography variant="body2" color="text.secondary" mt={5}>
           Participate in campaign:
         </Typography>
@@ -115,9 +118,9 @@ export const CampaignPromo = () => {
               target="_blank"
               variant="button"
               sx={{
-                color: '#2470FF',
+                color: '#FFF',
                 '&:hover': {
-                  backgroundColor: ({ palette }) => `rgba(36, 112, 255, ${palette.action.hoverOpacity})`,
+                  backgroundColor: ({ palette }) => `rgba(255, 255, 255, ${palette.action.hoverOpacity})`,
                 },
               }}
             >
