@@ -18,6 +18,12 @@ export type Campaign = {
     description: string
     maxPoints: string
   }[]
+  rewardValue: string | null
+  rewardText: string | null
+  iconUrl: string | null
+  safeAppUrl: string | null
+  partnerUrl: string | null
+  isPromoted: boolean
 }
 
 const PAGE_SIZE = 5

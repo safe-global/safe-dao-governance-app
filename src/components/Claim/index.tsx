@@ -30,8 +30,6 @@ import SafeToken from '@/public/images/token.svg'
 import css from './styles.module.css'
 import { useRouter } from 'next/router'
 import { AppRoutes } from '@/config/routes'
-import { canRedeemSep5Airdrop } from '@/utils/airdrop'
-import { Sep5InfoBox } from '../Sep5InfoBox'
 import { formatAmount } from '@/utils/formatters'
 import { ClaimCard } from '../ClaimCard'
 import { InfoAlert } from '../InfoAlert'
@@ -77,8 +75,6 @@ const ClaimOverview = (): ReactElement => {
 
   // Allocation, vesting and voting power
   const { data: allocation } = useSafeTokenAllocation()
-
-  const canRedeemSep5 = canRedeemSep5Airdrop(allocation)
 
   const { ecosystemVesting, investorVesting } = getVestingTypes(allocation?.vestingData ?? [])
 
@@ -212,12 +208,6 @@ const ClaimOverview = (): ReactElement => {
                 Select all tokens or define a custom amount.
               </Typography>
             </Box>
-
-            {canRedeemSep5 && (
-              <Grid item xs={12}>
-                <Sep5InfoBox />
-              </Grid>
-            )}
 
             <Grid item container gap={3} flexWrap="nowrap" xs={12} mb={1}>
               <Grid item xs={6}>
