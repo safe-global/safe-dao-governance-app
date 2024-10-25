@@ -10,6 +10,7 @@ import {
   TextField,
   CircularProgress,
   InputAdornment,
+  Link,
 } from '@mui/material'
 import { useState, type ReactElement, ChangeEvent } from 'react'
 
@@ -191,9 +192,9 @@ const ClaimOverview = (): ReactElement => {
                 <SvgIcon component={StarIcon} inheritViewBox fontSize="inherit" />
                 <Box>
                   <Typography variant="subtitle1" fontWeight={700}>
-                    Claim your tokens as rewards!
+                    Token claiming for the Safe Activity Rewards Program live!
                   </Typography>
-                  <Typography variant="body2">You get more tokens if you are active in activity program.</Typography>
+                  <Link href={AppRoutes.claimSap}>Claim now</Link>
                 </Box>
               </Stack>
             </Paper>

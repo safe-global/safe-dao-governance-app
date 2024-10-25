@@ -78,6 +78,8 @@ export const AIRDROP_TAGS = {
   SEP5: 'user_v2',
   ECOSYSTEM: 'ecosystem',
   INVESTOR: 'investor',
+  SAP_BOOSTED: 'sap_boosted',
+  SAP_UNBOOSTED: 'sap_unboosted',
 } as const
 
 // Delegation

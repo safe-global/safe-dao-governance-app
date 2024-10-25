@@ -187,3 +187,37 @@ export const createClaimTxs = ({
 
   return txs
 }
+
+export const createSAPClaimTxs = ({
+  vestingData,
+  sapBoostedClaimable,
+  sapUnboostedClaimable,
+}: {
+  vestingData: Vesting[]
+  sapBoostedClaimable: string
+  sapUnboostedClaimable: string
+}): BaseTransaction[] => {
+  const txs: BaseTransaction[] = []
+
+  const { sapBoostedVesting, sapUnboostedVesting } = getVestingTypes(vestingData)
+
+  if (sapBoostedVesting && BigNumber.from(sapBoostedClaimable).gt(0)) {
+    const redeemTx = createRedeemTx({
+      vestingClaim: sapBoostedVesting,
+      airdropAddress: sapBoostedVesting.contract,
+    })
+
+    txs.push(redeemTx)
+  }
+
+  if (sapUnboostedVesting && BigNumber.from(sapUnboostedClaimable).gt(0)) {
+    const redeemTx = createRedeemTx({
+      vestingClaim: sapUnboostedVesting,
+      airdropAddress: sapUnboostedVesting.contract,
+    })
+
+    txs.push(redeemTx)
+  }
+
+  return txs
+}
