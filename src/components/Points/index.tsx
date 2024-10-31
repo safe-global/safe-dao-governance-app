@@ -13,12 +13,14 @@ import Spotlight from '@/public/images/spotlight.svg'
 import Star from '@/public/images/star.svg'
 import Star1 from '@/public/images/star1.svg'
 import { useCampaignsPaginated } from '@/hooks/useCampaigns'
+import { useCoolMode } from '@/hooks/useCoolMode'
 
 const Points = () => {
   const { data: campaigns = [] } = useCampaignsPaginated()
   const globalCampaignId = useGlobalCampaignId()
   const { data: globalRank } = useOwnCampaignRank(globalCampaignId)
   const { sapBoosted, sapUnboosted, totalSAP } = useTaggedAllocations()
+  const particlesRef = useCoolMode('./images/token.svg')
 
   return (
     <>
@@ -62,17 +64,19 @@ const Points = () => {
                     you&apos;ve earned are just the beginning. It’s time to get SAFE tokens your way.
                   </Typography>
 
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    sx={{
-                      backgroundColor: 'static.main',
-                      color: 'text.primary',
-                      '&:hover': { backgroundColor: 'static.main' },
-                    }}
-                  >
-                    Start claiming
-                  </Button>
+                  <Box ref={particlesRef}>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      sx={{
+                        backgroundColor: 'static.main',
+                        color: 'text.primary',
+                        '&:hover': { backgroundColor: 'static.main' },
+                      }}
+                    >
+                      Start claiming
+                    </Button>
+                  </Box>
                 </Stack>
               </Grid>
 
