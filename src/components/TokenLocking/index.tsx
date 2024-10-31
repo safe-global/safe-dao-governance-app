@@ -22,7 +22,7 @@ const TokenLocking = () => {
   return (
     <Grid container spacing={3} direction="row-reverse">
       <Grid item xs={12} mt={4} mb={1} className={css.pageTitle} display="flex" flexDirection="row" alignItems="center">
-        <Typography variant="h2">{'Get rewards with Safe{Pass}'}</Typography>
+        <Typography variant="h2">{'Get your Safe{Pass} rewards'}</Typography>
         <Box ml="auto">
           <ExternalLink href="https://safe.global/pass">{'What is Safe{Pass}'}</ExternalLink>
         </Box>
