@@ -14,13 +14,63 @@ import Star from '@/public/images/star.svg'
 import Star1 from '@/public/images/star1.svg'
 import { useCampaignsPaginated } from '@/hooks/useCampaigns'
 import { useCoolMode } from '@/hooks/useCoolMode'
+import { createSAPClaimTxs } from '@/utils/claim'
+import { useSafeTokenAllocation } from '@/hooks/useSafeTokenAllocation'
+import { useSafeAppsSDK } from '@safe-global/safe-apps-react-sdk'
+import { FingerprintJSPro } from '@fingerprintjs/fingerprintjs-pro-react'
+import { useEffect, useState } from 'react'
+import { FINGERPRINT_KEY, SAP_LOCK_DATE } from '@/config/constants'
+import useUnsealedResult, { SealedRequest } from '@/hooks/useUnsealedResult'
 
 const Points = () => {
+  const [sealedResult, setSealedResult] = useState<SealedRequest>()
+  const eligibility = useUnsealedResult(sealedResult)
+  const { sdk } = useSafeAppsSDK()
   const { data: campaigns = [] } = useCampaignsPaginated()
   const globalCampaignId = useGlobalCampaignId()
   const { data: globalRank } = useOwnCampaignRank(globalCampaignId)
+  const { data: allocation } = useSafeTokenAllocation()
   const { sapBoosted, sapUnboosted, totalSAP } = useTaggedAllocations()
   const particlesRef = useCoolMode('./images/token.svg')
+
+  useEffect(() => {
+    const fpPromise = FingerprintJSPro.load({
+      apiKey: FINGERPRINT_KEY,
+      region: 'eu',
+    })
+
+    fpPromise
+      .then((fp) => fp.get({ extendedResult: true }))
+      .then((fingerprint) => {
+        setSealedResult({ requestId: fingerprint.requestId, sealedResult: fingerprint.sealedResult })
+      })
+      .catch((err) => console.error('Failed to fetch sealed client results: ', err))
+  }, [])
+
+  const startClaiming = async () => {
+    // Something went wrong with fetching the eligibility for this user so we don't let them redeem
+    if (!eligibility) return
+
+    if (eligibility.isVpn) {
+      // TODO: User has a VPN, show them an error and ask to turn it off for the claim process
+    }
+
+    if (!eligibility.isAllowed) {
+      // TODO: Only redeem from the unboosted contract
+    }
+
+    const txs = createSAPClaimTxs({
+      vestingData: allocation?.vestingData ?? [],
+      sapBoostedClaimable: sapBoosted.inVesting,
+      sapUnboostedClaimable: sapUnboosted.inVesting,
+    })
+
+    try {
+      await sdk.txs.send({ txs })
+    } catch (error) {
+      console.error(error)
+    }
+  }
 
   return (
     <>
@@ -73,6 +123,7 @@ const Points = () => {
                         color: 'text.primary',
                         '&:hover': { backgroundColor: 'static.main' },
                       }}
+                      onClick={startClaiming}
                     >
                       Start claiming
                     </Button>
@@ -112,7 +163,7 @@ const Points = () => {
                         SAFE
                       </Typography>
                     </Stack>
-                    <Typography>Available from 15.01.2026</Typography>
+                    <Typography>Available from 01.01.2025</Typography>
                   </Stack>
                 </Stack>
               </Grid>
@@ -161,21 +212,37 @@ const Points = () => {
       <Grid container spacing={3} pt={3}>
         <Grid item xs={12} lg={6}>
           <PaperContainer>
-            <Stack p={4}>
+            <Stack p={4} position="relative">
               <Typography variant="h4" fontWeight={700} fontSize="24px" mb={2}>
                 How to claim?
               </Typography>
-              <Typography color="text.secondary">Description text.</Typography>
+              <Typography color="text.secondary">
+                Press the Start claiming button on this page to redeem your tokens. Make sure you do this before{' '}
+                {SAP_LOCK_DATE}
+              </Typography>
+              <Box position="absolute" right={3} bottom={3}>
+                <ExternalLink href="https://safe.global/blog/safe-pass-wrap-up-over-2-5m-in-rewards-and-a-devcon-celebration">
+                  Learn more
+                </ExternalLink>
+              </Box>
             </Stack>
           </PaperContainer>
         </Grid>
         <Grid item xs={12} lg={6}>
           <PaperContainer>
-            <Stack p={4}>
+            <Stack p={4} position="relative">
               <Typography variant="h4" fontWeight={700} fontSize="24px" mb={2}>
                 When can I get tokens?
               </Typography>
-              <Typography color="text.secondary">Description text.</Typography>
+              <Typography color="text.secondary">
+                Tokens are locked until {SAP_LOCK_DATE} and can be claimed after this date. Make sure to redeem the
+                tokens before this date. Otherwise they cannot be claimed anymore.
+              </Typography>
+              <Box position="absolute" right={3} bottom={3}>
+                <ExternalLink href="https://safe.global/blog/safe-pass-wrap-up-over-2-5m-in-rewards-and-a-devcon-celebration">
+                  Learn more
+                </ExternalLink>
+              </Box>
             </Stack>
           </PaperContainer>
         </Grid>
