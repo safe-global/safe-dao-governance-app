@@ -48,6 +48,7 @@ const Points = () => {
   }, [])
 
   const startClaiming = async () => {
+    console.log({ eligibility })
     // Something went wrong with fetching the eligibility for this user so we don't let them redeem
     if (!eligibility) return
 
