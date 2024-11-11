@@ -15,7 +15,13 @@ type Eligibility = {
 const fetchUnsealedResult = async (sealedRequest: SealedRequest) => {
   return fetch(`${GATEWAY_URL}/v1/community/eligibility`, {
     method: 'POST',
-    body: JSON.stringify({ requestId: sealedRequest.requestId, sealedResult: sealedRequest.sealedResult }),
+    body: JSON.stringify({
+      requestId: sealedRequest.requestId,
+      sealedData: sealedRequest.sealedResult,
+    }),
+    headers: {
+      'Content-Type': 'application/json',
+    },
   }).then((resp) => {
     if (resp.ok) {
       return resp.json() as Promise<Eligibility>
