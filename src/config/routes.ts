@@ -7,7 +7,6 @@ export const AppRoutes = {
   governance: '/governance',
   delegate: '/delegate',
   claim: '/claim',
-  claimSap: '/claim-sap',
   activity: '/activity',
   activityProgram: '/activity-program',
 }

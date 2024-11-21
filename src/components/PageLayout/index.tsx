@@ -12,13 +12,7 @@ import { AppRoutes } from '@/config/routes'
 import { useRouter } from 'next/router'
 import { NAVIGATION_EVENTS } from '@/analytics/navigation'
 
-const RoutesWithNavigation = [
-  AppRoutes.index,
-  AppRoutes.points,
-  AppRoutes.activity,
-  AppRoutes.governance,
-  AppRoutes.claimSap,
-]
+const RoutesWithNavigation = [AppRoutes.index, AppRoutes.points, AppRoutes.activity, AppRoutes.governance]
 
 export const PageLayout = ({
   children,
