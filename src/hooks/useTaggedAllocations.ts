@@ -13,7 +13,9 @@ const getTotal = (...amounts: string[]) => {
   return total.toString()
 }
 
-export const useTaggedAllocations = (): {
+export const useTaggedAllocations = (
+  isEligibleForBoostedSAP?: boolean,
+): {
   sep5: {
     claimable: string
     inVesting: string
@@ -75,9 +77,12 @@ export const useTaggedAllocations = (): {
     investorVesting?.amount || '0',
   )
 
-  const totalSAPClaimable = getTotal(sapBoostedClaimable, sapUnboostedClaimable)
-  const totalSAPInVesting = getTotal(sapBoostedInVesting, sapUnboostedInVesting)
-  const totalSAP = getTotal(sapBoostedVesting?.amount || '0', sapUnboostedVesting?.amount || '0')
+  const totalSAPClaimable = getTotal(isEligibleForBoostedSAP ? sapBoostedClaimable : '0', sapUnboostedClaimable)
+  const totalSAPInVesting = getTotal(isEligibleForBoostedSAP ? sapBoostedInVesting : '0', sapUnboostedInVesting)
+  const totalSAP = getTotal(
+    isEligibleForBoostedSAP ? sapBoostedVesting?.amount || '0' : '0',
+    sapUnboostedVesting?.amount || '0',
+  )
 
   return {
     sep5: {

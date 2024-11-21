@@ -34,13 +34,13 @@ const fetchUnsealedResult = async (sealedRequest: SealedRequest) => {
 const useUnsealedResult = (sealedRequest?: SealedRequest) => {
   const QUERY_KEY = 'unsealed-result'
 
-  const { data } = useSWR(sealedRequest ? QUERY_KEY : null, async () => {
+  const { data, isLoading } = useSWR(sealedRequest ? QUERY_KEY : null, async () => {
     if (!sealedRequest) return
 
     return await fetchUnsealedResult(sealedRequest)
   })
 
-  return data
+  return { data, isLoading }
 }
 
 export default useUnsealedResult

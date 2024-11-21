@@ -1,4 +1,4 @@
-import { Grid, Typography, Stack, Box, Button, SvgIcon } from '@mui/material'
+import { Grid, Typography, Stack, Box, Button, SvgIcon, Alert } from '@mui/material'
 import { ExternalLink } from '../ExternalLink'
 import PaperContainer from '../PaperContainer'
 import SafePassDisclaimer from '../SafePassDisclaimer'
@@ -24,13 +24,13 @@ import useUnsealedResult, { SealedRequest } from '@/hooks/useUnsealedResult'
 
 const Points = () => {
   const [sealedResult, setSealedResult] = useState<SealedRequest>()
-  const eligibility = useUnsealedResult(sealedResult)
+  const { data: eligibility, isLoading } = useUnsealedResult(sealedResult)
   const { sdk } = useSafeAppsSDK()
   const { data: campaigns = [] } = useCampaignsPaginated()
   const globalCampaignId = useGlobalCampaignId()
   const { data: globalRank } = useOwnCampaignRank(globalCampaignId)
   const { data: allocation } = useSafeTokenAllocation()
-  const { sapBoosted, sapUnboosted, totalSAP } = useTaggedAllocations()
+  const { sapBoosted, sapUnboosted, totalSAP } = useTaggedAllocations(eligibility?.isAllowed)
   const particlesRef = useCoolMode('./images/token.svg')
 
   useEffect(() => {
@@ -48,21 +48,12 @@ const Points = () => {
   }, [])
 
   const startClaiming = async () => {
-    console.log({ eligibility })
     // Something went wrong with fetching the eligibility for this user so we don't let them redeem
     if (!eligibility) return
 
-    if (eligibility.isVpn) {
-      // TODO: User has a VPN, show them an error and ask to turn it off for the claim process
-    }
-
-    if (!eligibility.isAllowed) {
-      // TODO: Only redeem from the unboosted contract
-    }
-
     const txs = createSAPClaimTxs({
       vestingData: allocation?.vestingData ?? [],
-      sapBoostedClaimable: sapBoosted.inVesting,
+      sapBoostedClaimable: eligibility.isAllowed ? sapBoosted.inVesting : '0',
       sapUnboostedClaimable: sapUnboosted.inVesting,
     })
 
@@ -72,6 +63,8 @@ const Points = () => {
       console.error(error)
     }
   }
+
+  const loading = !sealedResult || isLoading
 
   return (
     <>
@@ -115,58 +108,83 @@ const Points = () => {
                     you&apos;ve earned are just the beginning. It’s time to get SAFE tokens your way.
                   </Typography>
 
-                  <Box ref={particlesRef}>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      sx={{
-                        backgroundColor: 'static.main',
-                        color: 'text.primary',
-                        '&:hover': { backgroundColor: 'static.main' },
-                      }}
-                      onClick={startClaiming}
-                    >
-                      Start claiming
-                    </Button>
-                  </Box>
+                  {eligibility?.isVpn ? (
+                    <Alert severity="info" variant="standard">
+                      We detected that you are using a VPN. Please turn it off in order to start the claiming process.
+                      <Box>
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          size="small"
+                          sx={{
+                            mt: 1,
+                            backgroundColor: 'static.main',
+                            color: 'text.primary',
+                            '&:hover': { backgroundColor: 'static.main' },
+                          }}
+                          onClick={() => window.location.reload()}
+                        >
+                          Try again
+                        </Button>
+                      </Box>
+                    </Alert>
+                  ) : !loading ? (
+                    <Box ref={particlesRef}>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        sx={{
+                          backgroundColor: 'static.main',
+                          color: 'text.primary',
+                          '&:hover': { backgroundColor: 'static.main' },
+                        }}
+                        onClick={startClaiming}
+                      >
+                        Start claiming
+                      </Button>
+                    </Box>
+                  ) : null}
                 </Stack>
               </Grid>
 
               <Grid item xs={12} lg={5}>
-                <Stack spacing={3} justifyContent="center" height="100%">
-                  <Stack gap={2} alignItems="center">
-                    <Typography variant="overline" fontWeight="700">
-                      Reward tokens
-                    </Typography>
-                    <Stack direction="row" gap={3}>
-                      <SvgIcon
-                        component={Spotlight}
-                        inheritViewBox
-                        fontSize="inherit"
-                        sx={{ color: 'transparent', fontSize: '4rem' }}
-                      />
-                      <SafeToken />
-                      <SvgIcon
-                        component={Spotlight}
-                        inheritViewBox
-                        fontSize="inherit"
-                        sx={{ color: 'transparent', fontSize: '4rem', transform: 'scaleX(-1)' }}
-                      />
-                    </Stack>
-                    <Stack direction="row" gap={1}>
-                      <PointsCounter
-                        value={Number(formatEther(totalSAP.allocation))}
-                        variant="h2"
-                        fontWeight={700}
-                        fontSize="44px"
-                      />
-                      <Typography fontWeight={700} fontSize="44px" lineHeight="1">
-                        SAFE
+                {!eligibility?.isVpn && !loading && (
+                  <Stack spacing={3} justifyContent="center" height="100%">
+                    <Stack gap={2} alignItems="center">
+                      <Typography variant="overline" fontWeight="700">
+                        Reward tokens
                       </Typography>
+
+                      <Stack direction="row" gap={3}>
+                        <SvgIcon
+                          component={Spotlight}
+                          inheritViewBox
+                          fontSize="inherit"
+                          sx={{ color: 'transparent', fontSize: '4rem' }}
+                        />
+                        <SafeToken />
+                        <SvgIcon
+                          component={Spotlight}
+                          inheritViewBox
+                          fontSize="inherit"
+                          sx={{ color: 'transparent', fontSize: '4rem', transform: 'scaleX(-1)' }}
+                        />
+                      </Stack>
+                      <Stack direction="row" gap={1}>
+                        <PointsCounter
+                          value={Number(formatEther(totalSAP.allocation))}
+                          variant="h2"
+                          fontWeight={700}
+                          fontSize="44px"
+                        />
+                        <Typography fontWeight={700} fontSize="44px" lineHeight="1">
+                          SAFE
+                        </Typography>
+                      </Stack>
+                      <Typography>Available from {SAP_LOCK_DATE}</Typography>
                     </Stack>
-                    <Typography>Available from 01.01.2025</Typography>
                   </Stack>
-                </Stack>
+                )}
               </Grid>
             </Grid>
           </PaperContainer>
