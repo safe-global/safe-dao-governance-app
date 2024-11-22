@@ -13,7 +13,6 @@ import Spotlight from '@/public/images/spotlight.svg'
 import Star from '@/public/images/star.svg'
 import Star1 from '@/public/images/star1.svg'
 import { useCampaignsPaginated } from '@/hooks/useCampaigns'
-import { useCoolMode } from '@/hooks/useCoolMode'
 import { createSAPClaimTxs } from '@/utils/claim'
 import { useSafeTokenAllocation } from '@/hooks/useSafeTokenAllocation'
 import { useSafeAppsSDK } from '@safe-global/safe-apps-react-sdk'
@@ -21,6 +20,7 @@ import { FingerprintJSPro } from '@fingerprintjs/fingerprintjs-pro-react'
 import { useEffect, useState } from 'react'
 import { FINGERPRINT_KEY, SAP_LOCK_DATE } from '@/config/constants'
 import useUnsealedResult, { SealedRequest } from '@/hooks/useUnsealedResult'
+import ClaimButton from '@/components/Points/ClaimButton'
 
 const Points = () => {
   const [sealedResult, setSealedResult] = useState<SealedRequest>()
@@ -31,7 +31,6 @@ const Points = () => {
   const { data: globalRank } = useOwnCampaignRank(globalCampaignId)
   const { data: allocation } = useSafeTokenAllocation()
   const { sapBoosted, sapUnboosted, totalSAP } = useTaggedAllocations(eligibility?.isAllowed)
-  const particlesRef = useCoolMode('./images/token.svg')
 
   useEffect(() => {
     const fpPromise = FingerprintJSPro.load({
@@ -129,20 +128,7 @@ const Points = () => {
                       </Box>
                     </Alert>
                   ) : !loading ? (
-                    <Box ref={particlesRef}>
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        sx={{
-                          backgroundColor: 'static.main',
-                          color: 'text.primary',
-                          '&:hover': { backgroundColor: 'static.main' },
-                        }}
-                        onClick={startClaiming}
-                      >
-                        Start claiming
-                      </Button>
-                    </Box>
+                    <ClaimButton startClaiming={startClaiming} />
                   ) : null}
                 </Stack>
               </Grid>
@@ -233,11 +219,11 @@ const Points = () => {
           <PaperContainer>
             <Stack p={4} position="relative">
               <Typography variant="h4" fontWeight={700} fontSize="24px" mb={2}>
-                How to claim?
+                How are the SAFE token rewards distributed?
               </Typography>
               <Typography color="text.secondary">
-                Press the Start claiming button on this page to redeem your tokens. Make sure you do this before{' '}
-                {SAP_LOCK_DATE}
+                Rewards are distributed based on leaderboard standing, SAFE token locking, and participation in partner
+                campaigns. A tiered system determines the distribution amount.
               </Typography>
               <Box position="absolute" right={3} bottom={3}>
                 <ExternalLink href="https://safe.global/blog/safe-pass-wrap-up-over-2-5m-in-rewards-and-a-devcon-celebration">
