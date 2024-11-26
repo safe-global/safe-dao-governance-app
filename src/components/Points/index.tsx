@@ -12,7 +12,6 @@ import { formatEther } from 'ethers/lib/utils'
 import Spotlight from '@/public/images/spotlight.svg'
 import Star from '@/public/images/star.svg'
 import Star1 from '@/public/images/star1.svg'
-import { useCampaignsPaginated } from '@/hooks/useCampaigns'
 import { createSAPClaimTxs } from '@/utils/claim'
 import { useSafeTokenAllocation } from '@/hooks/useSafeTokenAllocation'
 import { useSafeAppsSDK } from '@safe-global/safe-apps-react-sdk'
@@ -22,20 +21,19 @@ import { FINGERPRINT_KEY, SAP_LOCK_DATE } from '@/config/constants'
 import useUnsealedResult, { SealedRequest } from '@/hooks/useUnsealedResult'
 import ClaimButton from '@/components/Points/ClaimButton'
 import { useAggregateCampaignId } from '@/hooks/useAggregateCampaignId'
+import { getVestingTypes } from '@/utils/vesting'
 
 const Points = () => {
   const [sealedResult, setSealedResult] = useState<SealedRequest>()
   const { data: eligibility, isLoading } = useUnsealedResult(sealedResult)
   const { sdk } = useSafeAppsSDK()
-  const { data: campaigns = [] } = useCampaignsPaginated()
   const globalCampaignId = useGlobalCampaignId()
   const aggregateCampaignId = useAggregateCampaignId()
   const { data: globalRank } = useOwnCampaignRank(globalCampaignId)
   const { data: aggregateRank } = useOwnCampaignRank(aggregateCampaignId)
   const { data: allocation } = useSafeTokenAllocation()
   const { sapBoosted, sapUnboosted, totalSAP } = useTaggedAllocations(eligibility?.isAllowed)
-
-  console.log(aggregateRank)
+  const { sapUnboostedVesting } = getVestingTypes(allocation?.vestingData || [])
 
   useEffect(() => {
     const fpPromise = FingerprintJSPro.load({
@@ -69,6 +67,7 @@ const Points = () => {
   }
 
   const loading = !sealedResult || isLoading
+  const isSAPRedeemed = sapUnboostedVesting?.isRedeemed
 
   return (
     <>
@@ -131,6 +130,10 @@ const Points = () => {
                           Try again
                         </Button>
                       </Box>
+                    </Alert>
+                  ) : isSAPRedeemed ? (
+                    <Alert severity="success" variant="standard">
+                      Redeem successful! You will be able to claim your tokens starting from {SAP_LOCK_DATE}.
                     </Alert>
                   ) : !loading ? (
                     <ClaimButton startClaiming={startClaiming} />
