@@ -191,11 +191,13 @@ const Points = () => {
             <PaperContainer>
               <Stack alignItems="center">
                 {aggregateRank && (
-                  <PointsCounter value={aggregateRank.totalPoints} variant="h2" fontWeight={700} fontSize="44px" />
+                  <>
+                    <PointsCounter value={aggregateRank.totalPoints} variant="h2" fontWeight={700} fontSize="44px" />
+                    <Typography color="text.secondary" mt={1}>
+                      {`Campaign${aggregateRank.totalPoints > 1 ? 's' : ''} completed`}
+                    </Typography>
+                  </>
                 )}
-                <Typography color="text.secondary" mt={1}>
-                  Campaigns completed
-                </Typography>
               </Stack>
             </PaperContainer>
           </Grid>
