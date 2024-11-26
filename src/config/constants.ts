@@ -130,3 +130,8 @@ export const MORPHO_CAMPAIGN_IDS: ChainConfig<string> = {
   [Chains.SEPOLIA]: '0317a716-2818-4cc2-8571-71208996650e',
   [Chains.MAINNET]: 'a19a5503-b65a-42a0-bc6a-8e68144d2afa',
 }
+
+export const AGGREGATE_CAMPAIGN_IDS: ChainConfig<string> = {
+  [Chains.SEPOLIA]: '2a99f13c-0aa3-4484-9479-10962005d292',
+  [Chains.MAINNET]: '2a99f13c-0aa3-4484-9479-10962005d292', // TBD
+}

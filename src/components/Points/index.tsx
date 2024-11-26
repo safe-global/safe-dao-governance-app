@@ -21,6 +21,7 @@ import { useEffect, useState } from 'react'
 import { FINGERPRINT_KEY, SAP_LOCK_DATE } from '@/config/constants'
 import useUnsealedResult, { SealedRequest } from '@/hooks/useUnsealedResult'
 import ClaimButton from '@/components/Points/ClaimButton'
+import { useAggregateCampaignId } from '@/hooks/useAggregateCampaignId'
 
 const Points = () => {
   const [sealedResult, setSealedResult] = useState<SealedRequest>()
@@ -28,9 +29,13 @@ const Points = () => {
   const { sdk } = useSafeAppsSDK()
   const { data: campaigns = [] } = useCampaignsPaginated()
   const globalCampaignId = useGlobalCampaignId()
+  const aggregateCampaignId = useAggregateCampaignId()
   const { data: globalRank } = useOwnCampaignRank(globalCampaignId)
+  const { data: aggregateRank } = useOwnCampaignRank(aggregateCampaignId)
   const { data: allocation } = useSafeTokenAllocation()
   const { sapBoosted, sapUnboosted, totalSAP } = useTaggedAllocations(eligibility?.isAllowed)
+
+  console.log(aggregateRank)
 
   useEffect(() => {
     const fpPromise = FingerprintJSPro.load({
@@ -182,7 +187,9 @@ const Points = () => {
           <Grid item xs={12} lg={4}>
             <PaperContainer>
               <Stack alignItems="center">
-                <PointsCounter value={campaigns.length} variant="h2" fontWeight={700} fontSize="44px" />
+                {aggregateRank && (
+                  <PointsCounter value={aggregateRank.totalPoints} variant="h2" fontWeight={700} fontSize="44px" />
+                )}
                 <Typography color="text.secondary" mt={1}>
                   Campaigns completed
                 </Typography>
