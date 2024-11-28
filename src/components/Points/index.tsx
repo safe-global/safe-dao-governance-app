@@ -1,4 +1,4 @@
-import { Grid, Typography, Stack, Box, Button, SvgIcon, Alert } from '@mui/material'
+import { Grid, Typography, Stack, Box, Button, SvgIcon, Alert, CircularProgress } from '@mui/material'
 import { ExternalLink } from '../ExternalLink'
 import PaperContainer from '../PaperContainer'
 import SafePassDisclaimer from '../SafePassDisclaimer'
@@ -31,7 +31,7 @@ const Points = () => {
   const aggregateCampaignId = useAggregateCampaignId()
   const { data: globalRank } = useOwnCampaignRank(globalCampaignId)
   const { data: aggregateRank } = useOwnCampaignRank(aggregateCampaignId)
-  const { data: allocation } = useSafeTokenAllocation()
+  const { data: allocation, isLoading: allocationLoading } = useSafeTokenAllocation()
   const { sapBoosted, sapUnboosted, totalSAP } = useTaggedAllocations(eligibility?.isAllowed)
   const { sapUnboostedVesting, sapBoostedVesting } = getVestingTypes(allocation?.vestingData || [])
 
@@ -67,7 +67,12 @@ const Points = () => {
     }
   }
 
-  const loading = !sealedResult || isLoading
+  const loading = !sealedResult || isLoading || allocationLoading
+  const hasSAPAllocation =
+    Number(sapUnboosted.inVesting) > 0 ||
+    Number(sapUnboosted.claimable) > 0 ||
+    Number(sapBoosted.inVesting) > 0 ||
+    Number(sapBoosted.claimable) > 0
   const isSAPRedeemed = sapUnboostedVesting?.isRedeemed || sapBoostedVesting?.isRedeemed
   const hasSAPStarted =
     (sapUnboostedVesting && Math.floor(Date.now() / 1000) >= sapUnboostedVesting.startDate) ||
@@ -94,7 +99,7 @@ const Points = () => {
       </Grid>
 
       <Grid container>
-        <Grid item>
+        <Grid item width={1}>
           <PaperContainer
             sx={{
               height: 1,
@@ -103,90 +108,104 @@ const Points = () => {
               color: 'static.main',
             }}
           >
-            <Grid container>
-              <Grid item xs={12} lg={7}>
+            {loading ? (
+              <CircularProgress color="inherit" />
+            ) : hasSAPAllocation ? (
+              <Grid container>
+                <Grid item xs={12} lg={7}>
+                  <Stack gap={2} alignItems="flex-start" p={4}>
+                    <Typography variant="h3" fontWeight={700} fontSize="32px">
+                      Rewards Await! 🏆
+                    </Typography>
+
+                    <Typography mb={2}>
+                      You&apos;ve made it to the finish line! The rewards program has officially ended, and the points
+                      earned, will be converted into rewards (including SAFE tokens)
+                    </Typography>
+
+                    {eligibility?.isVpn ? (
+                      <Alert severity="info" variant="standard">
+                        We detected that you are using a VPN. Please turn it off in order to start the claiming process.
+                        <Box>
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            size="small"
+                            sx={{
+                              mt: 1,
+                              backgroundColor: 'static.main',
+                              color: 'text.primary',
+                              '&:hover': { backgroundColor: 'static.main' },
+                            }}
+                            onClick={() => window.location.reload()}
+                          >
+                            Try again
+                          </Button>
+                        </Box>
+                      </Alert>
+                    ) : isSAPRedeemed && !hasSAPStarted ? (
+                      <Alert severity="success" variant="standard">
+                        Redeem successful! You will be able to claim your tokens starting from {SAP_LOCK_DATE}.
+                      </Alert>
+                    ) : hasSAPStarted ? (
+                      <ClaimButton startClaiming={startClaiming} text="Claim" />
+                    ) : !loading ? (
+                      <ClaimButton startClaiming={startClaiming} text="Start claiming" />
+                    ) : null}
+                  </Stack>
+                </Grid>
+
+                <Grid item xs={12} lg={5}>
+                  {!eligibility?.isVpn && !loading && (
+                    <Stack spacing={3} justifyContent="center" height="100%">
+                      <Stack gap={2} alignItems="center">
+                        <Typography variant="overline" fontWeight="700">
+                          Reward tokens
+                        </Typography>
+
+                        <Stack direction="row" gap={3}>
+                          <SvgIcon
+                            component={Spotlight}
+                            inheritViewBox
+                            fontSize="inherit"
+                            sx={{ color: 'transparent', fontSize: '4rem' }}
+                          />
+                          <SafeToken />
+                          <SvgIcon
+                            component={Spotlight}
+                            inheritViewBox
+                            fontSize="inherit"
+                            sx={{ color: 'transparent', fontSize: '4rem', transform: 'scaleX(-1)' }}
+                          />
+                        </Stack>
+                        <Stack direction="row" gap={1}>
+                          <PointsCounter
+                            value={Number(formatEther(totalSAP.allocation))}
+                            variant="h2"
+                            fontWeight={700}
+                            fontSize="44px"
+                          />
+                          <Typography fontWeight={700} fontSize="44px" lineHeight="1">
+                            SAFE
+                          </Typography>
+                        </Stack>
+                        <Typography>Available from {SAP_LOCK_DATE}</Typography>
+                      </Stack>
+                    </Stack>
+                  )}
+                </Grid>
+              </Grid>
+            ) : (
+              <Grid container>
                 <Stack gap={2} alignItems="flex-start" p={4}>
                   <Typography variant="h3" fontWeight={700} fontSize="32px">
-                    Rewards Await! 🏆
+                    Not eligible for Rewards
                   </Typography>
 
-                  <Typography mb={2}>
-                    You&apos;ve made it to the finish line! The rewards program has officially ended, and the points
-                    earned, will be converted into rewards (including SAFE tokens)
-                  </Typography>
-
-                  {eligibility?.isVpn ? (
-                    <Alert severity="info" variant="standard">
-                      We detected that you are using a VPN. Please turn it off in order to start the claiming process.
-                      <Box>
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          size="small"
-                          sx={{
-                            mt: 1,
-                            backgroundColor: 'static.main',
-                            color: 'text.primary',
-                            '&:hover': { backgroundColor: 'static.main' },
-                          }}
-                          onClick={() => window.location.reload()}
-                        >
-                          Try again
-                        </Button>
-                      </Box>
-                    </Alert>
-                  ) : isSAPRedeemed && !hasSAPStarted ? (
-                    <Alert severity="success" variant="standard">
-                      Redeem successful! You will be able to claim your tokens starting from {SAP_LOCK_DATE}.
-                    </Alert>
-                  ) : hasSAPStarted ? (
-                    <ClaimButton startClaiming={startClaiming} text="Claim" />
-                  ) : !loading ? (
-                    <ClaimButton startClaiming={startClaiming} text="Start claiming" />
-                  ) : null}
+                  <Typography mb={2}>{'Unfortunately, you are not eligible for Safe{Pass} rewards'}</Typography>
                 </Stack>
               </Grid>
-
-              <Grid item xs={12} lg={5}>
-                {!eligibility?.isVpn && !loading && (
-                  <Stack spacing={3} justifyContent="center" height="100%">
-                    <Stack gap={2} alignItems="center">
-                      <Typography variant="overline" fontWeight="700">
-                        Reward tokens
-                      </Typography>
-
-                      <Stack direction="row" gap={3}>
-                        <SvgIcon
-                          component={Spotlight}
-                          inheritViewBox
-                          fontSize="inherit"
-                          sx={{ color: 'transparent', fontSize: '4rem' }}
-                        />
-                        <SafeToken />
-                        <SvgIcon
-                          component={Spotlight}
-                          inheritViewBox
-                          fontSize="inherit"
-                          sx={{ color: 'transparent', fontSize: '4rem', transform: 'scaleX(-1)' }}
-                        />
-                      </Stack>
-                      <Stack direction="row" gap={1}>
-                        <PointsCounter
-                          value={Number(formatEther(totalSAP.allocation))}
-                          variant="h2"
-                          fontWeight={700}
-                          fontSize="44px"
-                        />
-                        <Typography fontWeight={700} fontSize="44px" lineHeight="1">
-                          SAFE
-                        </Typography>
-                      </Stack>
-                      <Typography>Available from {SAP_LOCK_DATE}</Typography>
-                    </Stack>
-                  </Stack>
-                )}
-              </Grid>
-            </Grid>
+            )}
           </PaperContainer>
         </Grid>
       </Grid>
