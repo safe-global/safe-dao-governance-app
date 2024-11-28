@@ -108,7 +108,7 @@ const Points = () => {
 
                   <Typography mb={2}>
                     You&apos;ve made it to the finish line! The rewards program has officially ended, and the points
-                    earned, will be converted into SAFE tokens.
+                    earned, will be converted into rewards (including SAFE tokens)
                   </Typography>
 
                   {eligibility?.isVpn ? (
