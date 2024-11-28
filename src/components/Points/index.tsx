@@ -33,7 +33,7 @@ const Points = () => {
   const { data: aggregateRank } = useOwnCampaignRank(aggregateCampaignId)
   const { data: allocation } = useSafeTokenAllocation()
   const { sapBoosted, sapUnboosted, totalSAP } = useTaggedAllocations(eligibility?.isAllowed)
-  const { sapUnboostedVesting } = getVestingTypes(allocation?.vestingData || [])
+  const { sapUnboostedVesting, sapBoostedVesting } = getVestingTypes(allocation?.vestingData || [])
 
   useEffect(() => {
     const fpPromise = FingerprintJSPro.load({
@@ -68,7 +68,10 @@ const Points = () => {
   }
 
   const loading = !sealedResult || isLoading
-  const isSAPRedeemed = sapUnboostedVesting?.isRedeemed
+  const isSAPRedeemed = sapUnboostedVesting?.isRedeemed || sapBoostedVesting?.isRedeemed
+  const hasSAPStarted =
+    (sapUnboostedVesting && Math.floor(Date.now() / 1000) >= sapUnboostedVesting.startDate) ||
+    (sapBoostedVesting && Math.floor(Date.now() / 1000) >= sapBoostedVesting.startDate)
 
   return (
     <>
@@ -132,12 +135,14 @@ const Points = () => {
                         </Button>
                       </Box>
                     </Alert>
-                  ) : isSAPRedeemed ? (
+                  ) : isSAPRedeemed && !hasSAPStarted ? (
                     <Alert severity="success" variant="standard">
                       Redeem successful! You will be able to claim your tokens starting from {SAP_LOCK_DATE}.
                     </Alert>
+                  ) : hasSAPStarted ? (
+                    <ClaimButton startClaiming={startClaiming} text="Claim" />
                   ) : !loading ? (
-                    <ClaimButton startClaiming={startClaiming} />
+                    <ClaimButton startClaiming={startClaiming} text="Start claiming" />
                   ) : null}
                 </Stack>
               </Grid>

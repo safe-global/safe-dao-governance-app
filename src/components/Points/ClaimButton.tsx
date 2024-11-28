@@ -1,7 +1,7 @@
 import { Box, Button } from '@mui/material'
 import { useCoolMode } from '@/hooks/useCoolMode'
 
-const ClaimButton = ({ startClaiming }: { startClaiming: () => void }) => {
+const ClaimButton = ({ startClaiming, text }: { startClaiming: () => void; text: string }) => {
   const particlesRef = useCoolMode('./images/token.svg')
 
   return (
@@ -16,7 +16,7 @@ const ClaimButton = ({ startClaiming }: { startClaiming: () => void }) => {
         }}
         onClick={startClaiming}
       >
-        Start claiming
+        {text}
       </Button>
     </Box>
   )
