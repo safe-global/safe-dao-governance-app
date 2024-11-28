@@ -68,11 +68,12 @@ const Points = () => {
   }
 
   const loading = !sealedResult || isLoading || allocationLoading
-  const hasSAPAllocation =
-    Number(sapUnboosted.inVesting) > 0 ||
-    Number(sapUnboosted.claimable) > 0 ||
-    Number(sapBoosted.inVesting) > 0 ||
-    Number(sapBoosted.claimable) > 0
+  const hasSAPUnboostedAllocation = Number(sapUnboosted.inVesting) > 0 || Number(sapUnboosted.claimable) > 0
+  const hasSAPBoostedAllocation =
+    (Number(sapBoosted.inVesting) > 0 || Number(sapBoosted.claimable) > 0) && eligibility?.isAllowed
+
+  const hasSAPAllocation = hasSAPUnboostedAllocation || hasSAPBoostedAllocation
+
   const isSAPRedeemed = sapUnboostedVesting?.isRedeemed || sapBoostedVesting?.isRedeemed
   const hasSAPStarted =
     (sapUnboostedVesting && Math.floor(Date.now() / 1000) >= sapUnboostedVesting.startDate) ||
