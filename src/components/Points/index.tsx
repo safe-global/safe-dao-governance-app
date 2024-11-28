@@ -26,7 +26,7 @@ import { getVestingTypes } from '@/utils/vesting'
 const Points = () => {
   const [sealedResult, setSealedResult] = useState<SealedRequest>()
   const { data: eligibility, isLoading } = useUnsealedResult(sealedResult)
-  const { sdk } = useSafeAppsSDK()
+  const { sdk, safe } = useSafeAppsSDK()
   const globalCampaignId = useGlobalCampaignId()
   const aggregateCampaignId = useAggregateCampaignId()
   const { data: globalRank } = useOwnCampaignRank(globalCampaignId)
@@ -57,6 +57,7 @@ const Points = () => {
       vestingData: allocation?.vestingData ?? [],
       sapBoostedClaimable: eligibility.isAllowed ? sapBoosted.inVesting : '0',
       sapUnboostedClaimable: sapUnboosted.inVesting,
+      safeAddress: safe.safeAddress,
     })
 
     try {

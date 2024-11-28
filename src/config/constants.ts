@@ -74,7 +74,7 @@ export const VESTING_URL = `${CLAIMING_DATA_URL}/allocations`
 export const SEP5_EXPIRATION_DATE = '27.10.2023'
 export const SEP5_EXPIRATION = `${SEP5_EXPIRATION_DATE} 10:00 UTC`
 
-export const SAP_LOCK_DATE = '01.01.2026' // TBD
+export const SAP_LOCK_DATE = '06.12.2024' // TBD
 
 export const AIRDROP_TAGS = {
   USER: 'user',

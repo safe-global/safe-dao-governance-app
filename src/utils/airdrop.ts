@@ -1,7 +1,7 @@
 import { BigNumber } from 'ethers'
 import { parseEther } from 'ethers/lib/utils'
 
-const MAX_UINT128 = BigNumber.from('0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF')
+export const MAX_UINT128 = BigNumber.from('0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF')
 
 /**
  * Splits the amount the user wants to claim into user airdrop, SEP5 airdrop and ecosystem airdrop.

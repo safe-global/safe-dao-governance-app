@@ -2,7 +2,7 @@ import { BigNumber } from 'ethers'
 
 import { getVestingTypes } from '@/utils/vesting'
 import { getAirdropInterface } from '@/services/contracts/Airdrop'
-import { splitAirdropAmounts } from '@/utils/airdrop'
+import { MAX_UINT128, splitAirdropAmounts } from '@/utils/airdrop'
 import type { Vesting } from '@/hooks/useSafeTokenAllocation'
 import { BaseTransaction } from '@/hooks/useTxSender'
 
@@ -87,16 +87,20 @@ const createAirdropTxs = ({
     txs.push(redeemTx)
   }
 
-  // Add claim function
-  const claimTx = createClaimTx({
-    vestingClaim,
-    amount,
-    safeAddress,
-    airdropAddress,
-    isTokenPaused,
-  })
+  const hasStarted = Math.floor(Date.now() / 1000) >= vestingClaim.startDate
 
-  txs.push(claimTx)
+  // Add claim function
+  if (hasStarted) {
+    const claimTx = createClaimTx({
+      vestingClaim,
+      amount,
+      safeAddress,
+      airdropAddress,
+      isTokenPaused,
+    })
+
+    txs.push(claimTx)
+  }
 
   return txs
 }
@@ -192,31 +196,39 @@ export const createSAPClaimTxs = ({
   vestingData,
   sapBoostedClaimable,
   sapUnboostedClaimable,
+  safeAddress,
 }: {
   vestingData: Vesting[]
   sapBoostedClaimable: string
   sapUnboostedClaimable: string
+  safeAddress: string
 }): BaseTransaction[] => {
   const txs: BaseTransaction[] = []
 
   const { sapBoostedVesting, sapUnboostedVesting } = getVestingTypes(vestingData)
 
   if (sapBoostedVesting && BigNumber.from(sapBoostedClaimable).gt(0)) {
-    const redeemTx = createRedeemTx({
-      vestingClaim: sapBoostedVesting,
-      airdropAddress: sapBoostedVesting.contract,
-    })
-
-    txs.push(redeemTx)
+    txs.push(
+      ...createAirdropTxs({
+        vestingClaim: sapBoostedVesting,
+        amount: MAX_UINT128.toString(),
+        safeAddress,
+        airdropAddress: sapBoostedVesting.contract,
+        isTokenPaused: false,
+      }),
+    )
   }
 
   if (sapUnboostedVesting && BigNumber.from(sapUnboostedClaimable).gt(0)) {
-    const redeemTx = createRedeemTx({
-      vestingClaim: sapUnboostedVesting,
-      airdropAddress: sapUnboostedVesting.contract,
-    })
-
-    txs.push(redeemTx)
+    txs.push(
+      ...createAirdropTxs({
+        vestingClaim: sapUnboostedVesting,
+        amount: MAX_UINT128.toString(),
+        safeAddress,
+        airdropAddress: sapUnboostedVesting.contract,
+        isTokenPaused: false,
+      }),
+    )
   }
 
   return txs

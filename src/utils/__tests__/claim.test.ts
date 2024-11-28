@@ -253,4 +253,74 @@ describe('createClaimTxs', () => {
     expect(decodedClaimTx[1].toString().toLowerCase()).toEqual(safeAddress) // beneficiary
     expect(decodedClaimTx[2].toString()).toEqual(parseEther('100').toString()) // amount
   })
+
+  it('do not claim airdrop while not started', () => {
+    const safeAddress = hexZeroPad('0x5afe', 20)
+
+    const vestingData: Vesting[] = [
+      {
+        isExpired: false,
+        account: safeAddress,
+        amount: parseEther('100').toString(),
+        amountClaimed: '0',
+        chainId: 11155111,
+        contract: mockInvestorVestingAddress,
+        curve: 0,
+        durationWeeks: 416,
+        isRedeemed: true,
+        proof: ['0x4697528f2cd5e98bce29be252b25ed33b79d8f0245bb7a3d0f00bb32e50128bb'],
+        startDate: Math.floor((Date.now() + 10000000000) / 1000), // A start date thats always slightly ahead of now
+        tag: 'investor',
+        vestingId: '0xabfe3d0bfb3df17a4aa39d6967f722ff82c765601417a4957434023c97d5b111',
+      },
+    ]
+
+    const txs = createClaimTxs({
+      vestingData,
+      amount: '100',
+      safeAddress,
+      investorClaimable: parseEther('100').toString(),
+      isMax: true,
+      userClaimable: '0',
+      sep5Claimable: '0',
+      isTokenPaused: false,
+    })
+
+    expect(txs).toHaveLength(0)
+  })
+
+  it('claim airdrop if it has started', () => {
+    const safeAddress = hexZeroPad('0x5afe', 20)
+
+    const vestingData: Vesting[] = [
+      {
+        isExpired: false,
+        account: safeAddress,
+        amount: parseEther('100').toString(),
+        amountClaimed: '0',
+        chainId: 11155111,
+        contract: mockInvestorVestingAddress,
+        curve: 0,
+        durationWeeks: 416,
+        isRedeemed: true,
+        proof: ['0x4697528f2cd5e98bce29be252b25ed33b79d8f0245bb7a3d0f00bb32e50128bb'],
+        startDate: Math.floor((Date.now() - 10000000000) / 1000), // A start date thats always slightly behind of now
+        tag: 'investor',
+        vestingId: '0xabfe3d0bfb3df17a4aa39d6967f722ff82c765601417a4957434023c97d5b111',
+      },
+    ]
+
+    const txs = createClaimTxs({
+      vestingData,
+      amount: '100',
+      safeAddress,
+      investorClaimable: parseEther('100').toString(),
+      isMax: true,
+      userClaimable: '0',
+      sep5Claimable: '0',
+      isTokenPaused: false,
+    })
+
+    expect(txs).toHaveLength(1)
+  })
 })
