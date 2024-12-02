@@ -65,6 +65,8 @@ export const useTaggedAllocations = (
   const [sapBoostedClaimable, sapBoostedInVesting] = useAmounts(sapBoostedVesting)
   const [sapUnboostedClaimable, sapUnboostedInVesting] = useAmounts(sapUnboostedVesting)
 
+  console.log({ sapBoostedClaimable, sapBoostedInVesting })
+
   // Calculate total of claimable vs. vested amounts
   const totalAmountClaimable = getTotal(sep5Claimable, userClaimable, ecosystemClaimable, investorClaimable)
 

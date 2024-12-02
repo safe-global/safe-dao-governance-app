@@ -12,7 +12,7 @@ import { formatEther } from 'ethers/lib/utils'
 import Spotlight from '@/public/images/spotlight.svg'
 import Star from '@/public/images/star.svg'
 import Star1 from '@/public/images/star1.svg'
-import { createSAPClaimTxs } from '@/utils/claim'
+import { createSAPClaimTxs, createSAPRedeemTxs } from '@/utils/claim'
 import { useSafeTokenAllocation } from '@/hooks/useSafeTokenAllocation'
 import { useSafeAppsSDK } from '@safe-global/safe-apps-react-sdk'
 import { FingerprintJSPro } from '@fingerprintjs/fingerprintjs-pro-react'
@@ -53,10 +53,27 @@ const Points = () => {
     // Something went wrong with fetching the eligibility for this user so we don't let them redeem
     if (!eligibility) return
 
-    const txs = createSAPClaimTxs({
+    const txs = createSAPRedeemTxs({
       vestingData: allocation?.vestingData ?? [],
       sapBoostedClaimable: eligibility.isAllowed ? sapBoosted.inVesting : '0',
       sapUnboostedClaimable: sapUnboosted.inVesting,
+    })
+
+    try {
+      await sdk.txs.send({ txs })
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  const claimSAP = async () => {
+    // Something went wrong with fetching the eligibility for this user so we don't let them redeem
+    if (!eligibility) return
+
+    const txs = createSAPClaimTxs({
+      vestingData: allocation?.vestingData ?? [],
+      sapBoostedClaimable: eligibility.isAllowed ? sapBoosted.claimable : '0',
+      sapUnboostedClaimable: sapUnboosted.claimable,
       safeAddress: safe.safeAddress,
     })
 
@@ -149,7 +166,7 @@ const Points = () => {
                         Redeem successful! You will be able to claim your tokens starting from {SAP_LOCK_DATE}.
                       </Alert>
                     ) : hasSAPStarted ? (
-                      <ClaimButton startClaiming={startClaiming} text="Claim" />
+                      <ClaimButton startClaiming={claimSAP} text="Claim" />
                     ) : !loading ? (
                       <ClaimButton startClaiming={startClaiming} text="Start claiming" />
                     ) : null}
@@ -213,20 +230,18 @@ const Points = () => {
 
       {globalRank && (
         <Grid container pt={3} spacing={3}>
-          <Grid item xs={12} lg={4}>
-            <PaperContainer>
-              <Stack alignItems="center">
-                {aggregateRank && (
-                  <>
-                    <PointsCounter value={aggregateRank.totalPoints} variant="h2" fontWeight={700} fontSize="44px" />
-                    <Typography color="text.secondary" mt={1}>
-                      {`Campaign${aggregateRank.totalPoints > 1 ? 's' : ''} completed`}
-                    </Typography>
-                  </>
-                )}
-              </Stack>
-            </PaperContainer>
-          </Grid>
+          {aggregateRank && (
+            <Grid item xs={12} lg={4}>
+              <PaperContainer>
+                <Stack alignItems="center">
+                  <PointsCounter value={aggregateRank.totalPoints} variant="h2" fontWeight={700} fontSize="44px" />
+                  <Typography color="text.secondary" mt={1}>
+                    {`Campaign${aggregateRank.totalPoints > 1 ? 's' : ''} completed`}
+                  </Typography>
+                </Stack>
+              </PaperContainer>
+            </Grid>
+          )}
 
           <Grid item xs={12} lg={4}>
             <PaperContainer>
