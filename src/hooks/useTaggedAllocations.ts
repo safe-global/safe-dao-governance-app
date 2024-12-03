@@ -35,10 +35,12 @@ export const useTaggedAllocations = (
   sapBoosted: {
     claimable: string
     inVesting: string
+    allocation: string
   }
   sapUnboosted: {
     claimable: string
     inVesting: string
+    allocation: string
   }
   total: {
     claimable: string
@@ -65,8 +67,6 @@ export const useTaggedAllocations = (
   const [sapBoostedClaimable, sapBoostedInVesting] = useAmounts(sapBoostedVesting)
   const [sapUnboostedClaimable, sapUnboostedInVesting] = useAmounts(sapUnboostedVesting)
 
-  console.log({ sapBoostedClaimable, sapBoostedInVesting })
-
   // Calculate total of claimable vs. vested amounts
   const totalAmountClaimable = getTotal(sep5Claimable, userClaimable, ecosystemClaimable, investorClaimable)
 
@@ -85,6 +85,8 @@ export const useTaggedAllocations = (
     isEligibleForBoostedSAP ? sapBoostedVesting?.amount || '0' : '0',
     sapUnboostedVesting?.amount || '0',
   )
+  const totalSAPBoosted = sapBoostedVesting?.amount || '0'
+  const totalSAPUnboosted = sapUnboostedVesting?.amount || '0'
 
   return {
     sep5: {
@@ -106,10 +108,12 @@ export const useTaggedAllocations = (
     sapBoosted: {
       claimable: sapBoostedClaimable,
       inVesting: sapBoostedInVesting,
+      allocation: totalSAPBoosted,
     },
     sapUnboosted: {
       claimable: sapUnboostedClaimable,
       inVesting: sapUnboostedInVesting,
+      allocation: totalSAPUnboosted,
     },
     total: {
       claimable: totalAmountClaimable,
