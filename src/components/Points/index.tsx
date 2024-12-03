@@ -22,6 +22,8 @@ import useUnsealedResult, { SealedRequest } from '@/hooks/useUnsealedResult'
 import ClaimButton from '@/components/Points/ClaimButton'
 import { useAggregateCampaignId } from '@/hooks/useAggregateCampaignId'
 import { getVestingTypes } from '@/utils/vesting'
+import { BigNumber } from 'ethers'
+import { TokenAmount } from '@/components/TokenAmount'
 
 const Points = () => {
   const [sealedResult, setSealedResult] = useState<SealedRequest>()
@@ -99,6 +101,15 @@ const Points = () => {
     (sapUnboostedVesting && Math.floor(Date.now() / 1000) >= sapUnboostedVesting.startDate) ||
     (sapBoostedVesting && Math.floor(Date.now() / 1000) >= sapBoostedVesting.startDate)
 
+  const isSAPBoostedClaimed =
+    sapBoostedVesting && BigNumber.from(sapBoostedVesting.amount).eq(BigNumber.from(sapBoostedVesting.amountClaimed))
+
+  const isSAPUnboostedClaimed =
+    sapUnboostedVesting &&
+    BigNumber.from(sapUnboostedVesting.amount).eq(BigNumber.from(sapUnboostedVesting.amountClaimed))
+
+  const isSAPClaimed = isSAPBoostedClaimed || isSAPUnboostedClaimed
+
   return (
     <>
       <Grid container spacing={3} direction="row">
@@ -136,85 +147,95 @@ const Points = () => {
                 <Grid item xs={12} lg={7}>
                   <Stack gap={2} alignItems="flex-start" p={4}>
                     <Typography variant="h3" fontWeight={700} fontSize="32px">
-                      Rewards Await! 🏆
+                      {isSAPClaimed ? 'Congratulations, you claimed your rewards!' : 'Rewards Await! 🏆'}
+                      <br />
+                      <br />
+                      {isSAPClaimed && <TokenAmount amount={totalSAP.allocation} label="Claimed" loading={false} />}
                     </Typography>
 
-                    <Typography mb={2}>
-                      You&apos;ve made it to the finish line! The rewards program has officially ended, and the points
-                      earned, will be converted into rewards (including SAFE tokens)
-                    </Typography>
+                    {!isSAPClaimed && (
+                      <>
+                        <Typography mb={2}>
+                          You&apos;ve made it to the finish line! The rewards program has officially ended, and the
+                          points earned, will be converted into rewards (including SAFE tokens)
+                        </Typography>
 
-                    {eligibility?.isVpn ? (
-                      <Alert severity="info" variant="standard">
-                        We detected that you are using a VPN. Please turn it off in order to start the claiming process.
-                        <Box>
-                          <Button
-                            variant="contained"
-                            color="primary"
-                            size="small"
-                            sx={{
-                              mt: 1,
-                              backgroundColor: 'static.main',
-                              color: 'text.primary',
-                              '&:hover': { backgroundColor: 'static.main' },
-                            }}
-                            onClick={() => window.location.reload()}
-                          >
-                            Try again
-                          </Button>
-                        </Box>
-                      </Alert>
-                    ) : isSAPRedeemed && !hasSAPStarted ? (
-                      <Alert severity="success" variant="standard">
-                        Redeem successful! You will be able to claim your tokens starting from {SAP_LOCK_DATE}.
-                      </Alert>
-                    ) : hasSAPStarted ? (
-                      <ClaimButton startClaiming={claimSAP} text="Claim" />
-                    ) : !loading ? (
-                      <ClaimButton startClaiming={startClaiming} text="Start claiming" />
-                    ) : null}
+                        {eligibility?.isVpn ? (
+                          <Alert severity="info" variant="standard">
+                            We detected that you are using a VPN. Please turn it off in order to start the claiming
+                            process.
+                            <Box>
+                              <Button
+                                variant="contained"
+                                color="primary"
+                                size="small"
+                                sx={{
+                                  mt: 1,
+                                  backgroundColor: 'static.main',
+                                  color: 'text.primary',
+                                  '&:hover': { backgroundColor: 'static.main' },
+                                }}
+                                onClick={() => window.location.reload()}
+                              >
+                                Try again
+                              </Button>
+                            </Box>
+                          </Alert>
+                        ) : isSAPRedeemed && !hasSAPStarted ? (
+                          <Alert severity="success" variant="standard">
+                            Redeem successful! You will be able to claim your tokens starting from {SAP_LOCK_DATE}.
+                          </Alert>
+                        ) : hasSAPStarted ? (
+                          <ClaimButton startClaiming={claimSAP} text="Claim" />
+                        ) : !loading ? (
+                          <ClaimButton startClaiming={startClaiming} text="Start claiming" />
+                        ) : null}
+                      </>
+                    )}
                   </Stack>
                 </Grid>
 
-                <Grid item xs={12} lg={5}>
-                  {!eligibility?.isVpn && !loading && (
-                    <Stack spacing={3} justifyContent="center" height="100%">
-                      <Stack gap={2} alignItems="center">
-                        <Typography variant="overline" fontWeight="700">
-                          Reward tokens
-                        </Typography>
-
-                        <Stack direction="row" gap={3}>
-                          <SvgIcon
-                            component={Spotlight}
-                            inheritViewBox
-                            fontSize="inherit"
-                            sx={{ color: 'transparent', fontSize: '4rem' }}
-                          />
-                          <SafeToken />
-                          <SvgIcon
-                            component={Spotlight}
-                            inheritViewBox
-                            fontSize="inherit"
-                            sx={{ color: 'transparent', fontSize: '4rem', transform: 'scaleX(-1)' }}
-                          />
-                        </Stack>
-                        <Stack direction="row" gap={1}>
-                          <PointsCounter
-                            value={Number(formatEther(totalSAP.allocation))}
-                            variant="h2"
-                            fontWeight={700}
-                            fontSize="44px"
-                          />
-                          <Typography fontWeight={700} fontSize="44px" lineHeight="1">
-                            SAFE
+                {!isSAPClaimed && (
+                  <Grid item xs={12} lg={5}>
+                    {!eligibility?.isVpn && !loading && (
+                      <Stack spacing={3} justifyContent="center" height="100%">
+                        <Stack gap={2} alignItems="center">
+                          <Typography variant="overline" fontWeight="700">
+                            Reward tokens
                           </Typography>
+
+                          <Stack direction="row" gap={3}>
+                            <SvgIcon
+                              component={Spotlight}
+                              inheritViewBox
+                              fontSize="inherit"
+                              sx={{ color: 'transparent', fontSize: '4rem' }}
+                            />
+                            <SafeToken />
+                            <SvgIcon
+                              component={Spotlight}
+                              inheritViewBox
+                              fontSize="inherit"
+                              sx={{ color: 'transparent', fontSize: '4rem', transform: 'scaleX(-1)' }}
+                            />
+                          </Stack>
+                          <Stack direction="row" gap={1}>
+                            <PointsCounter
+                              value={Number(formatEther(totalSAP.allocation))}
+                              variant="h2"
+                              fontWeight={700}
+                              fontSize="44px"
+                            />
+                            <Typography fontWeight={700} fontSize="44px" lineHeight="1">
+                              SAFE
+                            </Typography>
+                          </Stack>
+                          <Typography>Available from {SAP_LOCK_DATE}</Typography>
                         </Stack>
-                        <Typography>Available from {SAP_LOCK_DATE}</Typography>
                       </Stack>
-                    </Stack>
-                  )}
-                </Grid>
+                    )}
+                  </Grid>
+                )}
               </Grid>
             ) : (
               <Grid container>
