@@ -74,7 +74,7 @@ export const VESTING_URL = `${CLAIMING_DATA_URL}/allocations`
 export const SEP5_EXPIRATION_DATE = '27.10.2023'
 export const SEP5_EXPIRATION = `${SEP5_EXPIRATION_DATE} 10:00 UTC`
 
-export const SAP_LOCK_DATE = '03.12.2024' // TBD
+export const SAP_LOCK_DATE = '03.12.2024' // TBD update to 30.11.2025
 
 export const AIRDROP_TAGS = {
   USER: 'user',
@@ -133,5 +133,5 @@ export const MORPHO_CAMPAIGN_IDS: ChainConfig<string> = {
 
 export const AGGREGATE_CAMPAIGN_IDS: ChainConfig<string> = {
   [Chains.SEPOLIA]: '2a99f13c-0aa3-4484-9479-10962005d292',
-  [Chains.MAINNET]: '2a99f13c-0aa3-4484-9479-10962005d292', // TBD
+  [Chains.MAINNET]: '40ab3036-dcc2-4944-acee-02017b9e2f09',
 }
