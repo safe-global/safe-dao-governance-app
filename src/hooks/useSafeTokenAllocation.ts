@@ -92,7 +92,8 @@ const computeVotingPower = (
   lockingContractBalance: string,
 ): BigNumber => {
   const tokensInVesting = validVestingData.reduce(
-    (acc, data) => acc.add(data.amount).sub(data.amountClaimed),
+    (acc, data) =>
+      data.tag === 'sap_boosted' || data.tag === 'sap_unboosted' ? acc : acc.add(data.amount).sub(data.amountClaimed), // Exclude the SAP allocation from total voting power
     BigNumber.from(0),
   )
 
