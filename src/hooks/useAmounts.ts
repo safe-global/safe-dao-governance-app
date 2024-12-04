@@ -13,8 +13,7 @@ export const useAmounts = (vestingClaim: Vesting | null): [string, string] => {
       try {
         if (!vestingClaim) return
 
-        const totalAmount =
-          vestingClaim && Math.floor(Date.now() / 1000) > vestingClaim.startDate ? vestingClaim.amount : '0'
+        const totalAmount = vestingClaim ? vestingClaim.amount : '0'
         let vestedAmount = vestingClaim ? calculateVestedAmount(vestingClaim) : '0'
         const amountClaimed = vestingClaim?.amountClaimed || '0'
 

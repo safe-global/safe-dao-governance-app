@@ -92,10 +92,7 @@ const computeVotingPower = (
   lockingContractBalance: string,
 ): BigNumber => {
   const tokensInVesting = validVestingData.reduce(
-    (acc, data) =>
-      data.isExpired || data.startDate > Math.floor(Date.now() / 1000)
-        ? acc
-        : acc.add(data.amount).sub(data.amountClaimed),
+    (acc, data) => acc.add(data.amount).sub(data.amountClaimed),
     BigNumber.from(0),
   )
 
