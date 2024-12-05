@@ -52,7 +52,7 @@ const Points = () => {
       })
       .catch((err) =>
         setFingerprintError(
-          'Something went wrong while checking your eligibility. Make sure to turn off any AdBlocker before accessing this site.',
+          "It looks like some content isn't loading correctly. Please try disabling your AdBlocker and reload the page.",
         ),
       )
   }, [])
@@ -132,6 +132,14 @@ const Points = () => {
         </Grid>
       </Grid>
 
+      {fingerprintError && (
+        <Grid container>
+          <Grid item width={1} mb={2}>
+            <Alert severity="error">{fingerprintError}</Alert>
+          </Grid>
+        </Grid>
+      )}
+
       <Grid container>
         <Grid item width={1}>
           <PaperContainer
@@ -143,23 +151,21 @@ const Points = () => {
             }}
           >
             {loading ? (
-              <>
-                <CircularProgress color="inherit" />
-                {fingerprintError && (
-                  <Alert severity="error" sx={{ maxWidth: '500px' }}>
-                    {fingerprintError}
-                  </Alert>
-                )}
-              </>
+              <CircularProgress color="inherit" />
             ) : hasSAPAllocation ? (
               <Grid container>
                 <Grid item xs={12} lg={7}>
                   <Stack gap={2} alignItems="flex-start" p={4}>
                     <Typography variant="h3" fontWeight={700} fontSize="32px">
                       {isSAPClaimed ? 'Congratulations, you claimed your rewards!' : 'Rewards Await! 🏆'}
-                      <br />
-                      <br />
-                      {isSAPClaimed && <TokenAmount amount={totalSAP.allocation} label="Claimed" loading={false} />}
+
+                      {isSAPClaimed && (
+                        <>
+                          <br />
+                          <br />
+                          <TokenAmount amount={totalSAP.allocation} label="Claimed" loading={false} />
+                        </>
+                      )}
                     </Typography>
 
                     {!isSAPClaimed && (
