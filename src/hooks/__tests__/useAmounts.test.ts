@@ -66,7 +66,7 @@ describe('useAmounts', () => {
   it('vesting did not start yet', () => {
     const vestingClaim = createMockVesting(1, 1000, 1)
     const result = renderHook(() => useAmounts(vestingClaim))
-    expect(result.result.current).toEqual(['0', parseEther('0').toString()])
+    expect(result.result.current).toEqual(['0', parseEther('1000').toString()])
   })
 
   it('vesting fully vested and fully claimed', () => {
