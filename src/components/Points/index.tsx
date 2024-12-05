@@ -27,6 +27,7 @@ import { TokenAmount } from '@/components/TokenAmount'
 
 const Points = () => {
   const [sealedResult, setSealedResult] = useState<SealedRequest>()
+  const [fingerprintError, setFingerprintError] = useState<string>()
   const { data: eligibility, isLoading } = useUnsealedResult(sealedResult)
   const { sdk, safe } = useSafeAppsSDK()
   const globalCampaignId = useGlobalCampaignId()
@@ -46,9 +47,14 @@ const Points = () => {
     fpPromise
       .then((fp) => fp.get({ extendedResult: true }))
       .then((fingerprint) => {
+        setFingerprintError(undefined)
         setSealedResult({ requestId: fingerprint.requestId, sealedResult: fingerprint.sealedResult })
       })
-      .catch((err) => console.error('Failed to fetch sealed client results: ', err))
+      .catch((err) =>
+        setFingerprintError(
+          'Something went wrong while checking your eligibility. Make sure to turn off any AdBlocker before accessing this site.',
+        ),
+      )
   }, [])
 
   const startClaiming = async () => {
@@ -137,7 +143,14 @@ const Points = () => {
             }}
           >
             {loading ? (
-              <CircularProgress color="inherit" />
+              <>
+                <CircularProgress color="inherit" />
+                {fingerprintError && (
+                  <Alert severity="error" sx={{ maxWidth: '500px' }}>
+                    {fingerprintError}
+                  </Alert>
+                )}
+              </>
             ) : hasSAPAllocation ? (
               <Grid container>
                 <Grid item xs={12} lg={7}>
