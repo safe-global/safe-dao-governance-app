@@ -27,6 +27,7 @@ import { TokenAmount } from '@/components/TokenAmount'
 
 const Points = () => {
   const [sealedResult, setSealedResult] = useState<SealedRequest>()
+  const [fingerprintError, setFingerprintError] = useState<string>()
   const { data: eligibility, isLoading } = useUnsealedResult(sealedResult)
   const { sdk, safe } = useSafeAppsSDK()
   const globalCampaignId = useGlobalCampaignId()
@@ -46,9 +47,14 @@ const Points = () => {
     fpPromise
       .then((fp) => fp.get({ extendedResult: true }))
       .then((fingerprint) => {
+        setFingerprintError(undefined)
         setSealedResult({ requestId: fingerprint.requestId, sealedResult: fingerprint.sealedResult })
       })
-      .catch((err) => console.error('Failed to fetch sealed client results: ', err))
+      .catch((err) =>
+        setFingerprintError(
+          "It looks like some content isn't loading correctly. Please try disabling your AdBlocker and reload the page.",
+        ),
+      )
   }, [])
 
   const startClaiming = async () => {
@@ -126,6 +132,14 @@ const Points = () => {
         </Grid>
       </Grid>
 
+      {fingerprintError && (
+        <Grid container>
+          <Grid item width={1} mb={2}>
+            <Alert severity="error">{fingerprintError}</Alert>
+          </Grid>
+        </Grid>
+      )}
+
       <Grid container>
         <Grid item width={1}>
           <PaperContainer
@@ -144,9 +158,14 @@ const Points = () => {
                   <Stack gap={2} alignItems="flex-start" p={4}>
                     <Typography variant="h3" fontWeight={700} fontSize="32px">
                       {isSAPClaimed ? 'Congratulations, you claimed your rewards!' : 'Rewards Await! 🏆'}
-                      <br />
-                      <br />
-                      {isSAPClaimed && <TokenAmount amount={totalSAP.allocation} label="Claimed" loading={false} />}
+
+                      {isSAPClaimed && (
+                        <>
+                          <br />
+                          <br />
+                          <TokenAmount amount={totalSAP.allocation} label="Claimed" loading={false} />
+                        </>
+                      )}
                     </Typography>
 
                     {!isSAPClaimed && (
