@@ -50,11 +50,15 @@ export const getVestingTypes = (vestingData: Vesting[]) => {
   const sep5Vesting = vestingData?.find((vesting) => vesting.tag === AIRDROP_TAGS.SEP5) ?? null
   const ecosystemVesting = vestingData?.find((vesting) => vesting.tag === AIRDROP_TAGS.ECOSYSTEM) ?? null
   const investorVesting = vestingData?.find((vesting) => vesting.tag === AIRDROP_TAGS.INVESTOR) ?? null
+  const sapBoostedVesting = vestingData?.find((vesting) => vesting.tag === AIRDROP_TAGS.SAP_BOOSTED) ?? null
+  const sapUnboostedVesting = vestingData?.find((vesting) => vesting.tag === AIRDROP_TAGS.SAP_UNBOOSTED) ?? null
 
   return {
     userVesting,
     sep5Vesting,
     ecosystemVesting,
     investorVesting,
+    sapBoostedVesting,
+    sapUnboostedVesting,
   }
 }

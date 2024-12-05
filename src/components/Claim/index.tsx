@@ -2,10 +2,8 @@ import {
   Grid,
   Typography,
   Button,
-  Paper,
   Box,
   Stack,
-  SvgIcon,
   Divider,
   TextField,
   CircularProgress,
@@ -15,7 +13,6 @@ import { useState, type ReactElement, ChangeEvent } from 'react'
 
 import PaperContainer from '../PaperContainer'
 
-import StarIcon from '@/public/images/star.svg'
 import { maxDecimals, minMaxValue, mustBeFloat } from '@/utils/validation'
 import { useIsTokenPaused } from '@/hooks/useIsTokenPaused'
 import { useSafeTokenAllocation } from '@/hooks/useSafeTokenAllocation'
@@ -174,29 +171,6 @@ const ClaimOverview = (): ReactElement => {
                 </Typography>
               </Typography>
             </InfoAlert>
-
-            <Paper
-              sx={{
-                p: 3,
-                backgroundColor: ({ palette }) => palette.background.default,
-                color: ({ palette }) => palette.text.primary,
-                position: 'relative',
-                height: '100%',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 1,
-              }}
-            >
-              <Stack direction="row" spacing={2} alignItems="center" fontSize={38}>
-                <SvgIcon component={StarIcon} inheritViewBox fontSize="inherit" />
-                <Box>
-                  <Typography variant="subtitle1" fontWeight={700}>
-                    Claim your tokens as rewards!
-                  </Typography>
-                  <Typography variant="body2">You get more tokens if you are active in activity program.</Typography>
-                </Box>
-              </Stack>
-            </Paper>
 
             <Divider />
 

@@ -3,6 +3,7 @@ import { BigNumber } from 'ethers'
 // General
 export const IS_PRODUCTION = process.env.NEXT_PUBLIC_IS_PRODUCTION === 'true'
 export const INFURA_TOKEN = process.env.NEXT_PUBLIC_INFURA_TOKEN || ''
+export const FINGERPRINT_KEY = process.env.NEXT_PUBLIC_FINGERPRINT_KEY || ''
 
 export const LS_NAMESPACE = 'SAFE__'
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
@@ -73,11 +74,15 @@ export const VESTING_URL = `${CLAIMING_DATA_URL}/allocations`
 export const SEP5_EXPIRATION_DATE = '27.10.2023'
 export const SEP5_EXPIRATION = `${SEP5_EXPIRATION_DATE} 10:00 UTC`
 
+export const SAP_LOCK_DATE = '06.12.2025'
+
 export const AIRDROP_TAGS = {
   USER: 'user',
   SEP5: 'user_v2',
   ECOSYSTEM: 'ecosystem',
   INVESTOR: 'investor',
+  SAP_BOOSTED: 'sap_boosted',
+  SAP_UNBOOSTED: 'sap_unboosted',
 } as const
 
 // Delegation
@@ -124,4 +129,9 @@ export const GLOBAL_CAMPAIGN_IDS: ChainConfig<string> = {
 export const MORPHO_CAMPAIGN_IDS: ChainConfig<string> = {
   [Chains.SEPOLIA]: '0317a716-2818-4cc2-8571-71208996650e',
   [Chains.MAINNET]: 'a19a5503-b65a-42a0-bc6a-8e68144d2afa',
+}
+
+export const AGGREGATE_CAMPAIGN_IDS: ChainConfig<string> = {
+  [Chains.SEPOLIA]: '2a99f13c-0aa3-4484-9479-10962005d292',
+  [Chains.MAINNET]: '40ab3036-dcc2-4944-acee-02017b9e2f09',
 }

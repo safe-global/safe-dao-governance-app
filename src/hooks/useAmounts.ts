@@ -11,9 +11,8 @@ export const useAmounts = (vestingClaim: Vesting | null): [string, string] => {
   useEffect(() => {
     const refreshAmount = () => {
       try {
-        if (!vestingClaim) {
-          return
-        }
+        if (!vestingClaim) return
+
         const totalAmount = vestingClaim ? vestingClaim.amount : '0'
         let vestedAmount = vestingClaim ? calculateVestedAmount(vestingClaim) : '0'
         const amountClaimed = vestingClaim?.amountClaimed || '0'
