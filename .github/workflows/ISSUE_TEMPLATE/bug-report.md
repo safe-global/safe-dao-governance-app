@@ -12,7 +12,7 @@ BEFORE SUBMITTING: Please search to make sure this issue hasn't been reported al
 
 ## Environment
 
-- Envrionment: DApp / Safe App
+- Environment: DApp / Safe App
 - Browser: Chrome
 - Wallet: MetaMask
 - Chain: Ethereum mainnet
