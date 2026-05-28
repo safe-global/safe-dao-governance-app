@@ -7,12 +7,12 @@ runs:
   steps:
     # `hardhat compile` has issues with the latest version of Node
     # https://github.com/NomicFoundation/hardhat/issues/3877
-    - uses: actions/setup-node@v3
+    - uses: actions/setup-node@3235b876344d2a9aa001b8d1453c930bba69e610  # v3
       with:
         node-version: 18.15.0
 
     - name: Yarn cache
-      uses: actions/cache@v3
+      uses: actions/cache@6f8efc29b200d32929f49075959781ed54ec270c  # v3
       with:
         path: '**/node_modules'
         key: safe-dao-governance-app-modules-${{ hashFiles('**/yarn.lock') }}

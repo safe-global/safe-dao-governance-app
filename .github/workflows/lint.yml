@@ -1,19 +1,25 @@
 name: 'Lint'
 on: [pull_request]
 
+permissions:
+  actions: write
+  checks: write
+  contents: read
+  pull-requests: write
+
 jobs:
   eslint:
     runs-on: ubuntu-latest
     steps:
       - name: Cancel previous runs
-        uses: styfle/cancel-workflow-action@0.8.0
+        uses: styfle/cancel-workflow-action@3d86a7cc43670094ac248017207be0295edbc31d  # 0.8.0
         with:
           access_token: ${{ github.token }}
 
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744  # v3
 
       - uses: ./.github/workflows/yarn
 
-      - uses: Maggi64/eslint-plus-action@master
+      - uses: Maggi64/eslint-plus-action@aac8f0f16d205b3760edf331c28a9ce12bdd741f  # master
         with:
           npmInstall: false

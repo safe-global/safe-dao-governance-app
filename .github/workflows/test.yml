@@ -10,11 +10,16 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+permissions:
+  checks: write
+  contents: read
+  pull-requests: write
+
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744  # v3
 
       - uses: ./.github/workflows/yarn
 
@@ -22,7 +27,7 @@ jobs:
         run: 'yarn test:ci'
 
       - name: Comment in failing tests
-        uses: mattallty/jest-github-action@v1.0.3
+        uses: mattallty/jest-github-action@43bbcd073fa43a927322f188220b6592acae003b  # v1.0.3
         if: failure()
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
