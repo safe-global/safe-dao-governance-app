@@ -8,5 +8,4 @@ export const AppRoutes = {
   delegate: '/delegate',
   claim: '/claim',
   activity: '/activity',
-  activityProgram: '/activity-program',
 }

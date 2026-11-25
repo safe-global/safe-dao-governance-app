@@ -6,7 +6,6 @@ import { AccountCenter } from '@/components/AccountCenter'
 import { ChainSwitcher } from '@/components/ChainSwitcher'
 import { useIsSafeApp } from '@/hooks/useIsSafeApp'
 import { TestChainSwitch } from '@/components/TestChainSwitch'
-import { TestDateSelect } from '@/components/TestDateSelect'
 
 import css from './styles.module.css'
 
@@ -22,7 +21,6 @@ export const Header = (): ReactElement | null => {
       <SafeLogo alt="Safe logo" />
 
       <TestChainSwitch />
-      <TestDateSelect />
 
       <div className={css.wallet}>
         <ChainSwitcher />
