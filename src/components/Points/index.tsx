@@ -3,15 +3,11 @@ import { ExternalLink } from '../ExternalLink'
 import PaperContainer from '../PaperContainer'
 import SafePassDisclaimer from '../SafePassDisclaimer'
 import css from './styles.module.css'
-import { useGlobalCampaignId } from '@/hooks/useGlobalCampaignId'
-import { useOwnCampaignRank } from '@/hooks/useLeaderboard'
 import PointsCounter from '@/components/PointsCounter'
 import SafeToken from '@/public/images/token.svg'
 import { useTaggedAllocations } from '@/hooks/useTaggedAllocations'
 import { formatEther } from 'ethers/lib/utils'
 import Spotlight from '@/public/images/spotlight.svg'
-import Star from '@/public/images/star.svg'
-import Star1 from '@/public/images/star1.svg'
 import { createSAPClaimTxs, createSAPRedeemTxs } from '@/utils/claim'
 import { useSafeTokenAllocation } from '@/hooks/useSafeTokenAllocation'
 import { useSafeAppsSDK } from '@safe-global/safe-apps-react-sdk'
@@ -20,7 +16,6 @@ import { useEffect, useState } from 'react'
 import { FINGERPRINT_KEY, SAP_LOCK_DATE } from '@/config/constants'
 import useUnsealedResult, { SealedRequest } from '@/hooks/useUnsealedResult'
 import ClaimButton from '@/components/Points/ClaimButton'
-import { useAggregateCampaignId } from '@/hooks/useAggregateCampaignId'
 import { getVestingTypes } from '@/utils/vesting'
 import { BigNumber } from 'ethers'
 import { TokenAmount } from '@/components/TokenAmount'
@@ -30,10 +25,6 @@ const Points = () => {
   const [fingerprintError, setFingerprintError] = useState<string>()
   const { data: eligibility, isLoading } = useUnsealedResult(sealedResult)
   const { sdk, safe } = useSafeAppsSDK()
-  const globalCampaignId = useGlobalCampaignId()
-  const aggregateCampaignId = useAggregateCampaignId()
-  const { data: globalRank } = useOwnCampaignRank(globalCampaignId)
-  const { data: aggregateRank } = useOwnCampaignRank(aggregateCampaignId)
   const { data: allocation, isLoading: allocationLoading } = useSafeTokenAllocation()
   const { sapBoosted, sapUnboosted, totalSAP } = useTaggedAllocations(eligibility?.isAllowed)
   const { sapUnboostedVesting, sapBoostedVesting } = getVestingTypes(allocation?.vestingData || [])
@@ -266,45 +257,6 @@ const Points = () => {
           </PaperContainer>
         </Grid>
       </Grid>
-
-      {globalRank && (
-        <Grid container pt={3} spacing={3}>
-          {aggregateRank && (
-            <Grid item xs={12} lg={4}>
-              <PaperContainer>
-                <Stack alignItems="center">
-                  <PointsCounter value={aggregateRank.totalPoints} variant="h2" fontWeight={700} fontSize="44px" />
-                  <Typography color="text.secondary" mt={1}>
-                    {`Campaign${aggregateRank.totalPoints > 1 ? 's' : ''} completed`}
-                  </Typography>
-                </Stack>
-              </PaperContainer>
-            </Grid>
-          )}
-
-          <Grid item xs={12} lg={4}>
-            <PaperContainer>
-              <Stack alignItems="center">
-                <PointsCounter value={globalRank.position} variant="h2" fontWeight={700} fontSize="44px" />
-                <Typography color="text.secondary" mt={1} display="flex" alignItems="center" gap={1}>
-                  <SvgIcon component={Star} inheritViewBox color="border" /> Leaderboard score
-                </Typography>
-              </Stack>
-            </PaperContainer>
-          </Grid>
-
-          <Grid item xs={12} lg={4}>
-            <PaperContainer>
-              <Stack alignItems="center">
-                <PointsCounter value={globalRank.totalPoints} variant="h2" fontWeight={700} fontSize="44px" />
-                <Typography color="text.secondary" mt={1} display="flex" alignItems="center" gap={1}>
-                  <SvgIcon component={Star1} inheritViewBox color="border" /> Total points
-                </Typography>
-              </Stack>
-            </PaperContainer>
-          </Grid>
-        </Grid>
-      )}
 
       <Grid container spacing={3} pt={3}>
         <Grid item xs={12} lg={6}>
