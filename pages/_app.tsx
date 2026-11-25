@@ -27,7 +27,6 @@ import { usePendingDelegations } from '@/hooks/usePendingDelegations'
 
 import '@/styles/globals.css'
 import { useSafeTokenBalance } from '@/hooks/useSafeTokenBalance'
-import { useLockHistory } from '@/hooks/useLockHistory'
 import { GATEWAY_URL } from '@/config/constants'
 
 const InitApp = (): null => {
@@ -47,7 +46,6 @@ const InitApp = (): null => {
 
   // Populate locking app caches
   useSafeTokenBalance()
-  useLockHistory()
 
   return null
 }
