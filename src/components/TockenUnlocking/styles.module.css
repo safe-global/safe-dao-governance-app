@@ -3,19 +3,6 @@
   border: var(--mui-palette-border-light) 1px solid;
 }
 
-.badge :global .MuiBadge-badge {
-  right: 4px;
-  bottom: 5px;
-  height: 6px;
-  min-width: 6px;
-}
-
-.badge :global .MuiBadge-badge {
-  bottom: 4px;
-  right: 4px;
-  background-color: var(--mui-palette-secondary-main);
-}
-
 .maxButton {
   border: 0;
   background: none;
@@ -24,10 +11,6 @@
   font-size: 16px;
   font-weight: bold;
   cursor: pointer;
-}
-
-.gauge {
-  transition: width 200ms;
 }
 
 .amountDisplay {

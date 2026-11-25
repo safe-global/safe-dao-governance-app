@@ -1,28 +1,27 @@
 import { Box, Link, Stack, Typography } from '@mui/material'
+import { BigNumber } from 'ethers'
 
 import NextLink from 'next/link'
 import { AppRoutes } from '@/config/routes'
-import { toRelativeLockHistory } from '@/utils/lock'
 import PaperContainer from '../PaperContainer'
 import { UnlockStats } from './UnlockStats'
 import { UnlockTokenWidget } from './UnlockTokenWidget'
-import { useLockHistory } from '@/hooks/useLockHistory'
 import { ChevronLeft } from '@mui/icons-material'
 
-import { useMemo } from 'react'
-import { useSummarizedLockHistory } from '@/hooks/useSummarizedLockHistory'
 import { WithdrawWidget } from './WithdrawWidget'
-import { useStartDate } from '@/hooks/useStartDates'
 import { NAVIGATION_EVENTS } from '@/analytics/navigation'
 import Track from '../Track'
+import { useLockState } from '@/hooks/useLockState'
+import { LockStateError } from '@/components/LockStateError'
+
+const ZERO = BigNumber.from(0)
 
 const TokenUnlocking = () => {
-  const { startTime } = useStartDate()
-  const lockHistory = useLockHistory()
+  const { data, error, isLoading } = useLockState()
 
-  const relativeLockHistory = useMemo(() => toRelativeLockHistory(lockHistory, startTime), [lockHistory, startTime])
-
-  const { totalLocked, totalUnlocked, totalWithdrawable, pendingUnlocks } = useSummarizedLockHistory(lockHistory)
+  // Keep showing the last good data if a background refresh fails.
+  // Without data, locked and withdrawable fall back to 0, which disables both actions.
+  const hasError = !!error && !data
 
   return (
     <Box maxWidth="888px">
@@ -39,14 +38,21 @@ const TokenUnlocking = () => {
         </Track>
 
         <Typography variant="h1">Unlock / Withdraw</Typography>
+
+        {hasError && <LockStateError />}
+
         <PaperContainer>
-          <UnlockStats currentlyLocked={totalLocked} unlockedTotal={totalUnlocked} />
+          <UnlockStats
+            currentlyLocked={data?.locked ?? ZERO}
+            unlockedTotal={data?.unlocked ?? ZERO}
+            loading={isLoading}
+          />
         </PaperContainer>
         <PaperContainer>
-          <UnlockTokenWidget currentlyLocked={totalLocked} lockHistory={relativeLockHistory} />
+          <UnlockTokenWidget currentlyLocked={data?.locked ?? ZERO} />
         </PaperContainer>
         <PaperContainer>
-          <WithdrawWidget totalWithdrawable={totalWithdrawable} pendingUnlocks={pendingUnlocks} />
+          <WithdrawWidget totalWithdrawable={data?.withdrawable ?? ZERO} pendingUnlocks={data?.pendingUnlocks} />
         </PaperContainer>
       </Stack>
     </Box>
