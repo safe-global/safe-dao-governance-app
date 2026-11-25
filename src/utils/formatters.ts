@@ -9,3 +9,8 @@ export const formatAmount = (amount: number | string, decimals: number) => {
 
   return formatter.format(value)
 }
+
+export const floorNumber = (num: number, digits: number) => {
+  const decimal = Math.pow(10, digits)
+  return Math.floor(num * decimal) / decimal
+}

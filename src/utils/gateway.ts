@@ -16,7 +16,3 @@ export const getHashedExplorerUrl = (
 
   return replaceTemplate(blockExplorerUriTemplate[param], { [param]: hash })
 }
-
-export const toCursorParam = (limit: number, offset?: number) => {
-  return `cursor=limit%3D${limit}${offset ? `%26offset%3D${offset}` : ``}`
-}

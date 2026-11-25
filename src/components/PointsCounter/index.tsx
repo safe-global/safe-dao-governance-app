@@ -1,4 +1,4 @@
-import { floorNumber } from '@/utils/boost'
+import { floorNumber } from '@/utils/formatters'
 import { NorthRounded, SouthRounded } from '@mui/icons-material'
 import { Box, Typography } from '@mui/material'
 import { TypographyProps } from '@mui/material/Typography'

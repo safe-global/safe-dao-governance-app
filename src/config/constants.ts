@@ -1,5 +1,3 @@
-import { BigNumber } from 'ethers'
-
 // General
 export const IS_PRODUCTION = process.env.NEXT_PUBLIC_IS_PRODUCTION === 'true'
 export const INFURA_TOKEN = process.env.NEXT_PUBLIC_INFURA_TOKEN || ''
@@ -39,11 +37,6 @@ export const _DEFAULT_CHAIN_ID = IS_PRODUCTION ? Chains.MAINNET : Chains.SEPOLIA
 export const CHAIN_SHORT_NAME: ChainConfig<string> = {
   [Chains.MAINNET]: 'eth',
   [Chains.SEPOLIA]: 'sep',
-}
-
-export const CHAIN_START_TIMESTAMPS: ChainConfig<number> = {
-  [Chains.MAINNET]: Date.parse('Tue Apr 23 2024 12:00:00 GMT+0000'),
-  [Chains.SEPOLIA]: Date.parse('Tue Mar 01 2024 12:00:00 GMT+0000'),
 }
 
 // Token
@@ -115,23 +108,3 @@ export const SAFE_PASS_HELP_ARTICLE_URL = 'https://help.safe.global/en/articles/
 export const SAFE_TERMS_AND_CONDITIONS_URL = 'https://help.safe.global/en/articles/157469-terms-and-conditions'
 
 export const DISCORD_URL = 'https://chat.safe.global'
-
-export const UNLIMITED_APPROVAL_AMOUNT = BigNumber.from(2).pow(256).sub(1)
-
-export const SEASON2_START = 160
-export const SEASON1_START = 33
-
-export const GLOBAL_CAMPAIGN_IDS: ChainConfig<string> = {
-  [Chains.SEPOLIA]: 'fa9f462b-8e8c-4122-aa41-2464e919b721',
-  [Chains.MAINNET]: '9ed78b8b-178d-4e25-9ef2-1517865991ee',
-}
-
-export const MORPHO_CAMPAIGN_IDS: ChainConfig<string> = {
-  [Chains.SEPOLIA]: '0317a716-2818-4cc2-8571-71208996650e',
-  [Chains.MAINNET]: 'a19a5503-b65a-42a0-bc6a-8e68144d2afa',
-}
-
-export const AGGREGATE_CAMPAIGN_IDS: ChainConfig<string> = {
-  [Chains.SEPOLIA]: '2a99f13c-0aa3-4484-9479-10962005d292',
-  [Chains.MAINNET]: '40ab3036-dcc2-4944-acee-02017b9e2f09',
-}
