@@ -1,24 +1,20 @@
 import { Box, Grid, Stack, Typography } from '@mui/material'
-import { useSafeTokenBalance } from '@/hooks/useSafeTokenBalance'
-import { ActionNavigation } from './BoostGraph/ActionNavigation/ActionNavigation'
+import { ActionNavigation } from './ActionNavigation/ActionNavigation'
 import PaperContainer from '../PaperContainer'
-import { useSummarizedLockHistory } from '@/hooks/useSummarizedLockHistory'
-import { useLockHistory } from '@/hooks/useLockHistory'
+import { useLockState } from '@/hooks/useLockState'
 
 import css from './styles.module.css'
 import { ExternalLink } from '../ExternalLink'
 import SafePassDisclaimer from '../SafePassDisclaimer'
-import { useOwnLockingRank } from '@/hooks/useLeaderboard'
 import { TokenAmount } from '@/components/TokenAmount'
+import { LockStateError } from '@/components/LockStateError'
 
 const TokenLocking = () => {
-  const { isLoading: safeBalanceLoading } = useSafeTokenBalance()
-  const { totalLocked, totalUnlocked, totalWithdrawable } = useSummarizedLockHistory(useLockHistory())
+  const { data, error, isLoading } = useLockState()
 
-  const ownRankResult = useOwnLockingRank()
-  const { data: ownRank } = ownRankResult
-
-  const isUnlockAvailable = totalLocked.gt(0) || totalUnlocked.gt(0) || totalWithdrawable.gt(0)
+  // Keep showing the last good data if a background refresh fails
+  const hasError = !!error && !data
+  const hasTokensInContract = !!data && data.locked.add(data.unlocked).gt(0)
 
   return (
     <Grid container spacing={3}>
@@ -42,15 +38,19 @@ const TokenLocking = () => {
       <Grid item xs={12} lg={8}>
         <Stack spacing={3}>
           <PaperContainer>
-            {ownRank && (
-              <Typography fontWeight="bold">Congratulations, you reached rank {ownRank.position}.</Typography>
-            )}
+            {hasError ? (
+              <LockStateError />
+            ) : data ? (
+              <Typography>
+                {hasTokensInContract
+                  ? 'Make sure to unlock any remaining tokens.'
+                  : 'You have no SAFE in the Safe{Pass} lock contract.'}
+              </Typography>
+            ) : null}
 
-            {isUnlockAvailable && <Typography>Make sure to unlock any remaining tokens.</Typography>}
+            <TokenAmount amount={data?.locked ?? 0} label="Locked" loading={isLoading} />
 
-            <TokenAmount amount={totalLocked ?? 0} label="Locked" loading={safeBalanceLoading} />
-
-            <ActionNavigation disabled={!isUnlockAvailable} />
+            <ActionNavigation disabled={hasError || !hasTokensInContract} />
           </PaperContainer>
           <SafePassDisclaimer />
         </Stack>

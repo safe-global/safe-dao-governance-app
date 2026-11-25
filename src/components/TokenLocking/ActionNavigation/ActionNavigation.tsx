@@ -2,7 +2,7 @@ import { NAVIGATION_EVENTS } from '@/analytics/navigation'
 import { AppRoutes } from '@/config/routes'
 import { Typography, Stack, Button, Box } from '@mui/material'
 import { useRouter } from 'next/router'
-import Track from '../../../Track'
+import Track from '../../Track'
 import clsx from 'clsx'
 
 import css from './styles.module.css'
