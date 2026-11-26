@@ -41,7 +41,7 @@
     "ethereum-blockies-base64": "^1.0.2",
     "ethers": "^5.7.2",
     "lodash": "^4.17.21",
-    "next": "13.1.2",
+    "next": "15.5.29",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "swr": "^2.1.0",
