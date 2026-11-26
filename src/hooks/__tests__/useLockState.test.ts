@@ -6,8 +6,8 @@ import { parseEther } from 'ethers/lib/utils'
 import { JsonRpcProvider } from '@ethersproject/providers'
 import { renderHook, waitFor } from '@testing-library/react'
 
-import { CHAIN_SAFE_LOCKING_ADDRESS } from '@/config/constants'
-import { lockInterface, useLockState } from '@/hooks/useLockState'
+import { CHAIN_SAFE_LOCKING_ADDRESS, MULTICALL3_ADDRESS } from '@/config/constants'
+import { lockInterface, multicallInterface, useLockState } from '@/hooks/useLockState'
 import { useWeb3 } from '@/hooks/useWeb3'
 import { useAddress } from '@/hooks/useAddress'
 import { useChainId } from '@/hooks/useChainId'
@@ -39,26 +39,39 @@ describe('useLockState', () => {
   let provider: JsonRpcProvider
   let mockCall: jest.Mock
 
+  const encodeUnlock = (unlocks: Record<number, Unlock>, index: number) =>
+    lockInterface.encodeFunctionResult('getUnlock', [unlocks[index] ?? { amount: ZERO, maturesAt: 0 }])
+
   const mockContract = (user: User, unlocks: Record<number, Unlock> = {}) => {
     mockCall.mockImplementation(async ({ to, data }: { to: string; data: string }) => {
-      expect(to).toBe(LOCK_ADDRESS)
-      const tx = lockInterface.parseTransaction({ data })
-      if (tx.name === 'getUser') {
-        return lockInterface.encodeFunctionResult('getUser', [user])
+      if (to === LOCK_ADDRESS) {
+        const tx = lockInterface.parseTransaction({ data })
+        if (tx.name === 'getUser') {
+          return lockInterface.encodeFunctionResult('getUser', [user])
+        }
+        // getUnlock must go through Multicall3
+        throw new Error(`Unexpected direct call ${tx.name}`)
       }
-      if (tx.name === 'getUnlock') {
-        const unlock = unlocks[tx.args[1]] ?? { amount: ZERO, maturesAt: 0 }
-        return lockInterface.encodeFunctionResult('getUnlock', [unlock])
+      if (to === MULTICALL3_ADDRESS) {
+        const [calls] = multicallInterface.parseTransaction({ data }).args
+        const results = calls.map(({ target, callData }: { target: string; callData: string }) => {
+          expect(target).toBe(LOCK_ADDRESS)
+          const tx = lockInterface.parseTransaction({ data: callData })
+          expect(tx.name).toBe('getUnlock')
+          return { success: true, returnData: encodeUnlock(unlocks, tx.args[1]) }
+        })
+        return multicallInterface.encodeFunctionResult('aggregate3', [results])
       }
-      throw new Error(`Unexpected call ${tx.name}`)
+      throw new Error(`Unexpected call to ${to}`)
     })
   }
 
+  // Unlock indices requested through Multicall3, in order
   const getUnlockIndices = () =>
     mockCall.mock.calls
-      .map(([{ data }]) => lockInterface.parseTransaction({ data }))
-      .filter((tx) => tx.name === 'getUnlock')
-      .map((tx) => tx.args[1])
+      .filter(([{ to }]) => to === MULTICALL3_ADDRESS)
+      .flatMap(([{ data }]) => multicallInterface.parseTransaction({ data }).args[0])
+      .map(({ callData }: { callData: string }) => lockInterface.parseTransaction({ data: callData }).args[1])
 
   beforeEach(() => {
     NOW = Math.floor(Date.now() / 1000)
@@ -160,6 +173,7 @@ describe('useLockState', () => {
     const result = await render()
 
     expect(getUnlockIndices()).toEqual([3, 4, 5])
+    expect(mockCall).toHaveBeenCalledTimes(2) // getUser + one Multicall3 batch
     expect(result.current.data?.locked.eq(parseEther('100'))).toBe(true)
     expect(result.current.data?.unlocked.eq(parseEther('6'))).toBe(true)
     expect(result.current.data?.withdrawable.eq(parseEther('3'))).toBe(true)

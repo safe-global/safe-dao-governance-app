@@ -45,6 +45,9 @@ export const CHAIN_SAFE_TOKEN_ADDRESS: ChainConfig<string> = {
   [Chains.SEPOLIA]: '0xd16d9C09d13E9Cf77615771eADC5d51a1Ae92a26',
 }
 
+// Multicall3, same address on every supported chain (https://www.multicall3.com)
+export const MULTICALL3_ADDRESS = '0xcA11bde05977b3631167028862bE2a173976CA11'
+
 export const CHAIN_SAFE_LOCKING_ADDRESS: ChainConfig<string> = {
   [Chains.MAINNET]: '0x0a7CB434f96f65972D46A5c1A64a9654dC9959b2',
   [Chains.SEPOLIA]: '0xb161ccb96b9b817F9bDf0048F212725128779DE9',
