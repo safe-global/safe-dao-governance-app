@@ -26,7 +26,6 @@ import { useSafeSnapshot } from '@/hooks/useSafeSnapshot'
 import { usePendingDelegations } from '@/hooks/usePendingDelegations'
 
 import '@/styles/globals.css'
-import { useSafeTokenBalance } from '@/hooks/useSafeTokenBalance'
 import { GATEWAY_URL } from '@/config/constants'
 
 const InitApp = (): null => {
@@ -43,9 +42,6 @@ const InitApp = (): null => {
   useDelegatesFile()
   useIsTokenPaused()
   useSafeSnapshot()
-
-  // Populate locking app caches
-  useSafeTokenBalance()
 
   return null
 }
