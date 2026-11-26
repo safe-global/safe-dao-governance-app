@@ -44,9 +44,12 @@ export const _fetchLockState = async (
   const unlockStart = Number(user.unlockStart)
   const unlockEnd = Number(user.unlockEnd)
 
-  const indices = Array.from({ length: Math.max(0, unlockEnd - unlockStart) }, (_, i) => unlockStart + i)
+  const unlockIndices = Array.from(
+    { length: Math.max(0, unlockEnd - unlockStart) },
+    (_, offset) => unlockStart + offset,
+  )
   const unlocks: PendingUnlock[] = await Promise.all(
-    indices.map(async (index) => {
+    unlockIndices.map(async (index) => {
       const unlock = await call('getUnlock', [holder, index])
       return { index, amount: BigNumber.from(unlock.amount), maturesAt: BigNumber.from(unlock.maturesAt).toNumber() }
     }),
