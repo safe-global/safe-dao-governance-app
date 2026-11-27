@@ -1,5 +1,4 @@
-import { Chains, CHAIN_START_TIMESTAMPS } from '@/config/constants'
-import { formatDay, getRelativeTime, timeRemaining } from '../date'
+import { getRelativeTime, timeRemaining } from '../date'
 
 describe('date', () => {
   let now = 0
@@ -67,24 +66,6 @@ describe('date', () => {
         minutes: 5,
         seconds: 6,
       })
-    })
-  })
-
-  describe('formatDay', () => {
-    it('should work for negative numbers', () => {
-      expect(formatDay(-1, CHAIN_START_TIMESTAMPS[Chains.MAINNET])).toEqual('April 22')
-    })
-
-    it('should work for zero', () => {
-      expect(formatDay(0, CHAIN_START_TIMESTAMPS[Chains.MAINNET])).toEqual('April 23')
-    })
-
-    it('should work for positive numbers', () => {
-      expect(formatDay(7, CHAIN_START_TIMESTAMPS[Chains.MAINNET])).toEqual('April 30')
-    })
-
-    it('should work for future months', () => {
-      expect(formatDay(30, CHAIN_START_TIMESTAMPS[Chains.MAINNET])).toEqual('May 23')
     })
   })
 

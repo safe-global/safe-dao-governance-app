@@ -1,4 +1,4 @@
-import { formatAmount } from '@/utils/formatters'
+import { floorNumber, formatAmount } from '@/utils/formatters'
 
 describe('formatters', () => {
   describe('formatAmount', () => {
@@ -16,6 +16,24 @@ describe('formatters', () => {
       expect(formatAmount(1_000, 0)).toEqual('1,000')
       expect(formatAmount(10_000, 0)).toEqual('10,000')
       expect(formatAmount(1_000_000, 0)).toEqual('1,000,000')
+    })
+  })
+
+  describe('floorNumber', () => {
+    it('should floor numbers without decimals', () => {
+      expect(floorNumber(2.0, 2)).toEqual(2)
+    })
+
+    it('should floor numbers above .5 decimals', () => {
+      expect(floorNumber(2.449, 1)).toEqual(2.4)
+    })
+
+    it('should floor numbers with .5 decimals', () => {
+      expect(floorNumber(2.45, 1)).toEqual(2.4)
+    })
+
+    it('should floor numbers above .5 decimals', () => {
+      expect(floorNumber(2.49, 1)).toEqual(2.4)
     })
   })
 })

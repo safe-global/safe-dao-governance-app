@@ -41,7 +41,7 @@ export const PageLayout = ({
               <NavTabs
                 tabs={[
                   {
-                    label: 'Activities & Points',
+                    label: 'Rewards',
                     href: AppRoutes.points,
                     event: NAVIGATION_EVENTS.OPEN_POINTS,
                   },
